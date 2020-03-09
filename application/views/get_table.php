@@ -1,27 +1,4 @@
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-</head>
 <body>
-<h3>Scheme Name</h3>
-
-<select name="selectPage" id="selectPage" action="post" onchange="return show_price(this.value);">
-<?php 
-    foreach($data as $row){
-        echo "<option value='$row'>".$row."</option>";
-    }
-?>
-</select>
-
-<div id="result">
-
-</div>
-<script>
-    function show_price(price)
-    {
-        $("#result").load( "http://localhost/nic/get_table/load1/" + price );
-    }
- </script>
-
 <div>
     <h3><?php echo $name; ?></h3>
     <form method="post">

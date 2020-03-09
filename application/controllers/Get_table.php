@@ -7,12 +7,12 @@ class Get_table extends CI_Controller {
 	{
         $this->load->model('Crud_model');
         $result1['data']=$this->Crud_model->list_table();
-        $this->load->view('get_table',$result1);
-        /*if(isset($_POST['sub1'])){
+        $this->load->view('ori',$result1);
+        if(isset($_POST['sub1'])){
             $requestpage=$_POST['selectPage'];
             $r="Location: get_table/load1/".$requestpage;
             header($r);
-        }*/
+        }
     }
 
     public function load1($n)
