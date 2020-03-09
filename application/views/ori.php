@@ -2,8 +2,10 @@
 <form method="POST" >
 <select name="selectPage">
 <?php 
+    $i=0;
     foreach($data as $row){
-        echo "<option value='$row'>".$row."</option>";
+        echo "<option value='$row'>".$s_name[$i]."</option>";
+        $i++;
     }
 ?>
 </select>
