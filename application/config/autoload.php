@@ -13,7 +13,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | is made regarding whether you intend to use it.  This file lets
 | you globally define which systems you would like loaded with every
 | request.
-|S
+|
 | -------------------------------------------------------------------
 | Instructions
 | -------------------------------------------------------------------
@@ -58,12 +58,12 @@ $autoload['packages'] = array();
 |
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
-$autoload['libraries'] = array('database','form_validation');
+$autoload['libraries'] = array('database','session','form_validation');
 
 /*
 | -------------------------------------------------------------------
 |  Auto-load Drivers
-| -------------------------------------------------------------------S
+| -------------------------------------------------------------------
 | These classes are located in system/libraries/ or in your
 | application/libraries/ directory, but are also placed inside their
 | own subdirectory and they extend the CI_Driver_Library class. They
