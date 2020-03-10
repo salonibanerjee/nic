@@ -13,7 +13,7 @@ class Crud_model extends CI_Model {
                         return 'numeric';
                 }
                 elseif($type=="character varying"){
-                        return 'alpha_numeric';
+                        return 'alpha_dash';
                 }
         }
         function save_data($data,$n){
