@@ -19,7 +19,6 @@ class Crud_model extends CI_Model {
         function save_data($data,$n){
                 $this->db->insert($n,$data,TRUE);
         }
-        
         function list_table(){
                 $tables = $this->db->list_tables();
                 return $tables;
