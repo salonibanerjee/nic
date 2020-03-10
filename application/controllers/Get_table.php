@@ -46,7 +46,7 @@ class Get_table extends CI_Controller {
                $y[]=array(
                    'field' => $field->name,
                    'label' => $ij,
-                   'rules' => "$ik",
+                   'rules' => $ik,
                    'errors' => array('is_unique'=>'This %s already exists.')
                 );
            }
