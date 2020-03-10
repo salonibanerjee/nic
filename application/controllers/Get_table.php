@@ -39,11 +39,12 @@ class Get_table extends CI_Controller {
            }
            $z=$field->max_length;
            $w=$this->Crud_model->get_type($field->type);
-           $result['s_name'][]=$this->Crud_model->search_attri($field->name);
+           $ij=$this->Crud_model->search_attri($field->name);
+           $result['s_name'][]=$ij;
            
            $y[]=array(
             'field' => $field->name,
-            'label' => $this->Crud_model->search_attri($field->name),
+            'label' => $ij,
             'rules' => "required|max_length[$z]|$w"
            );
        }
