@@ -14,7 +14,7 @@ class Get_table extends CI_Controller {
         $this->load->view('ori',$result1);
         if(isset($_POST['sub1'])){
             $requestpage=$_POST['selectPage'];
-            $r="Location: get_table/load1/".$requestpage;
+            $r="Location: load1/".$requestpage;
             header($r);
         }
     }
@@ -33,7 +33,7 @@ class Get_table extends CI_Controller {
        $y=array();
        $result['s_name']=array();
        foreach($x as $field){
-           if($field->name=="id"){
+            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp"){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                 continue;
            }
@@ -63,6 +63,24 @@ class Get_table extends CI_Controller {
        if($this->form_validation->run()==FALSE){
             #Load view
             $this->load->view('get_table',$result);
+            if($this->input->post('save') && ($this->input->post('hid')!="")){
+                $r=array();
+                foreach($result['data'] as $row){
+                    if($row=="id"){
+                        continue;
+                    }
+                    if($this->input->post($row)!==''){
+                        $r[$row]=$this->input->post($row);
+                    }
+                }
+                $r['user'] = $this->session->userdata('uid');
+                $r['tstamp'] = date('Y-m-d H:i:s');
+                $this->Crud_model->update($r,$n);
+                $this->Crud_model->backup_table($n);
+                $this->Crud_model->save_data($r,$n."_backup");
+                //$this->load->view('success');
+                header("Location: ./".$n);
+            }
        }
        else
        {
@@ -76,6 +94,8 @@ class Get_table extends CI_Controller {
                     }
                     $r[$row]=$this->input->post($row);
                 }
+                $r['user'] = $this->session->userdata('uid');
+                $r['tstamp'] = date('Y-m-d H:i:s');
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->backup_table($n);
                 $this->Crud_model->save_data($r,$n."_backup");
@@ -83,4 +103,22 @@ class Get_table extends CI_Controller {
             }
         }
     }
+    public function login(){
+			//$this->load->view('header');
+			$this->load->view('login');
+    }
+	public function logindo(){
+  		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
+  		$query=$this->db->get_where("login",$data);
+  		$res=$query->result_array();
+    	if ($res){
+  	  			echo "Login Successful";
+	  			$this->session->set_userdata('uid',$this->input->post('email'));
+      			//$this->load->view('ori');
+	  			header("Location: ./");
+			}
+    		else{
+                echo "Invalid Name";
+            }  
+	}
 }

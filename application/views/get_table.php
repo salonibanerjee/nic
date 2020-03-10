@@ -5,7 +5,7 @@
         <?php
             $i=0;
             foreach($data as $row){
-                if($row == 'id'){
+                if($row == 'id' || $row == 'user' || $row == 'tstamp'){
                     $i++;
                     continue;
                 }
@@ -49,7 +49,14 @@
                 }
             }
         ?>
-        <td colspan="2"><input type="submit" name="save" id="save" value="Save Data"/></td>
+        <td colspan="2"><input type="submit" name="save" id="save" value="<?php 
+        if(form_error('session')){
+            echo "Update data";
+        }else{
+            echo "Save data";
+        }
+        ?>"/>
+        <td colspan="2"><input type="hidden" name="hid" id="hid" value="<?php echo form_error('session');?>"/>
         </table>
     </form>
 </div>

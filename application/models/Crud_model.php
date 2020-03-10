@@ -19,6 +19,17 @@ class Crud_model extends CI_Model {
         function save_data($data,$n){
                 $this->db->insert($n,$data,TRUE);
         }
+        function update($r,$n){
+                $this->db->where('session', $r['session']);
+                $this->db->update($n,$r);
+        }
+        function isempty($a){
+                foreach($a as $key=>$val){
+                        if($key !== 'session' && $val !== '')
+                                return false;
+                }
+                return true;
+        }
         function list_table(){
                 $tables = $this->db->list_tables();
                 return $tables;
