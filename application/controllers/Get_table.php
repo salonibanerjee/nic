@@ -41,12 +41,22 @@ class Get_table extends CI_Controller {
            $w=$this->Crud_model->get_type($field->type);
            $ij=$this->Crud_model->search_attri($field->name);
            $result['s_name'][]=$ij;
-           
-           $y[]=array(
-            'field' => $field->name,
-            'label' => $ij,
-            'rules' => "required|max_length[$z]|$w"
-           );
+           if($field->name=="session"){
+               $ik="is_unique[".$n.".session]";
+               $y[]=array(
+                   'field' => $field->name,
+                   'label' => $ij,
+                   'rules' => "$ik",
+                   'errors' => array('is_unique'=>'This %s already exists.')
+                );
+           }
+           else{
+               $y[]=array(
+                   'field' => $field->name,
+                   'label' => $ij,
+                   'rules' => "required|max_length[$z]|$w"
+                );
+           }
        }
        $this->form_validation->set_rules($y);
        

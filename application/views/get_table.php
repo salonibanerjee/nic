@@ -14,12 +14,15 @@
                     $year=intval(date("Y"));
                     echo "<td>".$s_name[$i]."</td>";
                     echo "<td>";
-                    echo "<select name='$row' id='$row'>";
+                    echo "<select name='$row' id='$row' >";
                     for($x=$year;$x>=2019;$x--){
-                        echo "<option value='$x'>".$x."</option>";
+                        echo "<option value='$x'".set_select($row,$x).">".$x."</option>";
                     }
                     echo "</select>";
                     echo "</td>";
+                    echo "</tr>";
+                    echo "<tr>";
+                    echo "<td>".form_error($row)."</td>";
                     echo "</tr>";
                     $i++;
                 }
