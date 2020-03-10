@@ -66,6 +66,8 @@ class Get_table extends CI_Controller {
                     $r[$row]=$this->input->post($row);
                 }
                 $this->Crud_model->save_data($r,$n);
+                $this->Crud_model->backup_table($n);
+                $this->Crud_model->save_data($r,$n."_backup");
                 echo "Records Saved Successfully";
             }
         }

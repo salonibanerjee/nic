@@ -43,4 +43,35 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
+        //creating backup table
+        function backup_table($n){
+                $a = $n."_backup";
+                if($this->db->table_exists($n."_backup")){
+                }else{
+                        $this->load->dbforge();
+                        $fields = $this->db->field_data($n);
+                        $field = $this->extract_field($fields);
+                        $this->dbforge->add_field($field);
+                        $this->dbforge->add_key('id', TRUE);
+                        $this->dbforge->create_table($a);
+                }
+        }
+        function extract_field($x){
+                $y=array();
+                foreach($x as $field){
+                        if($field->name == 'id'){
+                                $y[$field->name]=array(
+                                        'type' => $field->type,
+                                        'max_length' => $field->max_length,
+                                        'auto_increment' => TRUE
+                                );
+                        }else{
+                                $y[$field->name]=array(
+                                        'type' => $field->type,
+                                        'max_length' => $field->max_length,
+                                );
+                        }
+                }
+                return $y;
+        }
 }
