@@ -5,7 +5,7 @@
         <?php
             $i=0;
             foreach($data as $row){
-                if($row == 'id' || $row == 'user' || $row == 'tstamp'){
+                if($row == 'id' || $row == 'user' || $row == 'tstamp' || $row == 'ip'){
                     $i++;
                     continue;
                 }
