@@ -1,9 +1,11 @@
 <html>
 <head>
 <title> Log in Form Details </title>
+<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/style.css">
 <body>
 	 <form action="logindo" method="POST">
 		 <div class="loginbox">
+         <img src="<?php echo base_url();?>logo/avatar.png" class="avatar">
            <h1>Login Here</h1>
 		        <p>Username</p>
 		        <input type="email" name="email" placeholder="Enter Email"><br>

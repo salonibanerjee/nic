@@ -1,4 +1,5 @@
-<h3>Scheme Name</h3>
+<div>
+<h1>Scheme Name</h1>
 <form method="POST" >
 <select name="selectPage">
 <?php 
@@ -11,3 +12,4 @@
 </select>
 <input type="submit" id="sub1" name="sub1" value="Load Page"/>
 </form>
+</div>

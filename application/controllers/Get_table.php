@@ -3,14 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends CI_Controller {
 
-	public function index()
+
+
+	public function ind()
 	{
+        $this->load->view('header');
         $this->load->model('Crud_model');
         $result1['data']=$this->Crud_model->list_table();
-        $result1['s_name']=array();
-        foreach($result1['data'] as $row){
-            $result1['s_name'][]=$this->Crud_model->search_table($row);
-        }
+        $result1['s_name']=$this->Crud_model->fullname();
         $this->load->view('ori',$result1);
         if(isset($_POST['sub1'])){
             $requestpage=$_POST['selectPage'];
@@ -21,6 +21,7 @@ class Get_table extends CI_Controller {
 
     public function load1($n)
     {
+        $this->load->view('header');
        //Load 'CRUD' model
        $this->load->model('Crud_model');
 
@@ -75,11 +76,15 @@ class Get_table extends CI_Controller {
                 }
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
+                $r['ip'] = $this->input->ip_address();
                 $this->Crud_model->update($r,$n);
                 $this->Crud_model->backup_table($n);
-                $this->Crud_model->save_data($r,$n."_backup");
+                $data_b = $this->Crud_model->get($n,$r['session']);
+                unset($data_b->id);
+                $this->Crud_model->save_data($data_b,$n."_backup");
+                
                 //$this->load->view('success');
-                header("Location: ./".$n);
+                redirect("https://localhost/NIC/index.php/Get_table/ind");
             }
        }
        else
@@ -96,14 +101,16 @@ class Get_table extends CI_Controller {
                 }
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
+                $r['ip'] = $this->input->ip_address();
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->backup_table($n);
                 $this->Crud_model->save_data($r,$n."_backup");
                 echo "Records Saved Successfully";
+                redirect("https://localhost/NIC/index.php/Get_table/ind");
             }
         }
     }
-    public function login(){
+    public function index(){
 			//$this->load->view('header');
 			$this->load->view('login');
     }
@@ -115,10 +122,15 @@ class Get_table extends CI_Controller {
   	  			echo "Login Successful";
 	  			$this->session->set_userdata('uid',$this->input->post('email'));
       			//$this->load->view('ori');
-	  			header("Location: ./");
+	  			header("Location: ./ind");
 			}
     		else{
                 echo "Invalid Name";
             }  
-	}
+    }
+    
+    public function log34(){
+        $this->session->sess_destroy();
+        redirect(base_url()."index.php/Get_table/");
+    }
 }

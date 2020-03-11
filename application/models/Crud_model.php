@@ -31,8 +31,22 @@ class Crud_model extends CI_Model {
                 return true;
         }
         function list_table(){
-                $tables = $this->db->list_tables();
-                return $tables;
+                $this->db->select('s_name');
+                $tables = $this->db->get('scheme_table');
+                $b = array();
+                foreach($tables->result() as $row){
+                        $b[] = $row->s_name;
+                }
+                return $b;
+        }
+        function fullname(){
+                $this->db->select('name');
+                $tables = $this->db->get('scheme_table');
+                $b = array();
+                foreach($tables->result() as $row){
+                        $b[] = $row->name;
+                }
+                return $b;
         }
 	function search_table($n){
                 $query = $this->db->get_where('scheme_table', array('s_name' => $n));
@@ -85,4 +99,12 @@ class Crud_model extends CI_Model {
                 }
                 return $y;
         }
+
+        public function get($n,$v){	
+		$query = $this->db->select('*')
+			->from($n)
+			->where('session',$v)
+			->get();
+		return $query->result()[0];
+	}
 }
