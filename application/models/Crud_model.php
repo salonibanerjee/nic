@@ -106,5 +106,17 @@ class Crud_model extends CI_Model {
 			->where('session',$v)
 			->get();
 		return $query->result()[0];
-	}
+        }
+        
+        public function audit_upload($user,$section,$action,$request){
+                $sess_data = array(
+                        'user' => $user,
+                        'section' => $section,
+                        'action' => $action,
+                        'request' => $request,
+                        'stamp' => date('Y-m-d H:i:s'),
+                        'ip_addr' => $this->input->ip_address()
+                    );
+                $this->db->insert('audit_log', $sess_data);  
+        }
 }

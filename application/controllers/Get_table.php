@@ -3,8 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends CI_Controller {
 
-
-
 	public function ind()
 	{
         $this->load->view('header');
@@ -14,6 +12,10 @@ class Get_table extends CI_Controller {
         $this->load->view('ori',$result1);
         if(isset($_POST['sub1'])){
             $requestpage=$_POST['selectPage'];
+            $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Select Form - '.$requestpage,
+                                            'Custom Message here');
             $r="Location: load1/".$requestpage;
             header($r);
         }
@@ -78,7 +80,15 @@ class Get_table extends CI_Controller {
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
                 $this->Crud_model->update($r,$n);
+                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Update - '.$n,
+                                            'Custom Message here');
                 $this->Crud_model->backup_table($n);
+                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Backup - '.$n,
+                                            'Custom Message here');
                 $data_b = $this->Crud_model->get($n,$r['session']);
                 unset($data_b->id);
                 $this->Crud_model->save_data($data_b,$n."_backup");
@@ -103,8 +113,16 @@ class Get_table extends CI_Controller {
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
                 $this->Crud_model->save_data($r,$n);
+                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Insert - '.$n,
+                                            'Custom Message here');
                 $this->Crud_model->backup_table($n);
                 $this->Crud_model->save_data($r,$n."_backup");
+                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Backup - '.$n,
+                                            'Custom Message here');
                 echo "Records Saved Successfully";
                 redirect("https://localhost/NIC/index.php/Get_table/ind");
             }
@@ -115,13 +133,19 @@ class Get_table extends CI_Controller {
 			$this->load->view('login');
     }
 	public function logindo(){
+        $this->load->model('Crud_model');
   		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
   		$query=$this->db->get_where("login",$data);
   		$res=$query->result_array();
     	if ($res){
   	  			echo "Login Successful";
-	  			$this->session->set_userdata('uid',$this->input->post('email'));
-      			//$this->load->view('ori');
+                $this->session->set_userdata('uid',$this->input->post('email'));
+                
+                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Login',
+                                            'Logging in as '.$this->session->userdata('uid'));
+      			
 	  			header("Location: ./ind");
 			}
     		else{
@@ -130,6 +154,11 @@ class Get_table extends CI_Controller {
     }
     
     public function log34(){
+        $this->load->model('Crud_model');
+        $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Logout',
+                                            'Custom Message here');
         $this->session->sess_destroy();
         redirect(base_url()."index.php/Get_table/");
     }
