@@ -26,7 +26,7 @@
                     echo "</tr>";
                     $i++;
                 }
-                elseif($row == 'date' || $row == 'Till_date' || $row == 'Date_of_Inception' || $row == 'Date_of_Inspection'){
+                elseif($row == 'date' || $row == 'Till_date' || $row == 'Date_of_Inception' || $row == 'Date_of_Inspection' || $row == 'Completed_till_date' ){
                     $year=date("Y-m-d");
                     echo "<tr>";
                     echo     "<td>".$s_name[$i]."</td>";

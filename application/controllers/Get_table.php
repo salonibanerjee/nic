@@ -34,7 +34,7 @@ class Get_table extends CI_Controller {
        $y=array();
        $result['s_name']=array();
        foreach($x as $field){
-            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp"){
+            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip"){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                 continue;
            }
