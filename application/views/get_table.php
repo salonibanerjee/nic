@@ -1,5 +1,5 @@
-<div>
-    <h3><?php echo $name; ?></h3>
+<div id="form-wrapper" style="max-width:500px;margin:auto;">
+    <h2><?php echo $name; ?></h2>
     <form method="post">
         <table >
         <?php
