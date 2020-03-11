@@ -99,7 +99,6 @@ class Crud_model extends CI_Model {
                 }
                 return $y;
         }
-
         public function get($n,$v){	
 		$query = $this->db->select('*')
 			->from($n)
