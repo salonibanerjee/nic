@@ -29,3 +29,17 @@
 		</div>
 
         </div>
+
+		<div class="wrapper">
+		<div class="sidebar">
+			<ul>
+				<li><a href="#"><i class="fas fa-home">Home</i></a></li>
+				<li><a href="#"><i class="fas fa-user">Profile</i></a></li>
+				<li><a href="#"><i class="fas fa-sign-in-alt">Signin</i></a></li>
+				<li><a href="#"><i class="fas fa-user-plus">Signup</i></a></li>
+				<li><a href="#"><i class="fas fa-address-card">About</i></a></li>
+				<li><a href="#"><i class="fas fa-address-book">Contact</i></a></li>
+				
+			</ul>
+				</div>
+		</div>

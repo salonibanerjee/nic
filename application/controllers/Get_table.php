@@ -2,9 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends CI_Controller {
-
-
-
 	public function ind()
 	{
         $this->load->view('header');
@@ -12,7 +9,7 @@ class Get_table extends CI_Controller {
         $result1['data']=$this->Crud_model->list_table();
         $result1['s_name']=$this->Crud_model->fullname();
         $this->load->view('ori',$result1);
-        if(isset($_POST['sub1'])){
+        if(isset($_POST['selectPage'])){
             $requestpage=$_POST['selectPage'];
             $r="Location: load1/".$requestpage;
             header($r);
@@ -83,8 +80,14 @@ class Get_table extends CI_Controller {
                 unset($data_b->id);
                 $this->Crud_model->save_data($data_b,$n."_backup");
                 
-                //$this->load->view('success');
-                redirect("https://localhost/NIC/Get_table/ind");
+
+                ?>
+                     <script type=text/javascript>
+                        alert("Updated Successfully...");
+                        window.location.href = "https://localhost/NIC/Get_table/ind";
+                    </script>
+                <?php
+                //redirect("https://localhost/NIC/Get_table/ind");
             }
        }
        else
@@ -105,8 +108,13 @@ class Get_table extends CI_Controller {
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->backup_table($n);
                 $this->Crud_model->save_data($r,$n."_backup");
-                echo "Records Saved Successfully";
-                redirect("https://localhost/NIC/Get_table/ind");
+
+                ?>
+                     <script type=text/javascript>
+                        alert("Saved Successfully...");
+                        window.location.href = "https://localhost/NIC/Get_table/ind";
+                    </script>
+                <?php
             }
         }
     }
@@ -125,7 +133,12 @@ class Get_table extends CI_Controller {
 	  			header("Location: ./ind");
 			}
     		else{
-                echo "Invalid Name";
+                ?>
+                     <script type=text/javascript>
+                        alert("Invalid Username or Password...");
+                        window.location.href = "./";
+                    </script>
+                <?php
             }  
     }
     
