@@ -13,7 +13,7 @@ class Get_table extends CI_Controller {
         $result1['data']=$this->Crud_model->list_table();
         $result1['s_name']=$this->Crud_model->fullname();
         $this->load->view('ori',$result1);
-        if(isset($_POST['sub1'])){
+        if(isset($_POST['selectPage'])){
             $requestpage=$_POST['selectPage'];
             $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),

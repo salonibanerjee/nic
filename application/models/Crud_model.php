@@ -106,7 +106,6 @@ class Crud_model extends CI_Model {
 			->get();
 		return $query->result()[0];
         }
-        
         public function audit_upload($user,$section,$action,$request){
                 $sess_data = array(
                         'user' => $user,
