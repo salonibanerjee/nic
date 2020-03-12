@@ -4,7 +4,7 @@
 <h1>Scheme Name</h1>
 <form method="POST">
 <select name="selectPage" class="dropdown1" onchange="this.form.submit()">
-    <option value='hekll'>Select Page -----------------------------------</option>
+    <option value='hekll'>Select Scheme -----------------------------------</option>
 <?php 
     $i=0;
     foreach($data as $row){
