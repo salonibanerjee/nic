@@ -3,7 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends CI_Controller {
     public function index(){
-		//$this->load->view('header');
 		$this->load->view('login');
     }
 	public function ind()
