@@ -68,8 +68,7 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
-        
-        //creating backup table if does not exists
+        //creating backup table
         function backup_table($n){
                 $a = $n."_backup";
                 if($this->db->table_exists($n."_backup")){
@@ -82,8 +81,6 @@ class Crud_model extends CI_Model {
                         $this->dbforge->create_table($a);
                 }
         }
-
-        //extracts the attributes names and sizes and cosntraints from the main table to create backup table
         function extract_field($x){
                 $y=array();
                 foreach($x as $field){
@@ -102,8 +99,6 @@ class Crud_model extends CI_Model {
                 }
                 return $y;
         }
-
-        //function to get the data stored in the main table while updating so that one field change can get reflected in backup table
         public function get($n,$v){	
 		$query = $this->db->select('*')
 			->from($n)
@@ -111,8 +106,7 @@ class Crud_model extends CI_Model {
 			->get();
 		return $query->result()[0];
         }
-
-        //function which performs audit trails
+        
         public function audit_upload($user,$section,$action,$request){
                 $sess_data = array(
                         'user' => $user,
