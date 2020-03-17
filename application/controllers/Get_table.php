@@ -99,6 +99,7 @@ class Get_table extends CI_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
+                $r['gp_id'] = $this->session->userdata('gp_id');
                 $this->Crud_model->update($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -135,6 +136,7 @@ class Get_table extends CI_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
+                $r['gp_id'] = $this->session->userdata('gp_id');
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -161,13 +163,14 @@ class Get_table extends CI_Controller {
 	public function logindo(){
         $this->load->model('Crud_model');
   		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
-  		$query=$this->db->get_where("login",$data);
+          $query=$this->db->get_where("login",$data);
+          
   		$res=$query->result_array();
     	if ($res){
   	  			echo "Login Successful";
                 $this->session->set_userdata('uid',$this->input->post('email'));
                 $this->session->set_userdata('logged_in', TRUE);
-                
+                $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
                                             'Login',
