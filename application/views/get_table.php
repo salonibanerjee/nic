@@ -144,7 +144,16 @@
                         }else{
                             echo 'Save data';
                         }
-                        ?>">Save</button>
+                        ?>"><?php 
+                        if(form_error('session')){
+                            echo 'Update';
+                        }else{
+                            echo 'Save';
+                        }
+                        ?></button>
+                    <input type='hidden' name='hid' id='hid' value="<?php 
+                        form_error('session');
+                        ?>">
                     </div>
                 </form>
                 </div>

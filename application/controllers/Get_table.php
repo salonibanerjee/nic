@@ -86,7 +86,7 @@ class Get_table extends CI_Controller {
         if($this->form_validation->run()==FALSE){
             $this->load->view('get_table',$result);
             //submitting form while updating data
-            if($this->input->post('save') && ($this->input->post('hid')!="")){
+            if($this->input->post('save')=='Update data'){
                 $r=array();
                 foreach($result['data'] as $row){
                     if($row=="id"){
