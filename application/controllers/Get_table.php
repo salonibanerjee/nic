@@ -56,7 +56,7 @@ class Get_table extends CI_Controller {
 
         //setting array for form validations
         foreach($x as $field){
-            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip"){
+            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" ||$field->name=='gp_id'){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                 continue;
             }
@@ -99,6 +99,7 @@ class Get_table extends CI_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
+                $r['gp_id'] = $this->session->userdata('gp_id');
                 $this->Crud_model->update($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -140,6 +141,7 @@ class Get_table extends CI_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
+                $r['gp_id'] = $this->session->userdata('gp_id');
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -179,6 +181,7 @@ class Get_table extends CI_Controller {
   	  			echo "Login Successful";
                 $this->session->set_userdata('uid',$this->input->post('email'));
                 $this->session->set_userdata('logged_in', TRUE);
+                $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
