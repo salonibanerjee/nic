@@ -2,18 +2,31 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends CI_Controller {
+    //loads the Main login page
     public function index(){
-		//$this->load->view('header');
 		$this->load->view('login');
     }
-	public function ind()
-	{
+
+    //loads the scheme picker page
+	public function ind(){
+        /*if ($this->session->userdata['logged_in'] == TRUE){
+            //do something
+        }
+        else{
+            ?>
+                <script type=text/javascript>
+                    alert("Session Timed Out...");
+                    window.location.href = "https://localhost/NIC/index.php/Get_table/";
+                </script>
+            <?php
+            //redirect(base_url()."index.php/Get_table/"); //if session is not there, redirect to login page
+        }  */
         $this->load->view('header');
         $this->load->model('Crud_model');
         $result1['data']=$this->Crud_model->list_table();
         $result1['s_name']=$this->Crud_model->fullname();
         $this->load->view('ori',$result1);
-        if(isset($_POST['sub1'])){
+        if(isset($_POST['selectPage'])){
             $requestpage=$_POST['selectPage'];
             $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -28,6 +41,7 @@ class Get_table extends CI_Controller {
         //$this->load->view('header'); 
         //Load 'CRUD' model
         $this->load->model('Crud_model');
+
         //Fetch Attribute name. n - schema name
         $result['data'] =$this->Crud_model->get_table($n);
         $result['name'] =$this->Crud_model->search_table($n);
@@ -39,6 +53,8 @@ class Get_table extends CI_Controller {
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         $result['s_name']=array();
+
+        //setting array for form validations
         foreach($x as $field){
             if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip"){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
@@ -66,9 +82,10 @@ class Get_table extends CI_Controller {
             }
         }
         $this->form_validation->set_rules($y);
+        //checking form validation
         if($this->form_validation->run()==FALSE){
-            #Load view
             $this->load->view('get_table',$result);
+            //submitting form while updating data
             if($this->input->post('save') && ($this->input->post('hid')!="")){
                 $r=array();
                 foreach($result['data'] as $row){
@@ -105,7 +122,7 @@ class Get_table extends CI_Controller {
         }
         else
         {
-            #Submitting form
+            #Submitting form while saving data
             if($this->input->post('save'))
             {
                 $r=array();
@@ -130,7 +147,6 @@ class Get_table extends CI_Controller {
                                             'Backup - '.$n,
                                             'Custom Message here');
                 echo "Records Saved Successfully";
-                redirect("https://localhost/NIC/index.php/Get_table/ind");
                 ?>
                      <script type=text/javascript>
                         alert("Saved Successfully...");
@@ -140,6 +156,8 @@ class Get_table extends CI_Controller {
             }
         }
     }
+
+    //Performs Login and if successful redirects to scheme picker page
 	public function logindo(){
         $this->load->model('Crud_model');
   		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
@@ -148,6 +166,7 @@ class Get_table extends CI_Controller {
     	if ($res){
   	  			echo "Login Successful";
                 $this->session->set_userdata('uid',$this->input->post('email'));
+                $this->session->set_userdata('logged_in', TRUE);
                 
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -165,12 +184,15 @@ class Get_table extends CI_Controller {
                 <?php
             }
     }
+
+    //to logout and destroy the session and redirects back to login page
     public function log34(){
         $this->load->model('Crud_model');
         $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
                                             'Logout',
                                             'Custom Message here');
+        $this->session->set_userdata('logged_in', FALSE);
         $this->session->sess_destroy();
         redirect(base_url()."index.php/Get_table/");
     }
