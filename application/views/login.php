@@ -13,7 +13,7 @@
 		        <input type="password" name="password" placeholder="Enter Password"><br>
           <input type="submit" name="" value="Login"><br>
 		        <a href="#">forgot your password?</a><br>
-		        <a href="#">Don't have an account?</a>
+		        <a href="<?php echo base_url();?>Get_table/register">Don't have an account?</a>
 		   </form>
      </div> 
 

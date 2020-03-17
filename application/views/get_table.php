@@ -1,5 +1,6 @@
 <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/form.css">
 <link href='https://fonts.googleapis.com/css?family=Acme' rel='stylesheet'>
+<meta http-equiv="refresh" content="20;URL=https://localhost/NIC/index.php/Get_table/" />
 <div class="outerdiv">
     <h2 class="hh"><?php echo $name; ?></h2>
     <form method="post">

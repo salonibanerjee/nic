@@ -109,6 +109,11 @@ class Get_table extends CI_Controller {
                 $data_b = $this->Crud_model->get($n,$r['session']);
                 unset($data_b->id);
                 $this->Crud_model->save_data($data_b,$n."_backup"); 
+                //commit and rollback
+                if($this->db->trans_status()==FALSE)
+                    $this->db->trans_rollback();
+                else
+                    $this->db->trans_commit();
                 ?>
                      <script type=text/javascript>
                         alert("Updated Successfully...");
@@ -144,6 +149,12 @@ class Get_table extends CI_Controller {
                                             'Backup - '.$n,
                                             'Custom Message here');
                 echo "Records Saved Successfully";
+
+                //commit and rollback
+                if($this->db->trans_status()==FALSE)
+                    $this->db->trans_rollback();
+                else
+                    $this->db->trans_commit();
                 ?>
                      <script type=text/javascript>
                         alert("Saved Successfully...");
@@ -156,6 +167,7 @@ class Get_table extends CI_Controller {
 
     //Performs Login and if successful redirects to scheme picker page
 	public function logindo(){
+        //$this->session->sess_destroy();//********************************************************** */
         $this->load->model('Crud_model');
   		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
   		$query=$this->db->get_where("login",$data);
@@ -193,4 +205,32 @@ class Get_table extends CI_Controller {
         $this->session->sess_destroy();
         redirect(base_url()."index.php/Get_table/");
     }
+
+    public function register(){
+        $this->load->view('reg_view.php');
+    }
+
+    public function reg_do(){
+        $uname = $this->input->post('uname');
+        $pass = $this->input->post('password');
+        $desg = $this->input->post('desg');
+        $gp_id = $this->input->post('gp_id');
+
+        $data = array(
+            'email' => $uname,
+            'password' => $pass,
+            'designation_supplied' => $desg,
+            'gp_id' => $gp_id,
+        );
+
+        $this->db->insert('login',$data);
+        if($this->db->trans_status()==FALSE)
+            $this->db->trans_rollback();
+        else{
+            $this->db->trans_commit();
+            redirect(base_url()."index.php/Get_table/");
+        }
+
+    }
+
 }
