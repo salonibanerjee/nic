@@ -9,7 +9,7 @@ class Get_table extends CI_Controller {
 
     //loads the scheme picker page
 	public function ind(){
-        /*if ($this->session->userdata['logged_in'] == TRUE){
+        /* if ($this->session->userdata['logged_in'] == TRUE){
             //do something
         }
         else{
@@ -36,16 +36,19 @@ class Get_table extends CI_Controller {
             header($r);
         }
     }
-
-    //loads the form selected from Scheme Picker Page
-    public function load1($n){
-        $this->load->view('header');
+    public function load1($n)
+    {
+        //$this->load->view('header'); 
+        //Load 'CRUD' model
         $this->load->model('Crud_model');
 
         //Fetch Attribute name. n - schema name
         $result['data'] =$this->Crud_model->get_table($n);
         $result['name'] =$this->Crud_model->search_table($n);
-
+        $result['data_table']=$this->Crud_model->list_table();
+        $result['s_name_table']=$this->Crud_model->fullname();
+        $result['username'] = $this->session->userdata('uid');
+        
         #dynamic type checking
         $x=$this->Crud_model->get_attri($n);
         $y=array();
