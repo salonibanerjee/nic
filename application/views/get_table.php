@@ -151,9 +151,6 @@
                             echo 'Save';
                         }
                         ?></button>
-                    <input type='hidden' name='hid' id='hid' value="<?php 
-                        form_error('session');
-                        ?>">
                     </div>
                 </form>
                 </div>

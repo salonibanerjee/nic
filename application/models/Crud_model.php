@@ -21,6 +21,7 @@ class Crud_model extends CI_Model {
         }
         function update($r,$n){
                 $this->db->where('session', $r['session']);
+                //$this->db->where(array('session'=>$r['session'],'gp_id'=>$r['gp_id']));
                 $this->db->update($n,$r);
         }
         function isempty($a){

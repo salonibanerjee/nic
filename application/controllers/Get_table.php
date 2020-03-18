@@ -114,9 +114,10 @@ class Get_table extends CI_Controller {
                 unset($data_b->id);
                 $this->Crud_model->save_data($data_b,$n."_backup"); 
                 //commit and rollback
-                if($this->db->trans_status()==FALSE)
+                if($this->db->trans_status()==FALSE){
                     $this->db->trans_rollback();
-                else
+                }
+                else{
                     $this->db->trans_commit();
                 ?>
                      <script type=text/javascript>
@@ -124,6 +125,7 @@ class Get_table extends CI_Controller {
                         window.location.href = "https://localhost/NIC/index.php/Get_table/ind";
                     </script>
                 <?php
+                }
             }
         }
         else
