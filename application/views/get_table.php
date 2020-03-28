@@ -26,10 +26,13 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="../../index3.html" class="nav-link">Home</a>
+        <a href="http://localhost/NIC/index.php/summary" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="http://localhost/NIC/index.php/get_table/log34" class="nav-link">Logout</a>
       </li>
     </ul>
 

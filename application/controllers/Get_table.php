@@ -196,7 +196,7 @@ class Get_table extends MY_Controller {
                                             'Login',
                                             'Logging in as '.$this->session->userdata('uid'));
       			
-	  			header("Location: ./ind");
+	  			header("Location: http://localhost/NIC/index.php/summary");
 			}
     		else{
                 ?>
