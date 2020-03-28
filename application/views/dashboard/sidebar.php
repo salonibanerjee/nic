@@ -25,13 +25,13 @@
                 Profile
               </p>
             </a>
-            <a href="http://localhost/NIC/index.php/get_table/load1/KCC" class="nav-link">
+            <a href="http://localhost/NIC/index.php/get_table/load/KCC" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Input Data
               </p>
             </a>
-            <a href="http://localhost/NIC/index.php/get_table/log34" class="nav-link">
+            <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Logout
