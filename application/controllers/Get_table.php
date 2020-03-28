@@ -1,7 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Get_table extends CI_Controller {
+class Get_table extends MY_Controller {
+    /*
+    public function __construct(){
+        parent::__construct();
+        $this->check_privilege(1);
+    }
+    */
     //loads the Main login page
     public function index(){
 		$this->load->view('login');
