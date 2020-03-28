@@ -26,10 +26,17 @@
         <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
+<<<<<<< HEAD
         <a href="<?php echo base_url();?>Get_table/ind" class="nav-link">Home</a>
+=======
+        <a href="http://localhost/NIC/index.php/summary" class="nav-link">Home</a>
+>>>>>>> 994352d273125cb80cee732bafab9f0864f8dee7
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
+      </li>
+      <li class="nav-item d-none d-sm-inline-block">
+        <a href="http://localhost/NIC/index.php/get_table/log34" class="nav-link">Logout</a>
       </li>
     </ul>
 

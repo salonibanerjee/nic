@@ -13,7 +13,7 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a href="http://localhost/NIC/index.php/summary" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -25,7 +25,13 @@
                 Profile
               </p>
             </a>
-            <a href="#" class="nav-link">
+            <a href="http://localhost/NIC/index.php/get_table/load1/KCC" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Input Data
+              </p>
+            </a>
+            <a href="http://localhost/NIC/index.php/get_table/log34" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Logout
