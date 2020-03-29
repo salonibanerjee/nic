@@ -9,7 +9,7 @@ class Get_table extends MY_Controller {
         $this->check_privilege(1);
     }
     */
-    
+
     //loads the Main login page
     public function index(){
 		//$this->load->view('login');
@@ -105,7 +105,7 @@ class Get_table extends MY_Controller {
                 ?>
                      <script type=text/javascript>
                         alert("Updated Successfully...");
-                        window.location.href = "http://localhost/NIC/index.php/Get_table/load/<?php echo $val ?>";
+                        window.location.href = "http://localhost/NIC/index.php/Get_table/load/<?php echo $n ?>";
                     </script>
                 <?php
                 }
@@ -141,14 +141,15 @@ class Get_table extends MY_Controller {
                 //commit and rollback
                 if($this->db->trans_status()==FALSE)
                     $this->db->trans_rollback();
-                else
+                else{
                     $this->db->trans_commit();
                 ?>
                      <script type=text/javascript>
                         alert("Saved Successfully...");
-                        window.location.href = "http://localhost/NIC/index.php/Get_table/load/<?php echo $val ?>";
+                        window.location.href = "http://localhost/NIC/index.php/Get_table/load/<?php echo $n ?>";
                     </script>
                 <?php
+                }
             }
         }
     }

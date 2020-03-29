@@ -9,6 +9,7 @@ class Login extends CI_Controller {
     //Performs Login and if successful redirects to scheme picker page
 	public function login_MPR(){
         $this->load->model('Crud_model');
+        $this->load->model('Admin_model');
   		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
   		$query=$this->db->get_where("login",$data);
   		$res=$query->result_array();
@@ -22,7 +23,7 @@ class Login extends CI_Controller {
                                             current_url(),
                                             'Login',
                                             'Logging in as '.$this->session->userdata('uid'));
-      			
+                $this->Admin_model->store_cache($this->session->userdata('uid'));
 	  			header("Location: http://localhost/NIC/index.php/summary");
 			}
     		else{
