@@ -5,9 +5,10 @@ class summary extends CI_Controller {
 
 	public function index()
 	{	
-		$this->load->driver('cache',array('adapter' => 'file'));
-		print_r($this->cache->get('Active_status'))	;
-		
+		//$this->load->driver('cache',array('adapter' => 'file'));
+		//echo ($this->cache->get('Active_status')['user_privilege'][2]['link']);
+		//echo ($this->cache->get('Active_status')['active_status']);
+
 		$this->load->library('parser');
 
 		$this->load->view('dashboard/navbar');
