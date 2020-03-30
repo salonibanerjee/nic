@@ -120,7 +120,7 @@ class Crud_model extends CI_Model {
                 $this->db->insert('audit_log', $sess_data);  
         }
         public function gp_id($n){
-                $query = $this->db->get_where('login', array('email' => $n));
+                $query = $this->db->get_where('Login', array('username' => $n));
                 $row = $query->row();
                 return $row->gp_id;
         }

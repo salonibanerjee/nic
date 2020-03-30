@@ -7,9 +7,13 @@ class Admin_model extends CI_Model {
         //$this->db->from("login");
         //$result = $this->db->get()->result()[0]->row();
 
-        $query = $this->db->get_where('login',array('email'=>$uname));
+        $query = $this->db->get_where('Login',array('username'=>$uname,'active_status'=>1));
         $row = $query->row();
-        $result = $row->gp_id;
+        if($row){
+            $result = $row->gp_id;
+        }else{
+            $result = NULL;
+        }
 
         $this->load->driver('cache', array('adapter' => 'file'));
 

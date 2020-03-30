@@ -8,23 +8,35 @@ class Login extends CI_Controller {
 
     //Performs Login and if successful redirects to scheme picker page
 	public function login_MPR(){
+        $this->db->cache_off();
+        $this->load->driver('cache',array('adapter' => 'file'));
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');
-  		$data=array("email"=>$this->input->post('email'),"password"=>$this->input->post('password'));
-  		$query=$this->db->get_where("login",$data);
+  		$data=array("username"=>$this->input->post('email'),"password"=>$this->input->post('password'));
+  		$query=$this->db->get_where("Login",$data);
   		$res=$query->result_array();
     	if ($res){
   	  			echo "Login Successful";
                 $this->session->set_userdata('uid',$this->input->post('email'));
                 $this->session->set_userdata('logged_in', TRUE);
                 $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
-                
-                $this->Crud_model->audit_upload($this->session->userdata('uid'),
-                                            current_url(),
-                                            'Login',
-                                            'Logging in as '.$this->session->userdata('uid'));
                 $this->Admin_model->store_cache($this->session->userdata('uid'));
-	  			header("Location: http://localhost/NIC/index.php/summary");
+                if($this->cache->get('Active_status')){
+                    $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                                    current_url(),
+                                                    'Login',
+                                                    'Logging in as '.$this->session->userdata('uid'));
+                    //$this->Admin_model->store_cache($this->session->userdata('uid'));
+                    header("Location: http://localhost/NIC/index.php/summary");
+                }else{
+                    ?>
+                    <script type=text/javascript>
+                        alert("Access Denied...");
+                        window.location.href = "./";
+                    </script>
+                <?php
+                }
+                
 			}
     		else{
                 ?>
