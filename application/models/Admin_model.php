@@ -56,7 +56,6 @@ class Admin_model extends CI_Model {
         $this->load->driver('cache', array('adapter' => 'file'));
 
         if ( ! $foo = $this->cache->get('Active Status')){
-            echo 'Saving to the cache!<br />';
             $foo = $result;
             $this->cache->save('Active_status', $foo, 3000);
         }elseif($this->cache->get('Active Status')['username']!=$uname){
