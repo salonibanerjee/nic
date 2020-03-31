@@ -4,7 +4,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class summary extends CI_Controller {
 
 	public function index()
-	{
+	{	
+		//$this->load->driver('cache',array('adapter' => 'file'));
+		//echo ($this->cache->get('Active_status')['user_privilege'][2]['link']);
+		//echo ($this->cache->get('Active_status')['active_status']);
+
 		$this->load->library('parser');
 
 		$this->load->view('dashboard/navbar');
@@ -68,4 +72,6 @@ class summary extends CI_Controller {
 
 		
 	}
+
+	
 }

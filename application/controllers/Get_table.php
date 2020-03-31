@@ -3,6 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
     
+    /*
+    public function __construct(){
+        parent::__construct();
+        $this->check_privilege(1);
+    }*/
+    
+
     //loads the Main login page
     public function index(){
 		//$this->load->view('login');
@@ -134,7 +141,7 @@ class Get_table extends MY_Controller {
                 //commit and rollback
                 if($this->db->trans_status()==FALSE)
                     $this->db->trans_rollback();
-                else
+                else{
                     $this->db->trans_commit();
                 ?>
                      <script type=text/javascript>
@@ -142,6 +149,7 @@ class Get_table extends MY_Controller {
                         window.location.href = "http://localhost/NIC/index.php/Get_table/load/<?php echo $n ?>";
                     </script>
                 <?php
+                }
             }
         }
     }
