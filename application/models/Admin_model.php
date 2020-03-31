@@ -46,7 +46,11 @@ class Admin_model extends CI_Model {
                 'user_privilege'=>$a
             );
         }else{
-            $result = NULL;
+            //to remove the null object error when access denied
+            $result = array(
+                'username'=>'--',
+                'active_status'=>0
+            );
         }
 
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -54,8 +58,10 @@ class Admin_model extends CI_Model {
         if ( ! $foo = $this->cache->get('Active Status')){
             echo 'Saving to the cache!<br />';
             $foo = $result;
-            // Save into the cache for 5 minutes
             $this->cache->save('Active_status', $foo, 3000);
+        }elseif($this->cache->get('Active Status')['username']!=$uname){
+            $this->cache->delete('Active_status');
+            $this->cache->save('Active_status', $result, 3000);
         }
         $this->db->cache_off();
         return $result;
