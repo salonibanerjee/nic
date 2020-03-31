@@ -20,6 +20,7 @@ class Login extends CI_Controller {
                 $this->session->set_userdata('logged_in', TRUE);
                 $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 $this->Admin_model->store_cache($this->session->userdata('uid'));
+                $this->Admin_model->store_profile($this->session->userdata('uid'));
                 if($this->cache->get('Active_status')['active_status']==1){
                     $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                     current_url(),

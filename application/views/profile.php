@@ -20,10 +20,10 @@
                         <div class="profile-head">
                                     <h5>
                                        <?php
-                                           $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
-                                           $row = $query->row();
-                                           echo $row->name;
-                                           
+                                           //$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
+                                           //$row = $query->row();
+                                           //echo $row->f_name." ".$row->m_name." ".$row->l_name;
+                                           echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);
                                        ?>
 
                                     </h5>
@@ -32,7 +32,7 @@
                                     </h6>
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                 <li class="nav-item">
-                                    <a class="nav-link active" href="https://bootsnipp.com/snippets/K0ZmK" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Home</a>
+                                    <a class="nav-link active" href="http://localhost/NIC/index.php/Summary" id="home-tab" data-toggle="tab" role="tab" aria-controls="home" aria-selected="true">Home</a>
                                 </li>
                                 <li class="nav-item">
                                     <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
@@ -67,9 +67,10 @@
                                             </div>
                                             <div class="col-md-6">
                                             <?php
-                                                $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
-                                                $row = $query->row();
-                                                echo $row->name;
+                                                //$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
+                                                //$row = $query->row();
+                                                //echo $row->f_name." ".$row->m_name." ".$row->l_name;
+                                                echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);
                                             ?>
                                             </div>
                                         </div>
@@ -89,18 +90,18 @@
                                             </div>
                                             <div class="col-md-6">
                                             <?php
-                                                $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
-                                                $row = $query->row();
-                                                echo $row->mobile;
+                                                echo ($this->cache->get('Profile')['mobile']);
                                             ?>
                                             </div>
                                         </div>
                                         <div class="row">
                                             <div class="col-md-6">
-                                                <label>Profession</label>
+                                                <label>Designation</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>Web Developer and Designer</p>
+                                            <?php
+                                                echo ($this->cache->get('Active_status')['designation']);
+                                            ?>
                                             </div>
                                         </div>
                             </div>

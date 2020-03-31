@@ -65,4 +65,28 @@ class Admin_model extends CI_Model {
         $this->db->cache_off();
         return $result;
     }
+
+    public function store_profile($uname){
+        $this->db->cache_on();
+        $query = $this->db->get_where('profile',array('username'=>$uname));
+        $row = $query->row();
+        if($row){
+            $result=array(
+                'username'=> $uname,
+                'f_name'=>$row->f_name,
+                'm_name'=>$row->m_name,
+                'l_name'=>$row->l_name,
+                'mobile'=>$row->mobile
+            );
+        }else{
+            $result=NULL;
+        }
+        $this->load->driver('cache', array('adapter' => 'file'));
+
+        if ( ! $foo = $this->cache->get('Profile')){
+            $foo = $result;
+            $this->cache->save('Profile', $foo, 3000);
+        }
+        $this->db->cache_off();
+    }
 }
