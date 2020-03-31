@@ -20,10 +20,10 @@
                         <div class="profile-head">
                                     <h5>
                                        <?php
-                                           $query = $this->db->get_where('logingin', array('uid' => $this->session->userdata('uid')));
+                                           $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
                                            $row = $query->row();
                                            echo $row->name;
-
+                                           
                                        ?>
 
                                     </h5>
@@ -67,7 +67,7 @@
                                             </div>
                                             <div class="col-md-6">
                                             <?php
-                                                $query = $this->db->get_where('logingin', array('uid' => $this->session->userdata('uid')));
+                                                $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
                                                 $row = $query->row();
                                                 echo $row->name;
                                             ?>
@@ -88,7 +88,11 @@
                                                 <label>Phone</label>
                                             </div>
                                             <div class="col-md-6">
-                                                <p>123 456 7890</p>
+                                            <?php
+                                                $query = $this->db->get_where('profile', array('uid' => $this->session->userdata('uid')));
+                                                $row = $query->row();
+                                                echo $row->mobile;
+                                            ?>
                                             </div>
                                         </div>
                                         <div class="row">
