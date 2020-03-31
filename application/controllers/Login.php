@@ -20,7 +20,7 @@ class Login extends CI_Controller {
                 $this->session->set_userdata('logged_in', TRUE);
                 $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 $this->Admin_model->store_cache($this->session->userdata('uid'));
-                if($this->cache->get('Active_status')['active_status']==1){
+                if($this->cache->get('Active_status')){
                     $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                     current_url(),
                                                     'Login',
@@ -31,7 +31,7 @@ class Login extends CI_Controller {
                     ?>
                     <script type=text/javascript>
                         alert("Access Denied...");
-                        window.location.href = "./";
+                        window.location.href = "http://localhost/NIC/index.php/Login";
                     </script>
                 <?php
                 }
@@ -41,7 +41,7 @@ class Login extends CI_Controller {
                 ?>
                     <script type=text/javascript>
                         alert("Invalid Username or Password...");
-                        window.location.href = "./";
+                        window.location.href = "http://localhost/NIC/index.php/Login";
                     </script>
                 <?php
             }
