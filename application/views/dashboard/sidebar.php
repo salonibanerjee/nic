@@ -19,7 +19,7 @@
                 Dashboard
               </p>
             </a>
-            <a href="#" class="nav-link">
+            <a href="http://localhost/NIC/index.php/profile" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Profile

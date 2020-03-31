@@ -7,8 +7,8 @@ class Get_table extends MY_Controller {
     public function __construct(){
         parent::__construct();
         $this->check_privilege(1);
-    }
-    */
+    }*/
+    
 
     //loads the Main login page
     public function index(){
