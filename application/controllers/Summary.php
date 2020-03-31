@@ -26,6 +26,7 @@ class summary extends CI_Controller {
 		$this->parser->parse('dashboard/info_box', $info_box);
 
 		$progress_view = array(
+			'title' => 'Example',
 			'work_progress' => array(
 				array('sl_no' => '1', 'p_name' => 'Body 1', 'sign' => 'success', 'progress' => 90),
 				array('sl_no' => '2', 'p_name' => 'Body 2', 'sign' => 'success', 'progress' => 90),
