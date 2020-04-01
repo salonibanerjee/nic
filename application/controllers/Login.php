@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login extends CI_Controller {    
     public function index(){
+        //to create the captcha folder automatically
+        $path = './captcha';
+        if(!is_dir($path)) {
+            mkdir($path);
+        } 
         $captcha = $this->_generateCaptcha();
         $this->session->set_userdata('captchaWord', $captcha['word']);
         $this->load->view('login', $captcha);
