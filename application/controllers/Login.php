@@ -110,7 +110,7 @@ class Login extends CI_Controller {
                     'background' => array(255, 255, 255),
                     'border' => array(255, 255, 255),
                     'text' => array(0, 0, 0),
-                    'grid' => array(255, 40, 40)
+                    'grid' => array(51, 153, 255)
             )
         );
         /* Generate the captcha */
