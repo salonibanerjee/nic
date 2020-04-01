@@ -6,8 +6,5 @@ class profile extends CI_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
         
         $this->load->view('profile');
-       // $this->load->model('profile_model');
-        //echo $this->session->userdata('uid');
-        //echo ($this->cache->get('Profile')['f_name']);
     }
 }

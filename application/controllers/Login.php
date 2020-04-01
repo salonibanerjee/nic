@@ -1,9 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {
+class Login extends CI_Controller {    
     public function index(){
+        //$this->load->helper(array('captcha'));
+        //$this->load->model('Admin_model');
+        //$this->Admin_model->user_type_cache();
         $this->load->view('login');
+        
     }
 
     //Performs Login and if successful redirects to scheme picker page
@@ -12,7 +16,8 @@ class Login extends CI_Controller {
         $this->load->driver('cache',array('adapter' => 'file'));
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');
-  		$data=array("username"=>$this->input->post('email'),"password"=>$this->input->post('password'));
+          $data=array("username"=>$this->input->post('email'),"password"=>$this->input->post('password'));
+          $this->db->cache_off();
   		$query=$this->db->get_where("Login",$data);
   		$res=$query->result_array();
     	if ($res){
@@ -21,13 +26,19 @@ class Login extends CI_Controller {
                 $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 $this->Admin_model->store_cache($this->session->userdata('uid'));
                 $this->Admin_model->store_profile($this->session->userdata('uid'));
+                //checking whether user type cache present or not
+                $var = $this->cache->get('Active_status')['user_type_id_fk'];
+                if(!$this->cache->get('User_type'.$var)){
+                    $this->Admin_model->user_type_cache();
+                }
+
                 if($this->cache->get('Active_status')['active_status']==1){
                     $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                     current_url(),
                                                     'Login',
                                                     'Logging in as '.$this->session->userdata('uid'));
-                    //$this->Admin_model->store_cache($this->session->userdata('uid'));
-                    header("Location: http://localhost/NIC/index.php/".$this->cache->get('Active_status')['user_privilege'][0]['link']);
+                    //user_type_cache
+                    header("Location: ".$this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']);
                 }else{
                     ?>
                     <script type=text/javascript>
@@ -58,5 +69,18 @@ class Login extends CI_Controller {
         $this->session->set_userdata('logged_in', FALSE);
         $this->session->sess_destroy();
         redirect(base_url()."index.php/Login");
+    }
+
+    private function _generateCaptcha()
+    {
+        $vals = array(
+            'img_path' => './captcha_images/',
+            'img_url' => base_url('captcha_images/'),
+            'img_width' => '150',
+            'img_height' => 30,
+            'expiration' => 7200,
+        );
+        /* Generate the captcha */
+        return create_captcha($vals);
     }
 }
