@@ -16,7 +16,6 @@ class Login extends CI_Controller {
 
         if ($this->form_validation->run() == true && strcmp(strtolower($userCaptcha), strtolower($this->session->userdata('captchaWord'))) == 0) {
             $this->session->unset_userdata('captchaWord');
-            //write the code for captcha delete after successful verification**********************************************************************************************
             $this->load->helper('file');
             delete_files('./captcha/');
 
