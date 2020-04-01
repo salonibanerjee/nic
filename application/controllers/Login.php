@@ -17,7 +17,9 @@ class Login extends CI_Controller {
         if ($this->form_validation->run() == true && strcmp(strtolower($userCaptcha), strtolower($this->session->userdata('captchaWord'))) == 0) {
             $this->session->unset_userdata('captchaWord');
             //write the code for captcha delete after successful verification**********************************************************************************************
-            
+            $this->load->helper('file');
+            delete_files('./captcha/');
+
             $this->load->driver('cache',array('adapter' => 'file'));
             $this->load->model('Crud_model');
             $this->load->model('Admin_model');
@@ -67,7 +69,13 @@ class Login extends CI_Controller {
         } else {
             $captcha = $this->_generateCaptcha();
             $this->session->set_userdata('captchaWord', $captcha['word']);
-            $this->load->view('login', $captcha);
+            
+            ?>
+                <script type=text/javascript>
+                    alert("Invalid captcha...");
+                    window.location.href = "http://localhost/NIC/index.php/Login";
+                </script>
+            <?php
         }
     }
 
