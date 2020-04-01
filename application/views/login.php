@@ -45,6 +45,12 @@
             </div>
           </div>
         </div>
+        <?php echo $image; ?>
+<p>
+  <label for="name">Captcha:
+    <input id="captcha" name="captcha" type="text" />
+  </label>
+</p>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
