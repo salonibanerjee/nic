@@ -7,7 +7,7 @@ class summary extends CI_Controller {
 	{	
 		//$this->load->driver('cache',array('adapter' => 'file'));
 		//echo ($this->cache->get('Active_status')['user_privilege'][2]['link']);
-		//echo ($this->cache->get('Active_status')['active_status']);
+		//echo ($this->cache->get('Active_status')['username']);
 
 		$this->load->library('parser');
 

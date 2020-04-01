@@ -40,12 +40,12 @@ class Login extends CI_Controller {
   		$query=$this->db->get_where("Login",$data);
   		$res=$query->result_array();
     	if ($res){
-  	  			echo "Login Successful";
                 $this->session->set_userdata('uid',$this->input->post('email'));
                 $this->session->set_userdata('logged_in', TRUE);
                 $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
                 $this->Admin_model->store_cache($this->session->userdata('uid'));
-                if($this->cache->get('Active_status')){
+                $this->Admin_model->store_profile($this->session->userdata('uid'));
+                if($this->cache->get('Active_status')['active_status']==1){
                     $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                     current_url(),
                                                     'Login',
