@@ -2,9 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
-    
-    /*
-    public function __construct(){
+    /*public function __construct(){
         parent::__construct();
         $this->check_privilege(1);
     }*/
@@ -16,7 +14,7 @@ class Get_table extends MY_Controller {
     }
 
     public function load($n){
-
+        $this->check_privilege(3);
         //Load 'CRUD' model
         $this->load->model('Crud_model');
 

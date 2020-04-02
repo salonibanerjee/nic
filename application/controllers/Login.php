@@ -97,15 +97,15 @@ class Login extends CI_Controller {
 
     private function _generateCaptcha(){
         $vals = array(
-            'word'          => rand(10000,99999),
+            'word'          => $this->getName(5,8),
             'img_path'      => './captcha/',
             'img_url'       => 'http://localhost/NIC/captcha/',
             'font_path'     => './path/to/fonts/texb.ttf',
-            'img_width'     => '150',
-            'img_height'    => 30,
+            'img_width'     => '200',
+            'img_height'    => 40,
             'expiration'    => 7200,
             'word_length'   => 8,
-            'font_size'     => 16,
+            'font_size'     => 50,
             'img_id'        => 'Imageid',
             'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
     
@@ -119,5 +119,17 @@ class Login extends CI_Controller {
         );
         /* Generate the captcha */
         return create_captcha($vals);
+    }
+
+    public function getName($x,$y) {
+        $length = rand($x,$y);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        return $randomString;
     }
 }

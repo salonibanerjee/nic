@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class summary extends CI_Controller {
+class summary extends MY_Controller {
 
 	public function index()
 	{	
@@ -73,6 +73,7 @@ class summary extends CI_Controller {
 		
 	}
 	public function profile(){
+		$this->check_privilege(2);
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('profile');
 	}
