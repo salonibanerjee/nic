@@ -76,6 +76,12 @@ class summary extends MY_Controller {
 	public function profile(){
 		$this->check_privilege(2);
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->library('parser');
+
+		$this->load->view('dashboard/navbar');
+
+		$this->load->view('dashboard/sidebar');
+
 		$this->load->view('profile');
 	}
 }
