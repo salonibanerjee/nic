@@ -32,7 +32,7 @@
         <a href="#" class="nav-link">Contact</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/NIC/index.php/Login/log34" class="nav-link">Logout</a>
+        <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
 

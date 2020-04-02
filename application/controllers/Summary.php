@@ -73,6 +73,8 @@ class summary extends CI_Controller {
 
 		
 	}
-
-	
+	public function profile(){
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->view('profile');
+	}
 }
