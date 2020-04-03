@@ -9,7 +9,16 @@ class summary extends CI_Controller {
 		//echo ($this->cache->get('Active_status')['user_privilege'][2]['link']);
 		//echo ($this->cache->get('Active_status')['username']);
 
+		$this->load->driver('cache',array('adapter' => 'file'));
+		print_r($this->cache->get('Active_status'))	;	
+		
+		$this->load->model('Dashboard_model');
+
 		$this->load->library('parser');
+
+		$schemearr = array("KCC","KishanM","ANAND","DOC","DOG");
+		$result = $this->Dashboard_model->test2($schemearr,5);
+		$schemename = $this->Dashboard_model->name($schemearr,5);
 
 		$this->load->view('dashboard/navbar');
 
@@ -23,12 +32,13 @@ class summary extends CI_Controller {
 				array('num' => '324', 'desc' => 'Body 4')
 			)
 		);
+		
 
 		$this->parser->parse('dashboard/info_box', $info_box);
 
 		$progress_view = array(
-			'title' => 'Example',
 			'work_progress' => array(
+				//array('sl_no' => '1', 'p_name' => 'Body 1', 'sign' => $result2[0]<55?'danger':'success', 'progress' => $result2[0]),
 				array('sl_no' => '1', 'p_name' => 'Body 1', 'sign' => 'success', 'progress' => 90),
 				array('sl_no' => '2', 'p_name' => 'Body 2', 'sign' => 'success', 'progress' => 90),
 				array('sl_no' => '3', 'p_name' => 'Body 3', 'sign' => 'danger', 'progress' => 10),
@@ -38,10 +48,20 @@ class summary extends CI_Controller {
 
 		$this->parser->parse('dashboard/progress_view', $progress_view);
 
+		$target = array();
+		$progress = array();
+		for($i=0;$i<10;$i++)
+		{
+			if($i%2==0)
+				array_push($target, $result[$i]);
+			else
+				array_push($progress, $result[$i]);
+		}
+
 		$bar_chart = array(
-			'label1' => array('Scheme 1', 'Scheme 2', 'Scheme 3', 'Scheme 4', 'Scheme 5'),
-			'data1_1' => array(28, 48, 40, 19, 36),
-			'data1_2' => array(65, 59, 80, 81, 56),
+			'label1' => $schemename,
+			'data1_1' => $progress,
+			'data1_2' => $target,
 			'block' => array('block 1', 'block 2', 'block 3', 'block 4', 'block 5'),
 			'bar_1' => 'Scheme 1',
 			'data_1' => array(34, 64, 32, 27, 47),
@@ -65,14 +85,9 @@ class summary extends CI_Controller {
 				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10')
 			)
 		);
-
-	
 		$this->parser->parse('dashboard/alert_table', $table_data);
-
-		
-
-		
 	}
+
 	public function profile(){
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('profile');
