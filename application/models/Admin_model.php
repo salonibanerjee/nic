@@ -84,12 +84,13 @@ class Admin_model extends CI_Model {
                         $a[]=array(
                                 'privilege_id_fk'=> $row_out->privilege_id_fk,
                                 'user_type_id_fk'=> $row_out->user_type_id_fk,
-                                'active_status'=> $row_out->active_status,
+                                'user_privilege_active_status'=> $row_out->active_status,
     
                                 'parent'=> $row3->parent,
                                 'link'=> $row3->link,
                                 'view_sidebar'=> $row3->view_sidebar,
-                                'order'=> $row3->order
+                                'order'=> $row3->order,
+                                'privilege_active_status'=>$row3->active_status
                             );
                     }
                 }
