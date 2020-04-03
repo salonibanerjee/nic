@@ -91,5 +91,13 @@ class summary extends CI_Controller {
 		
 	}
 
+	public function profile(){
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->view('dashboard/navbar');
+
+		$this->load->view('dashboard/sidebar');
+		$this->load->view('profile');
+	}
+
 	
 }

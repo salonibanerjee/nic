@@ -124,4 +124,18 @@ class Crud_model extends CI_Model {
                 $row = $query->row();
                 return $row->gp_id;
         }
+
+        //custom form validation 
+        //$n->tablename, $s-> session
+        public function unique_data_entry($n,$s){
+                $this->load->driver('cache', array('adapter' => 'file'));
+                $var=$this->cache->get('Active_status')['gp_id'];
+                $query = $this->db->get_where($n, array('session' => $s,'gp_id' => $var));
+                $row = $query->row();
+                if($row){
+                        return TRUE; 
+                }else{
+                        return FALSE;
+                }
+        }
 }
