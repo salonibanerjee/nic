@@ -1,24 +1,21 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class summary extends MY_Controller {
+class summary extends CI_Controller {
 
 	public function index()
 	{	
-		//$this->load->driver('cache',array('adapter' => 'file'));
-		//echo ($this->cache->get('Active_status')['user_privilege'][2]['link']);
-		//echo ($this->cache->get('Active_status')['username']);
 
 		$this->load->driver('cache',array('adapter' => 'file'));
-		print_r($this->cache->get('Active_status'))	;	
+		//print_r($this->cache->get('Active_status'))	;	
 		
 		$this->load->model('Dashboard_model');
 
 		$this->load->library('parser');
 
 		$schemearr = array("KCC","KishanM","ANAND","DOC","DOG");
-		$result = $this->Dashboard_model->test2($schemearr,5);
-		$schemename = $this->Dashboard_model->name($schemearr,5);
+		//$result = $this->Dashboard_model->test2($schemearr,5);
+		//$schemename = $this->Dashboard_model->name($schemearr,5);
 
 		$this->load->view('dashboard/navbar');
 
@@ -48,7 +45,7 @@ class summary extends MY_Controller {
 
 		$this->parser->parse('dashboard/progress_view', $progress_view);
 
-		$target = array();
+		/*$target = array();
 		$progress = array();
 		for($i=0;$i<10;$i++)
 		{
@@ -56,12 +53,12 @@ class summary extends MY_Controller {
 				array_push($target, $result[$i]);
 			else
 				array_push($progress, $result[$i]);
-		}
+		}*/
 
 		$bar_chart = array(
-			'label1' => $schemename,
-			'data1_1' => $progress,
-			'data1_2' => $target,
+			'label1' => array("test"),
+			'data1_1' => 78,
+			'data1_2' => 78,
 			'block' => array('block 1', 'block 2', 'block 3', 'block 4', 'block 5'),
 			'bar_1' => 'Scheme 1',
 			'data_1' => array(34, 64, 32, 27, 47),
@@ -85,18 +82,14 @@ class summary extends MY_Controller {
 				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10')
 			)
 		);
+
+	
 		$this->parser->parse('dashboard/alert_table', $table_data);
+
+		
+
+		
 	}
 
-	public function profile(){
-		$this->check_privilege(2);
-		$this->load->driver('cache',array('adapter' => 'file'));
-		$this->load->library('parser');
-
-		$this->load->view('dashboard/navbar');
-
-		$this->load->view('dashboard/sidebar');
-
-		$this->load->view('profile');
-	}
+	
 }
