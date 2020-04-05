@@ -1,26 +1,38 @@
 <?php
 class Dashboard_model extends CI_Model{
 
-	/*
-    function test($n)
+    function get_prog($n,$num)
 	{
-		$this->db->select('a_target');
+		$this->db->select('a_progress,s_name');
 		$table = $this->db->get('dashboard_info');
 		$b = array();
-        foreach($table->result() as $row){     	
-            $b['a_target'] = $row->a_target;
+        $i = 0;
+        while($i<$num)
+        { 
+            foreach($table->result() as $row){    
+                if($row->s_name==$n[$i]) 
+                {	
+                    $b[$i] = $row->a_progress;
+                    $i++;
+                    break;
+                }
+            }
+
         }
-        $this->db->select($b['a_target'])->order_by('id',"desc")->limit(1);
-        $table2 = $this->db->get($n)->row();
-        $temp = $b['a_target'];
-        //$d['data'] = $table2->result();
-        //foreach($table2->result() as $row){
-        //	$d['data'] = $row->$b['a_target'];
-        //}
-        return $table2->$temp;
+        $i=0;
+        $d = array();
+        while($i<$num)
+        {
+            $this->db->select($b[$i])->order_by('id',"desc")->limit(1);
+            $table2 = $this->db->get($n[$i])->row();
+            $temp = $b[$i];
+            array_push($d, $table2->$temp);
+            $i++;
+        }
+        return $d;
 	}
-    */
-    function test2($n, $num)
+    
+    function get_data($n, $num)
     {
         $this->db->select('a_target, a_progress, s_name');
         $table = $this->db->get('dashboard_info');
@@ -39,7 +51,6 @@ class Dashboard_model extends CI_Model{
                 }
             }
         }
-        //return $b;
         $j = 0;
         $x = 0;
         $d = array();
@@ -56,7 +67,7 @@ class Dashboard_model extends CI_Model{
         }
         return $d;
     }
-    function name($n,$num)
+    function sch_name($n,$num)
     {
         $this->db->select('name,s_name');
         $tables = $this->db->get('dashboard_info');

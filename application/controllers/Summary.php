@@ -13,10 +13,6 @@ class summary extends CI_Controller {
 
 		$this->load->library('parser');
 
-		$schemearr = array("KCC","KishanM","ANAND","DOC","DOG");
-		//$result = $this->Dashboard_model->test2($schemearr,5);
-		//$schemename = $this->Dashboard_model->name($schemearr,5);
-
 		$this->load->view('dashboard/navbar');
 
 		$this->load->view('dashboard/sidebar');
@@ -30,22 +26,43 @@ class summary extends CI_Controller {
 			)
 		);
 		
-
 		$this->parser->parse('dashboard/info_box', $info_box);
 
-		$progress_view = array(
-			'work_progress' => array(
-				//array('sl_no' => '1', 'p_name' => 'Body 1', 'sign' => $result2[0]<55?'danger':'success', 'progress' => $result2[0]),
-				array('sl_no' => '1', 'p_name' => 'Body 1', 'sign' => 'success', 'progress' => 90),
-				array('sl_no' => '2', 'p_name' => 'Body 2', 'sign' => 'success', 'progress' => 90),
-				array('sl_no' => '3', 'p_name' => 'Body 3', 'sign' => 'danger', 'progress' => 10),
-				array('sl_no' => '4', 'p_name' => 'Body 4', 'sign' => 'success', 'progress' => 90)
-			)
-		);
+		//Insert data for progressbar in an array format
+		$scheme_pro = array("KCC","DOC","DOG","ANAND");
+		$size_sch = sizeof($scheme_pro);
+		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
+		$data = $this->Dashboard_model->get_prog($scheme_pro,$size_sch);
+		$work_progress = array();
+		$i=0;
+		while($i<$size_sch)
+		{
+			if($data[$i]>60)
+				$find='success';
+			else if($data[$i]<60&&$data[$i]>40)
+				$find='warning';
+			else
+				$find='danger';
+
+			$d = array(
+				'sl_no' => $i+1,
+				'p_name' => $schemename_pro[$i],
+				'sign' => $find,
+				'progress' => $data[$i]
+				);
+			array_push($work_progress, $d);	
+			$i++;
+		}
+		$progress_view = array('work_progress' => $work_progress);
 
 		$this->parser->parse('dashboard/progress_view', $progress_view);
+		
+		//Insert data for bar chart in an array format 
+		$scheme_bar = array("KCC","KishanM","ANAND","DOC","DOG");
+		$result = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
+		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
 
-		/*$target = array();
+		$target = array();
 		$progress = array();
 		for($i=0;$i<10;$i++)
 		{
@@ -53,13 +70,13 @@ class summary extends CI_Controller {
 				array_push($target, $result[$i]);
 			else
 				array_push($progress, $result[$i]);
-		}*/
+		}
 
 		$bar_chart = array(
-			'label1' => array("test"),
-			'data1_1' => 78,
-			'data1_2' => 78,
-			'block' => array('block 1', 'block 2', 'block 3', 'block 4', 'block 5'),
+			'label1' => $schemename_bar,
+			'data1_1' => $progress,
+			'data1_2' => $target,
+			'block' => array('Block 1', 'Block 2', 'Block 3', 'Block 4', 'Block 5'),
 			'bar_1' => 'Scheme 1',
 			'data_1' => array(34, 64, 32, 27, 47),
 			'bar_2' => 'Scheme 2',
@@ -83,13 +100,16 @@ class summary extends CI_Controller {
 			)
 		);
 
-	
 		$this->parser->parse('dashboard/alert_table', $table_data);
-
-		
-
 		
 	}
 
+	public function profile(){
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->view('dashboard/navbar');
+
+		$this->load->view('dashboard/sidebar');
+		$this->load->view('profile');
+	}
 	
 }
