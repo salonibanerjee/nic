@@ -14,7 +14,7 @@ class Get_table extends MY_Controller {
     }
 
     public function load($n){
-        $this->check_privilege(3);
+        //$this->check_privilege(3);
         //Load 'CRUD' model
         $this->load->model('Crud_model');
 
