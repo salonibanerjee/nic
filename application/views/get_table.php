@@ -112,7 +112,7 @@
                       <?php
                         $i=0;
                         foreach($data as $row){
-                            if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip' ||$row=='gp_id'){
+                            if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip' ||$row=='schcd'){
                                 $i++;
                                 continue;
                             }

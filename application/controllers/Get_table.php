@@ -32,7 +32,7 @@ class Get_table extends MY_Controller {
 
         //setting array for form validations
         foreach($x as $field){
-            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" ||$field->name=='gp_id'){
+            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" ||$field->name=='schcd'){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                 continue;
             }
@@ -42,12 +42,13 @@ class Get_table extends MY_Controller {
             $result['s_name'][]=$ij;
 
             if($field->name=="session"){
-                $ik="is_unique[".$n.".session]";
+                //$ik="is_unique[".$n.".session]";
+                $ik="callback_input_data_unique_check[".$n."]";
                 $y[]=array(
                     'field' => $field->name,
                     'label' => $ij,
                     'rules' => $ik,
-                    'errors' => array('is_unique'=>'This %s already exists.')
+                    'errors' => array('input_data_unique_check'=>'This %s already exists.')
                 );
             }else{
                 $y[]=array(
@@ -79,7 +80,7 @@ class Get_table extends MY_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
-                $r['gp_id'] = $this->session->userdata('gp_id');
+                $r['schcd'] = $this->session->userdata('gp_id');
 
                 $this->Crud_model->update($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
@@ -122,7 +123,7 @@ class Get_table extends MY_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
-                $r['gp_id'] = $this->session->userdata('gp_id');
+                $r['schcd'] = $this->session->userdata('gp_id');
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -151,5 +152,18 @@ class Get_table extends MY_Controller {
             }
         }
     }
+    function input_data_unique_check($str,$table_name) {           
+        //$this->CI->form_validation->set_message('input_data_unique_check', $this->CI->lang->line('access_code_invalid'));
+        if($str) { 
+           // do your validations
+           $this->load->model('Crud_model');
+           if($this->Crud_model->unique_data_entry($table_name,$str))
+              return FALSE;
+           else
+              return TRUE;
+        } else {
+             return FALSE;
+        }
+     }
 
 }
