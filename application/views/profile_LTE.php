@@ -52,8 +52,19 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
             
-              <img class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
-
+              <img id="zoom" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
+<script>
+	$(document).ready(function(){
+		$("img").hover(function(){
+			$(this).animate({width:'500px',height:'500px'});
+			$(this).css("opacity","1");
+		}, function(){
+			$(this).animate({width:'200px',height:'200px'});
+			$(this).css("opacity","1");
+		});
+	});
+</script>
               <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
 
               <p class="text-muted text-center"><?php echo $designation;?></p>

@@ -133,6 +133,7 @@ class summary extends CI_Controller {
 		$this->load->view('dashboard/sidebar');
 		$this->load->view('profile');
 	}
+
 	public function edit_prof_lte(){
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('dashboard/navbar');
@@ -142,7 +143,7 @@ class summary extends CI_Controller {
 		//$this->load->view('edit_profile');
 		$this->load->model('profile_model');
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
-		 $da = array(
+		$da = array(
 			'f_name' => $res->f_name,
 			//'m_name' => $mid,
 			'l_name' => $res->l_name,
@@ -155,7 +156,7 @@ class summary extends CI_Controller {
 			//'img_dir' => $img_dir,
 			//'image' => $img_dir,
 			);
-			$this->load->view('edit_profile',$da);
+		$this->load->view('edit_profile',$da);
 		if(isset($_POST['sub1'])){
             $first = $this->input->post('first');
             $last = $this->input->post('last');
@@ -220,7 +221,7 @@ class summary extends CI_Controller {
 					window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
                 </script>
             <?php
-		 }
+		}
 		 
        // $this->load->model('profile_model');
         //echo $this->session->userdata('uid');
