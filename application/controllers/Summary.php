@@ -108,7 +108,22 @@ class summary extends CI_Controller {
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('dashboard/navbar');
 		$this->load->view('dashboard/sidebar');
-		$this->load->view('profile_LTE');
+		$this->load->model('profile_model');
+		$res = $this->profile_model->get_f($this->session->userdata('uid'));
+		 $da = array(
+				'f_name' => $res->f_name,
+				//'m_name' => $mid,
+				'l_name' => $res->l_name,
+				'mobile' => $res->mobile,
+				'email' =>$res->email,
+				'image' => $res->image,
+				'username' =>$res->username,
+				'designation' =>$res->designation,
+				'district' =>$res->district,
+				//'img_dir' => $img_dir,
+				//'image' => $img_dir,
+				);
+		$this->load->view('profile_LTE',$da);
 	}
 
 	public function profile(){
@@ -122,23 +137,37 @@ class summary extends CI_Controller {
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('dashboard/navbar');
 		$this->load->view('dashboard/sidebar');
-		$this->load->view('edit_profile');
-	}
-
-	public function edit_profile(){
-		$this->load->view('edit_pro_m');
-        $this->load->model('profile_model');
-        if(isset($_POST['sub1'])){
+		
+		
+		//$this->load->view('edit_profile');
+		$this->load->model('profile_model');
+		$res = $this->profile_model->get_f($this->session->userdata('uid'));
+		 $da = array(
+			'f_name' => $res->f_name,
+			//'m_name' => $mid,
+			'l_name' => $res->l_name,
+			'mobile' => $res->mobile,
+			'email' =>$res->email,
+			'image' => $res->image,
+			'username' =>$res->username,
+			'designation' =>$res->designation,
+			'district' =>$res->district,
+			//'img_dir' => $img_dir,
+			//'image' => $img_dir,
+			);
+			$this->load->view('edit_profile',$da);
+		if(isset($_POST['sub1'])){
             $first = $this->input->post('first');
             $last = $this->input->post('last');
             $mobile = $this->input->post('mob');
             $email = $this->input->post('email');
-            $uid = $this->input->post('uid');
+            //$uid = $this->input->post('uid');
             $desig = $this->input->post('desig');
-            $dist = $this->input->post('dist');
+			$dist = $this->input->post('dist');
+			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			//echo $first;
             //$file = $this->input->post('file');
             //$file = ($_POST['file']);
-            $image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
             //echo $image;
             //echo "<img src = "data:image/jpeg;base64,$image" alt = "Red dot">";
             //echo "<img src ='{data:image/jpeg;base64,$image}' width = '40%' height = '40%'>";
@@ -162,75 +191,89 @@ class summary extends CI_Controller {
 
 
             $file_ext = end($file_ext);*/
-
+            $data = array(
+				'f_name' => $first,
+				'm_name' => "",
+                'l_name' => $last,
+                'mobile' => $mobile,
+                'email' => $email,
+                'image' => $image,
+                'designation' =>$desig,
+                'district' =>$dist,
+                //'img_dir' => $img_dir,
+                //'image' => $img_dir,
+			);
+			//echo "dgdg";
+			//$da = $data;
+			//$this->load->view('edit_pro_m',$data);
+			//$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
+			//$row = $query->row();
+			//if($row){
+				$this->profile_model->update($this->session->userdata('uid'),$data);
+			//}else//
+				//$this->profile_model->upload($data);
+			
+			
             ?>
-            <script type = "text/javascript">
-/*$(document).ready(function(){
-                $(document).on('change','#file', function(){
-                    var property = document.getElementById("file").files[0];
-                    var image_name = property.name;
-                    var image_ext = image_name.spilt('.').pop().toLowerCase();
-                    if(jQuery.inArray(image_ext,['gif','png','jpg','jpeg']) == -1)
-                    {
-                        alert ("Invalid IMAGE FILE");
-                    }
-                    var image_size = property.size;
-                    if(image_size > 10000000)
-                    {
-                        alert("Image File Larger, Should be within 10Mb");
-                    }
-                    else
-                    {
-                        var form_data = new FormData();
-                        form_data.append("file",property);
-                        $.ajax({
-                            url:"upload.php",
-                            method:"POST",
-                            data:form_data,
-                            contentType:false,
-                            cache:false,
-                            processData:false,
-                            beforeSend:function(){
-                                $('#uploaded_image').html("<label class= 'text-success'>Image
-                                Uploading....</label> ");
+                <script type="text/javascript">
+                    alert("Updated Successfully...");
+					window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
+                </script>
+            <?php
+		 }
+		 
+       // $this->load->model('profile_model');
+        //echo $this->session->userdata('uid');
+       //$this->load->driver('cache', array('adapter' => 'file'));
+		//echo ($this->cache->get('Active Status')['active_status']);
+		//<script type = "text/javascript">
+				/*$(document).ready(function(){
+                	$(document).on('change','#file', function(){
+						var property = document.getElementById("file").files[0];
+						var image_name = property.name;
+						var image_ext = image_name.spilt('.').pop().toLowerCase();
+						if(jQuery.inArray(image_ext,['gif','png','jpg','jpeg']) == -1)
+						{
+							alert ("Invalid IMAGE FILE");
+						}
+						var image_size = property.size;
+						if(image_size > 10000000)
+						{
+							alert("Image File Larger, Should be within 10Mb");
+						}
+						else
+						{
+							var form_data = new FormData();
+							form_data.append("file",property);
+							$.ajax({
+								url:"upload.php",
+								method:"POST",
+								data:form_data,
+								contentType:false,
+								cache:false,
+								processData:false,
+								beforeSend:function(){
+									$('#uploaded_image').html("<label class= 'text-success'>Image
+									Uploading....</label> ");
 
-                            },
-                            success:function(data)
-                            {
-                                $('#uploaded_image').html(data);
-                            }
+								},
+								success:function(data)
+								{
+									$('#uploaded_image').html(data);
+								}
                         })
             
                     }
             
                 });
             });*/
-            <script>
-
-<?php
-            $data = array(
-                'first' => $first,
-                'last' => $last,
-                'mobile' => $mobile,
-                'email' => $email,
-                'image' => $image,
-                'uid' => $uid,
-                'desig' =>$desig,
-                'dist' =>$dist,
-                //'img_dir' => $img_dir,
-                //'image' => $img_dir,
-            );
-            $this->profile_model->update($uid,$data);
-            ?>
-                <script type="text/javascript">
-                    alert("Updated Successfully...");
-                </script>
-                <?php
-         }
-       // $this->load->model('profile_model');
-        //echo $this->session->userdata('uid');
-       //$this->load->driver('cache', array('adapter' => 'file'));
-        //echo ($this->cache->get('Active Status')['active_status']);
+            //</script>
 	}
 	
+
+	public function edit_profile(){
+		$this->load->view('edit_profile');
+		$this->load->model('profile_model');
+		
+}
 }

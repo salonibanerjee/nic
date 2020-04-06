@@ -97,7 +97,8 @@ class Login extends CI_Controller {
 
     private function _generateCaptcha(){
         $vals = array(
-            'word'          => $this->getName(5,8),
+            'word'          => rand(1000, 9999),
+            //'word'          => $this->getName(5,8),
             'img_path'      => './captcha/',
             'img_url'       => 'http://localhost/NIC/captcha/',
             'font_path'     => './path/to/fonts/texb.ttf',
