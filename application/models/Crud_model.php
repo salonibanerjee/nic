@@ -20,8 +20,8 @@ class Crud_model extends CI_Model {
                 $this->db->insert($n,$data,TRUE);
         }
         function update($r,$n){
-                $this->db->where('session', $r['session']);
-                //$this->db->where(array('session'=>$r['session'],'gp_id'=>$r['gp_id']));
+                //$this->db->where('session', $r['session']);
+                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd']));
                 $this->db->update($n,$r);
         }
         function isempty($a){
@@ -128,9 +128,8 @@ class Crud_model extends CI_Model {
         //custom form validation 
         //$n->tablename, $s-> session
         public function unique_data_entry($n,$s){
-                $this->load->driver('cache', array('adapter' => 'file'));
-                $var=$this->cache->get('Active_status')['gp_id'];
-                $query = $this->db->get_where($n, array('session' => $s,'gp_id' => $var));
+                $var=$this->session->userdata('gp_id');
+                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var));
                 $row = $query->row();
                 if($row){
                         return TRUE; 
