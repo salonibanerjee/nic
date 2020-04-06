@@ -112,7 +112,7 @@
                       <?php
                         $i=0;
                         foreach($data as $row){
-                            if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip' ||$row=='schcd'){
+                            if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip'){
                                 $i++;
                                 continue;
                             }
@@ -138,7 +138,17 @@
                                 echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
                                 echo "</div>";
                                 $i++;
-                            } else{
+                            }
+                            elseif($row == 'schcd'){
+                              echo "<div class='form-group'>";
+                              echo    "<label>Region</label>";
+                              echo    "<input type='hidden' name='$row' id='$row' placeholder='Enter Value' value='".$this->session->userdata('gp_id')."'>";
+                              echo    "<input type='text' class='form-control' name='dude' id='dude' placeholder='Enter Value' value='".$region."' readonly>";
+                              echo    "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
+                              echo "</div>";
+                              $i++;
+                            } 
+                            else{
                                 echo "<div class='form-group'>";
                                 echo    "<label>$s_name[$i]</label>";
                                 echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".set_value($row)."'>";
@@ -153,13 +163,13 @@
                     <!-- /.card-body -->
                     <div class='card-footer'>
                       <button type='submit' class='btn btn-primary' name='save' id='save' value="<?php 
-                        if(form_error('session')){
+                        if(form_error('session') || form_error('schcd')){
                             echo 'Update data';
                         }else{
                             echo 'Save data';
                         }
                         ?>"><?php 
-                        if(form_error('session')){
+                        if(form_error('session') || form_error('schcd')){
                             echo 'Update';
                         }else{
                             echo 'Save';
