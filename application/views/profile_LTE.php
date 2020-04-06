@@ -52,27 +52,27 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
             
-              <img class="profile-user-img img-responsive img-circle" src='http://localhost/NIC/css/dist/img/avatar04.png' alt="User profile picture">
+              <img class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
 
-              <h3 class="profile-username text-center"><?php echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);?></h3>
+              <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
 
-              <p class="text-muted text-center">Software Engineer</p>
+              <p class="text-muted text-center"><?php echo $designation;?></p>
 
               <ul class="list-group list-group-unbordered">
                 <li class="list-group-item">
-                  <b>Name: </b> <a class="pull-right"><?php echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);?></a>
+                  <b>Name: </b> <a class="pull-right"><?php echo $f_name." ".$l_name;?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Username:</b> <a class="pull-right"><?php echo $this->session->userdata('uid');?></a>
+                  <b>Username:</b> <a class="pull-right"><?php echo $username;?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Designation:</b> <a class="pull-right"><?php echo ($this->cache->get('Active_status')['designation']); ?></a>
+                  <b>Designation:</b> <a class="pull-right"><?php echo $designation; ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Phone:</b> <a class="pull-right"><?php echo ($this->cache->get('Profile')['mobile']); ?></a>
+                  <b>Phone:</b> <a class="pull-right"><?php echo $mobile; ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>District:</b> <a class="pull-right">Howrah</a>
+                  <b>District:</b> <a class="pull-right"><?php echo $district ?></a>
                 </li>
               </ul>
 

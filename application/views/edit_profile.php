@@ -27,6 +27,12 @@
   <!-- Google Font -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
 </head>
+<?php
+        echo form_open_multipart("");
+    ?>
+    <?php
+      $this->load->model('profile_model');
+      ?>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 <div class="content-wrapper">
@@ -51,79 +57,68 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-                                                                  <?php  
-                                                                  $query = $this->db->get_where('profile1', array('uid' => $this->session->userdata('uid')));
-                                                                  $row = $query->row();
-                                                                  ?>
-              <img class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $row->image;?>' alt="User profile picture">
+        
+              <img class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+              <h3>Upload Photo...</h3>
+         
+              <input type="file" name="file" id ="file"   />
+              <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
 
-              <h3 class="profile-username text-center"><?php echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);?></h3>
+              <p class="text-muted text-center"><?php echo $designation;?></p>
+              <div class="card-body">
+                    <div class="form-group"><label>Username: <?php echo $username ?></label>
+                        
+                    </div>
+                    <div class="form-group"><label>First Name:</label>
+                        <input type="text" class="form-control" name="first" value="<?php echo $f_name;?>">
+                    </div>
+                    <div class="form-group"><label>Last Name:</label>
+                        <input type="text" class="form-control" name="last" value="<?php echo $l_name;?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group"><label>Phone:</label>
+                        <input type="text" class="form-control" name="mob" value="<?php echo $mobile;?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group"><label>Email:</label>
+                        <input type="text" class="form-control" name="email"  value="<?php echo $email;?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group"><label>Designation</label>
+                        <input type="text" class="form-control" name="desig"value="<?php echo $designation;?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label>District</label>
+                        <input type="text" class="form-control" name="dist" value="<?php echo $district;?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        </small>
+                        </p>
+                    </div>
+                    
+                </div>             
+              <input class="btn btn-primary btn-block" type = "submit" name = "sub1" ></input>
 
-              <p class="text-muted text-center">Software Engineer</p>
-
-              <ul class="list-group list-group-unbordered">
-                <li class="list-group-item">
-                  <b>Name: </b> <a class="pull-right"><input type="text" name="name"value="<?php echo ($this->cache->get('Profile')['f_name'])." ".($this->cache->get('Profile')['m_name'])." ".($this->cache->get('Profile')['l_name']);?>"></input></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Username:</b> <a class="pull-right"><?php echo $this->session->userdata('uid');?></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Designation:</b> <a class="pull-right"><?php echo ($this->cache->get('Active_status')['designation']); ?></a>
-                </li>
-                <li class="list-group-item">
-                  <b>Phone:</b> <a class="pull-right"><?php echo ($this->cache->get('Profile')['mobile']); ?></a>
-                </li>
-                <li class="list-group-item">
-                  <b>District:</b> <a class="pull-right">Howrah</a>
-                </li>
-              </ul>
-
-              <a href="http://localhost/NIC/index.php/Summary/edit_profile" class="btn btn-primary btn-block" ><b>Edit Profile</b></a>
+             <!-- <a href="http://localhost/NIC/index.php/Summary/profile" class="btn btn-primary btn-block" ><b></b></a> -->
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
 
           <!-- About Me Box -->
-          <div class="box box-primary">
-            <div class="box-header with-border">
-              <h3 class="box-title">About Me</h3>
-            </div>
-            <!-- /.box-header -->
-            <div class="box-body">
-              <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
-
-              <p class="text-muted">
-                B.S. in Computer Science from the University of Tennessee at Knoxville
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
-
-              <p class="text-muted">Malibu, California</p>
-
-              <hr>
-
-              <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
-
-              <p>
-                <span class="label label-danger">UI Design</span>
-                <span class="label label-success">Coding</span>
-                <span class="label label-info">Javascript</span>
-                <span class="label label-warning">PHP</span>
-                <span class="label label-primary">Node.js</span>
-              </p>
-
-              <hr>
-
-              <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
-
-              <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
-            </div>
-            <!-- /.box-body -->
-          </div>
           <!-- /.box -->
         </div>
         <!-- /.col -->
