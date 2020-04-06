@@ -26,11 +26,11 @@
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign in </p>
 
       <form action="Login/login_MPR" method="POST" method="post">
         <div class="input-group mb-3">
-          <input type="email" name="email" class="form-control" placeholder="Email">
+          <input id="email" type="email" name="email" class="form-control" placeholder="Email" onkeyup='saveValue(this);'>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-envelope"></span>
@@ -38,19 +38,21 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input type="password" name="password" class="form-control" placeholder="Password">
+          <input id="pass" type="password" name="password" class="form-control" placeholder="Password" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
             </div>
           </div>
         </div>
-        <?php echo $image; ?>
-<p>
-  <label for="name">Captcha:
-    <input id="captcha" name="captcha" type="text" />
-  </label>
-</p>
+        
+        <p id="captcha-img"><?php echo $image; ?>
+              <a href="http://localhost/NIC/index.php/Login"><img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42"></a>
+        
+          <div class="input-group mb-3">
+          <input id="captcha" name="captcha" class="form-control" type="text" placeholder="Captcha" >
+          </div>
+
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
@@ -80,5 +82,21 @@
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
 
+<script type="text/javascript">
+        document.getElementById("email").value = getSavedValue("email");
+        function saveValue(e){
+            var id = e.id;  
+            var val = e.value;
+            localStorage.setItem(id, val);
+        }
+        function getSavedValue  (v){
+            if (!localStorage.getItem(v)) {
+                return "";
+            }
+            return localStorage.getItem(v);
+        }
+</script>
 </body>
 </html>
+
+
