@@ -7,11 +7,6 @@ class profile_model extends CI_Model {
         $this->db->insert('profile',$data);
     }
     function update($uid,$data){
-<<<<<<< HEAD
-		$this->db->where('uid', $uid);
-		$this->db->update('profile1', $data);
-        }
-=======
 		$this->db->where('username', $uid);
 		$this->db->update('profile', $data);
     }
@@ -37,6 +32,5 @@ class profile_model extends CI_Model {
 		$this->db->where('id', $id);
 		$this->db->update('prac', $data);
 	}*/
->>>>>>> dea2ad135f2ecd262fa2cc4194439245a0dffaa8
 }
 ?>

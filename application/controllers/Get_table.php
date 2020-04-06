@@ -164,6 +164,6 @@ class Get_table extends MY_Controller {
         } else {
              return FALSE;
         }
-     }
+    }
 
 }
