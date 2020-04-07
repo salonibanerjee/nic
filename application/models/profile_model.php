@@ -16,7 +16,14 @@ class profile_model extends CI_Model {
         $row = $query->row();
         return $row;
     }
-        
+    function get_type($type){
+        if($type=="bigint" || $type=='numeric'){
+                return 'numeric';
+        }
+        elseif($type=="character varying"){
+                return 'alpha_dash';
+        }
+}
     //checks whether session is already present or not
     /*public function unique($a){
             $this->db->where('id',intval($a));

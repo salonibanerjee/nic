@@ -80,6 +80,9 @@
                   <b>Designation:</b> <a class="pull-right"><?php echo $designation; ?></a>
                 </li>
                 <li class="list-group-item">
+                  <b>Email:</b> <a class="pull-right"><?php echo $email; ?></a>
+                </li>
+                <li class="list-group-item">
                   <b>Phone:</b> <a class="pull-right"><?php echo $mobile; ?></a>
                 </li>
                 <li class="list-group-item">
