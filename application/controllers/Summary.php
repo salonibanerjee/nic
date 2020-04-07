@@ -254,7 +254,7 @@ class summary extends CI_Controller {
 			array(
 					'field' => 'first',
 					'label' => 'First Name',
-					'rules' => 'required|max_length[50]|min_length[2]',
+					'rules' => 'required|alpha|max_length[50]',
 					'errors' => array(
 							'required' => 'You must provide a %s.',
 					)
@@ -262,7 +262,7 @@ class summary extends CI_Controller {
 			array(
 					'field' => 'last',
 					'label' => 'Last Name',
-					'rules' => 'required|max_length[50]|min_length[1]',
+					'rules' => 'required|alpha|max_length[50]',
 					'errors' => array(
 							'required' => 'You must provide a %s.',
 					),
@@ -270,7 +270,7 @@ class summary extends CI_Controller {
 			array(
 					'field' => 'mob',
 					'label' => 'Mobile',
-					'rules' => 'required|numeric|less_than[10]'
+					'rules' => 'required|numeric|exact_length[10]'
 			),
 			array(
 					'field' => 'email',
@@ -280,12 +280,12 @@ class summary extends CI_Controller {
 			array(
 				'field' => 'desig',
 				'label' => 'Designation',
-				'rules' => 'required|max_length[50]|min_length[3]'
+				'rules' => 'required|alpha_numeric_spaces|max_length[50]'
 			),
 			array(
 				'field' => 'dist',
 				'label' => 'District',
-				'rules' => 'required|max_length[50]|min_length[2]',
+				'rules' => 'required|alpha|max_length[50]',
 				'errors' => array(
 							'required' => 'You must provide a %s.',
 			)
@@ -294,11 +294,7 @@ class summary extends CI_Controller {
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run() == FALSE)
 	{
-		$this->load->view('edit_profile',$da);?>
-		<script type="text/javascript">
-                    alert("Please fill data Correctly...");
-					//window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
-                </script><?php
+		$this->load->view('edit_profile',$da);
 	}
 	else{
 		if(isset($_POST['sub1'])){
@@ -328,13 +324,7 @@ class summary extends CI_Controller {
 			}else
 				$this->profile_model->upload($data);
 			
-			
-            ?>
-                <script type="text/javascript">
-                    alert("Updated Successfully...");
-					window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
-                </script>
-            <?php
+				header("location: http://localhost/NIC/index.php/Summary/profile_LTE");
 		}
 		//MAIN CODE ENDS HERE
 		//validation else brace ending below
