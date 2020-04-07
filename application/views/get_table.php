@@ -69,7 +69,7 @@
                   </p>
                 </a>
                 <ul class="nav nav-treeview"  id="myUL">
-                <input id="schemeSearch" onkeyup="myFunction()" class="form-control" type="text" placeholder="Search" style="height:30; width:90%; margin:10">
+                  <input id="schemeSearch" onkeyup="myFunction()" class="form-control" type="text" placeholder="Search" style="height:30; width:90%; margin:10">
                   <?php 
                       $i=0;
                       foreach($data_table as $row){

@@ -1,5 +1,5 @@
 <html>
-    <body>
+  <body>
     <section class="content">
       <div class="container-fluid">
         <div class="row">
@@ -9,8 +9,8 @@
                 <h3 class="card-title">Scheme wise physical work progress</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" style="color: black"><i class="fas fa-times"></i></button>
+                  </button> 
+                  <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#progress_filter" style="color: black"><i class="fas fa-edit"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -84,5 +84,5 @@
         </div>
       </div>
     </section>
-    </body>
+  </body>
 </html>
