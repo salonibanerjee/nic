@@ -113,4 +113,10 @@ class Admin_model extends CI_Model {
         }
         $this->db->cache_off();
     }
+
+    /*public function check_first_user(){
+        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['id']));
+        $row=$query->row();
+        return $row->check_if_first_user;
+    }*/
 }
