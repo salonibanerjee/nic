@@ -57,9 +57,10 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img id="blah" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
-              <input type="file" name="file" id ="file" class="inputfile" accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label>
-<style>
+              <img id="blah" class="profile-user-img img-responsive img-circle"  src='data: image/jpeg; base64, <?php echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label>
+              
+              <style>
 .inputfile {
 	width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
 }
@@ -76,7 +77,7 @@
 }
 </style>
 
-              <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
+              <h3 class="profile-username text-center"><?php echo $f_name." ".$m_name." ".$l_name;?></h3>
 
               <p class="text-muted text-center"><?php echo $designation;?></p>
               <div class="card-body">
@@ -84,10 +85,18 @@
                         
                     </div>
                     <div class="form-group"><label>First Name:</label>
-                        <input type="text" class="form-control" name="first" id="first" onkeyup='saveValue(this);' value="<?php if(form_error('first')){echo set_value('first');}else{echo $f_name;}?>">
+                        <input type="text" class="form-control" name="first" id="first"  value="<?php if(form_error('first')){echo set_value('first');}else{echo $f_name;}?>">
                         <p class="error invalid-feedback">
                         <small>
                         <?php echo form_error('first'); ?>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group"><label>Middle Name:</label>
+                        <input type="text" class="form-control" name="mid" id="mid"  value="<?php if(form_error('mid')){echo set_value('mid');}else{echo $m_name;}?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        <?php echo form_error('mid'); ?>
                         </small>
                         </p>
                     </div>
@@ -179,7 +188,7 @@ function readURL(input) {
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script type="text/javascript">
-        document.getElementById("first").value = getSavedValue("first");
+        document.getElementById("file").value = getSavedValue("file");
         function saveValue(e){
             var id = e.id;  
             var val = e.value;
