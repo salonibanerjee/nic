@@ -23,7 +23,30 @@ class profile_model extends CI_Model {
         elseif($type=="character varying"){
                 return 'alpha_dash';
         }
-}
+    }
+
+    public function get_profile_info($username){
+        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['id']));
+        $row=$query->row();
+		$res=$this->get_f($username);
+		if($res){
+			$da = array(
+				'f_name' => $res->f_name,
+				'l_name' => $res->l_name,
+				'mobile' => $res->mobile,
+				'email' =>$res->email,
+				'image' => $res->image,
+				'new'   =>'',
+				'username' =>$this->session->userdata('uid'),
+				'designation' =>$res->designation,
+				'district' =>$res->district,
+                'first_user'=>$row->check_if_first_user,
+                'update_prof'=>$row->check_profile_updated_once
+            );
+        }
+        
+        return $da;
+    }
     //checks whether session is already present or not
     /*public function unique($a){
             $this->db->where('id',intval($a));
@@ -40,4 +63,3 @@ class profile_model extends CI_Model {
 		$this->db->update('prac', $data);
 	}*/
 }
-?>

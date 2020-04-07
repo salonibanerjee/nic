@@ -38,7 +38,7 @@
 <div class="content-wrapper">
     <section class="content-header">
       <h1>
-        Edit Profile
+        Edit Profile <h2><?php echo ""."$new "?> </h2>
       </h1>
       <ol class="breadcrumb">
         <li><a href="http://localhost/NIC/index.php/summary"><i class="fa fa-dashboard"></i> Home</a></li>
