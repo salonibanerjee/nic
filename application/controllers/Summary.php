@@ -110,7 +110,9 @@ class summary extends CI_Controller {
 		$this->load->view('dashboard/sidebar');
 		$this->load->model('profile_model');
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
-		 $da = array(
+		$flag = 'False';
+		if($res){
+			$da = array(
 				'f_name' => $res->f_name,
 				//'m_name' => $mid,
 				'l_name' => $res->l_name,
@@ -122,7 +124,26 @@ class summary extends CI_Controller {
 				'district' =>$res->district,
 				//'img_dir' => $img_dir,
 				//'image' => $img_dir,
-				);
+
+			);
+			$flag = 'True';
+		}
+		else{
+			$da = array(
+				'f_name' =>'',
+				//'m_name' => $mid,
+				'l_name' => '',
+				'mobile' =>'',
+				'email' =>'',
+				'image' => '',
+				'username' =>'',
+				'designation' =>'',
+				'district' =>'',
+				//'img_dir' => $img_dir,
+				//'image' => $img_dir,
+			);
+			$flag = 'False';
+		}
 		$this->load->view('profile_LTE',$da);
 	}
 
@@ -143,60 +164,98 @@ class summary extends CI_Controller {
 		//$this->load->view('edit_profile');
 		$this->load->model('profile_model');
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
-		$da = array(
-			'f_name' => $res->f_name,
-			//'m_name' => $mid,
-			'l_name' => $res->l_name,
-			'mobile' => $res->mobile,
-			'email' =>$res->email,
-			'image' => $res->image,
-			'username' =>$res->username,
-			'designation' =>$res->designation,
-			'district' =>$res->district,
-			//'img_dir' => $img_dir,
-			//'image' => $img_dir,
+		$flag = 'False';
+		if($res){
+			$da = array(
+				'f_name' => $res->f_name,
+				//'m_name' => $mid,
+				'l_name' => $res->l_name,
+				'mobile' => $res->mobile,
+				'email' =>$res->email,
+				'image' => $res->image,
+				'username' =>$res->username,
+				'designation' =>$res->designation,
+				'district' =>$res->district,
+				//'img_dir' => $img_dir,
+				//'image' => $img_dir,
+
 			);
+			$flag = 'True';
+		}
+		else{
+			$da = array(
+				'f_name' =>'',
+				//'m_name' => $mid,
+				'l_name' => '',
+				'mobile' =>'',
+				'email' =>'',
+				'image' => '',
+				'username' =>'',
+				'designation' =>'',
+				'district' =>'',
+				//'img_dir' => $img_dir,
+				//'image' => $img_dir,
+			);
+			$flag = 'False';
+		}
+		
+		/*$config = array(
+			array(
+					'field' => 'first',
+					'label' => 'First Name',
+					'rules' => 'required|max_length[50]',
+			),
+			array(
+					'field' => 'last',
+					'label' => 'Last Name',
+					'rules' => 'required|max_length[50]',
+					'errors' => array(
+							'required' => 'You must provide a %s.',
+					),
+			),
+			array(
+					'field' => 'mob',
+					'label' => 'Mobile',
+					'rules' => 'required|numeric|less_than[10]'
+			),
+			array(
+					'field' => 'email',
+					'label' => 'Email',
+					'rules' => 'required|valid_email'
+			),
+			array(
+				'field' => 'desig',
+				'label' => 'Designation',
+				'rules' => 'required|max_length[50]'
+			),
+			array(
+				'field' => 'dist',
+				'label' => 'District',
+				'rules' => 'required|max_length[50]'
+			)
+	);
+	$this->form_validation->set_rules($config);
+	if ($this->form_validation->run() == FALSE)
+	{
+		$this->load->view('edit_profile',$da);
+	}
+	else{*/
 		$this->load->view('edit_profile',$da);
 		if(isset($_POST['sub1'])){
             $first = $this->input->post('first');
             $last = $this->input->post('last');
             $mobile = $this->input->post('mob');
             $email = $this->input->post('email');
-            //$uid = $this->input->post('uid');
             $desig = $this->input->post('desig');
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-			//echo $first;
-            //$file = $this->input->post('file');
-            //$file = ($_POST['file']);
-            //echo $image;
-            //echo "<img src = "data:image/jpeg;base64,$image" alt = "Red dot">";
-            //echo "<img src ='{data:image/jpeg;base64,$image}' width = '40%' height = '40%'>";
-
-            //echo $file;
-            /*$extension = array('jpg','png','gif','jpeg');
-            $file_ext = explode ('.',$file);
-
-            $name = $file_ext[0];
-            //echo $name;
-            $name = preg_replace("!-!"," ",$name);
-            $name= ucwords($name);
-
-            $img_dir = 'web/'.$file;
-            //echo $img_dir;
-            move_uploaded_file($file,$img_dir);
-
-
-
-            //echo ($file_ext[1]);
-
-
-            $file_ext = end($file_ext);*/
+			
             $data = array(
 				'f_name' => $first,
 				'm_name' => "",
                 'l_name' => $last,
-                'mobile' => $mobile,
+				'mobile' => $mobile,
+				'username' =>$this->session->userdata('uid'),
                 'email' => $email,
                 'image' => $image,
                 'designation' =>$desig,
@@ -204,15 +263,16 @@ class summary extends CI_Controller {
                 //'img_dir' => $img_dir,
                 //'image' => $img_dir,
 			);
-			//echo "dgdg";
-			//$da = $data;
-			//$this->load->view('edit_pro_m',$data);
+			
+
+
+			
 			//$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
 			//$row = $query->row();
-			//if($row){
+			if($res){
 				$this->profile_model->update($this->session->userdata('uid'),$data);
-			//}else//
-				//$this->profile_model->upload($data);
+			}else
+				$this->profile_model->upload($data);
 			
 			
             ?>
@@ -222,8 +282,19 @@ class summary extends CI_Controller {
                 </script>
             <?php
 		}
+	//}
 		 
-       // $this->load->model('profile_model');
+	   ////echo $first;
+            //$file = $this->input->post('file');
+            //$file = ($_POST['file']);
+            //echo $image;
+            //echo "<img src = "data:image/jpeg;base64,$image" alt = "Red dot">";
+            //echo "<img src ='{data:image/jpeg;base64,$image}' width = '40%' height = '40%'>";
+
+            //echo $file;
+ 
+	   
+	   //$this->load->model('profile_model');
         //echo $this->session->userdata('uid');
        //$this->load->driver('cache', array('adapter' => 'file'));
 		//echo ($this->cache->get('Active Status')['active_status']);

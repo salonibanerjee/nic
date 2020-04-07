@@ -38,13 +38,13 @@
 <div class="content-wrapper">
     <section class="content-header">
       <h1>
-        User Profile
+        Edit Profile
       </h1>
       <ol class="breadcrumb">
         <li><a href="http://localhost/NIC/index.php/summary"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a >/</a></li>
         <li><a >Dashboard/</a></li>
-        <li class="active">User profile</li>
+        <li class="active">Edit profile</li>
       </ol>
     </section>
 
@@ -58,10 +58,13 @@
           <div class="box box-primary">
             <div class="box-body box-profile">
         
-              <img class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+              <img id="blah" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
               <h3>Upload Photo...</h3>
          
-              <input type="file" name="file" id ="file"   />
+              <input type="file" name="file" id ="file" accept=".png, .jpg, .jpeg, .JFIF" />
+
+
+
               <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
 
               <p class="text-muted text-center"><?php echo $designation;?></p>
@@ -128,7 +131,23 @@
   </div>
 </div>
 <!-- ./wrapper -->
-
+<script>
+function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            
+            reader.onload = function (e) {
+                $('#blah').attr('src', e.target.result);
+            }
+            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    $("#file").change(function(){
+        readURL(this);
+    });
+</script>
 <!-- jQuery 3 -->
 <script src="../../bower_components/jquery/dist/jquery.min.js"></script>
 <!-- Bootstrap 3.3.7 -->
