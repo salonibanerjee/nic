@@ -13,9 +13,9 @@ class summary extends CI_Controller {
 
 		$this->load->library('parser');
 
-		$this->load->view('dashboard/sidebar');
-
 		$this->load->view('dashboard/navbar');
+		
+		$this->load->view('dashboard/sidebar');
 
 		
 
