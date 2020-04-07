@@ -226,16 +226,19 @@ class summary extends CI_Controller {
 			$flag = 'False';
 		}
 		
-		/*$config = array(
+		$config = array(
 			array(
 					'field' => 'first',
 					'label' => 'First Name',
-					'rules' => 'required|max_length[50]',
+					'rules' => 'required|max_length[50]|min_length[2]',
+					'errors' => array(
+							'required' => 'You must provide a %s.',
+					)
 			),
 			array(
 					'field' => 'last',
 					'label' => 'Last Name',
-					'rules' => 'required|max_length[50]',
+					'rules' => 'required|max_length[50]|min_length[1]',
 					'errors' => array(
 							'required' => 'You must provide a %s.',
 					),
@@ -253,21 +256,27 @@ class summary extends CI_Controller {
 			array(
 				'field' => 'desig',
 				'label' => 'Designation',
-				'rules' => 'required|max_length[50]'
+				'rules' => 'required|max_length[50]|min_length[3]'
 			),
 			array(
 				'field' => 'dist',
 				'label' => 'District',
-				'rules' => 'required|max_length[50]'
+				'rules' => 'required|max_length[50]|min_length[2]',
+				'errors' => array(
+							'required' => 'You must provide a %s.',
+			)
 			)
 	);
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run() == FALSE)
 	{
-		$this->load->view('edit_profile',$da);
+		$this->load->view('edit_profile',$da);?>
+		<script type="text/javascript">
+                    alert("Please fill data Correctly...");
+					//window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
+                </script><?php
 	}
-	else{*/
-		$this->load->view('edit_profile',$da);
+	else{
 		if(isset($_POST['sub1'])){
             $first = $this->input->post('first');
             $last = $this->input->post('last');
@@ -290,12 +299,6 @@ class summary extends CI_Controller {
                 //'img_dir' => $img_dir,
                 //'image' => $img_dir,
 			);
-			
-
-
-			
-			//$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
-			//$row = $query->row();
 			if($res){
 				$this->profile_model->update($this->session->userdata('uid'),$data);
 			}else
@@ -309,7 +312,9 @@ class summary extends CI_Controller {
                 </script>
             <?php
 		}
-	//}
+		//MAIN CODE ENDS HERE
+		//validation else brace ending below
+	}
 		 
 	   ////echo $first;
             //$file = $this->input->post('file');

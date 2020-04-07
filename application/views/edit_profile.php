@@ -73,31 +73,31 @@
                         
                     </div>
                     <div class="form-group"><label>First Name:</label>
-                        <input type="text" class="form-control" name="first" value="<?php echo $f_name;?>">
+                        <input type="text" class="form-control" name="first" id="first" onkeyup='saveValue(this);' value="<?php echo $f_name;?>">
                     </div>
                     <div class="form-group"><label>Last Name:</label>
-                        <input type="text" class="form-control" name="last" value="<?php echo $l_name;?>">
+                        <input type="text" class="form-control" name="last" id = "last" value="<?php echo $l_name;?>">
                         <p class="error invalid-feedback">
                         <small>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Phone:</label>
-                        <input type="text" class="form-control" name="mob" value="<?php echo $mobile;?>">
+                        <input type="text" class="form-control" name="mob" id="mob" value="<?php echo $mobile;?>">
                         <p class="error invalid-feedback">
                         <small>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Email:</label>
-                        <input type="text" class="form-control" name="email"  value="<?php echo $email;?>">
+                        <input type="text" class="form-control" name="email" id = "email"  value="<?php echo $email;?>">
                         <p class="error invalid-feedback">
                         <small>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Designation</label>
-                        <input type="text" class="form-control" name="desig"value="<?php echo $designation;?>">
+                        <input type="text" class="form-control" name="desig" id = "desig" value="<?php echo $designation;?>">
                         <p class="error invalid-feedback">
                         <small>
                         </small>
@@ -105,7 +105,7 @@
                     </div>
                     <div class="form-group">
                         <label>District</label>
-                        <input type="text" class="form-control" name="dist" value="<?php echo $district;?>">
+                        <input type="text" class="form-control" name="dist" id = "dist" value="<?php echo $district;?>">
                         <p class="error invalid-feedback">
                         <small>
                         </small>
@@ -113,7 +113,7 @@
                     </div>
                     
                 </div>             
-              <input class="btn btn-primary btn-block" type = "submit" name = "sub1" ></input>
+              <input class="btn btn-primary btn-block" type = "submit" name = "sub1" id= "sub1" ></input>
 
              <!-- <a href="http://localhost/NIC/index.php/Summary/profile" class="btn btn-primary btn-block" ><b></b></a> -->
             </div>
@@ -158,5 +158,19 @@ function readURL(input) {
 <script src="../../dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
+<script type="text/javascript">
+        document.getElementById("first").value = getSavedValue("first");
+        function saveValue(e){
+            var id = e.id;  
+            var val = e.value;
+            localStorage.setItem(id, val);
+        }
+        function getSavedValue  (v){
+            if (!localStorage.getItem(v)) {
+                return val;
+            }
+            return localStorage.getItem(v);
+        }
+</script>
 </body>
 </html>
