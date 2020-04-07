@@ -57,13 +57,24 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-        
-              <img id="blah" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
-              <h3>Upload Photo...</h3>
-         
-              <input type="file" name="file" id ="file" accept=".png, .jpg, .jpeg, .JFIF" />
-
-
+              <img id="blah" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+              <input type="file" name="file" id ="file" class="inputfile" accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label>
+<style>
+.inputfile {
+	width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
+}
+.inputfile + label {
+    display: block; margin-left: auto;  margin-right: auto; width: 175px; background:#3E72D6; border-radius: 25px;
+    font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+    background-color: green;
+}
+.inputfile + label {
+	cursor: pointer; /* "hand" cursor */
+}
+</style>
 
               <h3 class="profile-username text-center"><?php echo $f_name." ".$l_name;?></h3>
 
