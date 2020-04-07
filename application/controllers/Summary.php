@@ -211,8 +211,10 @@ class summary extends CI_Controller {
 
 	public function edit_prof_lte(){
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/navbar');
-		$this->load->view('dashboard/sidebar');
+		$this->load->view('dashboard/sidebar',$da);
 		
 		
 		//$this->load->view('edit_profile');
