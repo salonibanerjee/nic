@@ -29,10 +29,12 @@ class Get_table extends MY_Controller {
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         $result['s_name']=array();
+        $result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
+        $flag=0;
 
         //setting array for form validations
         foreach($x as $field){
-            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" ||$field->name=='gp_id'){
+            if($field->name=="id" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip"){
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                 continue;
             }
@@ -42,14 +44,27 @@ class Get_table extends MY_Controller {
             $result['s_name'][]=$ij;
 
             if($field->name=="session"){
-                $ik="is_unique[".$n.".session]";
+                //$ik="is_unique[".$n.".session]";
+                $ik="callback_input_data_unique_check[".$n."]";
                 $y[]=array(
                     'field' => $field->name,
                     'label' => $ij,
                     'rules' => $ik,
-                    'errors' => array('is_unique'=>'This %s already exists.')
+                    'errors' => array('input_data_unique_check'=>'This %s already exists.')
                 );
-            }else{
+                $flag=1;
+            }
+            elseif($field->name=="schcd" && $flag==0){
+                $ik="is_unique[".$n.".schcd]";
+                //$ik="callback_input_data_unique_check[".$n."]";
+                $y[]=array(
+                    'field' => $field->name,
+                    'label' => "Region's",
+                    'rules' => $ik,
+                    'errors' => array('is_unique'=>'This %s value already exists.')
+                );
+            }
+            else{
                 $y[]=array(
                     'field' => $field->name,
                     'label' => $ij,
@@ -68,7 +83,7 @@ class Get_table extends MY_Controller {
             if($this->input->post('save')=='Update data'){
                 $r=array();
                 foreach($result['data'] as $row){
-                    if($row=="id"){
+                    if($row=="id" || $row=="schcd"){
                         continue;
                     }
                     if($this->input->post($row)!==''){
@@ -79,9 +94,12 @@ class Get_table extends MY_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
-                $r['gp_id'] = $this->session->userdata('gp_id');
-
-                $this->Crud_model->update($r,$n);
+                $r['schcd'] = $this->session->userdata('gp_id');
+                if($flag==0){
+                    $this->Crud_model->update_schcd($r,$n);
+                }else{
+                    $this->Crud_model->update($r,$n);
+                }
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
                                             'Update - '.$n,
@@ -91,7 +109,12 @@ class Get_table extends MY_Controller {
                                             current_url(),
                                             'Backup - '.$n,
                                             'Custom Message here');
-                $data_b = $this->Crud_model->get($n,$r['session']);
+                if($flag==1){
+                    $data_b = $this->Crud_model->get($n,$r['session'],$r['schcd']);
+                }else{
+                    $data_b = $this->Crud_model->get_schcd($n,$r['schcd']);
+                }
+                
                 unset($data_b->id);
                 $this->Crud_model->save_data($data_b,$n."_backup"); 
                 //commit and rollback
@@ -114,7 +137,7 @@ class Get_table extends MY_Controller {
             {
                 $r=array();
                 foreach($result['data'] as $row){
-                    if($row=="id"){
+                    if($row=="id" || $row=="schcd"){
                         continue;
                     }
                     $r[$row]=$this->input->post($row);
@@ -122,7 +145,7 @@ class Get_table extends MY_Controller {
                 $r['user'] = $this->session->userdata('uid');
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
-                $r['gp_id'] = $this->session->userdata('gp_id');
+                $r['schcd'] = $this->session->userdata('gp_id');
                 $this->Crud_model->save_data($r,$n);
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
@@ -149,6 +172,19 @@ class Get_table extends MY_Controller {
                 <?php
                 }
             }
+        }
+    }
+    function input_data_unique_check($str,$table_name) {           
+        //$this->CI->form_validation->set_message('input_data_unique_check', $this->CI->lang->line('access_code_invalid'));
+        if($str) { 
+           // do your validations
+           $this->load->model('Crud_model');
+           if($this->Crud_model->unique_data_entry($table_name,$str))
+              return FALSE;
+           else
+              return TRUE;
+        } else {
+             return FALSE;
         }
     }
 

@@ -20,8 +20,13 @@ class Crud_model extends CI_Model {
                 $this->db->insert($n,$data,TRUE);
         }
         function update($r,$n){
-                $this->db->where('session', $r['session']);
-                //$this->db->where(array('session'=>$r['session'],'gp_id'=>$r['gp_id']));
+                //$this->db->where('session', $r['session']);
+                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd']));
+                $this->db->update($n,$r);
+        }
+        function update_schcd($r,$n){
+                //$this->db->where('session', $r['session']);
+                $this->db->where(array('schcd'=>$r['schcd']));
                 $this->db->update($n,$r);
         }
         function isempty($a){
@@ -103,14 +108,25 @@ class Crud_model extends CI_Model {
                 }
                 return $y;
         }
-        public function get($n,$v){	
+        public function get($n,$v,$v1){	
 		$query = $this->db->select('*')
 			->from($n)
-			->where('session',$v)
+			->where(array('session'=>$v,'schcd'=>$v1))
 			->get();
 		return $query->result()[0];
         }
-        
+        public function get_schcd($n,$v){	
+		$query = $this->db->select('*')
+			->from($n)
+			->where(array('schcd'=>$v))
+			->get();
+		return $query->result()[0];
+        }
+        public function region_name($n){
+                $query = $this->db->get_where('location_data',array('location_schcd'=>$n));
+                $row = $query->row();
+                return $row->location_area;
+        }
         public function audit_upload($user,$section,$action,$request){
                 $sess_data = array(
                         'user' => $user,
@@ -131,9 +147,8 @@ class Crud_model extends CI_Model {
         //custom form validation 
         //$n->tablename, $s-> session
         public function unique_data_entry($n,$s){
-                $this->load->driver('cache', array('adapter' => 'file'));
-                $var=$this->cache->get('Active_status')['gp_id'];
-                $query = $this->db->get_where($n, array('session' => $s,'gp_id' => $var));
+                $var=$this->session->userdata('gp_id');
+                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var));
                 $row = $query->row();
                 if($row){
                         return TRUE; 
