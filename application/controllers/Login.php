@@ -49,9 +49,9 @@ class Login extends CI_Controller {
                                                         'Login',
                                                         'Logging in as '.$this->session->userdata('uid'));
                         //user_type_cache
-                        //if($this->Admin_model->check_first_user()==1){
-                        //    header("Location: http://localhost/NIC/index.php/Summary/edit_prof_lte");
-                        //}else
+                        if($this->Admin_model->check_first_user()==1){
+                            header("Location: http://localhost/NIC/index.php/Summary/edit_prof_lte");
+                        }else
                             header("Location: ".$this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']);
                     }else{
                         ?>
