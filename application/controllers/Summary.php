@@ -28,8 +28,33 @@ class summary extends CI_Controller {
 		
 		$this->parser->parse('dashboard/info_box', $info_box);
 
+		//-----------------------------------------------------------------------------------------
+
 		//Insert data for progressbar in an array format
+
 		$scheme_pro = array("KCC","DOC","DOG","ANAND");
+
+		if(isset($_POST['progress_filter_submit'])){//to run PHP script on submit
+			if(!empty($_POST['check_list'])){
+				$scheme_pro = array();
+				//Loop to store and display values of individual checked checkbox.
+				foreach($_POST['check_list'] as $selected){
+					array_push($scheme_pro,$selected);
+				}
+			}
+		}
+
+		$filter_progress =array(
+			'filter_id' => 'progress_filter',
+			'selected' => $scheme_pro,
+			'c_name' => $this->Dashboard_model->list_table(),
+			'f_name' => $this->Dashboard_model->fullname()
+		);
+
+		$this->load->view('dashboard/filter_view', $filter_progress);
+	
+
+		
 		$size_sch = sizeof($scheme_pro);
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
 		$data = $this->Dashboard_model->get_prog($scheme_pro,$size_sch);
@@ -53,7 +78,8 @@ class summary extends CI_Controller {
 			array_push($work_progress, $d);	
 			$i++;
 		}
-		$progress_view = array('work_progress' => $work_progress);
+		$progress_view = array('work_progress' => $work_progress
+		);
 
 		$this->parser->parse('dashboard/progress_view', $progress_view);
 		
@@ -101,6 +127,7 @@ class summary extends CI_Controller {
 		);
 
 		$this->parser->parse('dashboard/alert_table', $table_data);
+
 		
 	}
 	

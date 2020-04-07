@@ -67,6 +67,7 @@ class Dashboard_model extends CI_Model{
         }
         return $d;
     }
+
     function sch_name($n,$num)
     {
         $this->db->select('name,s_name');
@@ -87,5 +88,26 @@ class Dashboard_model extends CI_Model{
         }
         return $b; 
     }
+
+    function list_table(){
+        $this->db->select('s_name');
+        $tables = $this->db->get('dashboard_info');
+        $b = array();
+        foreach($tables->result() as $row){
+                $b[] = $row->s_name;
+        }
+        return $b;
+    }
+
+    function fullname(){
+        $this->db->select('name');
+        $tables = $this->db->get('dashboard_info');
+        $b = array();
+        foreach($tables->result() as $row){
+                $b[] = $row->name;
+        }
+        return $b;
+    }
+
 } 
 ?>

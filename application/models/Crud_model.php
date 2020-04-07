@@ -36,6 +36,7 @@ class Crud_model extends CI_Model {
                 }
                 return true;
         }
+        
         function list_table(){
                 $this->db->select('s_name');
                 $tables = $this->db->get('scheme_table');
@@ -45,6 +46,7 @@ class Crud_model extends CI_Model {
                 }
                 return $b;
         }
+
         function fullname(){
                 $this->db->select('name');
                 $tables = $this->db->get('scheme_table');
@@ -54,6 +56,7 @@ class Crud_model extends CI_Model {
                 }
                 return $b;
         }
+
 	function search_table($n){
                 $query = $this->db->get_where('scheme_table', array('s_name' => $n));
                 $row = $query->row();
