@@ -84,45 +84,54 @@
                         
                     </div>
                     <div class="form-group"><label>First Name:</label>
-                        <input type="text" class="form-control" name="first" id="first" onkeyup='saveValue(this);' value="<?php echo $f_name;?>">
-                    </div>
-                    <div class="form-group"><label>Last Name:</label>
-                        <input type="text" class="form-control" name="last" id = "last" value="<?php echo $l_name;?>">
+                        <input type="text" class="form-control" name="first" id="first" onkeyup='saveValue(this);' value="<?php if(form_error('first')){echo set_value('first');}else{echo $f_name;}?>">
                         <p class="error invalid-feedback">
                         <small>
+                        <?php echo form_error('first'); ?>
+                        </small>
+                        </p>
+                    </div>
+                    <div class="form-group"><label>Last Name:</label>
+                        <input type="text" class="form-control" name="last" id = "last" value="<?php if(form_error('last')){echo set_value('last');}else{echo $l_name;}?>">
+                        <p class="error invalid-feedback">
+                        <small>
+                        <?php echo form_error('last'); ?>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Phone:</label>
-                        <input type="text" class="form-control" name="mob" id="mob" value="<?php echo $mobile;?>">
+                        <input type="text" class="form-control" name="mob" id="mob" value="<?php if(form_error('mob')){echo set_value('mob');}else{echo $mobile;}?>">
                         <p class="error invalid-feedback">
                         <small>
+                        <?php echo form_error('mob'); ?>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Email:</label>
-                        <input type="text" class="form-control" name="email" id = "email"  value="<?php echo $email;?>">
+                        <input type="text" class="form-control" name="email" id = "email"  value="<?php if(form_error('email')){echo set_value('email');}else{echo $email;}?>">
                         <p class="error invalid-feedback">
                         <small>
+                        <?php echo form_error('email'); ?>
                         </small>
                         </p>
                     </div>
                     <div class="form-group"><label>Designation</label>
-                        <input type="text" class="form-control" name="desig" id = "desig" value="<?php echo $designation;?>">
+                        <input type="text" class="form-control" name="desig" id = "desig" value="<?php if(form_error('desig')){echo set_value('desig');}else{echo $designation;}?>">
                         <p class="error invalid-feedback">
                         <small>
+                        <?php echo form_error('desig'); ?>
                         </small>
                         </p>
                     </div>
                     <div class="form-group">
                         <label>District</label>
-                        <input type="text" class="form-control" name="dist" id = "dist" value="<?php echo $district;?>">
+                        <input type="text" class="form-control" name="dist" id = "dist" value="<?php if(form_error('dist')){echo set_value('dist');}else{echo $district;}?>">
                         <p class="error invalid-feedback">
                         <small>
+                        <?php echo form_error('dist'); ?>
                         </small>
                         </p>
                     </div>
-                    
                 </div>             
               <input class="btn btn-primary btn-block" type = "submit" name = "sub1" id= "sub1" ></input>
 
@@ -170,7 +179,7 @@ function readURL(input) {
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <script type="text/javascript">
-        /*document.getElementById("first").value = getSavedValue("first");
+        document.getElementById("first").value = getSavedValue("first");
         function saveValue(e){
             var id = e.id;  
             var val = e.value;
@@ -181,7 +190,7 @@ function readURL(input) {
                 return val;
             }
             return localStorage.getItem(v);
-        }*/
+        }
 </script>
 </body>
 </html>
