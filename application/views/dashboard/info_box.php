@@ -1,26 +1,23 @@
-<html>
-    <body>
-    <section class="content">
-      <div class="container-fluid">
-        <!-- Small boxes (Stat box) -->
-        <div class="row">
-          {data_list}
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-purple">
-              <div class="inner">
-                <h3>{num}</h3>
-                <p>{desc}</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-pie-graph"></i>
-              </div>
-              <!--<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
+
+  <section class="content">
+    <div class="container-fluid">
+      <!-- Small boxes (Stat box) -->
+      <div class="row">
+        {data_list}
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-purple">
+            <div class="inner">
+              <h3>{num}</h3>
+              <p>{desc}</p>
             </div>
+            <div class="icon">
+              <i class="ion ion-pie-graph"></i>
+            </div>
+            <!--<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
           </div>
-          {/data_list}
         </div>
+        {/data_list}
       </div>
-    </section>
-    </body>
-</html>
+    </div>
+  </section>

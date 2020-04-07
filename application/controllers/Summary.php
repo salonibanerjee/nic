@@ -13,9 +13,13 @@ class summary extends CI_Controller {
 
 		$this->load->library('parser');
 
+		$this->load->view('dashboard/sidebar');
+
 		$this->load->view('dashboard/navbar');
 
-		$this->load->view('dashboard/sidebar');
+		
+
+		//$this->load->view('dashboard/container');
 
 		$info_box = array(
 			'data_list' => array(
@@ -100,24 +104,43 @@ class summary extends CI_Controller {
 
 		$bar_chart = array(
 			'label1' => $schemename_bar,
-			'data1_1' => $progress,
-			'data1_2' => $target,
-			'block' => array('Block 1', 'Block 2', 'Block 3', 'Block 4', 'Block 5'),
-			'bar_1' => 'Scheme 1',
-			'data_1' => array(34, 64, 32, 27, 47),
-			'bar_2' => 'Scheme 2',
-			'data_2' => array(65, 59, 80, 81, 56),
-			'bar_3' => 'Scheme 3',
-			'data_3' => array(43, 67, 15, 32, 30),
-			'bar_4' => 'Scheme 4',
-			'data_4' => array(75,34,35,52,41),
-			'bar_5' => 'Scheme 5',
-			'data_5' => array(34,64,25,84,19)
+			'data1_1' => $target,
+			'data1_2' => $progress,
+			//-------------------------------
+			'block' => $schemename_bar,
+			'no_bar' => 2,
+			'bar' => array('Fund Received','Fund Utilised'),
+			'data' => array()
 		);
+
+		array_push($bar_chart['data'],$target);
+		array_push($bar_chart['data'],$progress);
 
 		$this->load->view('dashboard/bar_chart', $bar_chart);
 
-		$table_data = array(
+		$this->load->view('dashboard/pie_chart', $bar_chart);
+
+		$this->load->view('dashboard/line_chart', $bar_chart);
+
+		$scheme_alert = array("KCC","KishanM","ANAND","DOC","DOG");
+		$result_alert = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
+		$schemename_alert = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
+		$data = array();
+		for($i=0;$i<2*sizeof($scheme_bar);$i+=2)
+		{
+			$per=(int)($result_alert[$i+1]/$result_alert[$i]*100);
+			array_push($data, $per);
+		}
+		$fits = array();
+		$j=0;
+		for($i=0;$i<sizeof($data);$i++,$j+=2)
+		{
+			$eachbar = array('c1'=>$i+1,'c2'=>$schemename_alert[$i], 'c3'=>$result_alert[$j], 'c4'=>$result_alert[$j+1], 'c5'=>$data[$i] );
+			array_push($fits, $eachbar);
+		}
+		$table_data = array('data' => $fits );
+
+		/*$table_data = array(
 			'data' => array(
 				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10'),
 				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10'),
@@ -125,9 +148,9 @@ class summary extends CI_Controller {
 				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10')
 			)
 		);
-
+*/
 		$this->parser->parse('dashboard/alert_table', $table_data);
-
+		
 		
 	}
 	
