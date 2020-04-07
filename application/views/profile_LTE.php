@@ -56,7 +56,7 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
 <script>
 	$(document).ready(function(){
-		$("img").hover(function(){
+		$("#zoom").hover(function(){
 			$(this).animate({width:'500px',height:'500px'});
 			$(this).css("opacity","1");
 		}, function(){

@@ -112,7 +112,7 @@
                       <?php
                         $i=0;
                         foreach($data as $row){
-                            if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip'){
+                          if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip'){
                                 $i++;
                                 continue;
                             }
@@ -163,13 +163,13 @@
                     <!-- /.card-body -->
                     <div class='card-footer'>
                       <button type='submit' class='btn btn-primary' name='save' id='save' value="<?php 
-                        if(form_error('session') || form_error('schcd')){
+                        if(form_error('session')||form_error('schcd')){
                             echo 'Update data';
                         }else{
                             echo 'Save data';
                         }
                         ?>"><?php 
-                        if(form_error('session') || form_error('schcd')){
+                        if(form_error('session')||form_error('schcd')){
                             echo 'Update';
                         }else{
                             echo 'Save';

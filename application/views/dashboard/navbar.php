@@ -28,7 +28,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+  <body class="hold-transition sidebar-mini layout-fixed">
 
     <div class="wrapper">
     <!-- Navbar -->
@@ -73,7 +73,8 @@
     </div>
 	<div class="wrapper" style="min-height: 511px;">
 		
-    
+  <section class="content">
+    <div class="container-fluid">
     
 
     <script src="http://localhost/NIC/css/plugins/jquery/jquery.min.js"></script>
@@ -87,5 +88,5 @@
     <script src="http://localhost/NIC/css/dist/js/demo.js"></script>
     <!-- page script -->
     
-</body>
+  </body>
 </html>
