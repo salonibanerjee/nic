@@ -13,27 +13,58 @@
             </div>
             <form role='form' method="post" id='form'>
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="row">
                         <?php 
-                            $i=0;
-                            $flag = false;
-                            foreach($c_name as $temp) {
-                                foreach ($selected as $sel) {
-                                    if($temp == $sel) {
-                                        $flag = true;
-                                        break;
-                                    } else {
-                                        $flag = false;
+                        if($left) {
+                        echo "<div class='col-md-6'>";
+                        echo    "<div class='form-group'>";
+                                    $i=0;
+                                    $flag = false;
+                                    foreach($c_left_name as $temp) {
+                                        foreach ($selected_left as $sel) {
+                                            if($temp == $sel) {
+                                                $flag = true;
+                                                break;
+                                            } else {
+                                                $flag = false;
+                                            }
+                                        }
+                                        echo "<div class='custom-control custom-checkbox'>";
+                                        if($flag) echo    "<input class='custom-control-input' name='".$filter_id."_left_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp' checked>";
+                                        else echo    "<input class='custom-control-input' name='".$filter_id."_left_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp'>";
+                                        echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_left_name[$i]</label>";
+                                        echo "</div>";
+                                        $i++;
                                     }
-                                }
-                                echo "<div class='custom-control custom-checkbox'>";
-                                if($flag) echo    "<input class='custom-control-input' name='check_list[]' type='checkbox' id='$temp' value='$temp' checked>";
-                                else echo    "<input class='custom-control-input' name='check_list[]' type='checkbox' id='$temp' value='$temp'>";
-                                echo    "<label for='$temp' class='custom-control-label'>$f_name[$i]</label>";
-                                echo "</div>";
-                                $i++;
-                            }
-                        ?> 
+                        echo    "</div>";
+                        echo "</div>";
+                        }
+                        if($right){
+                        echo "<div class='col-md-6'>";
+                        echo    "<div class='form-group'>";
+                                
+                                    $i=0;
+                                    $flag = false;
+                                    foreach($c_name_right as $temp) {
+                                        foreach ($selected_right as $sel) {
+                                            if($temp == $sel) {
+                                                $flag = true;
+                                                break;
+                                            } else {
+                                                $flag = false;
+                                            }
+                                        }
+                                        echo "<div class='custom-control custom-checkbox'>";
+                                        if($flag) echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp' checked>";
+                                        else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp'>";
+                                        echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
+                                        echo "</div>";
+                                        $i++;
+                                    }
+                        echo    "</div>";
+                        echo "</div>";
+                        }
+                        ?>
                     </div>
                 </div>
                 <div class="modal-footer">

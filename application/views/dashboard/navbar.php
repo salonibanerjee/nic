@@ -64,17 +64,15 @@
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="#">Home</a></li>
               <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
     </div>
-	<div class="wrapper" style="min-height: 511px;">
-		
-  <section class="content">
-    <div class="container-fluid">
+
+
     
 
     <script src="http://localhost/NIC/css/plugins/jquery/jquery.min.js"></script>
