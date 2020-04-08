@@ -165,7 +165,7 @@ class summary extends CI_Controller {
 		if($res){
 			$da = array(
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
@@ -183,12 +183,11 @@ class summary extends CI_Controller {
 		else{
 			$da = array(
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' => '',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'new'   =>'Go to edit profile since you are a new User',
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
@@ -223,7 +222,7 @@ class summary extends CI_Controller {
 		if($res){
 			$da = array(
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
@@ -241,12 +240,11 @@ class summary extends CI_Controller {
 		else{
 			$da = array(
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' =>'',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'new'   =>'Edit Your Profile for First time',
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
@@ -265,6 +263,14 @@ class summary extends CI_Controller {
 							'required' => 'You must provide a %s.',
 					)
 			),
+			array(
+				'field' => 'mid',
+				'label' => 'Middle Name',
+				'rules' => 'required|alpha|max_length[50]',
+				'errors' => array(
+						'required' => 'You must provide a %s.',
+				)
+		),
 			array(
 					'field' => 'last',
 					'label' => 'Last Name',
@@ -304,17 +310,21 @@ class summary extends CI_Controller {
 	}
 	else{
 		if(isset($_POST['sub1'])){
-            $first = $this->input->post('first');
+			$first = $this->input->post('first');
+			$mid = $this->input->post('mid');
             $last = $this->input->post('last');
             $mobile = $this->input->post('mob');
             $email = $this->input->post('email');
             $desig = $this->input->post('desig');
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-			
+			if ($image == NULL)
+			{
+				$image = $res->image;
+			}
             $data = array(
 				'f_name' => $first,
-				'm_name' => "",
+				'm_name' => $mid,
                 'l_name' => $last,
 				'mobile' => $mobile,
 				'username' =>$this->session->userdata('uid'),
