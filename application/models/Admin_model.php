@@ -119,4 +119,15 @@ class Admin_model extends CI_Model {
         $row=$query->row();
         return $row->check_if_first_user;
     }
+
+    public function meeting_schedule($data){
+        $this->db->where('id', 1);
+		$this->db->update('meeting_schedule', $data);
+    }
+
+    public function previous_meeting_schedule(){
+        $query = $this->db->get_where('meeting_schedule',array('id'=>1));
+        $row=$query->row();
+        return $row;
+    }
 }

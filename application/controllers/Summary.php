@@ -5,7 +5,6 @@ class summary extends CI_Controller {
 
 	public function index()
 	{	
-
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
