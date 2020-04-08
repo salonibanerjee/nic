@@ -165,6 +165,7 @@ class summary extends CI_Controller {
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
 				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
@@ -183,6 +184,7 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
 				'm_name' => '',
 				'l_name' => '',
@@ -218,10 +220,13 @@ class summary extends CI_Controller {
 		
 		//$this->load->view('edit_profile');
 		$this->load->model('profile_model');
+		$this->load->model('Admin_model');
+
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
 				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
@@ -240,6 +245,7 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
 				'm_name' =>'',
 				'l_name' => '',
@@ -295,14 +301,6 @@ class summary extends CI_Controller {
 				'label' => 'Designation',
 				'rules' => 'required|alpha_numeric_spaces|max_length[50]'
 			),
-			array(
-				'field' => 'dist',
-				'label' => 'District',
-				'rules' => 'required|alpha|max_length[50]',
-				'errors' => array(
-							'required' => 'You must provide a %s.',
-			)
-			)
 	);
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run() == FALSE)
@@ -340,6 +338,7 @@ class summary extends CI_Controller {
 				$this->profile_model->update($this->session->userdata('uid'),$data);
 			}else
 				$this->profile_model->upload($data);
+				$this->Admin_model->update_first_profile();
 			
 				header("location: http://localhost/NIC/index.php/Summary/profile_LTE");
 		}

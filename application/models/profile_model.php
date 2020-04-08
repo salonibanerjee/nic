@@ -36,7 +36,6 @@ class profile_model extends CI_Model {
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
 				'image' => $res->image,
-				'new'   =>'',
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
 				'district' =>$res->district,

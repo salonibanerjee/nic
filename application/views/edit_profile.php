@@ -57,8 +57,15 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
-              <img id="blah" class="profile-user-img img-responsive img-circle"  src='data: image/jpeg; base64, <?php echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
-              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label>
+            <?php
+            if($image==""||$image==NULL){
+              echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='width:35px; height:35px;'>";
+            }
+            else{
+              echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
+            }?>
+              <!--<img id="blah" class="profile-user-img img-responsive img-circle"  src='data: image/jpeg; base64, <?php// echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">-->
+              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label> 
               
               <style>
 .inputfile {
@@ -125,24 +132,49 @@
                         </p>
                     </div>
                     <div class="form-group"><label>Designation</label>
-                        <input type="text" class="form-control" name="desig" id = "desig" value="<?php if(form_error('desig')){echo set_value('desig');}else{echo $designation;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('desig'); ?>
-                        </small>
-                        </p>
+                        <select class="form-control" id ="desig" name= "desig" >
+                          <option><?php echo $designation; ?></option>
+                          <option>Leader</option>
+                          <option>Coordinator</option>
+                          <option>Support</option>
+                          <option>Idle</option>
+                          <option>Manager</option>
+                          <option>Asst. Manager</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label>District</label>
-                        <input type="text" class="form-control" name="dist" id = "dist" value="<?php if(form_error('dist')){echo set_value('dist');}else{echo $district;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('dist'); ?>
-                        </small>
-                        </p>
+                        <select class="form-control" id ="dist" name= "dist" >
+                          <option><?php echo $district; ?></option>
+                          <option value="Alipurduar">Alipurduar</option>
+                          <option value="Bankura">Bankura</option>
+                          <option value="Bardhaman">Bardhaman</option>
+                          <option value="Birbhum">Birbhum</option>
+                          <option value="Cooch Behar">Cooch Behar</option>
+                          <option value="Darjeeling">Darjeeling</option>
+                          <option value="Hooghly">Hooghly</option>
+                          <option value="Howrah">Howrah</option>
+                          <option value="Jalpaiguri">Jalpaiguri</option>
+                          <option value="Jhargram">Jhargram</option>
+                          <option value="Kolkata">Kolkata</option>
+                          <option value="Kalimpong">Kalimpong</option>
+                          <option value="Malda">Malda</option>
+                          <option value="Medinipur(East)">Medinipur(East)</option>
+                          <option value="Medinipur(West)">Medinipur(West)</option>
+                          <option value="Murshidabad">Murshidabad</option>
+                          <option value="Nadia">Nadia</option>
+                          <option value="North Dinajpur">North Dinajpur</option>
+                          <option value="South Dinajpur">South Dinajpur</option>
+                          <option value="North 24 Parganas">North 24 Parganas</option>
+                          <option value="South 24 Parganas">South 24 Parganas</option>
+                          <option value="Purulia">Purulia</option>
+                        </select>
                     </div>
                 </div>             
               <input class="btn btn-primary btn-block" type = "submit" name = "sub1" id= "sub1" ></input>
+              <p></p>
+              <p></p>
+              <p></p>
 
              <!-- <a href="http://localhost/NIC/index.php/Summary/profile" class="btn btn-primary btn-block" ><b></b></a> -->
             </div>
