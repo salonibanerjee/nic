@@ -16,6 +16,16 @@ class Get_table extends MY_Controller {
     public function load($n){
         //$this->check_privilege(3);
         //Load 'CRUD' model
+        $query = $this->db->get_where('meeting_schedule', array('id' => 1));
+        $row = $query->row();
+        if((strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)) && (strtotime(mdate('%Y-%m-%d %H:%i', now())) < strtotime($row->end_time))){
+            ?>
+                     <script type=text/javascript>
+                        alert("Meeting running");
+                        window.location.href = "http://localhost/NIC/index.php/Summary";
+                    </script>
+            <?php
+        }else{
         $this->load->model('Crud_model');
 
         //Fetch Attribute name. n - schema name
@@ -173,6 +183,7 @@ class Get_table extends MY_Controller {
                 }
             }
         }
+    }
     }
     function input_data_unique_check($str,$table_name) {           
         //$this->CI->form_validation->set_message('input_data_unique_check', $this->CI->lang->line('access_code_invalid'));

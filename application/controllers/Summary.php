@@ -5,16 +5,20 @@ class summary extends CI_Controller {
 
 	public function index()
 	{	
-
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
 		
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
-		$this->load->view('dashboard/navbar'); //Always load navbar first
-		$this->load->view('dashboard/sidebar');
 
-		//========INFO BOX===========================================
+		$this->load->view('dashboard/navbar');
+		
+		$this->load->view('dashboard/sidebar',$da);
+
+		//$this->load->view('dashboard/container');
+
 		$info_box = array(
 			'data_list' => array(
 				array('num' => '42', 'desc' => 'Number of Scheme'),
@@ -245,19 +249,23 @@ class summary extends CI_Controller {
 	public function profile_LTE(){
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->view('dashboard/navbar');
-		$this->load->view('dashboard/sidebar');
 		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
 				'image' => $res->image,
-				'username' =>$res->username,
+				'new'   =>'',
+				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
 				'district' =>$res->district,
 				//'img_dir' => $img_dir,
@@ -268,13 +276,14 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' => '',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'username' =>'',
+				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
 				//'img_dir' => $img_dir,
@@ -295,23 +304,29 @@ class summary extends CI_Controller {
 
 	public function edit_prof_lte(){
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/navbar');
-		$this->load->view('dashboard/sidebar');
+		$this->load->view('dashboard/sidebar',$da);
 		
 		
 		//$this->load->view('edit_profile');
 		$this->load->model('profile_model');
+		$this->load->model('Admin_model');
+
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
 				'image' => $res->image,
-				'username' =>$res->username,
+				'new'   =>'',
+				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
 				'district' =>$res->district,
 				//'img_dir' => $img_dir,
@@ -322,13 +337,14 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' =>'',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'username' =>'',
+				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
 				//'img_dir' => $img_dir,
@@ -337,16 +353,27 @@ class summary extends CI_Controller {
 			$flag = 'False';
 		}
 		
-		/*$config = array(
+		$config = array(
 			array(
 					'field' => 'first',
 					'label' => 'First Name',
-					'rules' => 'required|max_length[50]',
+					'rules' => 'required|alpha|max_length[50]',
+					'errors' => array(
+							'required' => 'You must provide a %s.',
+					)
 			),
+			array(
+				'field' => 'mid',
+				'label' => 'Middle Name',
+				'rules' => 'required|alpha|max_length[50]',
+				'errors' => array(
+						'required' => 'You must provide a %s.',
+				)
+		),
 			array(
 					'field' => 'last',
 					'label' => 'Last Name',
-					'rules' => 'required|max_length[50]',
+					'rules' => 'required|alpha|max_length[50]',
 					'errors' => array(
 							'required' => 'You must provide a %s.',
 					),
@@ -354,7 +381,7 @@ class summary extends CI_Controller {
 			array(
 					'field' => 'mob',
 					'label' => 'Mobile',
-					'rules' => 'required|numeric|less_than[10]'
+					'rules' => 'required|numeric|exact_length[10]'
 			),
 			array(
 					'field' => 'email',
@@ -364,33 +391,31 @@ class summary extends CI_Controller {
 			array(
 				'field' => 'desig',
 				'label' => 'Designation',
-				'rules' => 'required|max_length[50]'
+				'rules' => 'required|alpha_numeric_spaces|max_length[50]'
 			),
-			array(
-				'field' => 'dist',
-				'label' => 'District',
-				'rules' => 'required|max_length[50]'
-			)
 	);
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run() == FALSE)
 	{
 		$this->load->view('edit_profile',$da);
 	}
-	else{*/
-		$this->load->view('edit_profile',$da);
+	else{
 		if(isset($_POST['sub1'])){
-            $first = $this->input->post('first');
+			$first = $this->input->post('first');
+			$mid = $this->input->post('mid');
             $last = $this->input->post('last');
             $mobile = $this->input->post('mob');
             $email = $this->input->post('email');
             $desig = $this->input->post('desig');
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-			
+			if ($image == NULL)
+			{
+				$image = $res->image;
+			}
             $data = array(
 				'f_name' => $first,
-				'm_name' => "",
+				'm_name' => $mid,
                 'l_name' => $last,
 				'mobile' => $mobile,
 				'username' =>$this->session->userdata('uid'),
@@ -401,26 +426,17 @@ class summary extends CI_Controller {
                 //'img_dir' => $img_dir,
                 //'image' => $img_dir,
 			);
-			
-
-
-			
-			//$query = $this->db->get_where('profile', array('username' => $this->session->userdata('uid')));
-			//$row = $query->row();
 			if($res){
 				$this->profile_model->update($this->session->userdata('uid'),$data);
 			}else
 				$this->profile_model->upload($data);
+				$this->Admin_model->update_first_profile();
 			
-			
-            ?>
-                <script type="text/javascript">
-                    alert("Updated Successfully...");
-					window.location.href="http://localhost/NIC/index.php/Summary/profile_LTE";
-                </script>
-            <?php
+				header("location: http://localhost/NIC/index.php/Summary/profile_LTE");
 		}
-	//}
+		//MAIN CODE ENDS HERE
+		//validation else brace ending below
+	}
 		 
 	   ////echo $first;
             //$file = $this->input->post('file');
@@ -485,5 +501,5 @@ class summary extends CI_Controller {
 		$this->load->view('edit_profile');
 		$this->load->model('profile_model');
 		
-}
+	}
 }
