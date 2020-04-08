@@ -51,8 +51,22 @@
           <!-- Profile Image -->
           <div class="box box-primary">
             <div class="box-body box-profile">
+            <?php
+            if($image==""||$image==NULL){
+              echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='width:35px; height:35px;'>";
+            }
+            else{
+              echo "<img id ='zoom' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
+            }?><?php
+            // if($image==''||$image==NULL){
+              //echo "imagenull";
+              //echo "<img id='zoom' class='profile-user-img img-responsive img-circle' src='http://localhost/NIC/css/dist/img/avatar04.png' alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
+          //}else{
+            //echo "imagefound";
+              //echo "<img id='zoom' class='profile-user-img img-responsive img-circle' src='data: image/jpeg; base64, <?php echo $image?><!--' alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";-->
+         <?php// }?>
             
-              <img id="zoom" class="profile-user-img img-responsive img-circle" src='data: image/jpeg; base64, <?php echo $image?>' alt="User profile picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">
+             
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
 <script>
 	$(document).ready(function(){
@@ -92,6 +106,8 @@
 
               <a href="http://localhost/NIC/index.php/Summary/edit_prof_lte" class="btn btn-primary btn-block" ><b>Edit Profile</b></a>
             </div>
+
+            <label><a href="http://localhost/NIC/index.php/summary"><i class="fa fa-dashboard"></i>Click to Change your Password </a></label>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
@@ -105,6 +121,9 @@
     </section>
   </div>
 </div>
+<p></p>
+<p></p>
+<p></p>
 <!-- ./wrapper -->
 
 <!-- jQuery 3 -->
