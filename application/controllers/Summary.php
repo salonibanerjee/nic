@@ -298,7 +298,12 @@ class summary extends CI_Controller {
 			array(
 				'field' => 'desig',
 				'label' => 'Designation',
-				'rules' => 'required|alpha_numeric_spaces|max_length[50]'
+				'rules' => 'required'
+			),
+			array(
+				'field' => 'dist',
+				'label' => 'District',
+				'rules' => 'required'
 			),
 		);
 		$this->form_validation->set_rules($validate);
@@ -315,8 +320,9 @@ class summary extends CI_Controller {
 				$desig = $this->input->post('desig');
 				$dist = $this->input->post('dist');
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
-					$image = $res->image;
+					$image = $res->image;	
 				}
 				$data = array(
 					'f_name' => $first,

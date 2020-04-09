@@ -33,7 +33,7 @@
             <div class="box-body box-profile">
               <?php
                 if($image==""||$image==NULL){
-                  echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
+                  echo "<img id='blah' src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
                 else{
                   echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
@@ -80,7 +80,7 @@
               <div class="form-group">
                 <label for="mob">Phone</label>
                 <input type="text" class="form-control" id="mob" name="mob" placeholder="Enter Phone Number" value="<?php if(form_error('mob')){echo set_value('mob');}else{echo $mobile;}?>">
-                <p class='error invalid-feedback'><small><?php echo form_error('phone'); ?></small></p>
+                <p class='error invalid-feedback'><small><?php echo form_error('mob'); ?></small></p>
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
@@ -90,19 +90,20 @@
               <div class="form-group">
                 <label>Designation</label>
                 <select class="form-control" id="desig" name="desig">
-                  <option><?php echo $designation; ?></option>
-                  <option value=>District Magistrate</option>
+                  <option><?php if(form_error('desg')){echo set_value('desig');}else{echo $designation;}?></option>
+                  <option>District Magistrate</option>
                   <option>Additional District Magistrate(G)</option>
                   <option>Additional District Magistrate</option>
                   <option>Sub-Divisional Officer</option>
                   <option>Block Development Officer</option>
                   <option>Asst. Manager</option>
                 </select>
+                <p class='error invalid-feedback'><small><?php echo form_error('desig'); ?></small></p>
               </div>
               <div class="form-group">
                 <label>District</label>
                 <select class="form-control" id ="dist" name= "dist" >
-                  <option><?php echo $district; ?></option>
+                  <option><?php if(form_error('dist')){echo set_value('dist');}else{echo $district;}?></option>
                   <option value="Alipurduar">Alipurduar</option>
                   <option value="Bankura">Bankura</option>
                   <option value="Bardhaman">Bardhaman</option>
@@ -126,10 +127,13 @@
                   <option value="South 24 Parganas">South 24 Parganas</option>
                   <option value="Purulia">Purulia</option>
                 </select>
+                <p class='error invalid-feedback'><small><?php echo form_error('dist'); ?></small></p>
               </div>
             </div>
           <!-- /.card-body -->
+          <?php echo validation_errors();?>
           <div class="card-footer">
+          
             <button type="submit" name= "sub1" id="sub1" class="btn btn-primary">Submit</button>
           </div>
       </div>

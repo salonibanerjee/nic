@@ -16,10 +16,10 @@
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;">
-          <a href="http://localhost/NIC/index.php/Summary/profile_LTE" class="d-block"><strong><?php echo $f_name." ".$l_name?></strong></a>
-          <a href="http://localhost/NIC/index.php/Summary/profile_LTE" class="d-block"><small><?php echo $designation ?></small></a>
+          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$l_name?></strong></a>
+          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
           <?php if($update_prof==1){
-          echo "<a href='http://localhost/NIC/index.php/Summary/edit_prof_lte' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
+          echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
           </div>
         

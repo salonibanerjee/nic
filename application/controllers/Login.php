@@ -56,14 +56,14 @@ class Login extends CI_Controller {
                     }
 
                     if($this->cache->get('Active_status')['active_status']==1){
-                        $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                    $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                         current_url(),
                                                         'Login',
                                                         'Logging in as '.$this->session->userdata('uid'));
                         //user_type_cache
                         unset($_SESSION['salt']);
                         if($this->Admin_model->check_first_user()==1){
-                            header("Location: http://localhost/NIC/index.php/Summary/edit_profile");
+                            header("Location: http://localhost/NIC/index.php/Login/password_change_first_user");
                         }else
                             header("Location: ".$this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']);
                     }else{
@@ -251,6 +251,33 @@ class Login extends CI_Controller {
         {
             $this->form_validation->set_message('username_check', 'This username does not exist');
             return FALSE;
+        }
+    }
+
+    public function password_change_first_user(){
+        $this->load->model('Admin_model');
+        //echo now()."<br>";
+        //echo now()+4000;
+        $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
+        $this->form_validation->set_rules('pass1', 'Password', 'required');
+        $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('login_reset');
+        }else{
+            $user=$this->input->post('email');
+            $encuser=hash('sha256',$user);
+            if($this->input->post('sub2')){
+                    $password=hash('sha256',$this->input->post('pass1'));
+                    $this->Admin_model->update_login($user,$password);
+                    $this->Admin_model->update_first_pass($user);
+                    ?>
+                        <script type=text/javascript>
+                            alert("First Time password succesfully changed...");
+                            window.location.href = "http://localhost/nic/index.php/Login";
+                        </script>
+                    <?php
+            }
         }
     }
 }

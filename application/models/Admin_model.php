@@ -132,6 +132,11 @@ class Admin_model extends CI_Model {
         $this->db->where('user_id_pk',$this->cache->get('Active_status')['id']);
         $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));
     }
+    public function update_first_pass($username){
+        $row=$this->db->get_where('Login',array('username'=>$username))->row();
+        $this->db->where('user_id_pk',$row->id);
+        $this->db->update('check_First_User',array('check_if_first_user' => 0 ));
+    }
     public function meeting_schedule($data){
         $this->db->where('id', 1);
 		$this->db->update('meeting_schedule', $data);

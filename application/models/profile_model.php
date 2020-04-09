@@ -72,15 +72,15 @@ class profile_model extends CI_Model {
 		}
 		else{
 			$da = array(
-				'f_name' =>'-NA-',
-				'm_name' => '-NA-',
-				'l_name' => '-NA-',
-				'mobile' =>'-NA-',
-				'email' =>'-NA-',
+				'f_name' =>'',
+				'm_name' => '',
+				'l_name' => '',
+				'mobile' =>'',
+				'email' =>'',
 				'image' => '',
 				'username' =>$this->session->userdata('uid'),
-				'designation' =>'-NA-',
-				'district' =>'-NA-',
+				'designation' =>'',
+				'district' =>'',
 			);
         }
         return $da;
