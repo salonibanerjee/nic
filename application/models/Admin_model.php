@@ -119,6 +119,15 @@ class Admin_model extends CI_Model {
         $row=$query->row();
         return $row->check_if_first_user;
     }
+    
+    public function check_user($n){
+        return $this->db->get_where('Login',array('username'=>$n))->row();
+    }
+
+    public function update_login($user,$password){
+        $this->db->where('username',$user);
+        $this->db->update('Login',array('password'=>$password));
+    }
     public function update_first_profile(){
         $this->db->where('user_id_pk',$this->cache->get('Active_status')['id']);
         $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));

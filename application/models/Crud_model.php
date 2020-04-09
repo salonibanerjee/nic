@@ -145,10 +145,10 @@ class Crud_model extends CI_Model {
         }
 
         //custom form validation 
-        //$n->tablename, $s-> session
-        public function unique_data_entry($n,$s){
+        //$n->tablename, $s-> session 
+        public function unique_data_entry($n,$s,$k){
                 $var=$this->session->userdata('gp_id');
-                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var));
+                $query = $this->db->get_where($n, array($k => $s,'schcd' => $var));
                 $row = $query->row();
                 if($row){
                         return TRUE; 

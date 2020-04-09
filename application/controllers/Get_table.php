@@ -2,9 +2,11 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
-    /*public function __construct(){
+    /*
+    public function __construct(){
         parent::__construct();
-        $this->check_privilege(1);
+        //$this->check_privilege(1);
+        //date_default_timezone_set('Asia/Kolkata');
     }*/
     
 
@@ -55,7 +57,7 @@ class Get_table extends MY_Controller {
 
             if($field->name=="session"){
                 //$ik="is_unique[".$n.".session]";
-                $ik="callback_input_data_unique_check[".$n."]";
+                $ik="callback_input_data_unique_check[".$n.".".$field->name."]";
                 $y[]=array(
                     'field' => $field->name,
                     'label' => $ij,
@@ -187,10 +189,11 @@ class Get_table extends MY_Controller {
     }
     function input_data_unique_check($str,$table_name) {           
         //$this->CI->form_validation->set_message('input_data_unique_check', $this->CI->lang->line('access_code_invalid'));
+        $var=explode('.',$table_name);
         if($str) { 
            // do your validations
            $this->load->model('Crud_model');
-           if($this->Crud_model->unique_data_entry($table_name,$str))
+           if($this->Crud_model->unique_data_entry($var[0],$str,$var[1]))
               return FALSE;
            else
               return TRUE;
@@ -198,5 +201,4 @@ class Get_table extends MY_Controller {
              return FALSE;
         }
     }
-
 }
