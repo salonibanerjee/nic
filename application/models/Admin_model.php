@@ -122,6 +122,7 @@ class Admin_model extends CI_Model {
     public function update_first_profile(){
         $this->db->where('user_id_pk',$this->cache->get('Active_status')['id']);
         $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));
+    }
 
     public function meeting_schedule($data){
         $this->db->where('id', 1);

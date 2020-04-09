@@ -59,7 +59,7 @@
             <div class="box-body box-profile">
             <?php
             if($image==""||$image==NULL){
-              echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='width:35px; height:35px;'>";
+              echo "<img id = 'blah' src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
             }
             else{
               echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
