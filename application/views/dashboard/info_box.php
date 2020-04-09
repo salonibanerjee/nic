@@ -1,6 +1,5 @@
 
-  <section class="content">
-    <div class="container-fluid">
+  
       <!-- Small boxes (Stat box) -->
       <div class="row">
         {data_list}
@@ -12,12 +11,11 @@
               <p>{desc}</p>
             </div>
             <div class="icon">
-              <i class="ion ion-pie-graph"></i>
+              <i class="ion ion-stats-bars"></i>
             </div>
             <!--<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
           </div>
         </div>
         {/data_list}
       </div>
-    </div>
-  </section>
+    

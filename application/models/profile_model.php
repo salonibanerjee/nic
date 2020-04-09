@@ -2,7 +2,6 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class profile_model extends CI_Model {
-    //upload to database 
     public function upload($data){
         $this->db->insert('profile',$data);
     }
@@ -11,7 +10,6 @@ class profile_model extends CI_Model {
 		$this->db->update('profile', $data);
     }
     public function get_f($d){
-        //$query =$this->db->"SELECT 'first' from 'profile' where 'uid' => 'abc@gmail.com'";
         $query = $this->db->get_where('profile', array('username' => $d));
         $row = $query->row();
         return $row;
@@ -42,23 +40,50 @@ class profile_model extends CI_Model {
                 'first_user'=>$row->check_if_first_user,
                 'update_prof'=>$row->check_profile_updated_once
             );
+        }else{
+            $da = array(
+				'f_name' =>$this->session->userdata('uid'),
+				'm_name' => '',
+                'l_name' => '',
+                'image'=> '',
+				'designation' =>'-NA-',
+                'first_user'=>$row->check_if_first_user,
+                'update_prof'=>$row->check_profile_updated_once
+			);
         }
-        
         return $da;
     }
-    //checks whether session is already present or not
-    /*public function unique($a){
-            $this->db->where('id',intval($a));
-            $this->db->from('prac');
-            $i=$this->db->count_all_results();
-            if($i==0)
-                return FALSE;
-            else    
-                return TRUE;
-        
+
+    public function get_profile($username){
+        $res=$this->get_f($username);
+        $da=array();
+        if($res){
+			$da = array(
+				'f_name' => $res->f_name,
+				'm_name' => $res->m_name,
+				'l_name' => $res->l_name,
+				'mobile' => $res->mobile,
+				'email' =>$res->email,
+				'image' => $res->image,
+				'username' =>$this->session->userdata('uid'),
+				'designation' =>$res->designation,
+				'district' =>$res->district,
+			);
+		}
+		else{
+			$da = array(
+				'f_name' =>'',
+				'm_name' => '',
+				'l_name' => '',
+				'mobile' =>'',
+				'email' =>'',
+				'image' => '',
+				'username' =>$this->session->userdata('uid'),
+				'designation' =>'',
+				'district' =>'',
+			);
+        }
+        return $da;
     }
-    function update_id($id,$data){
-		$this->db->where('id', $id);
-		$this->db->update('prac', $data);
-	}*/
+    
 }

@@ -114,7 +114,7 @@
     $('#reservation').daterangepicker({
       timePicker: true,
       timePicker24Hour: true,
-      timePickerIncrement: 30,
+
       locale: {
         format: '(MM-DD-YYYY HH:MM)'
       }
