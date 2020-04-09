@@ -1,33 +1,25 @@
-<html>
-<body>
 
     <section class="content">
       <div class="container-fluid">
-        <div class="row">
-          <div class="col">
             <!-- BAR CHART -->
             <div class="card card-success">
               <div class="card-header">
-                <h3 class="card-title">Progress Report of Blocks</h3>
+                <h3 class="card-title"><?php echo $title; ?></h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
                   </button>
-                  <button type="button" class="btn btn-tool" data-card-widget="remove" style="color: black"><i class="fas fa-times"></i></button>
+                  <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#<?php echo $id; ?>" style="color: black"><i class="fas fa-edit"></i></button>
                 </div>
               </div>
               <div class="card-body">
                 <div class="chart">
-                  <canvas id="proChart" style="height:230px; min-height:230px"></canvas>
+                  <canvas id="<?php echo $id; ?>_canvas" style="height:230px; min-height:230px"></canvas>
                 </div>
               </div>
               <!-- /.card-body -->
             </div>
-          </div>
-        </div>
       </div>
     </section>
-</body>
-</html>
 
 <script>
       $(function () {
@@ -66,7 +58,7 @@
         //- BAR CHART -
         //------------
 
-        var proChartCanvas = $('#proChart').get(0).getContext('2d')
+        var proChartCanvas = $('#<?php echo $id; ?>_canvas').get(0).getContext('2d')
         var proChartData = jQuery.extend(true, {}, proChartData)
         <?php
           $i=0;
@@ -89,3 +81,6 @@
         })
     })
     </script>
+
+</body>
+</html>

@@ -5,14 +5,12 @@ class summary extends CI_Controller {
 
 	public function index()
 	{	
-
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
 		
 		$this->load->model('Dashboard_model');
-
 		$this->load->library('parser');
 
 		$this->load->view('dashboard/navbar');
@@ -23,52 +21,51 @@ class summary extends CI_Controller {
 
 		$info_box = array(
 			'data_list' => array(
-				array('num' => '10', 'desc' => 'Body 1'),
+				array('num' => '42', 'desc' => 'Number of Scheme'),
 				array('num' => '15', 'desc' => 'Body 2'),
-				array('num' => '19', 'desc' => 'Body 3'),
-				array('num' => '324', 'desc' => 'Body 4')
+				array('num' => '19', 'desc' => 'Body 3')
 			)
 		);
 		
-		$this->parser->parse('dashboard/info_box', $info_box);
+		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
 
-		//-----------------------------------------------------------------------------------------
+		//============================================================
 
-		//Insert data for progressbar in an array format
+		//================PROGRESS LIST===============================
 
-		$scheme_pro = array("KCC","DOC","DOG","ANAND");
+		$scheme_name = array("KCC","DOC","DOG","ANAND");
 
-		if(isset($_POST['progress_filter_submit'])){//to run PHP script on submit
-			if(!empty($_POST['check_list'])){
-				$scheme_pro = array();
-				//Loop to store and display values of individual checked checkbox.
-				foreach($_POST['check_list'] as $selected){
-					array_push($scheme_pro,$selected);
+		if(isset($_POST['progress_submit'])){
+			if(!empty($_POST['progress_left_check_list'])){
+				$scheme_name = array();
+				foreach($_POST['progress_left_check_list'] as $selected){
+					array_push($scheme_name,$selected);
 				}
 			}
 		}
 
 		$filter_progress =array(
-			'filter_id' => 'progress_filter',
-			'selected' => $scheme_pro,
-			'c_name' => $this->Dashboard_model->list_table(),
-			'f_name' => $this->Dashboard_model->fullname()
+			'filter_id' => 'progress',
+			'selected_left' => $scheme_name,
+			'left' => true,
+			'right' => false,
+			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
 		);
 
+		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $filter_progress);
-	
-
 		
-		$size_sch = sizeof($scheme_pro);
-		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
-		$data = $this->Dashboard_model->get_prog($scheme_pro,$size_sch);
+		$size_sch = sizeof($scheme_name);
+		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
+		$data = $this->Dashboard_model->get_prog($scheme_name,$size_sch);
 		$work_progress = array();
 		$i=0;
 		while($i<$size_sch)
 		{
 			if($data[$i]>60)
 				$find='success';
-			else if($data[$i]<60&&$data[$i]>40)
+			else if($data[$i]<60 && $data[$i]>40)
 				$find='warning';
 			else
 				$find='danger';
@@ -85,7 +82,47 @@ class summary extends CI_Controller {
 		$progress_view = array('work_progress' => $work_progress
 		);
 
-		$this->parser->parse('dashboard/progress_view', $progress_view);
+		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
+
+		$container['noti_view'] = $this->load->view('dashboard/noti_view', null ,TRUE);
+
+		//=========================================================
+
+		$scheme_pie = array("KCC","DOC","DOG","ANAND");
+
+		if(isset($_POST['pie_submit'])){
+			if(!empty($_POST['pie_left_check_list'])){
+				$scheme_pie = array();
+				foreach($_POST['pie_left_check_list'] as $selected){
+					array_push($scheme_pie, $selected);
+				}
+			}
+		}
+
+		$filter_pie =array(
+			'filter_id' => 'pie',
+			'selected_left' => $scheme_name,
+			'left' => true,
+			'right' => false,
+			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
+		);
+
+		//Initialising the filter
+		$this->load->view('dashboard/filter_view', $filter_pie);
+
+		$n = count($scheme_pie);
+
+		$data = $this->Dashboard_model->get_prog($scheme_pie, $n);
+		$schemename_pie = $this->Dashboard_model->sch_name($scheme_pie,$n);
+
+		$pie_view['data'] = $data;
+		$pie_view['name'] = $schemename_pie;
+
+		$container['pie_chart'] = $this->load->view('dashboard/pie_chart', $pie_view ,TRUE);
+
+
+		//================BAR CHART 1===============================
 		
 		//Insert data for bar chart in an array format 
 		$scheme_bar = array("KCC","KishanM","ANAND","DOC","DOG");
@@ -94,33 +131,93 @@ class summary extends CI_Controller {
 
 		$target = array();
 		$progress = array();
-		for($i=0;$i<10;$i++)
-		{
+		for($i=0;$i<10;$i++){
 			if($i%2==0)
 				array_push($target, $result[$i]);
 			else
 				array_push($progress, $result[$i]);
 		}
 
-		$bar_chart = array(
-			'label1' => $schemename_bar,
-			'data1_1' => $target,
-			'data1_2' => $progress,
-			//-------------------------------
+		$bar_chart1 = array(
+			'id' => 'bar1',
+			'title' => 'Example',
 			'block' => $schemename_bar,
 			'no_bar' => 2,
 			'bar' => array('Fund Received','Fund Utilised'),
 			'data' => array()
 		);
 
-		array_push($bar_chart['data'],$target);
-		array_push($bar_chart['data'],$progress);
+		array_push($bar_chart1['data'],$target);
+		array_push($bar_chart1['data'],$progress);
 
-		$this->load->view('dashboard/bar_chart', $bar_chart);
+		$container['bar_chart1'] = $this->load->view('dashboard/bar_chart', $bar_chart1, TRUE);
 
-		$this->load->view('dashboard/pie_chart', $bar_chart);
+		//==============================================================
 
-		$this->load->view('dashboard/line_chart', $bar_chart);
+
+		//==============BAR CHART 2=====================================
+
+		$scheme_pro = array("KCC","DOC","DOG","ANAND");
+		$location = array("191601","191612","191607");
+		
+		if(isset($_POST['bar2_submit'])){
+			if(!empty($_POST['bar2_left_check_list'])){
+				$scheme_pro = array();
+				foreach($_POST['bar2_left_check_list'] as $selected){
+					array_push($scheme_pro,$selected);
+				}
+			}
+			if(!empty($_POST['bar2_right_check_list'])){
+				$location = array();
+				foreach($_POST['bar2_right_check_list'] as $selected){
+					array_push($location,$selected);
+				}
+			}
+		}
+
+		$bar2_filter_progress =array(
+			'filter_id' => 'bar2',
+			'selected_left' => $scheme_pro,
+			'selected_right' => $location,
+			'left' => true,
+			'right' => true,
+			'c_name_left' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
+			'f_name_left' => $this->Dashboard_model->fullname('dashboard_info','name'),
+			'c_name_right' => $this->Dashboard_model->list_table('location_data','location_schcd'),
+			'f_name_right' => $this->Dashboard_model->fullname('location_data','location_area')
+		);
+
+		//Initialising the filter
+		$this->load->view('dashboard/filter_view', $bar2_filter_progress);
+		
+		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
+		//We can choice here blocks with there particular sgfs
+		
+		$loc = $this->Dashboard_model->get_loc($location,sizeof($location));
+		//We can choice different schemes to show int the bar chart
+		
+		$size_sch = sizeof($scheme_pro);
+		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
+
+		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro));
+
+		$bar_chart2 = array(
+			'id' => 'bar2',
+			'title' => 'Example 1',
+			'block' => $loc,
+			'no_bar' => $size_sch,
+			'bar' => $schemename_pro,
+			'data' => array()
+		);
+		for($i=0;$i<$size_sch;$i++)
+		{
+			array_push($bar_chart2['data'],$matrix_data[$i]);
+			//array_push($bar_chart['data'],$progress);
+		}
+
+		$container['bar_chart2'] =  $this->load->view('dashboard/bar_chart', $bar_chart2, TRUE);
+
+		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
 		$scheme_alert = array("KCC","KishanM","ANAND","DOC","DOG");
 		$result_alert = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
@@ -140,17 +237,12 @@ class summary extends CI_Controller {
 		}
 		$table_data = array('data' => $fits );
 
-		/*$table_data = array(
-			'data' => array(
-				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10'),
-				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10'),
-				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10'),
-				array('c1' => '1', 'c2' => 'Yubashree', 'c3' => '150', 'c4' => '50', 'c5' => '10')
-			)
-		);
-*/
-		$this->parser->parse('dashboard/alert_table', $table_data);
-		
+		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
+
+		//======================================================================
+		//=========== PASSING ALL DATA TO CONTAINER ============================
+
+		$this->load->view('dashboard/container',$container);
 		
 	}
 	
@@ -165,8 +257,9 @@ class summary extends CI_Controller {
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
@@ -183,13 +276,13 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' => '',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'new'   =>'Go to edit profile since you are a new User',
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
@@ -219,12 +312,15 @@ class summary extends CI_Controller {
 		
 		//$this->load->view('edit_profile');
 		$this->load->model('profile_model');
+		$this->load->model('Admin_model');
+
 		$res = $this->profile_model->get_f($this->session->userdata('uid'));
 		$flag = 'False';
 		if($res){
 			$da = array(
+				//'update_prof' => '1',
 				'f_name' => $res->f_name,
-				//'m_name' => $mid,
+				'm_name' => $res->m_name,
 				'l_name' => $res->l_name,
 				'mobile' => $res->mobile,
 				'email' =>$res->email,
@@ -241,13 +337,13 @@ class summary extends CI_Controller {
 		}
 		else{
 			$da = array(
+				//'update_prof' => '0',
 				'f_name' =>'',
-				//'m_name' => $mid,
+				'm_name' =>'',
 				'l_name' => '',
 				'mobile' =>'',
 				'email' =>'',
 				'image' => '',
-				'new'   =>'Edit Your Profile for First time',
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>'',
 				'district' =>'',
@@ -266,6 +362,14 @@ class summary extends CI_Controller {
 							'required' => 'You must provide a %s.',
 					)
 			),
+			array(
+				'field' => 'mid',
+				'label' => 'Middle Name',
+				'rules' => 'required|alpha|max_length[50]',
+				'errors' => array(
+						'required' => 'You must provide a %s.',
+				)
+		),
 			array(
 					'field' => 'last',
 					'label' => 'Last Name',
@@ -289,14 +393,6 @@ class summary extends CI_Controller {
 				'label' => 'Designation',
 				'rules' => 'required|alpha_numeric_spaces|max_length[50]'
 			),
-			array(
-				'field' => 'dist',
-				'label' => 'District',
-				'rules' => 'required|alpha|max_length[50]',
-				'errors' => array(
-							'required' => 'You must provide a %s.',
-			)
-			)
 	);
 	$this->form_validation->set_rules($config);
 	if ($this->form_validation->run() == FALSE)
@@ -305,17 +401,21 @@ class summary extends CI_Controller {
 	}
 	else{
 		if(isset($_POST['sub1'])){
-            $first = $this->input->post('first');
+			$first = $this->input->post('first');
+			$mid = $this->input->post('mid');
             $last = $this->input->post('last');
             $mobile = $this->input->post('mob');
             $email = $this->input->post('email');
             $desig = $this->input->post('desig');
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-			
+			if ($image == NULL)
+			{
+				$image = $res->image;
+			}
             $data = array(
 				'f_name' => $first,
-				'm_name' => "",
+				'm_name' => $mid,
                 'l_name' => $last,
 				'mobile' => $mobile,
 				'username' =>$this->session->userdata('uid'),
@@ -330,6 +430,7 @@ class summary extends CI_Controller {
 				$this->profile_model->update($this->session->userdata('uid'),$data);
 			}else
 				$this->profile_model->upload($data);
+				$this->Admin_model->update_first_profile();
 			
 				header("location: http://localhost/NIC/index.php/Summary/profile_LTE");
 		}

@@ -53,6 +53,14 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link">
+              <i class="nav-icon fas fa-circle"></i>
+              <p>
+                Schedule a Meeting
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
               <p>
