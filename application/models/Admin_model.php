@@ -119,4 +119,13 @@ class Admin_model extends CI_Model {
         $row=$query->row();
         return $row->check_if_first_user;
     }
+    
+    public function check_user($n){
+        return $this->db->get_where('Login',array('username'=>$n))->row();
+    }
+
+    public function update_login($user,$password){
+        $this->db->where('username',$user);
+        $this->db->update('Login',array('password'=>$password));
+    }
 }
