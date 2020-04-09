@@ -1,6 +1,5 @@
 
-    <section class="content">
-      <div class="container-fluid">
+  
             <!-- BAR CHART -->
             <div class="card card-success">
               <div class="card-header">
@@ -18,8 +17,7 @@
               </div>
               <!-- /.card-body -->
             </div>
-      </div>
-    </section>
+   
 
 <script>
       $(function () {

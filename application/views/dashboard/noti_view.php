@@ -1,5 +1,4 @@
-<section class="content" >
-    <div class="container-fluid" >
+
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Notifications</h3>
@@ -38,5 +37,3 @@
             <!-- /.card-body -->
         </div>
         <!-- /.card -->
-    </div>
-</section>

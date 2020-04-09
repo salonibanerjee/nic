@@ -1,6 +1,5 @@
 
-  <section class="content">
-    <div class="container-fluid">
+  
       <!-- Small boxes (Stat box) -->
       <div class="row">
         {data_list}
@@ -19,5 +18,4 @@
         </div>
         {/data_list}
       </div>
-    </div>
-  </section>
+    

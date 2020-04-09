@@ -1,197 +1,141 @@
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 2 | User Profile</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-  <!-- Bootstrap 3.3.7 -->
-  <link rel="stylesheet" href="../../bower_components/bootstrap/dist/css/bootstrap.min.css">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="../../bower_components/font-awesome/css/font-awesome.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../../bower_components/Ionicons/css/ionicons.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="../../dist/css/AdminLTE.min.css">
-  <!-- AdminLTE Skins. Choose a skin from the css/skins
-       folder instead of downloading all of them to reduce the load. -->
-  <link rel="stylesheet" href="../../dist/css/skins/_all-skins.min.css">
-
-  <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-  <!--[if lt IE 9]>
-  <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-  <![endif]-->
-
-  <!-- Google Font -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
-</head>
-<?php
-        echo form_open_multipart("");
-    ?>
-    <?php
-      $this->load->model('profile_model');
-      ?>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
+<!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
-    <section class="content-header">
-      <h1>
-        Edit Profile <h2><?php echo ""."$new "?> </h2>
-      </h1>
-      <ol class="breadcrumb">
-        <li><a href="http://localhost/NIC/index.php/summary"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a >/</a></li>
-        <li><a >Dashboard/</a></li>
-        <li class="active">Edit profile</li>
-      </ol>
-    </section>
-
-    <!-- Main content -->
-    <section class="content">
-
-      <div class="row">
-        <div class="col-md-8">
-
-          <!-- Profile Image -->
-          <div class="box box-primary">
-            <div class="box-body box-profile">
-            <?php
-            if($image==""||$image==NULL){
-              echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='width:35px; height:35px;'>";
-            }
-            else{
-              echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;'>";
-            }?>
-              <!--<img id="blah" class="profile-user-img img-responsive img-circle"  src='data: image/jpeg; base64, <?php// echo $image?>' alt="Upload a Profile Picture" style="display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px;">-->
-              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label> 
-              
-              <style>
-.inputfile {
-	width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
-}
-.inputfile + label {
-    display: block; margin-left: auto;  margin-right: auto; width: 175px; background:#3E72D6; border-radius: 25px;
-    font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
-}
-.inputfile:focus + label,
-.inputfile + label:hover {
-    background-color: green;
-}
-.inputfile + label {
-	cursor: pointer; /* "hand" cursor */
-}
-</style>
-
-              <h3 class="profile-username text-center"><?php echo $f_name." ".$m_name." ".$l_name;?></h3>
-
-              <p class="text-muted text-center"><?php echo $designation;?></p>
-              <div class="card-body">
-                    <div class="form-group"><label>Username: <?php echo $username ?></label>
-                        
-                    </div>
-                    <div class="form-group"><label>First Name:</label>
-                        <input type="text" class="form-control" name="first" id="first"  value="<?php if(form_error('first')){echo set_value('first');}else{echo $f_name;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('first'); ?>
-                        </small>
-                        </p>
-                    </div>
-                    <div class="form-group"><label>Middle Name:</label>
-                        <input type="text" class="form-control" name="mid" id="mid"  value="<?php if(form_error('mid')){echo set_value('mid');}else{echo $m_name;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('mid'); ?>
-                        </small>
-                        </p>
-                    </div>
-                    <div class="form-group"><label>Last Name:</label>
-                        <input type="text" class="form-control" name="last" id = "last" value="<?php if(form_error('last')){echo set_value('last');}else{echo $l_name;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('last'); ?>
-                        </small>
-                        </p>
-                    </div>
-                    <div class="form-group"><label>Phone:</label>
-                        <input type="text" class="form-control" name="mob" id="mob" value="<?php if(form_error('mob')){echo set_value('mob');}else{echo $mobile;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('mob'); ?>
-                        </small>
-                        </p>
-                    </div>
-                    <div class="form-group"><label>Email:</label>
-                        <input type="text" class="form-control" name="email" id = "email"  value="<?php if(form_error('email')){echo set_value('email');}else{echo $email;}?>">
-                        <p class="error invalid-feedback">
-                        <small>
-                        <?php echo form_error('email'); ?>
-                        </small>
-                        </p>
-                    </div>
-                    <div class="form-group"><label>Designation</label>
-                        <select class="form-control" id ="desig" name= "desig" >
-                          <option><?php echo $designation; ?></option>
-                          <option>Leader</option>
-                          <option>Coordinator</option>
-                          <option>Support</option>
-                          <option>Idle</option>
-                          <option>Manager</option>
-                          <option>Asst. Manager</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>District</label>
-                        <select class="form-control" id ="dist" name= "dist" >
-                          <option><?php echo $district; ?></option>
-                          <option value="Alipurduar">Alipurduar</option>
-                          <option value="Bankura">Bankura</option>
-                          <option value="Bardhaman">Bardhaman</option>
-                          <option value="Birbhum">Birbhum</option>
-                          <option value="Cooch Behar">Cooch Behar</option>
-                          <option value="Darjeeling">Darjeeling</option>
-                          <option value="Hooghly">Hooghly</option>
-                          <option value="Howrah">Howrah</option>
-                          <option value="Jalpaiguri">Jalpaiguri</option>
-                          <option value="Jhargram">Jhargram</option>
-                          <option value="Kolkata">Kolkata</option>
-                          <option value="Kalimpong">Kalimpong</option>
-                          <option value="Malda">Malda</option>
-                          <option value="Medinipur(East)">Medinipur(East)</option>
-                          <option value="Medinipur(West)">Medinipur(West)</option>
-                          <option value="Murshidabad">Murshidabad</option>
-                          <option value="Nadia">Nadia</option>
-                          <option value="North Dinajpur">North Dinajpur</option>
-                          <option value="South Dinajpur">South Dinajpur</option>
-                          <option value="North 24 Parganas">North 24 Parganas</option>
-                          <option value="South 24 Parganas">South 24 Parganas</option>
-                          <option value="Purulia">Purulia</option>
-                        </select>
-                    </div>
-                </div>             
-              <input class="btn btn-primary btn-block" type = "submit" name = "sub1" id= "sub1" ></input>
-              <p></p>
-              <p></p>
-              <p></p>
-
-             <!-- <a href="http://localhost/NIC/index.php/Summary/profile" class="btn btn-primary btn-block" ><b></b></a> -->
-            </div>
-            <!-- /.box-body -->
-          </div>
-          <!-- /.box -->
-
-          <!-- About Me Box -->
-          <!-- /.box -->
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>Edit Profile</h1>
         </div>
-        <!-- /.col -->
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+            <li class="breadcrumb-item active">Edit Profile</li>
+          </ol>
+        </div>
       </div>
-      <!-- /.tab-pane -->
-    </section>
-  </div>
+    </div><!-- /.container-fluid -->
+  </section>
+ 
+
+  <section class="content">
+    <div class="container-fluid">
+      <!-- general form elements -->
+      <div class="card card-primary mx-auto" style="max-width: 700px">
+        
+        <!-- form start -->
+        
+          <div class="card-body">
+            <?php
+              echo form_open_multipart("");
+              $this->load->model('profile_model');
+            ?>
+            <div class="box-body box-profile">
+              <?php
+                if($image==""||$image==NULL){
+                  echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
+                }
+                else{
+                  echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
+                }
+              ?>
+              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label> 
+              <style>
+                .inputfile {
+                  width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
+                }
+                .inputfile + label {
+                    display: block; margin-left: auto;  margin-right: auto; width: 175px; background:#3E72D6; border-radius: 25px;
+                    font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
+                }
+                .inputfile:focus + label,
+                .inputfile + label:hover {
+                    background-color: green;
+                }
+                .inputfile + label {
+                  cursor: pointer; /* "hand" cursor */
+                }
+              </style>
+              <h3 class="profile-username text-center"><b><?php echo $f_name." ".$m_name." ".$l_name;?></b></h3>
+              <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" value="<?php echo $username ?>" disabled>
+                <p class='error invalid-feedback'><small></small></p>
+              </div>
+              <div class="form-group">
+                <label for="first">First Name</label>
+                <input type="text" class="form-control" name="first" id="first" placeholder="Enter First Name" value="<?php if(form_error('first')){echo set_value('first');}else{echo $f_name;}?>">
+                <p class='error invalid-feedback'><small><?php echo form_error('first'); ?></small></p>
+              </div>
+              <div class="form-group">
+                <label for="mid">Middle Name</label>
+                <input type="text" class="form-control" name="mid" id="mid" placeholder="Enter Middle Name" value="<?php if(form_error('mid')){echo set_value('mid');}else{echo $m_name;}?>">
+                <p class='error invalid-feedback'><small><?php echo form_error('mid'); ?></small></p>
+              </div>
+              <div class="form-group">
+                <label for="last">Last Name</label>
+                <input type="text" name="last" class="form-control" id="last" placeholder="Enter Last Name" value="<?php if(form_error('last')){echo set_value('last');}else{echo $l_name;}?>">
+                <p class='error invalid-feedback'><small><?php echo form_error('last'); ?></small></p>
+              </div>
+              <div class="form-group">
+                <label for="mob">Phone</label>
+                <input type="text" class="form-control" id="mob" name="mob" placeholder="Enter Phone Number" value="<?php if(form_error('mob')){echo set_value('mob');}else{echo $mobile;}?>">
+                <p class='error invalid-feedback'><small><?php echo form_error('phone'); ?></small></p>
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address" value="<?php if(form_error('email')){echo set_value('email');}else{echo $email;}?>">
+                <p class='error invalid-feedback'><small><?php echo form_error('email'); ?></small></p>
+              </div>
+              <div class="form-group">
+                <label>Designation</label>
+                <select class="form-control" id="desig" name="desig">
+                  <option><?php echo $designation; ?></option>
+                  <option value=>District Magistrate</option>
+                  <option>Additional District Magistrate(G)</option>
+                  <option>Additional District Magistrate</option>
+                  <option>Sub-Divisional Officer</option>
+                  <option>Block Development Officer</option>
+                  <option>Asst. Manager</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>District</label>
+                <select class="form-control" id ="dist" name= "dist" >
+                  <option><?php echo $district; ?></option>
+                  <option value="Alipurduar">Alipurduar</option>
+                  <option value="Bankura">Bankura</option>
+                  <option value="Bardhaman">Bardhaman</option>
+                  <option value="Birbhum">Birbhum</option>
+                  <option value="Cooch Behar">Cooch Behar</option>
+                  <option value="Darjeeling">Darjeeling</option>
+                  <option value="Hooghly">Hooghly</option>
+                  <option value="Howrah">Howrah</option>
+                  <option value="Jalpaiguri">Jalpaiguri</option>
+                  <option value="Jhargram">Jhargram</option>
+                  <option value="Kolkata">Kolkata</option>
+                  <option value="Kalimpong">Kalimpong</option>
+                  <option value="Malda">Malda</option>
+                  <option value="Medinipur(East)">Medinipur(East)</option>
+                  <option value="Medinipur(West)">Medinipur(West)</option>
+                  <option value="Murshidabad">Murshidabad</option>
+                  <option value="Nadia">Nadia</option>
+                  <option value="North Dinajpur">North Dinajpur</option>
+                  <option value="South Dinajpur">South Dinajpur</option>
+                  <option value="North 24 Parganas">North 24 Parganas</option>
+                  <option value="South 24 Parganas">South 24 Parganas</option>
+                  <option value="Purulia">Purulia</option>
+                </select>
+              </div>
+            </div>
+          <!-- /.card-body -->
+          <div class="card-footer">
+            <button type="submit" name= "sub1" id="sub1" class="btn btn-primary">Submit</button>
+          </div>
+      </div>
+    </div>
+  <section>
 </div>
-<!-- ./wrapper -->
 <script>
 function readURL(input) {
         if (input.files && input.files[0]) {
@@ -209,16 +153,6 @@ function readURL(input) {
         readURL(this);
     });
 </script>
-<!-- jQuery 3 -->
-<script src="../../bower_components/jquery/dist/jquery.min.js"></script>
-<!-- Bootstrap 3.3.7 -->
-<script src="../../bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-<!-- FastClick -->
-<script src="../../bower_components/fastclick/lib/fastclick.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="../../dist/js/demo.js"></script>
 <script type="text/javascript">
         document.getElementById("file").value = getSavedValue("file");
         function saveValue(e){
@@ -233,5 +167,3 @@ function readURL(input) {
             return localStorage.getItem(v);
         }
 </script>
-</body>
-</html>

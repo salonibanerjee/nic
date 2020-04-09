@@ -1,6 +1,5 @@
 
-    <section class="content">
-      <div class="container-fluid">
+  
         <div class="card">
           <div class="card-header">
             <h3 class="card-title">Scheme wise physical work progress</h3>
@@ -37,5 +36,4 @@
             </table>
           </div>
         </div>
-      </div>
-    </section>
+  

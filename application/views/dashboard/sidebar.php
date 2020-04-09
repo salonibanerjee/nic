@@ -37,7 +37,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Summary/profile_LTE" class="nav-link">
+            <a href="http://localhost/NIC/index.php/Summary/profile" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
               <p>
                 Profile
