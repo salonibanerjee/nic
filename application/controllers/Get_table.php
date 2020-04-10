@@ -18,10 +18,14 @@ class Get_table extends MY_Controller {
     public function load($n){
         $this->check_privilege(3);
         //Load 'CRUD' model
+        $this->load->model('profile_model');
+        $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $query = $this->db->get_where('meeting_schedule', array('id' => 1));
         $row = $query->row();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
+        $u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+        $this->load->view('dashboard/navbar',$u_type);
         if((strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)) && (strtotime(mdate('%Y-%m-%d %H:%i', now())) < strtotime($row->end_time))){
             ?>
                      <script type=text/javascript>
@@ -38,7 +42,13 @@ class Get_table extends MY_Controller {
         $result['data_table']=$this->Crud_model->list_table();
         $result['s_name_table']=$this->Crud_model->fullname();
         $result['username'] = $this->session->userdata('uid');
-        
+
+        if($da['flag']==0){
+            $da['flag']=1;
+            $da['data_table']=$result['data_table'];
+            $da['s_name_table']=$result['s_name_table'];
+        }
+        $this->load->view('dashboard/sidebar',$da);
         #dynamic type checking
         $x=$this->Crud_model->get_attri($n);
         $y=array();

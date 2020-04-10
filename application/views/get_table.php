@@ -26,66 +26,6 @@
 
     <body>
     <div class="wrapper">
-      <!-- Navbar -->
-      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-        <!-- Left navbar links -->
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-            <a href="http://localhost/NIC/index.php/summary" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-            <a href="#" class="nav-link">Contact</a>
-          </li>
-          <li class="nav-item d-none d-sm-inline-block">
-            <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
-          </li>
-        </ul>
-      </nav>
-      <!-- /.navbar -->
-
-      <aside class="main-sidebar sidebar-dark-primary elevation-4">
-        <!-- Brand Logo -->
-        <a href="index3.html" class="brand-link bg-primary">
-          <img src="<?php echo base_url();?>logo/wb_logo.png" alt="Logo" class="brand-image">
-          <span class="brand-text font-weight-light"><b>MPR</b></span>
-        </a>
-
-        <!-- Sidebar -->
-        <div class="sidebar">
-          <!-- Sidebar Menu -->
-          <nav class="mt-2">
-            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-              <!-- Add icons to the links using the .nav-icon class
-                  with font-awesome or any other icon font library -->
-              <li class="nav-item has-treeview menu-open">
-                <a href="#" class="nav-link active">
-                  <i class="nav-icon fas fa-circle"></i>
-                  <p>
-                    All Scheme
-                    <i class="right fas fa-angle-left"></i>
-                  </p>
-                </a>
-                <ul class="nav nav-treeview"  id="myUL">
-                  <input id="schemeSearch" onkeyup="myFunction()" class="form-control" type="text" placeholder="Search" style="height:30; width:90%; margin:10">
-                  <?php 
-                      $i=0;
-                      foreach($data_table as $row){
-                          echo "<li><a href='./$row' class='nav-link'>".$s_name_table[$i]."</a></li>";
-                          $i++;
-                      }
-                  ?>
-                </ul>
-              </li>
-            </ul>
-          </nav>
-          <!-- /.sidebar-menu -->
-        </div>
-        <!-- /.sidebar -->
-      </aside>
-
       <div class="content-wrapper">
         <section class="content-header">
           <div class="container-fluid">

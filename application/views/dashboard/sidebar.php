@@ -50,6 +50,27 @@
               <p>Schedule a Meeting</p>
             </a>
           </li>
+
+          <?php if($flag==1){
+            echo "<li class='nav-item has-treeview menu-open'>";
+              echo "<a href='#' class='nav-link active'>";
+                echo "<i class='nav-icon fas fa-circle'></i>";
+                echo "<p>";
+                echo  "All Scheme";
+                  echo "<i class='right fas fa-angle-left'></i>";
+                echo "</p>";
+              echo "</a>";
+              echo "<ul class='nav nav-treeview'  id='myUL'>";
+                echo "<input id='schemeSearch' onkeyup='myFunction()' class='form-control' type='text' placeholder='Search' style='height:30; width:90%; margin:10'>";
+                    $i=0;
+                    foreach($data_table as $row){
+                        echo "<li><a href='./$row' class='nav-link'>".$s_name_table[$i]."</a></li>";
+                        $i++;
+                    }
+              echo "</ul>";
+            echo "</li>";
+
+          }?>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->

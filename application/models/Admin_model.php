@@ -62,6 +62,11 @@ class Admin_model extends CI_Model {
         $this->db->cache_off();
     }
 
+    function sort($a, $b) {
+        if ($a['order'] == $b['order']) return 0;
+        return ($a['order'] > $b['order']) ? 1 : -1;
+    }
+
 
     public function user_type_cache($var){
         //from login table
@@ -89,7 +94,6 @@ class Admin_model extends CI_Model {
                     }
                 }
             //}
-
             $result = array(
                 'user_type_id_pk'=>$var,
                // 'desig' => $row->desig,

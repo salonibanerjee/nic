@@ -13,8 +13,8 @@ class summary extends CI_Controller {
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
-		$this->load->view('dashboard/navbar');
-		
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
@@ -249,11 +249,15 @@ class summary extends CI_Controller {
 	}
 	
 	public function profile(){
+		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$this->load->view('dashboard/navbar');
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
 	}
@@ -262,7 +266,8 @@ class summary extends CI_Controller {
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-		$this->load->view('dashboard/navbar');
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 		$this->load->model('profile_model');
 		$this->load->model('Admin_model');

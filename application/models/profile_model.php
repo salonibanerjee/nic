@@ -38,7 +38,8 @@ class profile_model extends CI_Model {
 				'designation' =>$res->designation,
 				'district' =>$res->district,
                 'first_user'=>$row->check_if_first_user,
-                'update_prof'=>$row->check_profile_updated_once
+				'update_prof'=>$row->check_profile_updated_once,
+				'flag'=> 0
             );
         }else{
             $da = array(
@@ -48,7 +49,8 @@ class profile_model extends CI_Model {
                 'image'=> '',
 				'designation' =>'-NA-',
                 'first_user'=>$row->check_if_first_user,
-                'update_prof'=>$row->check_profile_updated_once
+				'update_prof'=>$row->check_profile_updated_once,
+				'flag'=> 0
 			);
         }
         return $da;
