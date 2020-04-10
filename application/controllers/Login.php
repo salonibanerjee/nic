@@ -52,7 +52,7 @@ class Login extends CI_Controller {
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status')['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
-                        $this->Admin_model->user_type_cache();
+                        $this->Admin_model->user_type_cache($var);
                     }
 
                     if($this->cache->get('Active_status')['active_status']==1){
@@ -207,6 +207,7 @@ class Login extends CI_Controller {
     }
     public function password_change(){
         $this->load->model('Admin_model');
+        $var = array('value'=>1);
         //echo now()."<br>";
         //echo now()+4000;
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email');
@@ -214,7 +215,7 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('login_reset');
+            $this->load->view('login_reset',$var);
         }else{
             $enc = $this->uri->segment(4);
             $user=$this->input->post('email');
@@ -256,6 +257,7 @@ class Login extends CI_Controller {
 
     public function password_change_first_user(){
         $this->load->model('Admin_model');
+        $var = array('value'=>2);
         //echo now()."<br>";
         //echo now()+4000;
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
@@ -263,7 +265,7 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('login_reset');
+            $this->load->view('login_reset',$var);
         }else{
             $user=$this->input->post('email');
             $encuser=hash('sha256',$user);

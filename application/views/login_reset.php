@@ -25,10 +25,17 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href=#><b>M</b>PR</a>
-  </div>
+<?php if($value==1){
+  echo "<div class='login-box'>";
+  echo "<div class='login-logo'>";
+  echo    "<a href=#><b>FORGOT </b>PASSWORD</a>";
+  echo  "</div>";
+}else{
+  echo "<div class='login-box'>";
+  echo "<div class='login-logo'>";
+  echo    "<a href=#>CHANGE PASSWORD FOR <b>THE FIRST TIME</b></a>";
+  echo  "</div>";
+}?>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">

@@ -16,15 +16,17 @@ class Get_table extends MY_Controller {
     }
 
     public function load($n){
-        //$this->check_privilege(3);
+        $this->check_privilege(3);
         //Load 'CRUD' model
         $query = $this->db->get_where('meeting_schedule', array('id' => 1));
         $row = $query->row();
+        $this->load->driver('cache',array('adapter' => 'file'));
+        $var = $this->cache->get('Active_status')['user_type_id_fk'];
         if((strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)) && (strtotime(mdate('%Y-%m-%d %H:%i', now())) < strtotime($row->end_time))){
             ?>
                      <script type=text/javascript>
                         alert("Meeting running");
-                        window.location.href = "http://localhost/NIC/index.php/Summary";
+                        window.location.href = "http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>";
                     </script>
             <?php
         }else{

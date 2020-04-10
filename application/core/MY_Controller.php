@@ -29,6 +29,21 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    public function sidebar_load($upid){
+        $this->load->driver('cache', array('adapter' => 'file'));
+        $data=$this->cache->get('Active_status')['user_type_id_fk'];
+        $var=$this->cache->get('User_type'.$data)['user_privilege'];
+        $flag=0;
+        foreach($var as $x){
+            if($upid == $x['privilege_id_pk']){
+                $flag=1;
+            }
+        }
+        if($flag==1)
+            return 1;
+        else
+            return 0;
+    }
 
 }
     

@@ -28,44 +28,26 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/summary" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Dashboard
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Summary/profile" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Profile
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/get_table/load/KCC" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Input Data
-              </p>
-            </a>
-          </li>
+          <?php
+            $data=$this->cache->get('Active_status')['user_type_id_fk'];
+            $var=$this->cache->get('User_type'.$data)['user_privilege'];
+            foreach($var as $x){
+              if($x['view_sidebar']==1){
+                echo "<li class='nav-item'>";
+                echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                echo "<i class='nav-icon fas fa-circle'></i>";
+                echo "<p>";
+                echo $x['page_name'];
+                echo "</p>";
+                echo "</a>";
+                echo "</li>";
+              }
+            }
+          ?>
           <li class="nav-item">
             <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Schedule a Meeting
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>
-                Logout
-              </p>
+              <p>Schedule a Meeting</p>
             </a>
           </li>
         </ul>
