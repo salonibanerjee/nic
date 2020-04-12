@@ -26,13 +26,20 @@
               <div class="card-footer p-0">
                 <ul class="nav flex-column">
                   <?php $i=0; foreach($data as $row){
-                    if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd'){
+                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
                       $i++;
                       continue;
                   }else{
                       echo "<li class='nav-item'>";
                       echo "<a  class='nav-link'>";
+                      if(isset($draft_data->$row)){
+                        if($s_name[$i]=="Month")
+                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
+                        else
                         echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                      }
+                      else
+                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
                       echo "</a>";
                     echo "</li>";
                   }
@@ -56,7 +63,7 @@
                 <?php
                   $i=0;
                   foreach($data as $row){
-                    if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip'){
+                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' ||$row=='nodal_check'){
                           $i++;
                           continue;
                       }
@@ -66,17 +73,28 @@
                           echo    "<label>$s_name[$i]</label>";
                           echo    "<select name='$row' id='$row' class='form-control select2 select2-hidden-accessible' style='width: 100%;' data-select2-id='1' tabindex='-1' aria-hidden='true'>";
                                     for($x=$year;$x>=2019;$x--){
-                                      if($draft_data->session!=$x)
                                         echo "<option value='$x'".set_select($row,$x).">".$x."</option>";
-                                      else
-                                        echo "<option value='$draft_data->session' selected>".$draft_data->session."</option>";
-                                  }
+                                    }
                           echo    "</select>";
                           echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
                           //echo  "<span class='select2 select2-container select2-container--default select2-container--below' dir='ltr' data-select2-id='2' style='width: 100%;'><span class='selection'><span class='select2-selection select2-selection--single' role='combobox' aria-haspopup='true' aria-expanded='false' tabindex='0' aria-disabled='false' aria-labelledby='select2-u66w-container'><span class='select2-selection__rendered' id='select2-u66w-container' role='textbox' aria-readonly='true' title='Enter Session'>Alabama</span><span class='select2-selection__arrow' role='presentation'><b role='presentation'></b></span></span></span><span class='dropdown-wrapper' aria-hidden='true'></span></span>";
                           echo "</div>";
                           $i++;
                       }
+                      elseif($row == 'Month'){
+                        $year=intval(date('Y'));
+                        echo "<div class='form-group'>";
+                        echo    "<label>$s_name[$i]</label>";
+                        echo    "<select name='$row' id='$row' class='form-control select2 select2-hidden-accessible' style='width: 100%;' data-select2-id='1' tabindex='-1' aria-hidden='true'>";
+                        for($x=1;$x<=12;$x++){
+                          echo "<option value='$x'".set_select($row,$x).">".$month[$x]."</option>";
+                        }
+                        echo    "</select>";
+                        echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
+                        //echo  "<span class='select2 select2-container select2-container--default select2-container--below' dir='ltr' data-select2-id='2' style='width: 100%;'><span class='selection'><span class='select2-selection select2-selection--single' role='combobox' aria-haspopup='true' aria-expanded='false' tabindex='0' aria-disabled='false' aria-labelledby='select2-u66w-container'><span class='select2-selection__rendered' id='select2-u66w-container' role='textbox' aria-readonly='true' title='Enter Session'>Alabama</span><span class='select2-selection__arrow' role='presentation'><b role='presentation'></b></span></span></span><span class='dropdown-wrapper' aria-hidden='true'></span></span>";
+                        echo "</div>";
+                        $i++;
+                    }
                       elseif($row == 'date' || $row == 'Till_date' || $row == 'Date_of_Inception' || $row == 'Date_of_Inspection'){
                           $year=date('Y-m-d');
                           echo "<div class='form-group'>";
@@ -98,11 +116,8 @@
                       else{
                           echo "<div class='form-group'>";
                           echo    "<label>$s_name[$i]</label>";
-                          if(form_error($row))  
-                            echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".set_value($row)."'>";
-                          else
-                            echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".$draft_data->$row."'>";
-                            echo    "<p class='error invalid-feedback '><small>".form_error($row)."</small></p>";
+                          echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".set_value($row)."'>";
+                          echo    "<p class='error invalid-feedback '><small>".form_error($row)."</small></p>";
                           echo "</div>";
                           $i++;
                       }

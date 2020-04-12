@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class sample extends MY_Controller {
+class Sample_d extends MY_Controller {
     public function index(){
 
     }
@@ -52,11 +52,9 @@ class sample extends MY_Controller {
             $this->load->view('dashboard/sidebar',$da);
             #dynamic type checking
             $x=$this->Crud_model->get_attri($n);
-            $y=array();
             $result['s_name']=array();
             $result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
             $flag=0;
-
             //setting array for form validations
             foreach($x as $field){
                 if($field->name=="id_pk" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" || $field->name=='nodal_check'){
@@ -67,65 +65,36 @@ class sample extends MY_Controller {
                 $w=$this->Crud_model->get_type($field->type);
                 $ij=$this->Crud_model->search_attri($field->name);
                 $result['s_name'][]=$ij;
-
-                    $y[]=array(
-                        'field' => $field->name,
-                        'label' => $ij,
-                        'rules' => "required|max_length[$z]|$w"
-                    );
             }
-
-            $this->form_validation->set_rules($y);
-
-            if($this->form_validation->run()==TRUE){
-                #Submitting form while saving data
-                if($this->input->post('save')){
-                    $r=array();
-                    foreach($result['data'] as $row){
-                        if($row=="id_pk" || $row=="schcd"){
-                            continue;
-                        }
-                        $r[$row]=$this->input->post($row);
-                    }
-                    $r['user'] = $this->session->userdata('uid');
-                    $r['tstamp'] = date('Y-m-d H:i:s');
-                    $r['ip'] = $this->input->ip_address();
-                    $r['schcd'] = $this->session->userdata('gp_id');
-                    $r['nodal_check'] = -1;
-                    $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['Month']);
-                    if($old_value){
-                        $this->Crud_model->update($r,$n.'_draft');
-                        unset($old_value->id_pk);
-                        $this->Crud_model->save_data($old_value,$n.'_backup');
-                        $this->Crud_model->audit_upload($this->session->userdata('uid'),
-                                                    current_url(),
-                                                    'Update - into '.$n.'_draft',
-                                                    'Custom Message here');
-                        echo "Updated Successfully";
-                    }else{
-                        $this->Crud_model->save_data($r,$n.'_draft');
-                        $this->Crud_model->audit_upload($this->session->userdata('uid'),
-                                                    current_url(),
-                                                    'Insert - into '.$n.'_draft',
-                                                    'Custom Message here');
-                        echo "Records Saved Successfully";
-                    }
-
-                    //commit and rollback
-                    if($this->db->trans_status()==FALSE)
-                        $this->db->trans_rollback();
-                    else{
-                        $this->db->trans_commit();
-                    ?>
-                        <script type=text/javascript>
-                            alert("Saved Successfully...");
-                            window.location.href = "http://localhost/NIC/index.php/sample/load/<?php echo $n ?>";
-                        </script>
-                    <?php
-                    }
+            $this->load->view('nod_check',$result);
+            if($this->input->post('sub1')=="Accept"){
+                $result['draft_data']->nodal_check=1;
+                $this->Crud_model->delete_sub($result['draft_data']->id_pk,$n.'_draft');
+                unset($result['draft_data']->id_pk);
+                if($this->Crud_model->unique_data_entry($n,$result['draft_data']->session,$result['draft_data']->Month)){
+                    $this->Crud_model->update_sub($result['draft_data'],$n);
+                }else{
+                    $this->Crud_model->save_data($result['draft_data'],$n);
                 }
-            }else{
-                $this->load->view('get_table',$result);
+                $this->Crud_model->save_data($result['draft_data'],$n.'_backup');
+                ?>
+                        <script type=text/javascript>
+                            alert("Value accepted");
+                            window.location.href = "http://localhost/NIC/index.php/Sample_d/load/<?php echo $n ?>";
+                        </script>
+                <?php
+            }
+            if($this->input->post('sub2')=="Reject"){
+                $result['draft_data']->nodal_check=0;
+                $this->Crud_model->delete_sub($result['draft_data']->id_pk,$n.'_draft');
+                unset($result['draft_data']->id_pk);
+                $this->Crud_model->save_data($result['draft_data'],$n.'_backup');
+                ?>
+                        <script type=text/javascript>
+                            alert("Value rejected");
+                            window.location.href = "http://localhost/NIC/index.php/Sample_d/load/<?php echo $n ?>";
+                        </script>
+                <?php
             }
         }
     }

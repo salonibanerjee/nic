@@ -21,7 +21,7 @@ class Crud_model extends CI_Model {
         }
         function update($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd']));
+                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd'],'Month'=>$r['Month']));
                 $this->db->update($n,$r);
         }
         function update_schcd($r,$n){
@@ -149,10 +149,10 @@ class Crud_model extends CI_Model {
         //$n->tablename, $s-> session 
         public function unique_data_entry($n,$s,$k){
                 $var=$this->session->userdata('gp_id');
-                $query = $this->db->get_where($n, array($k => $s,'schcd' => $var));
+                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var, 'Month' => $k));
                 $row = $query->row();
                 if($row){
-                        return TRUE; 
+                        return $row; 
                 }else{
                         return FALSE;
                 }
@@ -160,7 +160,16 @@ class Crud_model extends CI_Model {
 
         public function draft_data_fetch($table_name){
                 $var = $this->session->userdata('gp_id');
-                $last_row=$this->db->select('*')->where('schcd',$var)->order_by($table_name.'_id_pk','DESC')->limit(1)->get($table_name)->row();
+                $last_row=$this->db->select('*')->where('schcd',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
+        }
+        function update_sub($r,$n){
+                //$this->db->where('session', $r['session']);
+                $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'Month'=>$r->Month));
+                $this->db->update($n,$r);
+        }
+        function delete_sub($r,$n){
+                $this->db->where('id_pk', $r);
+                $this->db->delete($n);
         }
 }
