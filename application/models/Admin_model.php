@@ -145,4 +145,43 @@ class Admin_model extends CI_Model {
         $row=$query->row();
         return $row;
     }
+
+    public function _generateCaptcha(){
+        $vals = array(
+            'word'          => rand(1000, 9999),
+            //'word'          => $this->getName(5,8),
+            'img_path'      => './captcha/',
+            'img_url'       => 'http://localhost/NIC/captcha/',
+            'font_path'     => './path/to/fonts/texb.ttf',
+            'img_width'     => '200',
+            'img_height'    => 40,
+            'expiration'    => 7200,
+            'word_length'   => 8,
+            'font_size'     => 50,
+            'img_id'        => 'Imageid',
+            'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    
+            // White background and border, black text and red grid
+            'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(51, 153, 255)
+            )
+        );
+        /* Generate the captcha */
+        return create_captcha($vals);
+    }
+
+    public function getName($x,$y) {
+        $length = rand($x,$y);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        return $randomString;
+    }
 }

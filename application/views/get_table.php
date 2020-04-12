@@ -11,6 +11,38 @@
   <section class='content'>
     <div class='container-fluid'>
       <div class='row'>
+          <div class="col-md-11">
+            <!-- Widget: user widget style 2 -->
+            <div class="card card-widget widget-user-2">
+              <!-- Add the bg color to the header using any of the bg-* classes -->
+              <div class="widget-user-header bg-warning">
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h3 class="widget-user-username"><?php echo $name; ?></h3>
+                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name."--";?><strong>Draft Data</strong></h5>
+              </div>
+              <div class="card-footer p-0">
+                <ul class="nav flex-column">
+                  <?php $i=0; foreach($data as $row){
+                    if($row == 'id' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd'){
+                      $i++;
+                      continue;
+                  }else{
+                      echo "<li class='nav-item'>";
+                      echo "<a  class='nav-link'>";
+                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                      echo "</a>";
+                    echo "</li>";
+                  }
+                    $i++;
+                  }?>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
         <!-- left column -->
         <div class='col-md-11'>
           <div class='card card-primary'>
@@ -33,8 +65,11 @@
                           echo "<div class='form-group'>";
                           echo    "<label>$s_name[$i]</label>";
                           echo    "<select name='$row' id='$row' class='form-control select2 select2-hidden-accessible' style='width: 100%;' data-select2-id='1' tabindex='-1' aria-hidden='true'>";
-                                  for($x=$year;$x>=2019;$x--){
-                                      echo "<option value='$x'".set_select($row,$x).">".$x."</option>";
+                                    for($x=$year;$x>=2019;$x--){
+                                      if($draft_data->session!=$x)
+                                        echo "<option value='$x'".set_select($row,$x).">".$x."</option>";
+                                      else
+                                        echo "<option value='$draft_data->session' selected>".$draft_data->session."</option>";
                                   }
                           echo    "</select>";
                           echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
@@ -63,8 +98,11 @@
                       else{
                           echo "<div class='form-group'>";
                           echo    "<label>$s_name[$i]</label>";
-                          echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".set_value($row)."'>";
-                          echo    "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
+                          if(form_error($row))  
+                            echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".set_value($row)."'>";
+                          else
+                            echo    "<input type='text' class='form-control' name='$row' id='$row' placeholder='Enter Value' value='".$draft_data->$row."'>";
+                            echo    "<p class='error invalid-feedback '><small>".form_error($row)."</small></p>";
                           echo "</div>";
                           $i++;
                       }
@@ -74,6 +112,7 @@
               </div>
               <!-- /.card-body -->
               <div class='card-footer'>
+              <?php echo validation_errors();?>
                 <button type='submit' class='btn btn-primary' name='save' id='save' value="<?php 
                   if(form_error('session')||form_error('schcd')){
                       echo 'Update data';

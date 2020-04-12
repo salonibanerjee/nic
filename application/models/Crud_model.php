@@ -77,24 +77,25 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
-        //creating backup table
-        function backup_table($n){
-                $a = $n."_backup";
-                if($this->db->table_exists($n."_backup")){
+        //creating backup table & draft table
+        function backup_draft_table($n,$s){
+                $a = $n."_".$s;
+                if($this->db->table_exists($n."_".$s)){
                 }else{
                         $this->load->dbforge();
                         $fields = $this->db->field_data($n);
-                        $field = $this->extract_field($fields);
+                        $field = $this->extract_field($fields,$a);
                         $this->dbforge->add_field($field);
                         $this->dbforge->add_key('id', TRUE);
                         $this->dbforge->create_table($a);
                 }
         }
-        function extract_field($x){
+        //setting fields for newly automated formed tables
+        function extract_field($x,$table_name){
                 $y=array();
                 foreach($x as $field){
                         if($field->name == 'id'){
-                                $y[$field->name]=array(
+                                $y[$table_name.'_id_pk']=array(
                                         'type' => $field->type,
                                         'max_length' => $field->max_length,
                                         'auto_increment' => TRUE
@@ -155,5 +156,11 @@ class Crud_model extends CI_Model {
                 }else{
                         return FALSE;
                 }
+        }
+
+        public function draft_data_fetch($table_name){
+                $var = $this->session->userdata('gp_id');
+                $last_row=$this->db->select('*')->where('schcd',$var)->order_by($table_name.'_id_pk','DESC')->limit(1)->get($table_name)->row();
+                return $last_row;
         }
 }

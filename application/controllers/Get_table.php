@@ -16,9 +16,19 @@ class Get_table extends MY_Controller {
     }
 
     public function load($n){
+        //if(!isset($_SESSION['logged_in']))
+		//	header("Location: http://localhost/NIC/index.php/Login");
         $this->check_privilege(3);
         //Load 'CRUD' model
         $this->load->model('profile_model');
+        $this->load->model('Crud_model');
+        $this->Crud_model->backup_draft_table($n,'backup');
+        $this->Crud_model->backup_draft_table($n,'draft');
+        $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                                            current_url(),
+                                            'Backup & draft - '.$n,
+                                            'Custom Message here');
+
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $query = $this->db->get_where('meeting_schedule', array('id' => 1));
         $row = $query->row();
@@ -34,7 +44,6 @@ class Get_table extends MY_Controller {
                     </script>
             <?php
         }else{
-        $this->load->model('Crud_model');
 
         //Fetch Attribute name. n - schema name
         $result['data'] =$this->Crud_model->get_table($n);
@@ -42,7 +51,9 @@ class Get_table extends MY_Controller {
         $result['data_table']=$this->Crud_model->list_table();
         $result['s_name_table']=$this->Crud_model->fullname();
         $result['username'] = $this->session->userdata('uid');
-
+        $result['draft_data'] = $this->Crud_model->draft_data_fetch($n."_draft");
+        $result['profile'] = $da;
+        
         if($da['flag']==0){
             $da['flag']=1;
             $da['data_table']=$result['data_table'];
@@ -119,6 +130,9 @@ class Get_table extends MY_Controller {
                 $r['tstamp'] = date('Y-m-d H:i:s');
                 $r['ip'] = $this->input->ip_address();
                 $r['schcd'] = $this->session->userdata('gp_id');
+                //changes$this->Crud_model->draft_table($n);
+                $this->Crud_model->save_data($r,$n."_draft"); 
+                
                 if($flag==0){
                     $this->Crud_model->update_schcd($r,$n);
                 }else{
@@ -128,11 +142,7 @@ class Get_table extends MY_Controller {
                                             current_url(),
                                             'Update - '.$n,
                                             'Custom Message here');
-                $this->Crud_model->backup_table($n);
-                $this->Crud_model->audit_upload($this->session->userdata('uid'),
-                                            current_url(),
-                                            'Backup - '.$n,
-                                            'Custom Message here');
+                
                 if($flag==1){
                     $data_b = $this->Crud_model->get($n,$r['session'],$r['schcd']);
                 }else{
@@ -175,7 +185,6 @@ class Get_table extends MY_Controller {
                                             current_url(),
                                             'Insert - '.$n,
                                             'Custom Message here');
-                $this->Crud_model->backup_table($n);
                 $this->Crud_model->save_data($r,$n."_backup");
                 $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                             current_url(),
