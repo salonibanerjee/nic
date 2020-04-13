@@ -65,6 +65,13 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a href="http://localhost/NIC/index.php/data_view/load/KCC" class="nav-link">
+              <i class="nav-icon fas fa-circle"></i>
+              <p>Table</p>
+            </a>
+          </li>
+
           <?php if($flag==1){
             echo "<li id='hulala' class='nav-item has-treeview menu-open'>";
               echo "<a href='#' class='nav-link'>";

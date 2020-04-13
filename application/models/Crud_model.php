@@ -163,6 +163,18 @@ class Crud_model extends CI_Model {
                 $last_row=$this->db->select('*')->where('schcd',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
         }
+        //for tabular view
+        public function backup_data_fetch($table_name){
+                $var = $this->session->userdata('gp_id');
+                $count=0;
+                $count = $this->db->select('*')->where(['schcd'=>$var])->from($table_name)->count_all_results();
+                if($count>0){
+                        $query = $this->db->select('*')->get_where($table_name, array('schcd' => $var, 'nodal_check'=>1))->result_array();
+                        return $query;
+                }else{
+                        return 0;
+                }
+        }
         function update_sub($r,$n){
                 //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'Month'=>$r->Month));
