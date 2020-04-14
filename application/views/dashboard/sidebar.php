@@ -27,7 +27,7 @@
         
       </div>
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false"">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <?php
@@ -47,23 +47,9 @@
             }
           ?>
           <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link">
+            <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link active">
               <i class="nav-icon fas fa-circle"></i>
               <p>Schedule a Meeting</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/sample/load/KCC" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Sample</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Sample_d/load/KCC" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Sample New</p>
             </a>
           </li>
 

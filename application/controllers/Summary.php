@@ -1,12 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class summary extends CI_Controller {
+class summary extends MY_Controller {
 
 	public function index()
 	{	
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
+		//$this->check_privilege(1);
+
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));

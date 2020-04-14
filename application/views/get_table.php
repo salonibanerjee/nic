@@ -13,20 +13,20 @@
       <div class='row'>
           <div class="col-md-11">
             <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user-2">
+            <div class="card card-widget widget-user">
               <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-warning">
+              <div class="widget-user-header bg-orange">
                 <div class="widget-user-image">
-                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
+                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:100px; height:100px;' alt="User Avatar">
                 </div>
                 <!-- /.widget-user-image -->
-                <h3 class="widget-user-username"><?php echo $name; ?></h3>
-                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name."--";?><strong>Draft Data</strong></h5>
+                <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
+                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name." ";?><strong>Last Entry</strong></h5>
               </div>
-              <div class="card-footer p-0">
+              <div class="card-footer p-0" id="div123">
                 <ul class="nav flex-column">
                   <?php $i=0; foreach($data as $row){
-                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                    if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
                       $i++;
                       continue;
                   }else{
@@ -63,7 +63,7 @@
                 <?php
                   $i=0;
                   foreach($data as $row){
-                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' ||$row=='nodal_check'){
+                    if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' ||$row=='nodal_check'){
                           $i++;
                           continue;
                       }
@@ -127,20 +127,8 @@
               </div>
               <!-- /.card-body -->
               <div class='card-footer'>
-              <?php echo validation_errors();?>
-                <button type='submit' class='btn btn-primary' name='save' id='save' value="<?php 
-                  if(form_error('session')||form_error('schcd')){
-                      echo 'Update data';
-                  }else{
-                      echo 'Save data';
-                  }
-                  ?>"><?php 
-                  if(form_error('session')||form_error('schcd')){
-                      echo 'Update';
-                  }else{
-                      echo 'Save';
-                  }
-                  ?></button>
+              <div id="errors" style="color:red;"></div>
+                <button type='submit' class='btn btn-primary' name='submit' id='submit' value="Submit">Submit</button>
               </div>
           </form>
           </div>
@@ -181,4 +169,32 @@ for (i = 0; i < li.length; i++) {
   }
 }
 }
+
+$("form").on("submit", function (event) {
+  event.preventDefault();
+  $.ajax({
+    url: $('form').attr('action'),
+    type: "POST",
+    data: $('form').serialize(),
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      if(result[1]=='p'){
+        var pos=result.indexOf('<!DOCTYPE html>');
+        $('#errors').html(result.slice(0,pos));
+        //alert("Form error...");
+        console.log("error");
+      }else{ 
+        $('#errors').html("");
+        $("form")[0].reset();
+        $("#div123").load(location.href + " #div123");
+        //alert("Form submitted...");
+        console.log("submit");
+      }
+    }
+  });
+});
 </script>

@@ -86,7 +86,7 @@ class Crud_model extends CI_Model {
                         $fields = $this->db->field_data($n);
                         $field = $this->extract_field($fields,$a);
                         $this->dbforge->add_field($field);
-                        $this->dbforge->add_key('id', TRUE);
+                        $this->dbforge->add_key('id_pk', TRUE);
                         $this->dbforge->create_table($a);
                 }
         }
@@ -94,8 +94,8 @@ class Crud_model extends CI_Model {
         function extract_field($x,$table_name){
                 $y=array();
                 foreach($x as $field){
-                        if($field->name == 'id'){
-                                $y[$table_name.'_id_pk']=array(
+                        if($field->name == 'id_pk'){
+                                $y['id_pk']=array(
                                         'type' => $field->type,
                                         'max_length' => $field->max_length,
                                         'auto_increment' => TRUE

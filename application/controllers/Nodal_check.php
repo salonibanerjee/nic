@@ -70,7 +70,7 @@ class Nodal_check extends CI_Controller {
 				$result['s_name']=array();
 				
 				foreach($x as $field){
-					if($field->name=="id_pk" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" || $field->name=='nodal_check'){
+					if($field->name=="id_pk" || $field->name=="login_id_fk" || $field->name=="inserted_at" || $field->name=="ip" || $field->name=='nodal_check'){
 						$result['s_name'][]=$this->Crud_model->search_attri($field->name);
 						continue;
 					}
