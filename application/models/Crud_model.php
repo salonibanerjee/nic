@@ -21,7 +21,7 @@ class Crud_model extends CI_Model {
         }
         function update($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd'],'Month'=>$r['Month']));
+                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd'],'month'=>$r['month']));
                 $this->db->update($n,$r);
         }
         function update_schcd($r,$n){
@@ -126,6 +126,7 @@ class Crud_model extends CI_Model {
         public function region_name($n){
                 $query = $this->db->get_where('location_data',array('location_schcd'=>$n));
                 $row = $query->row();
+                //print_r($row);
                 return $row->location_area;
         }
         public function audit_upload($user,$section,$action,$request){
@@ -142,14 +143,14 @@ class Crud_model extends CI_Model {
         public function gp_id($n){
                 $query = $this->db->get_where('Login', array('username' => $n));
                 $row = $query->row();
-                return $row->gp_id;
+                return $row->schcd;
         }
 
         //custom form validation 
         //$n->tablename, $s-> session 
         public function unique_data_entry($n,$s,$k){
-                $var=$this->session->userdata('gp_id');
-                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var, 'Month' => $k));
+                $var=$this->session->userdata('schcd');
+                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var, 'month' => $k));
                 $row = $query->row();
                 if($row){
                         return $row; 
@@ -159,13 +160,13 @@ class Crud_model extends CI_Model {
         }
 
         public function draft_data_fetch($table_name){
-                $var = $this->session->userdata('gp_id');
+                $var = $this->session->userdata('schcd');
                 $last_row=$this->db->select('*')->where('schcd',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
         }
         //for tabular view
         public function backup_data_fetch($table_name){
-                $var = $this->session->userdata('gp_id');
+                $var = $this->session->userdata('schcd');
                 $count=0;
                 $count = $this->db->select('*')->where(['schcd'=>$var])->from($table_name)->count_all_results();
                 if($count>0){
@@ -177,7 +178,7 @@ class Crud_model extends CI_Model {
         }
         function update_sub($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'Month'=>$r->Month));
+                $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'month'=>$r->month));
                 $this->db->update($n,$r);
         }
         function delete_sub($r,$n){

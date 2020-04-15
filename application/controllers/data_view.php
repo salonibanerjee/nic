@@ -20,7 +20,7 @@ class data_view extends MY_Controller {
                                             'Custom Message here');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('meeting_schedule', array('id' => 1));
+        $query = $this->db->get_where('meeting_schedule', array('meeting_id_pk' => 1));
         $row = $query->row();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
@@ -55,11 +55,11 @@ class data_view extends MY_Controller {
             #dynamic type checking
             $x=$this->Crud_model->get_attri($n);
             $result['s_name']=array();
-            $result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
+            $result['region']=$this->Crud_model->region_name($this->session->userdata('schcd'));
             $flag=0;
             //setting array for form validations
             foreach($x as $field){
-                if($field->name=="id_pk" || $field->name=="user" || $field->name=="tstamp" || $field->name=="ip" || $field->name=='nodal_check'){
+                if($field->name=="id_pk" || $field->name=="login_id_fk" || $field->name=="inserted_at" || $field->name=="ip" || $field->name=='nodal_check'){
                     $result['s_name'][]=$this->Crud_model->search_attri($field->name);
                     continue;
                 }

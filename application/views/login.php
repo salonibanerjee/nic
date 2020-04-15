@@ -34,7 +34,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in </p>
 
-      <form action="Login/login_MPR" method="POST" method="post">
+      <form action="Login/login_MPR" method="POST" id="form">
         <div class="input-group mb-3">
           <input id="email" type="email" name="email" class="form-control" placeholder="Email" onkeyup='saveValue(this);'>
           <div class="input-group-append">
@@ -51,14 +51,15 @@
             </div>
           </div>
         </div>
-        
+        <div id="div123">
         <p id="captcha-img"><?php echo $image; ?>
-              <a href="http://localhost/NIC/index.php/Login"><img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42"></a>
-        
+        <img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42" onclick="captchaChange();">
+        <input type="hidden" id="salt" name="salt" value="<?php echo $_SESSION['salt']; ?>">
+        </div>
           <div class="input-group mb-3">
           <input id="captcha" name="captcha" class="form-control" type="text" placeholder="Captcha" >
           </div>
-
+          <div id="errors" style="color:red;"></div>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary">
@@ -70,7 +71,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" value="Login" class="btn btn-primary btn-block" onclick="hashPassword();">Sign In</button>
+            <button type="submit" name='submit' id='submit' value="Login" class="btn btn-primary btn-block" >Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -107,10 +108,38 @@
             return localStorage.getItem(v);
         }
 		function hashPassword(){
-			var enc2 = sha256(sha256(document.getElementById('pass').value) +'<?php echo $_SESSION['salt'];?>');
+			var enc2 = sha256(sha256(document.getElementById('pass').value)+document.getElementById('salt').value);
 			document.getElementById('pass').value = enc2;
-			
 		}
+function captchaChange(){
+  $("#div123").load(location.href + " #div123");
+}
+$("form").on("submit", function (event){
+  event.preventDefault();
+  hashPassword();
+  $.ajax({
+    url: $('form').attr('action'),
+    type: "POST",
+    data: $('form').serialize(),
+    //dataType: 'html',
+    error: function(){
+      console.log($('form').serialize());
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      if(result[1]=='p'){
+        document.getElementById('pass').value = "";
+        document.getElementById('captcha').value = "";
+        $("#div123").load(location.href + " #div123");
+        $('#errors').html(result);
+      }else{
+        //alert("Logged in successfully");
+        window.location.href = result;
+      }
+    }
+  });
+});
 </script>
 </body>
 </html>

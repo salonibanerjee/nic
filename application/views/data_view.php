@@ -23,7 +23,7 @@
                 <thead>
                 <tr>
                   <?php $i=0; foreach($data as $row){
-                      if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd' ){
+                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' ){
                         $i++;
                         continue;
                       }else{
@@ -40,9 +40,9 @@
                     foreach($backup_data as $row){
                         echo "<tr>";
                         foreach($row as $key=>$row1){
-                            if($key == 'id_pk' || $key == 'user' || $key == 'tstamp' ||$key=='ip' || $key=='schcd'){
+                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='schcd'){
                                 continue;
-                            }else if($key == 'Month'){
+                            }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
                             }else{
                                 echo "<td>".$row1."</td>";

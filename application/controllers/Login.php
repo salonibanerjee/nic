@@ -11,43 +11,35 @@ class Login extends CI_Controller {
         $this->load->model('Admin_model');
         $captcha = $this->Admin_model->_generateCaptcha();
         $this->session->set_userdata('captchaWord', $captcha['word']);
-        $_SESSION['salt'] = hash('sha256',microtime());
+        $this->session->set_userdata('salt',hash('sha256',microtime()));
         $this->load->view('login', $captcha);
     }
-
     //Performs Login and if successful redirects to scheme picker page
 	public function login_MPR(){
         $this->db->cache_off();
         $this->form_validation->set_rules('captcha', "Captcha", 'required');
-        $userCaptcha = $this->input->post('captcha');
+        $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
+        $this->form_validation->set_rules('pass','Password','required');
 
-        if ($this->form_validation->run() == true && strcmp(strtolower($userCaptcha), strtolower($this->session->userdata('captchaWord'))) == 0) {
-            $this->session->unset_userdata('captchaWord');
-            $this->load->helper('file');
-            delete_files('./captcha/');
-
-            $this->load->driver('cache',array('adapter' => 'file'));
-            $this->load->model('Crud_model');
-            $this->load->model('Admin_model');
-			$uname = $this->input->post('email');
-			$hash = $this->input->post('pass');
-			//$salt = substr($hash, -64);
-			//$pass = substr($hash, 0, -64);
-            $data=array("username"=>$uname);
-            $this->db->cache_off();
-            $query=$this->db->get_where("Login",$data);
-            $res=$query->result_array();
-			$passInDb = "";
-            if ($res){
-				foreach($res as $r){
-					$passInDb =$r['password'];
-					
-				}
+        if ($this->form_validation->run() == true) {
+            $userCaptcha = $this->input->post('captcha');
+            if(strcmp(strtolower($userCaptcha), strtolower($this->session->userdata('captchaWord'))) == 0){
+                $this->session->unset_userdata('captchaWord');
+                $this->load->helper('file');
+                delete_files('./captcha/');
+                $this->load->driver('cache',array('adapter' => 'file'));
+                $this->load->model('Crud_model');
+                $this->load->model('Admin_model');
+			    $uname = $this->input->post('email');
+			    $hash = $this->input->post('pass');
+                $this->db->cache_off();
+                $res=$this->Admin_model->findpass($uname);
+			    $passInDb =$res->password;
                 $hashPassInDb = hash('sha256',$passInDb.$_SESSION['salt']);
-				if($hashPassInDb == $hash){
+			    if($hashPassInDb == $hash){
                     $this->session->set_userdata('uid',$this->input->post('email'));
                     $this->session->set_userdata('logged_in', TRUE);
-                    $this->session->set_userdata('gp_id',$this->Crud_model->gp_id($this->input->post('email')));
+                    $this->session->set_userdata('schcd',$this->Crud_model->gp_id($this->input->post('email')));
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
                     //checking whether user type cache present or not
@@ -55,69 +47,31 @@ class Login extends CI_Controller {
                     if(!$this->cache->get('User_type'.$var)){
                         $this->Admin_model->user_type_cache($var);
                     }
-
                     if($this->cache->get('Active_status')['active_status']==1){
-                    $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                        $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                         current_url(),
                                                         'Login',
                                                         'Logging in as '.$this->session->userdata('uid'));
-                        //user_type_cache
+                            //user_type_cache
                         unset($_SESSION['salt']);
                         if($this->Admin_model->check_first_user()==1){
-                            header("Location: http://localhost/NIC/index.php/Login/password_change_first_user");
+                            echo "http://localhost/NIC/index.php/Login/password_change_first_user";
                         }else
-                            header("Location: ".$this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']);
+                            echo $this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link'];
                     }else{
-						unset($_SESSION['salt']);
-                        $_SESSION['salt'] = hash('sha256',microtime());
-                          ?>
-                        <script type=text/javascript>
-                            alert("Access Denied...");
-                            window.location.href = "http://localhost/NIC/index.php/Login";
-                            //windows.history.back();
-                        </script>
-                    <?php
+                        echo "<p>Access Denied</p>";
                     }
-				}
-				else{
-					unset($_SESSION['salt']);
-                    $_SESSION['salt'] = hash('sha256',microtime());	
-					?>
-						<script type=text/javascript>
-							alert("Invalid Password");
-							window.location.href = "http://localhost/NIC/index.php/Login";
-							//windows.history.go(-2);
-						</script>
-					<?php
-				}			
+                }
+			    else{
+                    echo "<p>Invalid Password</p>";
+			    }
+            }else{
+                echo "<p>Invalid Captcha</p>";
             }
-            else{
-				unset($_SESSION['salt']);
-                $_SESSION['salt'] = hash('sha256',microtime());		
-                ?>
-                    <script type=text/javascript>
-                        alert("Invalid Username");
-                        window.location.href = "http://localhost/NIC/index.php/Login";
-                        //windows.history.go(-2);
-                    </script>
-                <?php
-            }
-        } else {
-			unset($_SESSION['salt']);
-            $_SESSION['salt'] = hash('sha256',microtime());
-						
-            $captcha = $this->_generateCaptcha();
-            $this->session->set_userdata('captchaWord', $captcha['word']);
-            
-            ?>
-                <script type=text/javascript>
-                    alert("Invalid captcha...");
-                    window.location.href = "http://localhost/NIC/index.php/Login";
-                </script>
-            <?php
+        }else{
+            echo validation_errors();  
         }
     }
-
     //to logout and destroy the session and redirects back to login page
     public function logout(){
         $this->load->model('Crud_model');

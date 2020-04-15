@@ -9,6 +9,7 @@ class Get_table extends MY_Controller {
     public function load($n){
         $this->check_privilege(3);
 
+
         //Load 'CRUD' model
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
@@ -20,7 +21,7 @@ class Get_table extends MY_Controller {
                                             'Custom Message here');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('meeting_schedule', array('id' => 1));
+        $query = $this->db->get_where('meeting_schedule', array('meeting_id_pk' => 1));
         $row = $query->row();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
@@ -54,7 +55,7 @@ class Get_table extends MY_Controller {
             $x=$this->Crud_model->get_attri($n);
             $y=array();
             $result['s_name']=array();
-            $result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
+            $result['region']=$this->Crud_model->region_name($this->session->userdata('schcd'));
             $flag=0;
 
             //setting array for form validations
@@ -68,11 +69,11 @@ class Get_table extends MY_Controller {
                 $ij=$this->Crud_model->search_attri($field->name);
                 $result['s_name'][]=$ij;
 
-                    $y[]=array(
-                        'field' => $field->name,
-                        'label' => $ij,
-                        'rules' => "required|max_length[$z]|$w"
-                    );
+                $y[]=array(
+                    'field' => $field->name,
+                    'label' => $ij,
+                    'rules' => "required|max_length[$z]|$w"
+                );
             }
 
             $this->form_validation->set_rules($y);
@@ -87,12 +88,12 @@ class Get_table extends MY_Controller {
                         }
                         $r[$row]=$this->input->post($row);
                     }
-                    $r['login_id_fk'] = $this->cache->get('Active_status')['id'];
+                    $r['login_id_fk'] = $this->cache->get('Active_status')['Login_id_pk'];
                     $r['inserted_at'] = date('Y-m-d H:i:s');
                     $r['ip'] = $this->input->ip_address();
-                    $r['schcd'] = $this->session->userdata('gp_id');
+                    $r['schcd'] = $this->session->userdata('schcd');
                     $r['nodal_check'] = -1;
-                    $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['Month']);
+                    $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['month']);
                     if($old_value){
                         $this->Crud_model->update($r,$n.'_draft');
                         unset($old_value->id_pk);

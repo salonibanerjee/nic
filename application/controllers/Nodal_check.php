@@ -10,7 +10,7 @@ class Nodal_check extends CI_Controller {
 		$this->load->model('Crud_model');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('meeting_schedule', array('id' => 1));
+        $query = $this->db->get_where('meeting_schedule', array('meeting_id_pk' => 1));
         $row = $query->row();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
@@ -96,7 +96,7 @@ class Nodal_check extends CI_Controller {
                 $result_main['uff'][$n]['draft_data']->nodal_check=1;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
-                if($this->Crud_model->unique_data_entry($n,$result_main['uff'][$n]['draft_data']->session,$result_main['uff'][$n]['draft_data']->Month)){
+                if($this->Crud_model->unique_data_entry($n,$result_main['uff'][$n]['draft_data']->session,$result_main['uff'][$n]['draft_data']->month)){
                     $this->Crud_model->update_sub($result_main['uff'][$n]['draft_data'],$n);
                 }else{
                     $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n);

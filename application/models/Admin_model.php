@@ -8,12 +8,12 @@ class Admin_model extends CI_Model {
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
-                'gp_id' => $row->gp_id,
+                'schcd' => $row->schcd,
                 'username' => $row->username,
                 'password' => $row->password,
                 'designation'=> $row->designation,
                 'user_type_id_fk'=> $row->user_type_id_fk,
-                'id'=> $row->id,
+                'Login_id_pk'=> $row->Login_id_pk,
                 'active_status'=> $row->active_status
             );
         }else{
@@ -113,7 +113,7 @@ class Admin_model extends CI_Model {
     }
 
     public function check_first_user(){
-        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['id']));
+        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
@@ -127,7 +127,7 @@ class Admin_model extends CI_Model {
         $this->db->update('Login',array('password'=>$password));
     }
     public function update_first_profile(){
-        $this->db->where('user_id_pk',$this->cache->get('Active_status')['id']);
+        $this->db->where('user_id_pk',$this->cache->get('Active_status')['Login_id_pk']);
         $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));
     }
     public function update_first_pass($username){
@@ -136,12 +136,12 @@ class Admin_model extends CI_Model {
         $this->db->update('check_First_User',array('check_if_first_user' => 0 ));
     }
     public function meeting_schedule($data){
-        $this->db->where('id', 1);
+        $this->db->where('meeting_id_pk', 1);
 		$this->db->update('meeting_schedule', $data);
     }
 
     public function previous_meeting_schedule(){
-        $query = $this->db->get_where('meeting_schedule',array('id'=>1));
+        $query = $this->db->get_where('meeting_schedule',array('meeting_id_pk'=>1));
         $row=$query->row();
         return $row;
     }
@@ -183,5 +183,10 @@ class Admin_model extends CI_Model {
         }
     
         return $randomString;
+    }
+
+    public function findpass($n){
+        $query=$this->db->get_where("Login",array('username'=>$n));
+        return $query->row();
     }
 }

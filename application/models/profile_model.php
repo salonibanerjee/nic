@@ -24,7 +24,7 @@ class profile_model extends CI_Model {
     }
 
     public function get_profile_info($username){
-        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['id']));
+        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
         $row=$query->row();
 		$res=$this->get_f($username);
 		if($res){
