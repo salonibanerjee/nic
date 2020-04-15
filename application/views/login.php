@@ -93,15 +93,13 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script type="text/javascript">
-		$(document).ready(function(){
-		});
         document.getElementById("email").value = getSavedValue("email");
         function saveValue(e){
             var id = e.id;  
             var val = e.value;
             localStorage.setItem(id, val);
         }
-        function getSavedValue  (v){
+        function getSavedValue(v){
             if (!localStorage.getItem(v)) {
                 return "";
             }
@@ -123,7 +121,6 @@ $("form").on("submit", function (event){
     data: $('form').serialize(),
     //dataType: 'html',
     error: function(){
-      console.log($('form').serialize());
 			console.log("Form cannot be submitted...");
 		},
     cache: false,

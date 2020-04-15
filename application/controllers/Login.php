@@ -90,73 +90,65 @@ class Login extends CI_Controller {
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
         if ($this->form_validation->run() == FALSE)
         {
+            echo validation_errors();
             $this->load->view('login-forget');
         }
         else
         {
-            if($this->input->post('sub')){
-                $email= $this->input->post('email');
-                $subject = "New password request";
-	    	    $body = "Greetings,\nClick on the link below to change your password\n".base_url().index_page()."/Login/password_change/".hash('sha256',now())."/".hash('sha256',$email)."\nHave a nice day!";
-                $headers = "From: MPR Portal";
-                $xy=mail($email, $subject, $body, $headers);
-                if ($xy)
-	    	    {
-		    	    ?>
-                        <script type=text/javascript>
-                            alert("Success. New Password sent to your registered email !");
-                            window.location.href = "http://localhost/nic/index.php/Login";
-                        </script>
-                    <?php
-		        }
-                else
-                {
-			        ?>
-                        <script type=text/javascript>
-                            alert("Could not send recovery email");
-                            window.location.href = "http://localhost/nic/index.php/Login";
-                        </script>
-                    <?php
-                }
-            }
+            $email= $this->input->post('email');
+            $subject = "New password request";
+		    $body = "Greetings,\nClick on the link below to change your password\n".base_url().index_page()."/Login/password_change/".hash('sha256',now())."/".hash('sha256',$email)."\nHave a nice day!";
+            $headers = "From: MPR Portal";
+            $xy=mail($email, $subject, $body, $headers);
+            if($xy)
+                echo "http://localhost/nic/index.php/Login";
+            else
+                echo "*http://localhost/nic/index.php/Login";
         }
     }
     public function password_change(){
         $this->load->model('Admin_model');
         $var = array('value'=>1);
-        //echo now()."<br>";
-        //echo now()+4000;
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email');
         $this->form_validation->set_rules('pass1', 'Password', 'required');
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
+            echo validation_errors();
             $this->load->view('login_reset',$var);
         }else{
             $enc = $this->uri->segment(4);
             $user=$this->input->post('email');
             $encuser=hash('sha256',$user);
-            if($this->input->post('sub2')){
-                if($enc==$encuser){
-                    $password=hash('sha256',$this->input->post('pass1'));
-                    $this->Admin_model->update_login($user,$password);
-                    ?>
-                        <script type=text/javascript>
-                            alert("Password succesfully changed...");
-                            window.location.href = "http://localhost/nic/index.php/Login";
-                        </script>
-                    <?php
-                }else{
-                    ?>
-                        <script type=text/javascript>
-                            alert("Access denied...");
-                            window.location.href = "http://localhost/nic/index.php/Login";
-                        </script>
-                    <?php
-                }
+            if($enc==$encuser){
+                $password=$this->input->post('pass1');
+                $this->Admin_model->update_login($user,$password);
+                echo "http://localhost/nic/index.php/Login";
+            }else{
+                echo "*http://localhost/nic/index.php/Login";
             }
         }
     }
+
+    public function password_change_first_user(){
+        $this->load->model('Admin_model');
+        $var = array('value'=>2);
+        $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
+        $this->form_validation->set_rules('pass1', 'Password', 'required');
+        $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
+        if ($this->form_validation->run() == FALSE)
+        {
+            echo validation_errors();
+            $this->load->view('login_reset',$var);
+        }else{
+            $user=$this->input->post('email');
+            $password=$this->input->post('pass1');
+            $this->Admin_model->update_login($user,$password);
+            $this->Admin_model->update_first_pass($user);
+            echo "http://localhost/nic/index.php/Login";
+        }
+    }
+
     public function username_check($str)
     {
         $this->load->model('Admin_model');
@@ -168,34 +160,6 @@ class Login extends CI_Controller {
         {
             $this->form_validation->set_message('username_check', 'This username does not exist');
             return FALSE;
-        }
-    }
-
-    public function password_change_first_user(){
-        $this->load->model('Admin_model');
-        $var = array('value'=>2);
-        //echo now()."<br>";
-        //echo now()+4000;
-        $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
-        $this->form_validation->set_rules('pass1', 'Password', 'required');
-        $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
-        if ($this->form_validation->run() == FALSE)
-        {
-            $this->load->view('login_reset',$var);
-        }else{
-            $user=$this->input->post('email');
-            $encuser=hash('sha256',$user);
-            if($this->input->post('sub2')){
-                    $password=hash('sha256',$this->input->post('pass1'));
-                    $this->Admin_model->update_login($user,$password);
-                    $this->Admin_model->update_first_pass($user);
-                    ?>
-                        <script type=text/javascript>
-                            alert("First Time password succesfully changed...");
-                            window.location.href = "http://localhost/nic/index.php/Login";
-                        </script>
-                    <?php
-            }
         }
     }
 }

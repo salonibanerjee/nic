@@ -25,17 +25,14 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 <body class="hold-transition login-page">
+<div class='login-box'>
+<div class='login-logo'>
 <?php if($value==1){
-  echo "<div class='login-box'>";
-  echo "<div class='login-logo'>";
   echo    "<a href=#><b>FORGOT </b>PASSWORD</a>";
-  echo  "</div>";
 }else{
-  echo "<div class='login-box'>";
-  echo "<div class='login-logo'>";
   echo    "<a href=#>CHANGE PASSWORD FOR <b>THE FIRST TIME</b></a>";
-  echo  "</div>";
 }?>
+</div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
@@ -66,7 +63,7 @@
             </div>
           </div>
         </div>
-        <small><?php echo validation_errors(); ?><small>
+        <div id="errors" style="color:red;"></div>
         <div class="row">
           <div class="col-12">
             <button type="submit" id="sub2" name="sub2" value="Login" class="btn btn-primary btn-block" >Submit</button>
@@ -88,20 +85,53 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script type="text/javascript">
-		$(document).ready(function(){
-		});
-        document.getElementById("email").value = getSavedValue("email");
-        function saveValue(e){
-            var id = e.id;  
-            var val = e.value;
-            localStorage.setItem(id, val);
+document.getElementById("email").value = getSavedValue("email");
+function saveValue(e){
+  var id = e.id;  
+  var val = e.value;
+  localStorage.setItem(id, val);
+}
+function getSavedValue  (v){
+  if (!localStorage.getItem(v)){
+  return "";
+  }
+  return localStorage.getItem(v);
+}
+function hashPassword(){
+	var enc2 = sha256(document.getElementById('pass1').value);
+	document.getElementById('pass1').value = enc2;
+  enc2 = sha256(document.getElementById('pass2').value);
+  document.getElementById('pass2').value = enc2;
+}
+$("form").on("submit", function (event){
+  event.preventDefault();
+  hashPassword();
+  $.ajax({
+    url: $('form').attr('action'),
+    type: "POST",
+    data: $('form').serialize(),
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      if(result[1]=='p'){
+        var pos=result.indexOf('<!DOCTYPE html>');
+        document.getElementById('pass1').value = "";
+        document.getElementById('pass2').value = "";
+        $('#errors').html(result.slice(0,pos));
+      }else{
+        if(result[0]=='*'){
+          alert("Access Denied...");
+          window.location.href = result.slice(1);
+        }else{
+          window.location.href = result;
         }
-        function getSavedValue  (v){
-            if (!localStorage.getItem(v)) {
-                return "";
-            }
-            return localStorage.getItem(v);
-        }
+      }
+    }
+  });
+});
 </script>
 </body>
 </html>
