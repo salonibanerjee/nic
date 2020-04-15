@@ -37,7 +37,7 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg"><strong>CHANGE PASSWORD</strong></p>
 
-      <form method="POST">
+      <form method="POST" action="" id="form">
         <div class="input-group mb-3">
           <input name="pass0" id="pass0" type="password" class="form-control" placeholder="Old Password" >
           <div class="input-group-append">
@@ -62,10 +62,10 @@
             </div>
           </div>
         </div>
-        <small><?php echo validation_errors(); ?><small>
+        <div id="errors" style="color:red;"></div>
         <div class="row">
           <div class="col-12">
-            <button type="submit" id="sub2" name="sub2" value="Login" class="btn btn-primary btn-block" onclick="hashPassword();" >Submit</button>
+            <button type="submit" id="submit" name="submit" value="Login" class="btn btn-primary btn-block" >Submit</button>
           </div>
           <!-- /.col -->
         </div>
@@ -86,31 +86,41 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script type="text/javascript">
-		$(document).ready(function(){
-		});
-        document.getElementById("email").value = getSavedValue("email");
-        function saveValue(e){
-            var id = e.id;  
-            var val = e.value;
-            localStorage.setItem(id, val);
+  function hashPassword(){
+		var enc2 = sha256(document.getElementById('pass0').value);
+		document.getElementById('pass0').value = enc2;
+    enc2 = sha256(document.getElementById('pass1').value);
+		document.getElementById('pass1').value = enc2;
+    enc2 = sha256(document.getElementById('pass2').value);
+		document.getElementById('pass2').value = enc2;
+	}
+  $("form").on("submit", function (event){
+    event.preventDefault();
+    hashPassword();
+    $.ajax({
+      url: $('form').attr('action'),
+      type: "POST",
+      data: $('form').serialize(),
+      //dataType: 'html',
+      error: function(){
+			  console.log("Form cannot be submitted...");
+		  },
+      cache: false,
+      success: function(result){
+        var pos=result.indexOf('<!DOCTYPE html>');
+        if(result[1]=='p'){
+          document.getElementById('pass0').value = "";
+          document.getElementById('pass1').value = "";
+          document.getElementById('pass2').value = "";
+          $('#errors').html(result.slice(0,pos));
+        }else{
+          $('#errors').html("");
+          //alert(result.slice(0,pos));
+          window.location.href = result.slice(0,pos);
         }
-        function getSavedValue  (v){
-            if (!localStorage.getItem(v)) {
-                return "";
-            }
-            return localStorage.getItem(v);
-        }
-
-        function hashPassword(){
-			var enc2 = sha256(document.getElementById('pass0').value);
-			document.getElementById('pass0').value = enc2;
-
-            enc2 = sha256(document.getElementById('pass1').value);
-			document.getElementById('pass1').value = enc2;
-
-            enc2 = sha256(document.getElementById('pass2').value);
-			document.getElementById('pass2').value = enc2;
-		}
+      }
+    });
+  });
 </script>
 </body>
 </html>

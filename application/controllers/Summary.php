@@ -371,30 +371,19 @@ class summary extends MY_Controller {
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('change_pass');
+			echo validation_errors();
+			$this->load->view('change_pass');
         }else{
             $user=$this->session->userdata('uid');
             $old_pass = $this->input->post('pass0');
             $res=$this->Admin_model->findpass($user);
 			$passInDb =$res->password;
-            if($this->input->post('sub2')){
-                if($passInDb === $old_pass){
-                    $password=$this->input->post('pass1');
-                    $this->Admin_model->update_login($user,$password);
-                    ?>
-                        <script type=text/javascript>
-                            alert("Password succesfully changed...");
-                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
-                        </script>
-                    <?php
-                }else{
-                    ?>
-                        <script type=text/javascript>
-                            alert("Password can't be changed...");
-                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
-                        </script>
-                    <?php
-                }
+            if($passInDb === $old_pass){
+                $password=$this->input->post('pass1');
+				$this->Admin_model->update_login($user,$password);
+				echo "http://localhost/nic/index.php/Summary/profile";
+            }else{
+				echo "<p>Old Password is wrong.</p>\n";
             }
         }
     }
