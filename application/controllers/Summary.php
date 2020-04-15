@@ -356,4 +356,46 @@ class summary extends MY_Controller {
 		} //validation else brace ending 
 	}
 
+	public function password_change_within(){
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
+		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+        $this->load->model('Admin_model');
+        $this->form_validation->set_rules('pass0', 'Password', 'required');
+        $this->form_validation->set_rules('pass1', 'Password', 'required');
+        $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
+        if ($this->form_validation->run() == FALSE)
+        {
+            $this->load->view('change_pass');
+        }else{
+            $user=$this->session->userdata('uid');
+            $old_pass = $this->input->post('pass0');
+            $res=$this->Admin_model->findpass($user);
+			$passInDb =$res->password;
+            if($this->input->post('sub2')){
+                if($passInDb === $old_pass){
+                    $password=$this->input->post('pass1');
+                    $this->Admin_model->update_login($user,$password);
+                    ?>
+                        <script type=text/javascript>
+                            alert("Password succesfully changed...");
+                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
+                        </script>
+                    <?php
+                }else{
+                    ?>
+                        <script type=text/javascript>
+                            alert("Password can't be changed...");
+                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
+                        </script>
+                    <?php
+                }
+            }
+        }
+    }
 }

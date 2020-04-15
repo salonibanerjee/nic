@@ -69,7 +69,7 @@
                 <a href="http://localhost/NIC/index.php/Summary/edit_profile" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Edit Profile</b></a>
                 </div>
                 <div class="col-md-6">
-                <a href="http://localhost/NIC/index.php/summary" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
+                <a href="http://localhost/NIC/index.php/Summary/password_change_within" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
                 </div>
               </div>
               
