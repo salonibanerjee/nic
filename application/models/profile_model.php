@@ -80,8 +80,8 @@ class profile_model extends CI_Model {
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
 				'district' =>$res->district,
-				'department' =>$res->department,
-				'office' =>$res->office,
+				//'department' =>$res->department,
+				//'office' =>$res->office,
                 'first_user'=>$row->check_if_first_user,
 				'update_prof'=>$row->check_profile_updated_once,
 				'flag'=> 0
@@ -116,8 +116,8 @@ class profile_model extends CI_Model {
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
-				'department' =>$res->department,
-				'office' =>$res->office,
+				//'department' =>$res->department,
+				//'office' =>$res->office,
 				//'desi_code' =>$
 				'district' =>$res->district,
 			);

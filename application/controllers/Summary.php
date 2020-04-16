@@ -8,26 +8,21 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//$this->check_privilege(1);
-
+		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
-		$this->load->model('profile_model');
+		
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
 		
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
-<<<<<<< HEAD
 		
-=======
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$noti = array('meeting'=>$this->profile_model->meeting_notification());
-		$u_type['notification'] = $noti;
-		$u_type['noti1']=$this->profile_model->custom_notification();
-		$this->load->view('dashboard/navbar',$u_type);
->>>>>>> 7e6393748090c86ca011b40701279934f74503bf
 		$this->load->view('dashboard/sidebar',$da);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);

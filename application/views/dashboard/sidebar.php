@@ -16,15 +16,8 @@
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;">
-<<<<<<< HEAD
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
-=======
-          <marquee id="mymarquee" scrolldelay="100"  onmouseover="this.stop();"onmouseout="this.start();">
-            <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$l_name?></strong></a>
-            <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
-          </marquee>
->>>>>>> 7e6393748090c86ca011b40701279934f74503bf
           <?php if($update_prof==1){
             echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
