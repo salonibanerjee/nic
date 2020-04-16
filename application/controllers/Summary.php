@@ -18,6 +18,9 @@ class summary extends MY_Controller {
 		$this->load->library('parser');
 
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 
@@ -90,7 +93,11 @@ class summary extends MY_Controller {
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
-		$container['noti_view'] = $this->load->view('dashboard/noti_view', null ,TRUE);
+		$gp=$this->session->userdata('schcd');
+        $q="SELECT notification_text FROM notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
+        $res = $this->db->query($q)->result();
+		$data['noti']=$res;
+		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
 		//=========================================================
 
@@ -164,7 +171,7 @@ class summary extends MY_Controller {
 		//==============BAR CHART 2=====================================
 
 		$scheme_pro = array("KCC","DOC","DOG","ANAND");
-		$location = array("191601","191612","191607");
+		$location = array("19161","191615","191614");
 		
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
@@ -231,7 +238,10 @@ class summary extends MY_Controller {
 		$data = array();
 		for($i=0;$i<2*sizeof($scheme_bar);$i+=2)
 		{
-			$per=(int)($result_alert[$i+1]/$result_alert[$i]*100);
+			if($result_alert[$i]!=0)
+				$per=(int)($result_alert[$i+1]/$result_alert[$i]*100);
+			else
+				$per=0;
 			array_push($data, $per);
 		}
 		$fits = array();
@@ -256,8 +266,11 @@ class summary extends MY_Controller {
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
@@ -271,6 +284,10 @@ class summary extends MY_Controller {
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$u_type['notification'] = $noti;
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 		$this->load->model('profile_model');
@@ -359,9 +376,14 @@ class summary extends MY_Controller {
 	public function password_change_within(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$u_type['notification'] = $noti;
+		$this->load->view('dashboard/navbar',$u_type);
+		
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end

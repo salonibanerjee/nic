@@ -86,6 +86,38 @@ class profile_model extends CI_Model {
 			);
         }
         return $da;
-    }
+	}
+	
+	public function meeting_notification(){
+		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('meeting_schedule')->row();
+		$s_time = strtotime($last_row->start_time);
+		$e_time = strtotime($last_row->end_time);
+		$now = strtotime(mdate('%Y-%m-%d %H:%i', now()));
+		$noti=array();
+		if(($now > $s_time) && ($now < $e_time)){
+			$noti['msg']="Meeting Ongoing";
+			$noti['val']=mdate('%H:%i',$s_time)."-".mdate('%H:%i',$e_time);
+		}
+		else if($now > $e_time){
+			$noti['msg']="Meeting Expired";
+			$noti['val']=mdate('%M-%d %H:%i',$e_time);
+		}
+		else if($now < $s_time){
+			$noti['msg']="Upcoming Meeting";
+			$noti['val']=mdate('%M-%d %H:%i',$s_time);
+		}
+		return $noti;
+	}
+
+	public function custom_notification(){
+		$query = $this->db->select('*')->get_where('notification', array('active_status'=>1))->result_array();
+		return $query;
+	}
+
+	public function update_active_noti($var){
+		$a=array('active_status'=>0);
+		$this->db->where(array('notification_id_pk'=>$var));
+		$this->db->update('notification',$a);
+	}
     
 }

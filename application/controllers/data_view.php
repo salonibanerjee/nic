@@ -25,6 +25,9 @@ class data_view extends MY_Controller {
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
         $u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+        $noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
         $this->load->view('dashboard/navbar',$u_type);
         if((strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)) && (strtotime(mdate('%Y-%m-%d %H:%i', now())) < strtotime($row->end_time))){
             ?>

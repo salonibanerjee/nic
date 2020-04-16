@@ -26,8 +26,11 @@ class Dashboard_model extends CI_Model{
             $i=0;
             while($i<$nblo)
             {
+                //print_r($this->db->select($b[$j]));
+                //echo $b[$j]."<br>";
                 $this->db->select($b[$j])->where('schcd',$block[$i])->order_by('id_pk','desc')->limit(1);
                 $table = $this->db->get($sch[$j])->row();
+                //print_r($table);
                 $count = 0;
                 $temp = $b[$j];
                 if($table){
@@ -93,8 +96,15 @@ class Dashboard_model extends CI_Model{
             $this->db->select($b[$i])->order_by('id_pk',"desc")->limit(1);
             $table2 = $this->db->get($n[$i])->row();
             $temp = $b[$i];
-            array_push($d, $table2->$temp);
-            $i++;
+            if($table2)
+            {
+                array_push($d, $table2->$temp);
+                $i++;
+            }else
+            {
+                array_push($d, 0);
+                $i++;
+            }
         }
         return $d;
 	}
@@ -128,7 +138,10 @@ class Dashboard_model extends CI_Model{
             $table2 = $this->db->get($n[$x])->row();
             $temp1 = $b[$j];
             $temp2 = $b[$j+1];
-            array_push($d, $table2->$temp1, $table2->$temp2);
+            if($table2)
+                array_push($d, $table2->$temp1, $table2->$temp2);
+            else
+                array_push($d, 0, 0);
             $j=$j+2;
             $x=$x+1;
         }

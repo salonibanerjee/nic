@@ -51,15 +51,76 @@
         <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
+
+    <ul class="navbar-nav ml-auto">
+    <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="far fa-bell" style="font-size:27px;"></i>
+          <span class="badge badge-danger navbar-badge"><?php
+          $i=0;
+          foreach($noti1 as $row){
+            $i++;
+          }
+          echo $i;
+          ?></span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="max-height:400px;">
+          <span class="dropdown-item dropdown-header"><?php
+          $i=0;
+          foreach($noti1 as $row){
+            $i++;
+          }
+          echo $i." Messages";
+          ?></span>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item">
+            <i class="fas fa-calendar-check text-orange "></i> <?php echo $notification['meeting']['msg'];?>
+            <span class="float-right text-muted text-sm"><?php echo $notification['meeting']['val'];?></span>
+          </a>
+          <?php
+            $i=0;
+            foreach($noti1 as $row){
+              echo "<div class='dropdown-divider'></div>";
+              echo "<a href='#' class='dropdown-item' data-toggle='modal' data-target='#modal-".$noti1[$i]['notification_id_pk']."'>";
+              echo "<i class='fas fa-envelope text-blue '></i> ".$noti1[$i]['notification_head'];
+              //echo "<span class='float-right text-muted text-sm'></span>";
+              echo "</a>";
+              $i++;
+            }
+          ?>
+          <div class="dropdown-divider"></div>
+          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+        </div>
+      </li>
+    </ul>
   </nav>
   <!-- /.navbar -->
-
-  
-
-
-
-
-    
+      
+<?php
+$i=0;
+foreach($noti1 as $row){
+  echo "<div class='modal fade' id='modal-".$noti1[$i]['notification_id_pk']."'>
+              <div class='modal-dialog'>
+                <div class='modal-content'>
+                  <div class='modal-header'>
+                    <h4 class='modal-title'><strong>".$noti1[$i]['notification_head']."</strong></h4>
+                    <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
+                      <span aria-hidden='true'>&times;</span>
+                    </button>
+                  </div>
+                  <div class='modal-body'>
+                    <p>".$noti1[$i]['notification_text']."</p>
+                  </div>
+                  <div class='modal-footer justify-content-between'>
+                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
+                    <input type='button' class='btn btn-primary' name='sub".$noti1[$i]['notification_id_pk']."'value='Mark as Read'>
+                  </div>
+                </div>
+              </div>
+            </div>";
+      $i++;
+}
+?>  
 
     <script src="http://localhost/NIC/css/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
