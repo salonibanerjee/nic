@@ -43,7 +43,7 @@
             </div>
           </div>
         </div>
-        <small><?php echo form_error('email');?></small>
+        <div id="errors" style="color:red;"></div>
         <div class="row">
           <!-- /.col -->
           <div class="col-12">
@@ -64,3 +64,43 @@
 <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../../dist/js/adminlte.min.js"></script>
+<script type="text/javascript">
+document.getElementById("email").value = getSavedValue("email");
+function saveValue(e){
+  var id = e.id;  
+  var val = e.value;
+  localStorage.setItem(id, val);
+}
+function getSavedValue(v){
+  if (!localStorage.getItem(v)){
+    return "";
+  }
+  return localStorage.getItem(v);
+}
+$("form").on("submit", function (event){
+  event.preventDefault();
+  $.ajax({
+    url: $('form').attr('action'),
+    type: "POST",
+    data: $('form').serialize(),
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      if(result[1]=='p'){
+        var pos=result.indexOf('<!DOCTYPE html>');
+        $('#errors').html(result.slice(0,pos));
+      }else{
+        if(result[0]=='*'){
+          alert("Email is nt sent...");
+          window.location.href = result.slice(1);
+        }else{
+          window.location.href = result;
+        }
+      }
+    }
+  });
+});
+</script>

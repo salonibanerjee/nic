@@ -21,7 +21,7 @@ class Crud_model extends CI_Model {
         }
         function update($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd']));
+                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd'],'month'=>$r['month']));
                 $this->db->update($n,$r);
         }
         function update_schcd($r,$n){
@@ -77,24 +77,25 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
-        //creating backup table
-        function backup_table($n){
-                $a = $n."_backup";
-                if($this->db->table_exists($n."_backup")){
+        //creating backup table & draft table
+        function backup_draft_table($n,$s){
+                $a = $n."_".$s;
+                if($this->db->table_exists($n."_".$s)){
                 }else{
                         $this->load->dbforge();
                         $fields = $this->db->field_data($n);
-                        $field = $this->extract_field($fields);
+                        $field = $this->extract_field($fields,$a);
                         $this->dbforge->add_field($field);
-                        $this->dbforge->add_key('id', TRUE);
+                        $this->dbforge->add_key('id_pk', TRUE);
                         $this->dbforge->create_table($a);
                 }
         }
-        function extract_field($x){
+        //setting fields for newly automated formed tables
+        function extract_field($x,$table_name){
                 $y=array();
                 foreach($x as $field){
-                        if($field->name == 'id'){
-                                $y[$field->name]=array(
+                        if($field->name == 'id_pk'){
+                                $y['id_pk']=array(
                                         'type' => $field->type,
                                         'max_length' => $field->max_length,
                                         'auto_increment' => TRUE
@@ -125,6 +126,7 @@ class Crud_model extends CI_Model {
         public function region_name($n){
                 $query = $this->db->get_where('location_data',array('location_schcd'=>$n));
                 $row = $query->row();
+                //print_r($row);
                 return $row->location_area;
         }
         public function audit_upload($user,$section,$action,$request){
@@ -141,19 +143,46 @@ class Crud_model extends CI_Model {
         public function gp_id($n){
                 $query = $this->db->get_where('Login', array('username' => $n));
                 $row = $query->row();
-                return $row->gp_id;
+                return $row->schcd;
         }
 
         //custom form validation 
         //$n->tablename, $s-> session 
         public function unique_data_entry($n,$s,$k){
-                $var=$this->session->userdata('gp_id');
-                $query = $this->db->get_where($n, array($k => $s,'schcd' => $var));
+                $var=$this->session->userdata('schcd');
+                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var, 'month' => $k));
                 $row = $query->row();
                 if($row){
-                        return TRUE; 
+                        return $row; 
                 }else{
                         return FALSE;
                 }
+        }
+
+        public function draft_data_fetch($table_name){
+                $var = $this->session->userdata('schcd');
+                $last_row=$this->db->select('*')->where('schcd',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                return $last_row;
+        }
+        //for tabular view
+        public function backup_data_fetch($table_name){
+                $var = $this->session->userdata('schcd');
+                $count=0;
+                $count = $this->db->select('*')->where(['schcd'=>$var])->from($table_name)->count_all_results();
+                if($count>0){
+                        $query = $this->db->select('*')->get_where($table_name, array('schcd' => $var, 'nodal_check'=>1))->result_array();
+                        return $query;
+                }else{
+                        return 0;
+                }
+        }
+        function update_sub($r,$n){
+                //$this->db->where('session', $r['session']);
+                $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'month'=>$r->month));
+                $this->db->update($n,$r);
+        }
+        function delete_sub($r,$n){
+                $this->db->where('id_pk', $r);
+                $this->db->delete($n);
         }
 }

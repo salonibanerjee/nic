@@ -1,10 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class summary extends CI_Controller {
+class summary extends MY_Controller {
 
 	public function index()
 	{	
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
+		//$this->check_privilege(1);
+
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
 		$this->load->view('dashboard/navbar',$u_type);
@@ -15,7 +19,12 @@ class summary extends CI_Controller {
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
+<<<<<<< HEAD
 		
+=======
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
+>>>>>>> 7e6393748090c86ca011b40701279934f74503bf
 		$this->load->view('dashboard/sidebar',$da);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
@@ -250,12 +259,15 @@ class summary extends CI_Controller {
 	}
 	
 	public function profile(){
+		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
 	}
@@ -266,6 +278,8 @@ class summary extends CI_Controller {
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 		$this->load->model('profile_model');
 		$this->load->model('Admin_model');
@@ -368,4 +382,35 @@ class summary extends CI_Controller {
 		} //validation else brace ending 
 	}
 
+	public function password_change_within(){
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
+		$this->load->model('profile_model');
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+        $this->load->model('Admin_model');
+        $this->form_validation->set_rules('pass0', 'Password', 'required');
+        $this->form_validation->set_rules('pass1', 'Password', 'required');
+        $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
+        if ($this->form_validation->run() == FALSE)
+        {
+			echo validation_errors();
+			$this->load->view('change_pass');
+        }else{
+            $user=$this->session->userdata('uid');
+            $old_pass = $this->input->post('pass0');
+            $res=$this->Admin_model->findpass($user);
+			$passInDb =$res->password;
+            if($passInDb === $old_pass){
+                $password=$this->input->post('pass1');
+				$this->Admin_model->update_login($user,$password);
+				echo "http://localhost/nic/index.php/Summary/profile";
+            }else{
+				echo "<p>Old Password is wrong.</p>\n";
+            }
+        }
+    }
 }

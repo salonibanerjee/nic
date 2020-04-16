@@ -8,12 +8,12 @@ class Admin_model extends CI_Model {
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
-                'gp_id' => $row->gp_id,
+                'schcd' => $row->schcd,
                 'username' => $row->username,
                 'password' => $row->password,
                 'designation'=> $row->designation,
                 'user_type_id_fk'=> $row->user_type_id_fk,
-                'id'=> $row->id,
+                'Login_id_pk'=> $row->Login_id_pk,
                 'active_status'=> $row->active_status
             );
         }else{
@@ -62,60 +62,58 @@ class Admin_model extends CI_Model {
         $this->db->cache_off();
     }
 
+    function sort($a, $b) {
+        if ($a['order'] == $b['order']) return 0;
+        return ($a['order'] > $b['order']) ? 1 : -1;
+    }
 
-    public function user_type_cache(){
+
+    public function user_type_cache($var){
         //from login table
         $a = array();
-        $u = 1;
-        $this->db->select('*');
-        $this->db->from('user_type');
-        $query= $this->db->get();
-        foreach ($query->result() as $row){
-            //if($row){
-                //from user_privilege table get multiple tuples referring from user_type table
-                $query_user_privilege = $this->db->get_where('user_privilege',array('user_type_id_fk'=>$row->user_type_id_pk));
-                $table2 = $query_user_privilege->result();
+        $query_user_privilege = $this->db->get_where('user_privilege',array('user_type_id_fk'=>$var));
+        $table2 = $query_user_privilege->result();
     
                 //joining both Privilege and user_privilege tuples
-                foreach($table2 as $row_out){
-                    $query_privilege = $this->db->get_where('Privilege',array('privilege_id_pk'=>$row_out->privilege_id_fk));
-                    $row3 = $query_privilege->row();
-                    if($row3->active_status==1){
-                        $a[]=array(
-                                'privilege_id_fk'=> $row_out->privilege_id_fk,
-                                'user_type_id_fk'=> $row_out->user_type_id_fk,
-                                'user_privilege_active_status'=> $row_out->active_status,
+        foreach($table2 as $row_out){
+            $query_privilege = $this->db->get_where('Privilege',array('privilege_id_pk'=>$row_out->privilege_id_fk));
+            $row3 = $query_privilege->row();
+            if($row3->active_status==1){
+                $a[]=array(
+                    'privilege_id_fk'=> $row_out->privilege_id_fk,
+                    'user_type_id_fk'=> $row_out->user_type_id_fk,
+                    'user_privilege_active_status'=> $row_out->active_status,
     
                                 'parent'=> $row3->parent,
                                 'link'=> $row3->link,
                                 'view_sidebar'=> $row3->view_sidebar,
                                 'order'=> $row3->order,
+                                'page_name'=>$row3->page_name,
                                 'privilege_active_status'=>$row3->active_status
                             );
                     }
                 }
             //}
-
             $result = array(
-                'user_type_id_pk'=>$row->user_type_id_pk,
-                'desig' => $row->desig,
-                'active_status'=> $row->active_status,
+                'user_type_id_pk'=>$var,
+               // 'desig' => $row->desig,
+                //'active_status'=> $row->active_status,
                 'user_privilege'=>$a
             );
     
             $this->load->driver('cache', array('adapter' => 'file'));
     
-            if ( ! $foo = $this->cache->get('User_type'.$u)){
+            if ( ! $foo = $this->cache->get('User_type'.$var)){
                 $foo = $result;
-                $this->cache->save('User_type'.$u, $foo, 3000);
+                $this->cache->save('User_type'.$var, $foo, 3000);
             }
-            $u += 1;
-        }
+            //$u += 1;
+        //}
         $this->db->cache_off();
     }
 
     public function check_first_user(){
-        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['id']));
+        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
@@ -129,7 +127,7 @@ class Admin_model extends CI_Model {
         $this->db->update('Login',array('password'=>$password));
     }
     public function update_first_profile(){
-        $this->db->where('user_id_pk',$this->cache->get('Active_status')['id']);
+        $this->db->where('user_id_pk',$this->cache->get('Active_status')['Login_id_pk']);
         $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));
     }
     public function update_first_pass($username){
@@ -138,13 +136,57 @@ class Admin_model extends CI_Model {
         $this->db->update('check_First_User',array('check_if_first_user' => 0 ));
     }
     public function meeting_schedule($data){
-        $this->db->where('id', 1);
+        $this->db->where('meeting_id_pk', 1);
 		$this->db->update('meeting_schedule', $data);
     }
 
     public function previous_meeting_schedule(){
-        $query = $this->db->get_where('meeting_schedule',array('id'=>1));
+        $query = $this->db->get_where('meeting_schedule',array('meeting_id_pk'=>1));
         $row=$query->row();
         return $row;
+    }
+
+    public function _generateCaptcha(){
+        $vals = array(
+            'word'          => rand(1000, 9999),
+            //'word'          => $this->getName(5,8),
+            'img_path'      => './captcha/',
+            'img_url'       => 'http://localhost/NIC/captcha/',
+            'font_path'     => './path/to/fonts/texb.ttf',
+            'img_width'     => '200',
+            'img_height'    => 40,
+            'expiration'    => 7200,
+            'word_length'   => 8,
+            'font_size'     => 50,
+            'img_id'        => 'Imageid',
+            'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+    
+            // White background and border, black text and red grid
+            'colors'        => array(
+                    'background' => array(255, 255, 255),
+                    'border' => array(255, 255, 255),
+                    'text' => array(0, 0, 0),
+                    'grid' => array(51, 153, 255)
+            )
+        );
+        /* Generate the captcha */
+        return create_captcha($vals);
+    }
+
+    public function getName($x,$y) {
+        $length = rand($x,$y);
+        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+    
+        for ($i = 0; $i < $length; $i++) {
+            $randomString .= $characters[rand(0, strlen($characters) - 1)];
+        }
+    
+        return $randomString;
+    }
+
+    public function findpass($n){
+        $query=$this->db->get_where("Login",array('username'=>$n));
+        return $query->row();
     }
 }

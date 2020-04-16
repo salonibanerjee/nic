@@ -26,7 +26,7 @@ class Dashboard_model extends CI_Model{
             $i=0;
             while($i<$nblo)
             {
-                $this->db->select($b[$j])->where('schcd',$block[$i])->order_by('id','desc')->limit(1);
+                $this->db->select($b[$j])->where('schcd',$block[$i])->order_by('id_pk','desc')->limit(1);
                 $table = $this->db->get($sch[$j])->row();
                 $count = 0;
                 $temp = $b[$j];
@@ -90,7 +90,7 @@ class Dashboard_model extends CI_Model{
         $d = array();
         while($i<$num)
         {
-            $this->db->select($b[$i])->order_by('id',"desc")->limit(1);
+            $this->db->select($b[$i])->order_by('id_pk',"desc")->limit(1);
             $table2 = $this->db->get($n[$i])->row();
             $temp = $b[$i];
             array_push($d, $table2->$temp);
@@ -123,8 +123,8 @@ class Dashboard_model extends CI_Model{
         $d = array();
         while($j<(2*$num))
         {
-            $this->db->select($b[$j])->order_by('id',"desc")->limit(1);
-            $this->db->select($b[$j+1])->order_by('id',"desc")->limit(1);
+            $this->db->select($b[$j])->order_by('id_pk',"desc")->limit(1);
+            $this->db->select($b[$j+1])->order_by('id_pk',"desc")->limit(1);
             $table2 = $this->db->get($n[$x])->row();
             $temp1 = $b[$j];
             $temp2 = $b[$j+1];
