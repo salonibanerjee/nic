@@ -6,6 +6,7 @@
   <title>Summary | Dashboard</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="http://localhost/NIC/css/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -21,9 +22,11 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="http://localhost/NIC/css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/daterangepicker/daterangepicker.css">
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- summernote -->
   <link rel="stylesheet" href="http://localhost/NIC/css/plugins/summernote/summernote-bs4.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="http://localhost/NIC/css/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -36,10 +39,10 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
+        <a id="pie-btn" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/NIC/index.php/summary" class="nav-link">Home</a>
+        <a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="#" class="nav-link">Contact</a>
@@ -61,6 +64,11 @@
     <script src="http://localhost/NIC/css/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="http://localhost/NIC/css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- date-range-picker -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    
     <!-- ChartJS -->
     <script src="http://localhost/NIC/css/plugins/chart.js/Chart.min.js"></script>
     <!-- AdminLTE App -->

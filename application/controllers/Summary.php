@@ -6,6 +6,8 @@ class summary extends CI_Controller {
 	public function index()
 	{	
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
@@ -13,7 +15,6 @@ class summary extends CI_Controller {
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
-		$this->load->view('dashboard/navbar');
 		
 		$this->load->view('dashboard/sidebar',$da);
 
@@ -250,7 +251,8 @@ class summary extends CI_Controller {
 	
 	public function profile(){
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$this->load->view('dashboard/navbar');
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
@@ -260,14 +262,29 @@ class summary extends CI_Controller {
 
 	public function edit_profile(){
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-		$this->load->view('dashboard/navbar');
 		$this->load->view('dashboard/sidebar',$da);
 		$this->load->model('profile_model');
 		$this->load->model('Admin_model');
 		$dat=$this->profile_model->get_profile($this->session->userdata('uid'));
-		
+		$desi=$this->profile_model->get_designation();
+		$dep=$this->profile_model->get_depart();
+		$off=$this->profile_model->get_office();
+		$user = array();
+		$user = $this->profile_model->get_user_id();
+		//print_r($user);
+
+
+		$dat = array(
+			'desi' =>$desi,
+			'dep' =>$dep,
+			'off' =>$off,
+			'user' =>$user,
+		);
+		//print_r($desi);
 		$validate = array(
 			array(
 					'field' => 'first',
@@ -295,11 +312,11 @@ class summary extends CI_Controller {
 					'label' => 'Email',
 					'rules' => 'required|valid_email'
 			),
-			array(
-				'field' => 'desig',
-				'label' => 'Designation',
-				'rules' => 'required'
-			),
+			//array(
+			//	'field' => 'desig',
+			//	'label' => 'Designation',
+			//	'rules' => 'required'
+			//),
 			array(
 				'field' => 'dist',
 				'label' => 'District',
@@ -319,6 +336,8 @@ class summary extends CI_Controller {
 				$email = $this->input->post('email');
 				$desig = $this->input->post('desig');
 				$dist = $this->input->post('dist');
+				$dep = $this->input->post('dept');
+				$off = $this->input->post('off');
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
@@ -333,6 +352,8 @@ class summary extends CI_Controller {
 					'email' => $email,
 					'image' => $image,
 					'designation' =>$desig,
+					'department' =>$dep,
+					'office' =>$off,
 					'district' =>$dist,
 				);
 				if($res){
