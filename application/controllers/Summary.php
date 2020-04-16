@@ -10,6 +10,8 @@ class summary extends MY_Controller {
 		//$this->check_privilege(1);
 
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
@@ -17,11 +19,15 @@ class summary extends MY_Controller {
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
+<<<<<<< HEAD
+		
+=======
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
+>>>>>>> 7e6393748090c86ca011b40701279934f74503bf
 		$this->load->view('dashboard/sidebar',$da);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
@@ -281,6 +287,8 @@ class summary extends MY_Controller {
 
 	public function edit_profile(){
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
@@ -293,7 +301,21 @@ class summary extends MY_Controller {
 		$this->load->model('profile_model');
 		$this->load->model('Admin_model');
 		$dat=$this->profile_model->get_profile($this->session->userdata('uid'));
-		
+		$desi=$this->profile_model->get_designation();
+		$dep=$this->profile_model->get_depart();
+		$off=$this->profile_model->get_office();
+		$user = array();
+		$user = $this->profile_model->get_user_id();
+		//print_r($user);
+
+
+		$dat = array(
+			'desi' =>$desi,
+			'dep' =>$dep,
+			'off' =>$off,
+			'user' =>$user,
+		);
+		//print_r($desi);
 		$validate = array(
 			array(
 					'field' => 'first',
@@ -321,11 +343,11 @@ class summary extends MY_Controller {
 					'label' => 'Email',
 					'rules' => 'required|valid_email'
 			),
-			array(
-				'field' => 'desig',
-				'label' => 'Designation',
-				'rules' => 'required'
-			),
+			//array(
+			//	'field' => 'desig',
+			//	'label' => 'Designation',
+			//	'rules' => 'required'
+			//),
 			array(
 				'field' => 'dist',
 				'label' => 'District',
@@ -345,6 +367,8 @@ class summary extends MY_Controller {
 				$email = $this->input->post('email');
 				$desig = $this->input->post('desig');
 				$dist = $this->input->post('dist');
+				$dep = $this->input->post('dept');
+				$off = $this->input->post('off');
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
@@ -359,6 +383,8 @@ class summary extends MY_Controller {
 					'email' => $email,
 					'image' => $image,
 					'designation' =>$desig,
+					'department' =>$dep,
+					'office' =>$off,
 					'district' =>$dist,
 				);
 				if($res){
@@ -393,30 +419,19 @@ class summary extends MY_Controller {
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            $this->load->view('change_pass');
+			echo validation_errors();
+			$this->load->view('change_pass');
         }else{
             $user=$this->session->userdata('uid');
             $old_pass = $this->input->post('pass0');
             $res=$this->Admin_model->findpass($user);
 			$passInDb =$res->password;
-            if($this->input->post('sub2')){
-                if($passInDb === $old_pass){
-                    $password=$this->input->post('pass1');
-                    $this->Admin_model->update_login($user,$password);
-                    ?>
-                        <script type=text/javascript>
-                            alert("Password succesfully changed...");
-                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
-                        </script>
-                    <?php
-                }else{
-                    ?>
-                        <script type=text/javascript>
-                            alert("Password can't be changed...");
-                            window.location.href = "http://localhost/nic/index.php/Summary/profile";
-                        </script>
-                    <?php
-                }
+            if($passInDb === $old_pass){
+                $password=$this->input->post('pass1');
+				$this->Admin_model->update_login($user,$password);
+				echo "http://localhost/nic/index.php/Summary/profile";
+            }else{
+				echo "<p>Old Password is wrong.</p>\n";
             }
         }
     }

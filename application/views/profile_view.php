@@ -47,10 +47,10 @@
                   <b>Designation</b> <a class="float-right"><?php echo $designation; ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Office</b> <a class="float-right"><?php echo $mobile; ?></a>
+                  <b>Office</b> <a class="float-right"><?php echo $office; ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Department</b> <a class="float-right"><?php echo $mobile; ?></a>
+                  <b>Department</b> <a class="float-right"><?php echo $department; ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Email</b> <a class="float-right"><?php echo $email; ?></a>
@@ -86,7 +86,7 @@
 <script>
 	$(document).ready(function(){
 		$("#zoom").hover(function(){
-			$(this).animate({width:'300px',height:'300px'});
+			$(this).animate({width:'400px',height:'400px'});
 			$(this).css("opacity","1");
 		}, function(){
 			$(this).animate({width:'150px',height:'150px'});
