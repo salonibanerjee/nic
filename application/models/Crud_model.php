@@ -185,4 +185,10 @@ class Crud_model extends CI_Model {
                 $this->db->where('id_pk', $r);
                 $this->db->delete($n);
         }
+
+        public function draft_filter($table_name,$month,$year){
+                $var = $this->session->userdata('schcd');
+                $row = $this->db->select('*')->where(array('schcd'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                return $row;
+        }
 }
