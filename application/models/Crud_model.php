@@ -189,6 +189,9 @@ class Crud_model extends CI_Model {
         public function draft_filter($table_name,$month,$year){
                 $var = $this->session->userdata('schcd');
                 $row = $this->db->select('*')->where(array('schcd'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
-                return $row;
+                if($row)
+                        return $row;
+                else
+                        return NULL;
         }
 }

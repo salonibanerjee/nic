@@ -43,7 +43,13 @@ class Get_table extends MY_Controller {
             $mon=$this->input->post('modmonth');
             $yr = $this->input->post('modyear');
             if(isset($mon) && isset($yr)){
-                $result['draft_data'] = $this->Crud_model->draft_filter($n."_draft",$mon,$yr);
+                if($this->Crud_model->draft_filter($n."_draft",$mon,$yr)==NULL){
+                    $arr=array('month'=>$mon,'session'=>$yr);
+                    $object = (object) $arr;
+                    $result['draft_data']=$object;
+                }else{
+                    $result['draft_data'] = $this->Crud_model->draft_filter($n."_draft",$mon,$yr);
+                } 
             }else{
                 $result['draft_data'] = $this->Crud_model->draft_data_fetch($n."_draft");
             }
