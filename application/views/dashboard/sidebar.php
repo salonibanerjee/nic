@@ -52,7 +52,7 @@
           </li>
 
           <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/data_view/load/KCC" class="nav-link">
+            <a href="http://localhost/NIC/index.php/viewdata/load/KCC" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
               <p>Table</p>
             </a>
@@ -62,6 +62,13 @@
             <a href="http://localhost/NIC/index.php/Nodal_check" class="nav-link">
               <i class="nav-icon fas fa-circle"></i>
               <p>Nodal Check</p>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="http://localhost/NIC/index.php/broadcast_notification/create_notifs" class="nav-link">
+              <i class="nav-icon fas fa-circle"></i>
+              <p>Notify</p>
             </a>
           </li>
 

@@ -162,14 +162,14 @@ class profile_model extends CI_Model {
 	}
 
 	public function custom_notification(){
-		$query = $this->db->select('*')->get_where('notification', array('active_status'=>1))->result_array();
+		$query = $this->db->select('*')->order_by('notification_id_pk','DESC')->get_where('notification', array('active_status'=>1))->result_array();
 		return $query;
 	}
 
-	public function update_active_noti($var){
-		$a=array('active_status'=>0);
-		$this->db->where(array('notification_id_pk'=>$var));
-		$this->db->update('notification',$a);
+	public function savenotifs($target_audience,$noti_text,$noti_head)
+	{
+		$result = $this->db->insert('notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
+									'active_status'=>1));
+		return $result;
 	}
-    
 }

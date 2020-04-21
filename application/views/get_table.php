@@ -62,7 +62,7 @@
             </div>
           <!-- /.card-header -->
           <!-- form start -->
-            <form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table_copy/submit/<?php echo $n;?>">
+            <form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table/submit/<?php echo $n;?>">
               <div class='card-body'>
                 <?php
                   $i=0;

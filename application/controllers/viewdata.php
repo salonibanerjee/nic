@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class data_view extends MY_Controller {
+class viewdata extends MY_Controller {
     public function index(){
 
     }
@@ -44,9 +44,16 @@ class data_view extends MY_Controller {
             $result['data_table']=$this->Crud_model->list_table();
             $result['s_name_table']=$this->Crud_model->fullname();
             $result['username'] = $this->session->userdata('uid');
-            $result['draft_data'] = $this->Crud_model->draft_data_fetch($n."_draft");
             //new added for table show
-            $result['backup_data'] = $this->Crud_model->backup_data_fetch($n."_backup");
+            $result['main_data'] = $this->Crud_model->data_fetch($n);
+            //$this->form_validation->set_rules('modmonthst', 'Starting Month', 'required');
+            //$this->form_validation->set_rules('modmonthend', 'Ending Month', 'required|greater_than_equal_to[modmonthst]');
+            if (isset($_POST['filter_sub'])){
+                    $s_month = $this->input->post('modmonthst');
+                    $e_month = $this->input->post('modmonthend');
+                    $yr = $this->input->post('modyear');
+                    $result['main_data']=$this->Crud_model->filter_data($n,$s_month,$e_month,$yr);
+            }
             $result['profile'] = $da;
             $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
             if($da['flag']==0){
@@ -58,7 +65,6 @@ class data_view extends MY_Controller {
             #dynamic type checking
             $x=$this->Crud_model->get_attri($n);
             $result['s_name']=array();
-            $result['region']=$this->Crud_model->region_name($this->session->userdata('schcd'));
             $flag=0;
             //setting array for form validations
             foreach($x as $field){
@@ -72,35 +78,6 @@ class data_view extends MY_Controller {
                 $result['s_name'][]=$ij;
             }
             $this->load->view('data_view',$result);
-            /*if($this->input->post('sub1')=="Accept"){
-                $result['draft_data']->nodal_check=1;
-                $this->Crud_model->delete_sub($result['draft_data']->id_pk,$n.'_draft');
-                unset($result['draft_data']->id_pk);
-                if($this->Crud_model->unique_data_entry($n,$result['draft_data']->session,$result['draft_data']->Month)){
-                    $this->Crud_model->update_sub($result['draft_data'],$n);
-                }else{
-                    $this->Crud_model->save_data($result['draft_data'],$n);
-                }
-                $this->Crud_model->save_data($result['draft_data'],$n.'_backup');
-                ?>
-                        <script type=text/javascript>
-                            alert("Value accepted");
-                            window.location.href = "http://localhost/NIC/index.php/Sample_d/load/<?php echo $n ?>";
-                        </script>
-                <?php
-            }
-            if($this->input->post('sub2')=="Reject"){
-                $result['draft_data']->nodal_check=0;
-                $this->Crud_model->delete_sub($result['draft_data']->id_pk,$n.'_draft');
-                unset($result['draft_data']->id_pk);
-                $this->Crud_model->save_data($result['draft_data'],$n.'_backup');
-                ?>
-                        <script type=text/javascript>
-                            alert("Value rejected");
-                            window.location.href = "http://localhost/NIC/index.php/Sample_d/load/<?php echo $n ?>";
-                        </script>
-                <?php
-            }*/
         }
     }
 }

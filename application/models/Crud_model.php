@@ -165,17 +165,34 @@ class Crud_model extends CI_Model {
                 return $last_row;
         }
         //for tabular view
-        public function backup_data_fetch($table_name){
+        public function data_fetch($table_name){
                 $var = $this->session->userdata('schcd');
                 $count=0;
                 $count = $this->db->select('*')->where(['schcd'=>$var])->from($table_name)->count_all_results();
                 if($count>0){
-                        $query = $this->db->select('*')->get_where($table_name, array('schcd' => $var, 'nodal_check'=>1))->result_array();
+                        $query = $this->db->select('*')->where(array('nodal_check'=>1))->like('schcd', $var, 'after')->order_by('month')->get($table_name)->result_array();
                         return $query;
                 }else{
                         return 0;
                 }
         }
+        public function filter_data($table_name,$sm,$em,$yr){
+                $schcd = $this->session->userdata('schcd');
+                $this->db->select('*');
+                $this->db->from($table_name);
+                $this->db->where('month>=',$sm);
+                $this->db->where('month<=',$em);
+                $this->db->where('session',$yr);
+                $this->db->like('schcd', $schcd, 'after');
+                $query=$this->db->order_by('month')->get()->result_array();
+                if($query){
+                        return $query;
+                }else{
+                        return 0;
+                }
+        }
+        //tabluar data end
+
         function update_sub($r,$n){
                 //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'month'=>$r->month));

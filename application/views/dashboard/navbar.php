@@ -83,6 +83,7 @@
               echo "<div class='dropdown-divider'></div>";
               echo "<a href='#' class='dropdown-item' data-toggle='modal' data-target='#modal-".$noti1[$i]['notification_id_pk']."'>";
               echo "<i class='fas fa-envelope text-blue '></i> ".$noti1[$i]['notification_head'];
+              echo "<span class='float-right text-muted text-sm'>".$noti1[$i]['audience_id']."</span>";
               //echo "<span class='float-right text-muted text-sm'></span>";
               echo "</a>";
               $i++;
@@ -102,7 +103,7 @@ foreach($noti1 as $row){
   echo "<div class='modal fade' id='modal-".$noti1[$i]['notification_id_pk']."'>
               <div class='modal-dialog'>
                 <div class='modal-content'>
-                  <div class='modal-header'>
+                  <div class='modal-header bg-warning'>
                     <h4 class='modal-title'><strong>".$noti1[$i]['notification_head']."</strong></h4>
                     <button type='button' class='close' data-dismiss='modal' aria-label='Close'>
                       <span aria-hidden='true'>&times;</span>
@@ -112,8 +113,8 @@ foreach($noti1 as $row){
                     <p>".$noti1[$i]['notification_text']."</p>
                   </div>
                   <div class='modal-footer justify-content-between'>
-                    <button type='button' class='btn btn-default' data-dismiss='modal'>Close</button>
-                    <input type='button' class='btn btn-primary' name='sub".$noti1[$i]['notification_id_pk']."'value='Mark as Read'>
+                    <button type='button' class='btn btn-default bg-danger' data-dismiss='modal'>Close</button>
+                    <span class='float-right text-muted text-sm'><b>CODE - </b>".$noti1[$i]['audience_id']."</span>
                   </div>
                 </div>
               </div>
