@@ -53,16 +53,33 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+      <a class="nav-link" href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
+        <i class="fas fa-home" style="font-size:27px;"></i>
+      </a>
+    </li>
+
     <li class="nav-item dropdown" >
         <a class="nav-link" data-toggle="dropdown" href="#">
-          <i class="fas fa-sitemap"></i>
+          <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right " style="max-height:800px; max-width:750px; padding:3px;">
         <a href='#' class='dropdown-item'>
-        <label>Click to enlarge</label>
+        <label>Hover to enlarge</label>
         </a>
         <div class="dropdown-divider"></div>
+        <a target="_blank" href="#" onClick='test(this)' href='#' class='dropdown-item'>
           <img id='zoom' src="http://localhost/NIC/css/dist/img/Sitemapocto.png" alt="Smiley face" height="250" width="250">
+          <script>
+            function test(element) {
+                var newTab = window.open();
+                setTimeout(function() {
+                    newTab.document.body.innerHTML = element.innerHTML;
+                }, 500);
+                return false;
+            }
+          </script>
+        </a>
         </div>
       </li>
     <li class="nav-item dropdown">
@@ -105,6 +122,22 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      
+      <li class="nav-item dropdown" >
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-cog" style="font-size:27px;"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
+        <a href='#' class='dropdown-item'>
+          <i class="fas fa-phone text-green "></i> Contact
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href='http://localhost/NIC/index.php/Login/logout' class='dropdown-item'>
+          <i class="fas fa-power-off text-danger "></i> Logout
+        </a>
+        </div>
+      </li>
+
     </ul>
   </nav>
   <!-- /.navbar -->
