@@ -31,47 +31,30 @@
           <?php
             $data=$this->cache->get('Active_status')['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
+            $i=0;
             foreach($var as $x){
               if($x['view_sidebar']==1){
+                $var1=current_url();
+                $var2= 'http://localhost/NIC/index.php/'.$x['link'];
                 echo "<li class='nav-item'>";
-                echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
-                echo "<i class='nav-icon fas fa-circle'></i>";
+                if($var1==$var2){
+                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link active'>";
+                }else
+                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                if($x['privilege_id_fk']==1||$x['privilege_id_fk']==3||$x['privilege_id_fk']==5){
+                  echo "<i class='nav-icon fas fa-plus'></i>";
+                }else
+                  echo "<i class='nav-icon fas fa-circle'></i>";
                 echo "<p>";
                 echo $x['page_name'];
                 echo "</p>";
                 echo "</a>";
                 echo "</li>";
+                $i++;
               }
             }
           ?>
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link active">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Schedule a Meeting</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/viewdata/load/KCC" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Table</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Nodal_check" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Nodal Check</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/broadcast_notification/create_notifs" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Notify</p>
-            </a>
-          </li>
-
+          </script>
           <?php if($flag==1){
             echo "<li id='hulala' class='nav-item has-treeview menu-open'>";
               echo "<a href='#' class='nav-link'>";

@@ -11,13 +11,13 @@
             if(isset($noti))
             {
                 $i=0;
-                foreach($noti as $x){
+                foreach($noti1 as $x){
                     if($i==0)
                         echo "<div class='carousel-item active'>";
                     else
                         echo "<div class='carousel-item'>";
                     echo "<div class='col-xs-12 text-center'>";
-                    echo    "<p class='d-block w-100' alt='First slide'>".$x->notification_text."</p>";
+                    echo    "<p class='d-block w-100' alt='First slide'>".$x['notification_text']."</p>";
                     echo "</div>";
                     echo "</div>";
                     $i++;
