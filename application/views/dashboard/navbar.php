@@ -68,18 +68,9 @@
         <label>Hover to enlarge</label>
         </a>
         <div class="dropdown-divider"></div>
-        <a target="_blank" href="#" onClick='test(this)' href='#' class='dropdown-item'>
+        <a target="_blank" href="http://localhost/NIC/css/dist/img/Sitemapocto.png" class='dropdown-item'>
           <img id='zoom' src="http://localhost/NIC/css/dist/img/Sitemapocto.png" alt="Smiley face" height="250" width="250">
-          <script>
-            function test(element) {
-                var newTab = window.open();
-                setTimeout(function() {
-                    newTab.document.body.innerHTML = element.innerHTML;
-                }, 500);
-                return false;
-            }
-          </script>
-        </a>
+        </a><div class='thumb' attribute='onclick'>
         </div>
       </li>
     <li class="nav-item dropdown">
@@ -122,7 +113,7 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
-      
+
       <li class="nav-item dropdown" >
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-cog" style="font-size:27px;"></i>
