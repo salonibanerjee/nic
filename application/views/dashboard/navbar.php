@@ -53,6 +53,18 @@
     </ul>
 
     <ul class="navbar-nav ml-auto">
+    <li class="nav-item dropdown" >
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-sitemap"></i>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right " style="max-height:800px; max-width:750px; padding:3px;">
+        <a href='#' class='dropdown-item'>
+        <label>Click to enlarge</label>
+        </a>
+        <div class="dropdown-divider"></div>
+          <img id='zoom' src="http://localhost/NIC/css/dist/img/Sitemapocto.png" alt="Smiley face" height="250" width="250">
+        </div>
+      </li>
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
@@ -139,5 +151,17 @@ foreach($noti1 as $row){
     <script src="http://localhost/NIC/css/dist/js/demo.js"></script>
     <!-- page script -->
     
+    <script>
+	$(document).ready(function(){
+		$("#zoom").hover(function(){
+			$(this).animate({width:'700px',height:'700px'});
+			$(this).css("opacity","1");
+		}, function(){
+			$(this).animate({width:'150px',height:'150px'});
+			$(this).css("opacity","1");
+		});
+	});
+</script>
   </body>
 </html>
+
