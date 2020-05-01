@@ -1,12 +1,15 @@
 
 <div class="content-wrapper">
+<h2> SCHEDULE A </b>MEETING</b></h2>
+<div class="card card-primary card-outline mx-auto" style="max-width: 700px">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
       <?php echo form_open_multipart("");?>
+      
         <div class="row">
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box">
+          <div class="col-md-6">
+            <div class="info-box bg-black">
               <span class="info-box-icon bg-success"><i class="far fa-calendar-alt"></i></span>
               <div class="info-box-content">
                   <span class="info-box-text"><strong>Previous Start Time</strong></span>
@@ -14,8 +17,8 @@
               </div>
             </div>
           </div>
-          <div class="col-md-3 col-sm-6 col-12">
-            <div class="info-box">
+          <div class="col-md-6">
+            <div class="info-box bg-black">
               <span class="info-box-icon bg-warning"><i class="far fa-calendar-alt"></i></span>
 
                 <div class="info-box-content">
@@ -27,8 +30,8 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
-            <div class="card card-primary">
+          <div class="col-md-12">
+            <div class="card card-primary ">
               <div class="card-header">
                 <h1 class="card-title" style="color:white; font-size:30px;"><Strong>Schedule a Meeting</Strong></h1>
               </div>
@@ -60,6 +63,7 @@
       </div>  
     </div>
   </section>
+</div>
 </div>
 
 <!-- Page script -->

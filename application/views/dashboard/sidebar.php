@@ -16,15 +16,8 @@
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;">
-<<<<<<< HEAD
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
-=======
-          <marquee id="mymarquee" scrolldelay="100"  onmouseover="this.stop();"onmouseout="this.start();">
-            <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$l_name?></strong></a>
-            <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
-          </marquee>
->>>>>>> 7e6393748090c86ca011b40701279934f74503bf
           <?php if($update_prof==1){
             echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
@@ -38,40 +31,30 @@
           <?php
             $data=$this->cache->get('Active_status')['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
+            $i=0;
             foreach($var as $x){
               if($x['view_sidebar']==1){
+                $var1=current_url();
+                $var2= 'http://localhost/NIC/index.php/'.$x['link'];
                 echo "<li class='nav-item'>";
-                echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
-                echo "<i class='nav-icon fas fa-circle'></i>";
+                if($var1==$var2){
+                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link active'>";
+                }else
+                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                if($x['privilege_id_fk']==1||$x['privilege_id_fk']==3||$x['privilege_id_fk']==5){
+                  echo "<i class='nav-icon fas fa-plus'></i>";
+                }else
+                  echo "<i class='nav-icon fas fa-circle'></i>";
                 echo "<p>";
                 echo $x['page_name'];
                 echo "</p>";
                 echo "</a>";
                 echo "</li>";
+                $i++;
               }
             }
           ?>
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Meeting_schedule" class="nav-link active">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Schedule a Meeting</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/data_view/load/KCC" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Table</p>
-            </a>
-          </li>
-
-          <li class="nav-item">
-            <a href="http://localhost/NIC/index.php/Nodal_check" class="nav-link">
-              <i class="nav-icon fas fa-circle"></i>
-              <p>Nodal Check</p>
-            </a>
-          </li>
-
+          </script>
           <?php if($flag==1){
             echo "<li id='hulala' class='nav-item has-treeview menu-open'>";
               echo "<a href='#' class='nav-link'>";

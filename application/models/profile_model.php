@@ -3,14 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class profile_model extends CI_Model {
     public function upload($data){
-        $this->db->insert('profile',$data);
+        $this->db->insert('mpr_semitrans_profile',$data);
     }
     function update($uid,$data){
 		$this->db->where('username', $uid);
-		$this->db->update('profile', $data);
+		$this->db->update('mpr_semitrans_profile', $data);
     }
     public function get_f($d){
-        $query = $this->db->get_where('profile', array('username' => $d));
+        $query = $this->db->get_where('mpr_semitrans_profile', array('username' => $d));
         $row = $query->row();
         return $row;
     }
@@ -65,7 +65,7 @@ class profile_model extends CI_Model {
 	}*/
 
     public function get_profile_info($username){
-        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
+        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
         $row=$query->row();
 		$res=$this->get_f($username);
 		//$r = $this->get_designation($username);
@@ -80,8 +80,8 @@ class profile_model extends CI_Model {
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
 				'district' =>$res->district,
-				'department' =>$res->department,
-				'office' =>$res->office,
+				//'department' =>$res->department,
+				//'office' =>$res->office,
                 'first_user'=>$row->check_if_first_user,
 				'update_prof'=>$row->check_profile_updated_once,
 				'flag'=> 0
@@ -116,8 +116,8 @@ class profile_model extends CI_Model {
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->designation,
-				'department' =>$res->department,
-				'office' =>$res->office,
+				//'department' =>$res->department,
+				//'office' =>$res->office,
 				//'desi_code' =>$
 				'district' =>$res->district,
 			);
@@ -138,6 +138,38 @@ class profile_model extends CI_Model {
 			);
         }
         return $da;
-    }
-    
+	}
+	
+	public function meeting_notification(){
+		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
+		$s_time = strtotime($last_row->start_time);
+		$e_time = strtotime($last_row->end_time);
+		$now = strtotime(mdate('%Y-%m-%d %H:%i', now()));
+		$noti=array();
+		if(($now > $s_time) && ($now < $e_time)){
+			$noti['msg']="Meeting Ongoing";
+			$noti['val']=mdate('%H:%i',$s_time)."-".mdate('%H:%i',$e_time);
+		}
+		else if($now > $e_time){
+			$noti['msg']="Meeting Expired";
+			$noti['val']=mdate('%M-%d %H:%i',$e_time);
+		}
+		else if($now < $s_time){
+			$noti['msg']="Upcoming Meeting";
+			$noti['val']=mdate('%M-%d %H:%i',$s_time);
+		}
+		return $noti;
+	}
+
+	public function custom_notification(){
+		$query = $this->db->select('*')->order_by('notification_id_pk','DESC')->get_where('mpr_trans_notification', array('active_status'=>1))->result_array();
+		return $query;
+	}
+
+	public function savenotifs($target_audience,$noti_text,$noti_head)
+	{
+		$result = $this->db->insert('mpr_trans_notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
+									'active_status'=>1));
+		return $result;
+	}
 }

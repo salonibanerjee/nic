@@ -16,36 +16,40 @@
             <div class="card card-widget widget-user">
               <!-- Add the bg color to the header using any of the bg-* classes -->
               <div class="widget-user-header bg-orange">
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
                 <div class="widget-user-image">
-                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:100px; height:100px;' alt="User Avatar">
+                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
                 </div>
                 <!-- /.widget-user-image -->
                 <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
                 <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name." ";?><strong>Last Entry</strong></h5>
               </div>
               <div class="card-footer p-0" id="div123">
-                <ul class="nav flex-column">
-                  <?php $i=0; foreach($data as $row){
-                    if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
-                      $i++;
-                      continue;
-                  }else{
-                      echo "<li class='nav-item'>";
-                      echo "<a  class='nav-link'>";
-                      if(isset($draft_data->$row)){
-                        if($s_name[$i]=="Month")
-                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
-                        else
-                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
-                      }
-                      else
-                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
-                      echo "</a>";
-                    echo "</li>";
-                  }
-                    $i++;
-                  }?>
-                </ul>
+                  <ul class="nav flex-column">
+                    <?php
+                        $i=0;
+                        foreach($data as $row){
+                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                                $i++;
+                                continue;
+                            }else{
+                                echo "<li class='nav-item'>";
+                                echo "<a  class='nav-link'>";
+                                if(isset($draft_data->$row)){
+                                    if($s_name[$i]=="Month")
+                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
+                                    else
+                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                                }
+                                else
+                                    echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                echo "</a>";
+                                echo "</li>";
+                            }
+                            $i++;
+                        }
+                    ?>
+                  </ul>
               </div>
             </div>
             <!-- /.widget-user -->
@@ -58,7 +62,7 @@
             </div>
           <!-- /.card-header -->
           <!-- form start -->
-            <form role='form' method="post" id='form'>
+            <form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table/submit/<?php echo $n;?>">
               <div class='card-body'>
                 <?php
                   $i=0;
@@ -128,7 +132,7 @@
               <!-- /.card-body -->
               <div class='card-footer'>
               <div id="errors" style="color:red;"></div>
-                <button type='submit' class='btn btn-primary' name='submit' id='submit' value="Submit">Submit</button>
+                <button type='submit' class='btn btn-primary' name='form_sub' id='form_sub' form="form" value="Submit">Submit</button>
               </div>
           </form>
           </div>
@@ -145,6 +149,42 @@
     </div><!-- /.container-fluid -->
   </section>
 </div>
+
+<div class="modal fade" id="modal-sm">
+      <form method="POST" id='draft' action="">
+        <div class="modal-dialog modal-sm" >
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Choose Filter</h4>
+              <button type="button" id="hi" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+            <select id='modmonth' name="modmonth" class="form-control select2 select2-hidden-accessible">
+            <option value='1' selected>January</option>
+            <?php for($x=2;$x<=12;$x++){
+                          echo "<option value='".$x."'>".$month[$x]."</option>";
+                        }?>
+            </select>
+
+            <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
+            <?php $year=intval(date('Y')); 
+            echo "<option value='".$year."' selected>".$year."</option>";
+            for($x=$year-1;$x>=2019;$x--){
+                          echo "<option value='".$x."'>".$x."</option>";
+                        }?>
+            </select>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="submit" id="draft_sub" name="draft_sub" class="btn btn-primary" form="draft">Apply</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+      </form>
+        <!-- /.modal-dialog -->
+      </div>
 
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 
@@ -170,12 +210,37 @@ for (i = 0; i < li.length; i++) {
 }
 }
 
-$("form").on("submit", function (event) {
+$("#draft").on("submit",function(e){
+    var postData = $(this).serialize();
+    var formURL = $(this).attr("action");
+    console.log(postData);
+    $.ajax(
+    {
+        url : formURL,
+        type: "POST",
+        data : postData,
+        success:function(data, textStatus, jqXHR) 
+        {
+            document.getElementById("hi").click();
+            $("#div123").load(location.href + " #div123");
+            console.log(data);
+            //data: return data from server
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+            console.log("Form cannot be submitted...");
+            //if fails      
+        }
+    });
+    //e.preventDefault(); //STOP default action
+    //e.unbind(); //unbind. to stop multiple form submit.
+}); 
+$("#form").on("submit", function (event) {
   event.preventDefault();
   $.ajax({
-    url: $('form').attr('action'),
+    url: $('#form').attr('action'),
     type: "POST",
-    data: $('form').serialize(),
+    data: $('#form').serialize(),
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
@@ -183,15 +248,12 @@ $("form").on("submit", function (event) {
     cache: false,
     success: function(result){
       if(result[1]=='p'){
-        var pos=result.indexOf('<!DOCTYPE html>');
-        $('#errors').html(result.slice(0,pos));
-        //alert("Form error...");
+        $('#errors').html(result);
         console.log("error");
       }else{ 
         $('#errors').html("");
-        $("form")[0].reset();
+        $("#form")[0].reset();
         $("#div123").load(location.href + " #div123");
-        //alert("Form submitted...");
         console.log("submit");
       }
     }

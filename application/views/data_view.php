@@ -12,10 +12,11 @@
     <div class='container-fluid'>
       <div class='row'>
 
-        <div class="col-md-11">
+        <div class="col-md-11" id='refresh'>
           <div class="card">
             <div class="card-header">
               <h3 class="card-title"><strong><?php echo $name.' ';?>Datatable</strong></h3>
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -23,7 +24,7 @@
                 <thead>
                 <tr>
                   <?php $i=0; foreach($data as $row){
-                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' ){
+                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
                         $i++;
                         continue;
                       }else{
@@ -35,12 +36,12 @@
                 </thead>
                 <tbody>
                 <?php
-                    if($backup_data!=0){
+                    if($main_data!=0){
                     $i=0;
-                    foreach($backup_data as $row){
+                    foreach($main_data as $row){
                         echo "<tr>";
                         foreach($row as $key=>$row1){
-                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='schcd'){
+                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='schcd' || $key=='nodal_check'){
                                 continue;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
@@ -81,6 +82,61 @@
   </section>
 </div>
 
+<div class="modal fade" id="modal-sm">
+      <form method="POST" id='draft' action="">
+        <div class="modal-dialog modal-default" >
+          <div class="modal-content">
+            <div class="modal-header bg-blue">
+              <h4 class="modal-title">Choose Month and Year Range</h4>
+              <button type="button" id="hi" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Start Month</label>
+                  <select id='modmonthst' name="modmonthst" class="form-control select2 select2-hidden-accessible">
+                  <option value='1' selected>January</option>
+                  <?php for($x=2;$x<=12;$x++){
+                                echo "<option value='".$x."'>".$month[$x]."</option>";
+                              }?>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label>Ending Month</label>
+                  <select id='modmonthend' name="modmonthend" class="form-control select2 select2-hidden-accessible">
+                  <option value='1' selected>January</option>
+                  <?php for($x=2;$x<=12;$x++){
+                                echo "<option value='".$x."'>".$month[$x]."</option>";
+                              }?>
+                  </select>
+                </div>
+                
+                <div class="col-md-12">      
+                  <label style="margin-top:10px;">Choose Year</label>
+                  <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
+                  <?php $year=intval(date('Y')); 
+                  echo "<option value='".$year."' selected>".$year."</option>";
+                  for($x=$year-1;$x>=2019;$x--){
+                                echo "<option value='".$x."'>".$x."</option>";
+                              }?>
+                  </select>
+                </div>
+                <div id="errors" style="color:red;"></div>
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="submit" id="filter_sub" name="filter_sub" class="btn btn-outline-primary" style="display: block; margin-left: auto;  margin-right: auto;" form="draft" >Apply</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+      </form>
+        <!-- /.modal-dialog -->
+      </div>
+
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
@@ -96,23 +152,11 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
-<script>
-  $(function () {
-    $('#example1').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": true,
-      "responsive": true,
-    });
-  });
-</script>
+
 
 <script type="text/javascript">
 
-function myFunction() {
+/*function myFunction() {
 // Declare variables
 var input, filter, ul, li, a, i, txtValue;
 input = document.getElementById('schemeSearch');
@@ -130,5 +174,38 @@ for (i = 0; i < li.length; i++) {
     li[i].style.display = "none";
   }
 }
-}
+}*/
+
+/*$("#draft").on("submit",function(e){
+    var postData = $(this).serialize();
+    var formURL = $(this).attr("action");
+    console.log(postData);
+    $.ajax(
+    {
+        url : formURL,
+        type: "POST",
+        data : postData,
+        success:function(data, textStatus, jqXHR) 
+        {
+            if(data[1]=='p'){
+              var pos=data.indexOf('<!DOCTYPE html>');
+              $("#error").html(data.slice(0,pos));
+              console.log('errors');
+            }else{
+              document.getElementById("hi").click();
+              console.log('errorfree');
+              $("#refresh").load(location.href + " #refresh");
+            }
+            
+            //data: return data from server
+        },
+        error: function(jqXHR, textStatus, errorThrown) 
+        {
+            console.log("Form cannot be submitted...");
+            //if fails      
+        }
+    });
+    //e.preventDefault(); //STOP default action
+    //e.unbind(); //unbind. to stop multiple form submit.
+});*/
 </script>

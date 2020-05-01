@@ -33,7 +33,7 @@
   <section class="content">
     <div class="container-fluid">
   <!-- /.login-logo -->
-  <div class="card card-primary card-outline mx-auto" style="max-width: 700px">
+  <div class="card card-primary card-outline mx-auto" style="max-width: 500px">
     <div class="card-body login-card-body">
       <p class="login-box-msg"><strong>CHANGE PASSWORD</strong></p>
 

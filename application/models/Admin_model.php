@@ -3,7 +3,7 @@ class Admin_model extends CI_Model {
     public function store_cache($uname){
         //$this->db->cache_on();
         //from login table
-        $query = $this->db->get_where('Login',array('username'=>$uname,'active_status'=>1));
+        $query = $this->db->get_where('mpr_semitrans_login',array('username'=>$uname,'active_status'=>1));
         $row = $query->row();
         if($row){
             //user_privilege stores array for multiple tuples
@@ -11,7 +11,7 @@ class Admin_model extends CI_Model {
                 'schcd' => $row->schcd,
                 'username' => $row->username,
                 'password' => $row->password,
-                'designation'=> $row->designation,
+                'designation'=> "default",
                 'user_type_id_fk'=> $row->user_type_id_fk,
                 'Login_id_pk'=> $row->Login_id_pk,
                 'active_status'=> $row->active_status
@@ -40,7 +40,7 @@ class Admin_model extends CI_Model {
 
     public function store_profile($uname){
         //$this->db->cache_on();
-        $query = $this->db->get_where('profile',array('username'=>$uname));
+        $query = $this->db->get_where('mpr_semitrans_profile',array('username'=>$uname));
         $row = $query->row();
         if($row){
             $result=array(
@@ -71,12 +71,12 @@ class Admin_model extends CI_Model {
     public function user_type_cache($var){
         //from login table
         $a = array();
-        $query_user_privilege = $this->db->get_where('user_privilege',array('user_type_id_fk'=>$var));
+        $query_user_privilege = $this->db->get_where('mpr_semitrans_user_privilege',array('user_type_id_fk'=>$var));
         $table2 = $query_user_privilege->result();
     
                 //joining both Privilege and user_privilege tuples
         foreach($table2 as $row_out){
-            $query_privilege = $this->db->get_where('Privilege',array('privilege_id_pk'=>$row_out->privilege_id_fk));
+            $query_privilege = $this->db->get_where('mpr_semitrans_privilege',array('privilege_id_pk'=>$row_out->privilege_id_fk));
             $row3 = $query_privilege->row();
             if($row3->active_status==1){
                 $a[]=array(
@@ -113,35 +113,35 @@ class Admin_model extends CI_Model {
     }
 
     public function check_first_user(){
-        $query= $this->db->get_where('check_First_User',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
+        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
     
     public function check_user($n){
-        return $this->db->get_where('Login',array('username'=>$n))->row();
+        return $this->db->get_where('mpr_semitrans_login',array('username'=>$n))->row();
     }
 
     public function update_login($user,$password){
         $this->db->where('username',$user);
-        $this->db->update('Login',array('password'=>$password));
+        $this->db->update('mpr_semitrans_login',array('password'=>$password));
     }
     public function update_first_profile(){
         $this->db->where('user_id_pk',$this->cache->get('Active_status')['Login_id_pk']);
-        $this->db->update('check_First_User',array('check_profile_updated_once' => 0 ));
+        $this->db->update('mpr_semitrans_check_first_user',array('check_profile_updated_once' => 0 ));
     }
     public function update_first_pass($username){
-        $row=$this->db->get_where('Login',array('username'=>$username))->row();
+        $row=$this->db->get_where('mpr_semitrans_login',array('username'=>$username))->row();
         $this->db->where('user_id_pk',$row->id);
-        $this->db->update('check_First_User',array('check_if_first_user' => 0 ));
+        $this->db->update('mpr_semitrans_check_first_user',array('check_if_first_user' => 0 ));
     }
     public function meeting_schedule($data){
         $this->db->where('meeting_id_pk', 1);
-		$this->db->update('meeting_schedule', $data);
+		$this->db->update('mpr_trans_meeting_schedule', $data);
     }
 
     public function previous_meeting_schedule(){
-        $query = $this->db->get_where('meeting_schedule',array('meeting_id_pk'=>1));
+        $query = $this->db->get_where('mpr_trans_meeting_schedule',array('meeting_id_pk'=>1));
         $row=$query->row();
         return $row;
     }
@@ -186,7 +186,7 @@ class Admin_model extends CI_Model {
     }
 
     public function findpass($n){
-        $query=$this->db->get_where("Login",array('username'=>$n));
+        $query=$this->db->get_where("mpr_semitrans_login",array('username'=>$n));
         return $query->row();
     }
 }

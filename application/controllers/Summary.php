@@ -8,23 +8,21 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//$this->check_privilege(1);
-
+		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
-		$this->load->model('profile_model');
+		
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//print_r($this->cache->get('Active_status'))	;	
 		
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
-<<<<<<< HEAD
 		
-=======
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
->>>>>>> 7e6393748090c86ca011b40701279934f74503bf
 		$this->load->view('dashboard/sidebar',$da);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
@@ -45,7 +43,7 @@ class summary extends MY_Controller {
 
 		//================PROGRESS LIST===============================
 
-		$scheme_name = array("KCC","DOC","DOG","ANAND");
+		$scheme_name = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
 
 		if(isset($_POST['progress_submit'])){
 			if(!empty($_POST['progress_left_check_list'])){
@@ -61,8 +59,8 @@ class summary extends MY_Controller {
 			'selected_left' => $scheme_name,
 			'left' => true,
 			'right' => false,
-			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
+			'c_left_name' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
 		);
 
 		//Initialising the filter
@@ -96,11 +94,15 @@ class summary extends MY_Controller {
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
-		$container['noti_view'] = $this->load->view('dashboard/noti_view', null ,TRUE);
+		$gp=$this->session->userdata('schcd');
+        $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
+        $res = $this->db->query($q)->result();
+		$data['noti']=$res;
+		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
 		//=========================================================
 
-		$scheme_pie = array("KCC","DOC","DOG","ANAND");
+		$scheme_pie = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
 
 		if(isset($_POST['pie_submit'])){
 			if(!empty($_POST['pie_left_check_list'])){
@@ -116,8 +118,8 @@ class summary extends MY_Controller {
 			'selected_left' => $scheme_name,
 			'left' => true,
 			'right' => false,
-			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
+			'c_left_name' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
 		);
 
 		//Initialising the filter
@@ -137,7 +139,7 @@ class summary extends MY_Controller {
 		//================BAR CHART 1===============================
 		
 		//Insert data for bar chart in an array format 
-		$scheme_bar = array("KCC","KishanM","ANAND","DOC","DOG");
+		$scheme_bar = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
 		$result = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
 		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
 
@@ -169,8 +171,8 @@ class summary extends MY_Controller {
 
 		//==============BAR CHART 2=====================================
 
-		$scheme_pro = array("KCC","DOC","DOG","ANAND");
-		$location = array("191601","191612","191607");
+		$scheme_pro = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
+		$location = array("19161","191615","191614");
 		
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
@@ -193,10 +195,10 @@ class summary extends MY_Controller {
 			'selected_right' => $location,
 			'left' => true,
 			'right' => true,
-			'c_name_left' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_name_left' => $this->Dashboard_model->fullname('dashboard_info','name'),
-			'c_name_right' => $this->Dashboard_model->list_table('location_data','location_schcd'),
-			'f_name_right' => $this->Dashboard_model->fullname('location_data','location_area')
+			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name'),
+			'c_name_right' => $this->Dashboard_model->list_table('mpr_master_location_data','location_schcd'),
+			'f_name_right' => $this->Dashboard_model->fullname('mpr_master_location_data','location_area')
 		);
 
 		//Initialising the filter
@@ -231,13 +233,16 @@ class summary extends MY_Controller {
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
-		$scheme_alert = array("KCC","KishanM","ANAND","DOC","DOG");
+		$scheme_alert = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
 		$result_alert = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
 		$schemename_alert = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
 		$data = array();
 		for($i=0;$i<2*sizeof($scheme_bar);$i+=2)
 		{
-			$per=(int)($result_alert[$i+1]/$result_alert[$i]*100);
+			if($result_alert[$i]!=0)
+				$per=(int)($result_alert[$i+1]/$result_alert[$i]*100);
+			else
+				$per=0;
 			array_push($data, $per);
 		}
 		$fits = array();
@@ -262,8 +267,11 @@ class summary extends MY_Controller {
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
@@ -279,6 +287,10 @@ class summary extends MY_Controller {
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$u_type['notification'] = $noti;
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
 		$this->load->model('profile_model');
@@ -385,9 +397,14 @@ class summary extends MY_Controller {
 	public function password_change_within(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$u_type['notification'] = $noti;
+		$this->load->view('dashboard/navbar',$u_type);
+		
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
