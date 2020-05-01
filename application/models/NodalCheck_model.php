@@ -2,13 +2,13 @@
 class NodalCheck_model extends CI_Model{    
 
     function fetch_draft(){
-        $tables = $this->db->list_tables();
-        $draft_table = array();
+        $tables = $this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
         foreach($tables as $row){
-            if(strpos($row, "_draft"))
-                array_push($draft_table, $row);
+            if ($this->db->table_exists($row['scheme_link'].'_draft')){
+                $draft_table[]=$row['scheme_link'].'_draft';
+            }
         }
-
+        //print_r($draft_table);
         return $draft_table;
     }
 
@@ -18,6 +18,7 @@ class NodalCheck_model extends CI_Model{
         foreach($tables as $row){
             $query = $this->db->get_where('mpr_master_scheme_table', array('s_name' => str_replace('_draft', '', $row)));
             $row1 = $query->row();
+            //print_r($row1);
             array_push($table_name, $row1->name);
         }
         

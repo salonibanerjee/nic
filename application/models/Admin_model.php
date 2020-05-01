@@ -11,7 +11,9 @@ class Admin_model extends CI_Model {
                 'schcd' => $row->schcd,
                 'username' => $row->username,
                 'password' => $row->password,
-                'designation'=> "default",
+                'desig_id_fk'=> $row->desig_id_fk,
+                'office_id_fk'=> $row->office_id_fk,
+                'dept_id_fk'=> $row->dept_id_fk,
                 'user_type_id_fk'=> $row->user_type_id_fk,
                 'Login_id_pk'=> $row->Login_id_pk,
                 'active_status'=> $row->active_status
@@ -36,6 +38,24 @@ class Admin_model extends CI_Model {
         }
         $this->db->cache_off();
         return $result;
+    }
+    //cache for scheme privileges
+    public function scheme_hier_cache(){
+        $loginid = $this->session->userdata('loginid');
+        $dept = $this->session->userdata('dept');
+        $query = $this->db->get_where('mpr_master_scheme_dept',array('dept_id_fk'=>$dept))->result_array();
+        foreach($query as $row){
+            $scheme = $this->db->get_where('mpr_master_scheme_table',array('scheme_id_pk'=>$row['scheme_id_fk']))->row();
+            $result[]=array(
+                'scheme_name' => $scheme->name,
+                'scheme_link' => $scheme->s_name
+            );
+        }
+        $this->load->driver('cache', array('adapter' => 'file'));
+        if ( ! $foo = $this->cache->get('scheme_hier_'.$dept)){
+            $foo = $result;
+            $this->cache->save('scheme_hier_'.$dept, $foo, 3000);
+        }
     }
 
     public function store_profile($uname){

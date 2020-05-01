@@ -56,6 +56,7 @@
           ?>
           </script>
           <?php if($flag==1){
+            $scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
             echo "<li id='hulala' class='nav-item has-treeview menu-open'>";
               echo "<a href='#' class='nav-link'>";
                 echo "<i class='nav-icon fas fa-circle'></i>";
@@ -67,8 +68,8 @@
               echo "<ul class='nav nav-treeview' id='myUL'>";
                 echo "<input id='schemeSearch' onkeyup='myFunction()' class='form-control' type='text' placeholder='Search' style='height:30px; width:92%; margin-left:10px'>";
                     $i=0;
-                    foreach($data_table as $row){
-                        echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./$row' class='nav-link'>".$s_name_table[$i]."</a></li>";
+                    foreach($scheme_hier as $row){
+                        echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
                         $i++;
                     }
               echo "</ul>";
