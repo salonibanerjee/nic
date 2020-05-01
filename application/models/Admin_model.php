@@ -11,7 +11,7 @@ class Admin_model extends CI_Model {
                 'schcd' => $row->schcd,
                 'username' => $row->username,
                 'password' => $row->password,
-                'designation'=> $row->designation,
+                'designation'=> "default",
                 'user_type_id_fk'=> $row->user_type_id_fk,
                 'Login_id_pk'=> $row->Login_id_pk,
                 'active_status'=> $row->active_status
