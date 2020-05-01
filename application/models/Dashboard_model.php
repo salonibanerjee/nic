@@ -5,7 +5,7 @@ class Dashboard_model extends CI_Model{
     {
         $i=0;
         $this->db->select('a_progress,s_name');
-        $table = $this->db->get('dashboard_info');
+        $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         while($i<$nsch){
             foreach($table->result() as $row){    
@@ -53,7 +53,7 @@ class Dashboard_model extends CI_Model{
     function get_loc($n,$num)
     {
         $this->db->select('location_area,location_schcd');
-        $table = $this->db->get('location_data');
+        $table = $this->db->get('mpr_master_location_data');
         $b = array();
         $i = 0;
         while($i<$num)
@@ -74,7 +74,7 @@ class Dashboard_model extends CI_Model{
     function get_prog($n,$num)
 	{
 		$this->db->select('a_progress,s_name');
-		$table = $this->db->get('dashboard_info');
+		$table = $this->db->get('mpr_master_dashboard_info');
 		$b = array();
         $i = 0;
         while($i<$num)
@@ -112,7 +112,7 @@ class Dashboard_model extends CI_Model{
     function get_data($n, $num)
     {
         $this->db->select('a_target, a_progress, s_name');
-        $table = $this->db->get('dashboard_info');
+        $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         $i=0;
         $x=0;
@@ -151,7 +151,7 @@ class Dashboard_model extends CI_Model{
     function sch_name($n,$num)
     {
         $this->db->select('name,s_name');
-        $tables = $this->db->get('dashboard_info');
+        $tables = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         $i = 0;
         while($i<$num)

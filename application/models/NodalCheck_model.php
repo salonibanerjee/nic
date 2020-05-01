@@ -16,7 +16,7 @@ class NodalCheck_model extends CI_Model{
         
         $table_name = array();
         foreach($tables as $row){
-            $query = $this->db->get_where('scheme_table', array('s_name' => str_replace('_draft', '', $row)));
+            $query = $this->db->get_where('mpr_master_scheme_table', array('s_name' => str_replace('_draft', '', $row)));
             $row1 = $query->row();
             array_push($table_name, $row1->name);
         }

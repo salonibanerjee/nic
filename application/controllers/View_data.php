@@ -20,7 +20,7 @@ class View_data extends MY_Controller {
                                             'Custom Message here');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('meeting_schedule', array('meeting_id_pk' => 1));
+        $query = $this->db->get_where('mpr_trans_meeting_schedule', array('meeting_id_pk' => 1));
         $row = $query->row();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];

@@ -43,7 +43,7 @@ class summary extends MY_Controller {
 
 		//================PROGRESS LIST===============================
 
-		$scheme_name = array("KCC","DOC","DOG","ANAND");
+		$scheme_name = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
 
 		if(isset($_POST['progress_submit'])){
 			if(!empty($_POST['progress_left_check_list'])){
@@ -59,8 +59,8 @@ class summary extends MY_Controller {
 			'selected_left' => $scheme_name,
 			'left' => true,
 			'right' => false,
-			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
+			'c_left_name' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
 		);
 
 		//Initialising the filter
@@ -95,14 +95,14 @@ class summary extends MY_Controller {
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
 		$gp=$this->session->userdata('schcd');
-        $q="SELECT notification_text FROM notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
+        $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
         $res = $this->db->query($q)->result();
 		$data['noti']=$res;
 		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
 		//=========================================================
 
-		$scheme_pie = array("KCC","DOC","DOG","ANAND");
+		$scheme_pie = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
 
 		if(isset($_POST['pie_submit'])){
 			if(!empty($_POST['pie_left_check_list'])){
@@ -118,8 +118,8 @@ class summary extends MY_Controller {
 			'selected_left' => $scheme_name,
 			'left' => true,
 			'right' => false,
-			'c_left_name' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_left_name' => $this->Dashboard_model->fullname('dashboard_info','name')
+			'c_left_name' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_left_name' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
 		);
 
 		//Initialising the filter
@@ -139,7 +139,7 @@ class summary extends MY_Controller {
 		//================BAR CHART 1===============================
 		
 		//Insert data for bar chart in an array format 
-		$scheme_bar = array("KCC","KishanM","ANAND","DOC","DOG");
+		$scheme_bar = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
 		$result = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
 		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
 
@@ -171,7 +171,7 @@ class summary extends MY_Controller {
 
 		//==============BAR CHART 2=====================================
 
-		$scheme_pro = array("KCC","DOC","DOG","ANAND");
+		$scheme_pro = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
 		$location = array("19161","191615","191614");
 		
 		if(isset($_POST['bar2_submit'])){
@@ -195,10 +195,10 @@ class summary extends MY_Controller {
 			'selected_right' => $location,
 			'left' => true,
 			'right' => true,
-			'c_name_left' => $this->Dashboard_model->list_table('dashboard_info','s_name'),
-			'f_name_left' => $this->Dashboard_model->fullname('dashboard_info','name'),
-			'c_name_right' => $this->Dashboard_model->list_table('location_data','location_schcd'),
-			'f_name_right' => $this->Dashboard_model->fullname('location_data','location_area')
+			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
+			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name'),
+			'c_name_right' => $this->Dashboard_model->list_table('mpr_master_location_data','location_schcd'),
+			'f_name_right' => $this->Dashboard_model->fullname('mpr_master_location_data','location_area')
 		);
 
 		//Initialising the filter
@@ -233,7 +233,7 @@ class summary extends MY_Controller {
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
-		$scheme_alert = array("KCC","KishanM","ANAND","DOC","DOG");
+		$scheme_alert = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
 		$result_alert = $this->Dashboard_model->get_data($scheme_bar,sizeof($scheme_bar));
 		$schemename_alert = $this->Dashboard_model->sch_name($scheme_bar,sizeof($scheme_bar));
 		$data = array();

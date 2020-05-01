@@ -39,7 +39,7 @@ class Crud_model extends CI_Model {
         
         function list_table(){
                 $this->db->select('s_name');
-                $tables = $this->db->get('scheme_table');
+                $tables = $this->db->get('mpr_master_scheme_table');
                 $b = array();
                 foreach($tables->result() as $row){
                         $b[] = $row->s_name;
@@ -49,7 +49,7 @@ class Crud_model extends CI_Model {
 
         function fullname(){
                 $this->db->select('name');
-                $tables = $this->db->get('scheme_table');
+                $tables = $this->db->get('mpr_master_scheme_table');
                 $b = array();
                 foreach($tables->result() as $row){
                         $b[] = $row->name;
@@ -58,7 +58,7 @@ class Crud_model extends CI_Model {
         }
 
 	function search_table($n){
-                $query = $this->db->get_where('scheme_table', array('s_name' => $n));
+                $query = $this->db->get_where('mpr_master_scheme_table', array('s_name' => $n));
                 $row = $query->row();
                 if (isset($row)){
                         return $row->name;
@@ -68,7 +68,7 @@ class Crud_model extends CI_Model {
                 }
         }
         function search_attri($n){
-                $query = $this->db->get_where('attri_table', array('a_name' => $n));
+                $query = $this->db->get_where('mpr_master_attri_table', array('a_name' => $n));
                 $row = $query->row();
                 if (isset($row)){
                         return $row->name;
@@ -124,7 +124,7 @@ class Crud_model extends CI_Model {
 		return $query->result()[0];
         }
         public function region_name($n){
-                $query = $this->db->get_where('location_data',array('location_schcd'=>$n));
+                $query = $this->db->get_where('mpr_master_location_data',array('location_schcd'=>$n));
                 $row = $query->row();
                 //print_r($row);
                 return $row->location_area;
@@ -138,10 +138,10 @@ class Crud_model extends CI_Model {
                         'stamp' => date('Y-m-d H:i:s'),
                         'ip_addr' => $this->input->ip_address()
                     );
-                $this->db->insert('audit_log', $sess_data);  
+                $this->db->insert('mpr_trans_audit_log', $sess_data);  
         }
         public function gp_id($n){
-                $query = $this->db->get_where('Login', array('username' => $n));
+                $query = $this->db->get_where('mpr_semitrans_login', array('username' => $n));
                 $row = $query->row();
                 return $row->schcd;
         }

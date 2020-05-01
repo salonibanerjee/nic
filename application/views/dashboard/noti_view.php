@@ -3,7 +3,7 @@
         <h3 class="card-title">Notifications</h3>
     </div>
     <!-- /.card-header -->
-    <div class="card-body" style="max-height: 100px; min-width: 300px">
+    <div class="card-body" style="max-height: 200px; min-width: 300px">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             
             <div class="carousel-inner" >

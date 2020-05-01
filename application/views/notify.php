@@ -121,7 +121,7 @@
             <div id="errors" style="color:red;"></div>
             <div class="row">
               <div class="col-12">
-                <button type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary float-right" ><span class="fas fa-paper-plane"></span></button>
+                <button type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary float-right" style="border-radius: 50%;" ><span class="fas fa-paper-plane"></span></button>
               </div>
               <!-- /.col -->
             </div>
