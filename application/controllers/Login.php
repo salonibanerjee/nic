@@ -40,8 +40,11 @@ class Login extends CI_Controller {
                     $this->session->set_userdata('uid',$this->input->post('email'));
                     $this->session->set_userdata('logged_in', TRUE);
                     $this->session->set_userdata('schcd',$this->Crud_model->gp_id($this->input->post('email')));
+                    $this->session->set_userdata('loginid',$res->Login_id_pk);
+                    $this->session->set_userdata('dept',$res->dept_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
+                    $this->Admin_model->scheme_hier_cache();
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status')['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){

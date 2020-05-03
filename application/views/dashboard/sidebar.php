@@ -31,6 +31,7 @@
           <?php
             $data=$this->cache->get('Active_status')['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
+            $scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
             $i=0;
             foreach($var as $x){
               if($x['view_sidebar']==1){
@@ -38,9 +39,15 @@
                 $var2= 'http://localhost/NIC/index.php/'.$x['link'];
                 echo "<li class='nav-item'>";
                 if($var1==$var2){
-                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link active'>";
+                  if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link active'>";
+                  }else
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link active'>";
                 }else
-                  echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                  if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link'>";
+                  }else
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
                 if($x['privilege_id_fk']==1||$x['privilege_id_fk']==3||$x['privilege_id_fk']==5){
                   echo "<i class='nav-icon fas fa-plus'></i>";
                 }else
@@ -56,6 +63,7 @@
           ?>
           </script>
           <?php if($flag==1){
+            $scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
             echo "<li id='hulala' class='nav-item has-treeview menu-open'>";
               echo "<a href='#' class='nav-link'>";
                 echo "<i class='nav-icon fas fa-circle'></i>";
@@ -67,8 +75,8 @@
               echo "<ul class='nav nav-treeview' id='myUL'>";
                 echo "<input id='schemeSearch' onkeyup='myFunction()' class='form-control' type='text' placeholder='Search' style='height:30px; width:92%; margin-left:10px'>";
                     $i=0;
-                    foreach($data_table as $row){
-                        echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./$row' class='nav-link'>".$s_name_table[$i]."</a></li>";
+                    foreach($scheme_hier as $row){
+                        echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
                         $i++;
                     }
               echo "</ul>";
