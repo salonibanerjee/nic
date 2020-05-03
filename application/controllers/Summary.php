@@ -281,22 +281,22 @@ class summary extends MY_Controller {
 	}
 
 	public function edit_profile(){
+		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
-		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->model('profile_model');
-		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
-		$u_type['notification'] = $noti;
 		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
 		$this->load->model('profile_model');
 		$this->load->model('Admin_model');
 		$dat=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$desi=$this->profile_model->get_designation();
+		print_r($desi['0']);
 		$dep=$this->profile_model->get_depart();
 		$off=$this->profile_model->get_office();
 		$user = array();
@@ -360,10 +360,10 @@ class summary extends MY_Controller {
 				$last = $this->input->post('last');
 				$mobile = $this->input->post('mob');
 				$email = $this->input->post('email');
-				$desig = $this->input->post('desig');
+				$desig = $this->profile_model->get_designation();
 				$dist = $this->input->post('dist');
-				$dep = $this->input->post('dept');
-				$off = $this->input->post('off');
+				$dep=$this->profile_model->get_depart();
+				$off=$this->profile_model->get_office();
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
@@ -384,10 +384,11 @@ class summary extends MY_Controller {
 				);
 				if($res){
 					$this->profile_model->update($this->session->userdata('uid'),$data);
+					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}else{
 					$this->profile_model->upload($data);
-					$this->Admin_model->update_first_profile();
+					
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}
 			}

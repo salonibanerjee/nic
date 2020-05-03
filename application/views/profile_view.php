@@ -44,13 +44,13 @@
                   <b>Username</b> <a class="float-right"><?php echo $username;?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Designation</b> <a class="float-right"><?php echo $designation; ?></a>
-                </li>
-                <li class="list-group-item">
                   <b>Office</b> <a class="float-right"><?php echo $office; ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Department</b> <a class="float-right"><?php echo $department; ?></a>
+                </li>
+                <li class="list-group-item">
+                  <b>Designation</b> <a class="float-right"><?php echo $designation; ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Email</b> <a class="float-right"><?php echo $email; ?></a>

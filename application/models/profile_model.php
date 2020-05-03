@@ -22,39 +22,56 @@ class profile_model extends CI_Model {
                 return 'alpha_dash';
         }
 	}
+	public function get_login_details($d){
+        $query = $this->db->get_where('mpr_semitrans_login', array('username' => $d));
+        $row = $query->row();
+        return $row->desig_id_fk;
+    }
 	
     public function get_designation(){
-		$tables = $this->db->get('designation_master');
-		$desi_name = array();
+		$data = $this->get_login_details($this->session->userdata('uid'));
+		$tables = $this->db->get('mpr_master_designation');
+		$desi_name ;
         foreach($tables->result() as $desigs){
-            $desi_name[] = $desigs->Designation_employee;
+			if($desigs->desig_id_pk == $data){
+				$desi_name= $desigs->desig_name;
+			}
         }
-        return $desi_name;
+		return $desi_name;
+		//return $data;
+	}
+	public function get_depart(){
+		$data = $this->get_login_details($this->session->userdata('uid'));
+		$tables = $this->db->get('mpr_master_department');
+		$dep_name;
+        foreach($tables->result() as $desigs){
+			if($desigs->dept_id_pk == $data){
+				$dep_name = $desigs->dept_name;
+			}
+        }
+        return $dep_name;
+	}
+	public function get_office(){
+		$data = $this->get_login_details($this->session->userdata('uid'));
+		$tables = $this->db->get('mpr_master_office');
+		$off_name;
+        foreach($tables->result() as $desigs){
+			if($desigs->office_id_pk == $data){
+				$off_name = $desigs->office_name;
+			}
+        }
+        return $off_name;
 	}
 	public function get_user_id(){
-		$tables = $this->db->get('designation_master');
+		$tables = $this->db->get('mpr_master_designation');
 		$desi_name = array();
         foreach($tables->result() as $desigs){
             $desi_name[] = $desigs;
         }
         return $desi_name;
 	}
-	public function get_depart(){
-		$tables = $this->db->get('department_master');
-		$dep_name = array();
-        foreach($tables->result() as $desigs){
-            $dep_name[] = $desigs->department;
-        }
-        return $dep_name;
-	}
-	public function get_office(){
-		$tables = $this->db->get('office_master');
-		$off_name = array();
-        foreach($tables->result() as $desigs){
-            $off_name[] = $desigs->office;
-        }
-        return $off_name;
-	}
+	
+	
 	/*public function get_desi_code(){
 		$tables = $this->db->get('designation_master');
 		$desi_code = array();
@@ -78,10 +95,10 @@ class profile_model extends CI_Model {
 				'email' =>$res->email,
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
-				'designation' =>$res->designation,
+				'designation' =>$this->get_designation(),
 				'district' =>$res->district,
-				//'department' =>$res->department,
-				//'office' =>$res->office,
+				'department' =>$this->get_depart(),
+				'office' =>$this->get_office(),
                 'first_user'=>$row->check_if_first_user,
 				'update_prof'=>$row->check_profile_updated_once,
 				'flag'=> 0
@@ -115,9 +132,9 @@ class profile_model extends CI_Model {
 				'email' =>$res->email,
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
-				'designation' =>$res->designation,
-				//'department' =>$res->department,
-				//'office' =>$res->office,
+				'designation' =>$this->get_designation(),
+				'department' =>$this->get_depart(),
+				'office' =>$this->get_office(),
 				//'desi_code' =>$
 				'district' =>$res->district,
 			);

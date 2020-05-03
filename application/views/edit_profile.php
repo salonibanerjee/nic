@@ -88,38 +88,19 @@
                 <p class='error invalid-feedback'><small><?php echo form_error('email'); ?></small></p>
               </div>
               <div class="form-group">
-                <label>Designation</label>
-                <select class="form-control" id="desig" name="desig">
-                  <option><?php if(form_error('desig')){echo set_value('desig');}else{echo $designation;}?></option>
-                   <?php foreach($desi as $fields){
-                     if($user->user_type_fk == $this->cache->get('Active_status')['user_type_id_fk']){
-                      echo "<option>$fields</option>";
-                    }
-                    else{
-                      continue;}
-                    }?>
-                </select>
-                <p class='error invalid-feedback'><small><?php echo form_error('desig'); ?></small></p>
+                <label for="office">Office</label>
+                <input type="text" class="form-control" id="office" value="<?php echo $off ;?>" disabled>
+                <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
-                <label>Office</label>
-                <select class="form-control" id="off" name="off">
-                  <option><?php if(form_error('off')){echo set_value('off');}else{echo $office;}?></option>
-                   <?php foreach($off as $fields){
-                      echo "<option>$fields</option>";
-                  }?>
-                </select>
-                <p class='error invalid-feedback'><small><?php echo form_error('off'); ?></small></p>
+                <label for="department">Department</label>
+                <input type="text" class="form-control" id="department" value="<?php echo $dep ;?>" disabled>
+                <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
-                <label>Department</label>
-                <select class="form-control" id="dept" name="dept">
-                  <option><?php if(form_error('dept')){echo set_value('dept');}else{echo $department;}?></option>
-                   <?php foreach($dep as $fields){
-                      echo "<option>$fields</option>";
-                    }?>
-                </select>
-                <p class='error invalid-feedback'><small><?php echo form_error('dept'); ?></small></p>
+                <label for="designation">Designation</label>
+                <input type="text" class="form-control" id="designation" value="<?php echo $desi ;?>" disabled>
+                <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
                 <label>District</label>
