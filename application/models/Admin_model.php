@@ -156,14 +156,15 @@ class Admin_model extends CI_Model {
         $this->db->update('mpr_semitrans_check_first_user',array('check_if_first_user' => 0 ));
     }
     public function meeting_schedule($data){
-        $this->db->where('meeting_id_pk', 1);
-		$this->db->update('mpr_trans_meeting_schedule', $data);
+        //$this->db->where('meeting_id_pk', 1);
+		$this->db->insert('mpr_trans_meeting_schedule', $data);
     }
 
     public function previous_meeting_schedule(){
-        $query = $this->db->get_where('mpr_trans_meeting_schedule',array('meeting_id_pk'=>1));
-        $row=$query->row();
-        return $row;
+        //$query = $this->db->get_where('mpr_trans_meeting_schedule',array('meeting_id_pk'=>1));
+        //$row=$query->row();
+        $last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
+        return $last_row;
     }
 
     public function _generateCaptcha(){

@@ -76,7 +76,7 @@
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
-          <span class="badge badge-danger navbar-badge"><?php
+          <span class="badge badge-danger navbar-badge w3-badge" style="font-size:12px; border-radius:50%; font-weight:bold;"><?php
           $i=0;
           foreach($noti1 as $row){
             $i++;
@@ -84,7 +84,7 @@
           echo $i;
           ?></span>
         </a>
-        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="max-height:400px;">
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right" style="max-height:500px;">
           <span class="dropdown-item dropdown-header"><?php
           $i=0;
           foreach($noti1 as $row){
@@ -97,6 +97,7 @@
             <i class="fas fa-calendar-check text-orange "></i> <?php echo $notification['meeting']['msg'];?>
             <span class="float-right text-muted text-sm"><?php echo $notification['meeting']['val'];?></span>
           </a>
+          <div id="" style="overflow:scroll; height:350px;">
           <?php
             $i=0;
             foreach($noti1 as $row){
@@ -109,6 +110,7 @@
               $i++;
             }
           ?>
+          </div>
           <div class="dropdown-divider"></div>
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>

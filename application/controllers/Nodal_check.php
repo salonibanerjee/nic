@@ -8,10 +8,10 @@ class Nodal_check extends CI_Controller {
         $this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('mpr_trans_meeting_schedule', array('meeting_id_pk' => 1));
-        $row = $query->row();
+        $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
 		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
