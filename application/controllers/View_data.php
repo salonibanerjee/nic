@@ -12,6 +12,7 @@ class View_data extends MY_Controller {
         //Load 'CRUD' model
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
+        $this->load->model('Admin_model');
         $this->Crud_model->backup_draft_table($n,'backup');
         $this->Crud_model->backup_draft_table($n,'draft');
         $this->Crud_model->audit_upload($this->session->userdata('uid'),
@@ -20,8 +21,7 @@ class View_data extends MY_Controller {
                                             'Custom Message here');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-        $query = $this->db->get_where('mpr_trans_meeting_schedule', array('meeting_id_pk' => 1));
-        $row = $query->row();
+        $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
         $var = $this->cache->get('Active_status')['user_type_id_fk'];
         $u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);

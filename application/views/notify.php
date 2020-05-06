@@ -42,7 +42,7 @@
               <div class="col-md-11" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
-                    <h3 class="card-title">Previous Notifications</strong></h3>
+                    <h3 class="card-title">Previous 5 Notifications</strong></h3>
                     <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
                   </div>
                   <!-- /.card-header -->
@@ -56,13 +56,16 @@
                       </tr>
                       </thead>
                       <?php
-
+                          $i=0;
                           foreach($noti1 as $row){
                             echo "<tbody>";
                             echo "<th>".$row['audience_id']."</th>";
                             echo "<th>".$row['notification_head']."</th>";
                             echo "<th>".$row['notification_text']."</th>";
                             echo "</tbody>";
+                            $i++;
+                            if($i>5)
+                              break;
                           }
                       ?>
                       
@@ -92,8 +95,8 @@
       <div class="card card-primary card-outline mx-auto" style="max-width: 500px">
         <div class="card-body login-card-body">
           <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
-
-          <form method="POST" action="" id="form">
+          <?php echo form_open('Super_Admin/notification','id="form"');?>
+          <!--<form method="POST" action="" id="form"> -->
             <div class="input-group mb-3">
               <input name="noti_head" id="noti_head" type="text" class="form-control" placeholder="Notification Title" >
               <div class="input-group-append">
@@ -125,7 +128,7 @@
               </div>
               <!-- /.col -->
             </div>
-          </form>
+          <!--</form>-->
         </div>
         <!-- /.login-card-body -->
       </div>
