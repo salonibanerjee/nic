@@ -29,7 +29,7 @@
                     <?php
                         $i=0;
                         foreach($data as $row){
-                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                                 $i++;
                                 continue;
                             }else{
@@ -108,10 +108,10 @@
                           echo "</div>";
                           $i++;
                       }
-                      elseif($row == 'schcd'){
+                      elseif($row == 'location_code'){
                         echo "<div class='form-group'>";
                         echo    "<label>Region</label>";
-                        echo    "<input type='hidden' name='$row' id='$row' placeholder='Enter Value' value='".$this->session->userdata('schcd')."'>";
+                        echo    "<input type='hidden' name='$row' id='$row' placeholder='Enter Value' value='".$this->session->userdata('location_code')."'>";
                         echo    "<input type='text' class='form-control' name='dude' id='dude' placeholder='Enter Value' value='".$region."' readonly>";
                         echo    "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
                         echo "</div>";

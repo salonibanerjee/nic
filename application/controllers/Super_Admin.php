@@ -63,7 +63,7 @@ class Super_Admin extends CI_Controller {
 			echo validation_errors();
 			$this->load->view('notify',$u_type);
         }else{
-            if($this->session->userdata('schcd') != 19161)
+            if($this->session->userdata('location_code') != 19161)
             {
                 ?>
                     <script type=text/javascript>

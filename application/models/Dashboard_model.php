@@ -28,7 +28,7 @@ class Dashboard_model extends CI_Model{
             {
                 //print_r($this->db->select($b[$j]));
                 //echo $b[$j]."<br>";
-                $this->db->select($b[$j])->where('schcd',$block[$i])->order_by('id_pk','desc')->limit(1);
+                $this->db->select($b[$j])->where('location_code',$block[$i])->order_by('id_pk','desc')->limit(1);
                 $table = $this->db->get($sch[$j])->row();
                 //print_r($table);
                 $count = 0;
@@ -52,14 +52,14 @@ class Dashboard_model extends CI_Model{
 
     function get_loc($n,$num)
     {
-        $this->db->select('location_area,location_schcd');
+        $this->db->select('location_area,location_code');
         $table = $this->db->get('mpr_master_location_data');
         $b = array();
         $i = 0;
         while($i<$num)
         {
             foreach($table->result() as $row){
-                if($row->location_schcd == $n[$i])
+                if($row->location_code == $n[$i])
                 {
                     $temp = $row->location_area;
                     array_push($b, $temp);

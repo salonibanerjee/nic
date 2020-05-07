@@ -64,7 +64,7 @@ class Get_table extends MY_Controller {
             $x=$this->Crud_model->get_attri($n);
             $y=array();
             $result['s_name']=array();
-            $result['region']=$this->Crud_model->region_name($this->session->userdata('schcd'));
+            $result['region']=$this->Crud_model->region_name($this->session->userdata('location_code'));
             $flag=0;
             //setting array for form validations
             foreach($x as $field){
@@ -106,7 +106,7 @@ class Get_table extends MY_Controller {
         if($this->form_validation->run()==TRUE){
             $r=array();
             foreach($result['data'] as $row){
-                if($row=="id_pk" || $row=="schcd"){
+                if($row=="id_pk" || $row=="location_code"){
                     continue;
                 }
                 $r[$row]=$this->input->post($row);
@@ -114,7 +114,7 @@ class Get_table extends MY_Controller {
             $r['login_id_fk'] = $this->cache->get('Active_status')['Login_id_pk'];
             $r['inserted_at'] = date('Y-m-d H:i:s');
             $r['ip'] = $this->input->ip_address();
-            $r['schcd'] = $this->session->userdata('schcd');
+            $r['location_code'] = $this->session->userdata('location_code');
             $r['nodal_check'] = -1;
             $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['month']);
             if($old_value){

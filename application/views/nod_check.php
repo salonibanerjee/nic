@@ -27,7 +27,7 @@
               <div class="card-footer p-0">
                 <ul class="nav flex-column">
                   <?php $i=0; foreach($data as $row){
-                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                    if($row == 'id_pk' || $row == 'user' || $row == 'tstamp' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                       $i++;
                       continue;
                   }else{
