@@ -90,6 +90,7 @@ class Admin_model extends CI_Model {
 
     public function user_type_cache($var){
         //from login table
+        $user_type=$this->db->get_where('mpr_semitrans_user_type',array('user_type_id_pk'=>$var))->row()->active_status;
         $a = array();
         $query_user_privilege = $this->db->get_where('mpr_semitrans_user_privilege',array('user_type_id_fk'=>$var));
         $table2 = $query_user_privilege->result();
@@ -117,7 +118,7 @@ class Admin_model extends CI_Model {
             $result = array(
                 'user_type_id_pk'=>$var,
                // 'desig' => $row->desig,
-                //'active_status'=> $row->active_status,
+                'active_status'=> $user_type,
                 'user_privilege'=>$a
             );
     

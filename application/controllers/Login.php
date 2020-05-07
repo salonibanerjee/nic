@@ -50,7 +50,7 @@ class Login extends CI_Controller {
                     if(!$this->cache->get('User_type'.$var)){
                         $this->Admin_model->user_type_cache($var);
                     }
-                    if($this->cache->get('Active_status')['active_status']==1){
+                    if($this->cache->get('Active_status')['active_status']==1 && $this->cache->get('User_type'.$var)['active_status']==1){
                         $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                         current_url(),
                                                         'Login',
