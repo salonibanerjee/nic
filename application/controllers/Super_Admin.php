@@ -104,24 +104,39 @@ class Super_Admin extends CI_Controller {
     //------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     public function signup(){
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
 		$this->load->view('signup');
     }
-	public function signupdo($chars_min=8,$chars_mix=10, $use_upper_case=false, $include_numbers=true, $include_special_chars=true)
-		{
-			$length = rand($chars_min,$chars_mix);
-			$selection = 'ABCDEFGHIJKLMNOPQRSTUVWXYZaeuoyibcdfghjklmnpqrstvwxz';
-			if($include_numbers) {
-				$selection .= "1234567890";
-			}
-			if($include_special_chars) {
-				$selection .= "!@\#$%&";
-			}
+	public function signupdo(){
+		$chars_min=8;
+		$chars_mix=10; 
+		$use_upper_case=false;
+		$include_numbers=true; 
+		$include_special_chars=true;
+		$length = rand($chars_min,$chars_mix);
+		$selection = 'ABCDEFGHIJKLMNOPQRSTUVWXYZaeuoyibcdfghjklmnpqrstvwxz';
+		if($include_numbers) {
+			$selection .= "1234567890";
+		}
+		if($include_special_chars) {
+			$selection .= "!@\#$%&";
+		}
 
-			$password = "";
-			for($i=0; $i<$length; $i++) {
-				$current_letter = $use_upper_case ? (rand(0,1) ? strtoupper($selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))];            
-				$password .=  $current_letter;
-			}
+		$password = "";
+		for($i=0; $i<$length; $i++) {
+			$current_letter = $use_upper_case ? (rand(0,1) ? strtoupper($selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))]) : $selection[(rand() % strlen($selection))];            
+			$password .=  $current_letter;
+		}
 		//echo $password;
 		$exist = 0;
 		$this->load->model('Sup_admin');
@@ -129,7 +144,7 @@ class Super_Admin extends CI_Controller {
 		$data=array("username"=>$uname);
 		//$dat=array("user_priv_id_pk"=>$id);
 	    $query=$this->Sup_admin->find_id($data);
-        //$query=$this->db->get_where("mpr_semitrans_login",$data);
+        $query=$this->db->get_where("mpr_semitrans_login",$data);//---------------------------------------------------------NEEDS TO BE CHANGED TO MODEL----------------------------------------------------------------------------------
         $res=$query->result_array();
 		if ($res){
 			foreach($res as $r){
@@ -139,22 +154,23 @@ class Super_Admin extends CI_Controller {
 		if($exist == 1){
 			echo "This user already exist";
 		}else{
+			echo $this->input->post('id1');
+			//$id1 = $this->input->post('id1');
 			$pass=hash('sha256',$password);
-			$data=array("username"=>$this->input->post('email'),"password"=>$pass,"user_type_id_fk"=>$this->input->post('user_type'),"location_code"=>$this->input->post('region_code'),"active_status"=>('1'),"dept_id_fk"=>$this->input->post('dept'),"office_id_fk"=>$this->input->post('office'),"desig_id_fk"=>$this->input->post('desig_name'));
-			 $this->load->model('Sup_admin');
+			$data=array("username"=>$this->input->post('email'),"password"=>$pass,"user_type_id_fk"=>$this->input->post('user_type'),"location_code"=>$this->input->post('region_code'),"active_status"=>1,"dept_id_fk"=>$this->input->post('dept'),"office_id_fk"=>$this->input->post('office'),"desig_id_fk"=>$this->input->post('desig_name'));
 			if($this->Sup_admin->add_login($data)){
 				echo "<font color=green>Data Added Successfully</font>";
-                $res=$this->Sup_admin->find_id($uname);
+                $res=$this->Sup_admin->find_id($data);
 			    $id =$res->Login_id_pk;
-				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>('1'),"check_profile_updated_once"=>('1'));
+				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 				$this->Sup_admin->add_check_first_user($data1);
 			}
 			else{ 
 				echo "Data is not Added";
 			}
 		}
-   }
-   function fetch_user_type()  //get all records from database  
+    }
+    function fetch_user_type()  //get all records from database  
 	{
 	   $result;
 	   $this->load->model('Sup_admin');
@@ -267,12 +283,23 @@ class Super_Admin extends CI_Controller {
 	   	}
 	   echo json_encode($result);
      }
-	function fetch_login()  //get all records from database  
-	{  $this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->fetch_login();
-		 $data['records']=$query->result();
+	function fetch_login(){  //get all records from database    
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+		$this->load->model('Sup_admin');
+	   	$query=$this->Sup_admin->fetch_login();
+		$data['records']=$query->result();
 		  //print_r($data);
-		 $this->load->view('view_user',$data); 
+		$this->load->view('view_user',$data); 
   	}
 	function inactive_login() //load a form with data to be updated
  	{
@@ -294,13 +321,24 @@ class Super_Admin extends CI_Controller {
 	 }
 //	 redirect("/Admin/fetch_login");
 	}
-	function fetch_user_privilege()  //get all records from database  
-	{
-		 $this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->fetch_user_privilege();
+	function fetch_user_privilege(){  //get all records from database  
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+		 
+		$this->load->model('Sup_admin');
+	   	$query=$this->Sup_admin->fetch_user_privilege();
 		$data['records']=$query->result();
 		  //print_r($data);
-		 $this->load->view('view_user_privilege',$data); 
+		$this->load->view('view_user_privilege',$data); 
   	}
 	function inactive_user_privilege() //load a form with data to be updated
  	{
@@ -323,7 +361,20 @@ class Super_Admin extends CI_Controller {
 	}
 	
 	function fetch_user_desig_type()  //get all records from database  
-	{      $this->load->model('Sup_admin');
+	{      
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+
+		$this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->fetch_user_desig_type();
 		  $data['records']=$query->result();
 		  //print_r($data);

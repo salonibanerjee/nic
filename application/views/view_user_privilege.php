@@ -1,25 +1,37 @@
-<html>
- <head>
- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/switch.css">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <div class="login-logo">
-	  <a href=#><b>User</b></a>
-	  <a href=#><b></b>Privilege</a>
-	  <a href=#><b>Table </b></a>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-9">
+            <h1>CHANGE USER PRIVILEGE ACTIVE STATUS</h1>
+        </div>
+      </div>
+    </div>
   </div>
-	</head>
-	<body style="background-color:dee2e6;">
-    <center>
-    <table border="1">
-     <tr><th>User Privilage Id</th><th>Privilege Id</th><th>User Type Id</th><th>Active Status</th><th>Action</th></tr>
-<?php
+  <section class='content'>
+    <div class='container-fluid'>
+      <div class='row'>
+	  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/switch.css">
+        <div class="col-md-11" id='refresh'>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><strong>USER TYPE Datatable</strong></h3>
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+					<th><center>User Privilege Id</center></th>
+					<th><center>Privilege Id</center></th>
+					<th><center>User Type Id</center></th>
+					<th><center>Active Status</center></th>
+					<th><center>Turn ON/OFF</center></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
 foreach($records as $r)
 {
 	$chk = " checked";
@@ -35,11 +47,29 @@ foreach($records as $r)
 	</label></center></td></tr>";
 }	
 ?>
-   </table>
-  <center>
-		</center></center>
-  </body>
- </html> 
+                </tbody>
+                <tfoot>
+                <tr>
+                  
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+        
+      <!-- right column -->
+      <div class='col-md-1'>
+      
+
+      </div>
+      <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+</div>
 
 <script type="text/javascript">
 	function toggleClicked(userId){

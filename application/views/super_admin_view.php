@@ -1,5 +1,5 @@
 <div class="content-wrapper">
-<h2> </b>SUPER ADMIN</b></h2>
+<h1 style="padding-left:10px; padding-top:5px;"></b>SUPER ADMIN</b></h1>
 
 <section class="content">
       <div class="container-fluid"> 
@@ -16,7 +16,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/signup" class="small-box-footer">Create New User <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/signup" class="small-box-footer bg-orange">Create New User <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -70,7 +70,7 @@
         <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-orange">
+            <div class="small-box bg-gray">
               <div class="inner">
                 <h3><?php echo $active_privilege_count; ?></h3>
 

@@ -1,59 +1,92 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MPR | Add new user</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!--	Encryption-->
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-  <script type='text/javascript' src="<?php echo base_url();?>js/js-sha256-master/build/sha256.min.js"></script>
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-</head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-	  <a href=#><b>Add</b></a>
-	  <a href=#><b></b> New </a>
-	  <a href=#><b>User </b></a>
-  </div>
-  <div class="card">
+<div class="content-wrapper">
+  <!-- Content Header (Page header) -->
+  <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1>ADD NEW <b>USER</b></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="#">Super_Admin</a></li>
+            <li class="breadcrumb-item active">Add_User</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
+  <section class="content">
+    <div class="container-fluid">
+  <!-- /.login-logo -->
+  <div class="card card-primary card-outline mx-auto" style="max-width: 500px">
     <div class="card-body login-card-body">
-		<?php echo form_open('','id="form"');?>
-<!--      <form>-->
-       <b>Email</b><input id="email" type="email" name="email" class="form-control" placeholder="Email">
-<!--       <b>Password</b><input id="pass" type="password" name="pass" class="form-control" placeholder="Password" onkeyup="validatePassword()"> -->
-		<font color="red"><div id="field_name1"></div></font>
-	   <b>User Type</b><select name ="desig" id="desig" class="form-control" ></select>
-	   <b>Region Code</b><select id="region_code" name="region_code" class="form-control"></select>
-	   <b>Department</b><select id="dept"  name="dept" class="form-control"  ></select>
-	   <b>Office Name</b><select id="office"  name="office" class="form-control"  ></select>
-	   <b>Designation Name</b><select id="desig_name"  name="desig_name" class="form-control"  ></select>
-		 <font color="red"><div id="field_name"></div></font><br>
-		 <center>
-          <div class="col-4 ">
+      <p class="login-box-msg"><strong>Enter User Details</strong></p>
+
+      <?php echo form_open('','id="form"');?>
+
+        <div class="input-group mb-3">
+        <input id="email" type="email" name="email" class="form-control" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <select name ="desig" id="desig" class="form-control" ></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user-plus"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <select id="region_code" name="region_code" class="form-control"></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-map-marker"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <select id="dept"  name="dept" class="form-control"  ></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-building"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <select id="office"  name="office" class="form-control"  ></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas  fa-university"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+            <select id="desig_name"  name="desig_name" class="form-control" ></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user-secret"></span>
+            </div>
+          </div>
+        </div>
+        <font color="red"><div id="field_name1"></div></font>
+        <font color="red"><div id="field_name"></div></font><br>
+        <div class="row">
+          <div class="col-12">
             <button type="button" value="Submit" class="btn btn-primary btn-block" onclick="hashPassword();">Add</button>
           </div>
-		  </center>
+          <!-- /.col -->
+        </div>
       </form>
     </div>
+    <!-- /.login-card-body -->
   </div>
 </div>
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
+</section>
+</div>
 
 <script type="text/javascript">
 		fetchType();
@@ -64,7 +97,7 @@
 		function hashPassword(){
 			$('#field_name').html("");
 			var email = $('#email').val();
-			var password = $('#pass').val();
+			var password = "";//$('#pass').val();
 			var user_type = $('#desig').val();
 			var region_code = $('#region_code').val();
 			var dept = $('#dept').val();
@@ -72,7 +105,7 @@
 			var desig_name = $('#desig_name').val();
 		
 			console.log("function called:"+email+","+password+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
-			if(email != "" && password != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
+			if(userid !="" && email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
 				signupdo(email,password,user_type,region_code,dept,office,desig_name);
 			}else{
 				$('#field_name').html("Please fill all fields*");
@@ -81,7 +114,7 @@
 		}
 		
 	function signupdo(email,password,user_type,region_code,dept,office,desig_name){
-		console.log("card data");
+		console.log("card data:" +email+","+password+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/signupdo",
 			type: "POST",
@@ -93,7 +126,7 @@
 			success:function(result) 
 			{
 				$('#email').val("");
-				$('#pass').val("");
+				//$('#pass').val("");
 				$('#desig').val("select");
 				$('#region_code').val("select");
 				$('#dept').val("select");
@@ -120,7 +153,7 @@
                 var type_arr = result.data;
                 var status = result.status;
                 if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "SELECT" +
+					var type_item = "<option value=" + "select" + ">" + "USER TYPE" +
                             "</option>";
                         $("#desig").append(type_item);
                     $.each(type_arr, function (idx, val) {
@@ -149,7 +182,7 @@
                 // console.log(type_arr)
                 // console.log(success)
                 if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "SELECT" +
+					var type_item = "<option value=" + "select" + ">" + "DEPARTMENT" +
                             "</option>";
                         $("#dept").append(type_item);
                     $.each(type_arr, function (idx, val) {
@@ -176,7 +209,7 @@
                 var type_arr = result.data;
                 var status = result.status;
                 if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "SELECT" +
+					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
                             "</option>";
                         $("#office").append(type_item);
                     $.each(type_arr, function (idx, val) {
@@ -203,7 +236,7 @@
                 var type_arr = result.data;
                 var status = result.status;
                 if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "SELECT" +
+					var type_item = "<option value=" + "select" + ">" + "DESIGNATION" +
                             "</option>";
                         $("#desig_name").append(type_item);
                     $.each(type_arr, function (idx, val) {
@@ -230,7 +263,7 @@
                 var type_arr = result.data;
                 var status = result.status;
                 if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "SELECT" +
+					var type_item = "<option value=" + "select" + ">" + "LOCATION" +
                             "</option>";
                         $("#region_code").append(type_item);
                     $.each(type_arr, function (idx, val) {

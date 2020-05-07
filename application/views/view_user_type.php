@@ -1,45 +1,74 @@
-<html>
- <head>
- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/switch.css">
-  <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <div class="login-logo">
-	  <a href=#><b>User</b></a>
-	  <a href=#><b></b>Type</a>
-	  <a href=#><b>Table </b></a>
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-9">
+            <h1>CHANGE USER TYPE ACTIVE STATUS</h1>
+        </div>
+      </div>
+    </div>
   </div>
-	</head>
-	<body style="background-color:dee2e6;">
-    <center>
-    <table border="1">
-     <tr><th>User Type Id</th><th>Designation</th><th>Active Status</th><th>Action</th></tr>
-<?php
-foreach($records as $r)
-{
-	$chk = " checked";
-	$val = "ON";
-	if($r->active_status == 0){
-		$chk = "";
-		$val = "OFF";
-	}
-	 echo "<tr><td><center>".$r->user_type_id_pk."</center></td><td><center>".$r->desig."</center></td><td><center>".$r->active_status."</center></td><td><center>
-	<label class='switch'>
-	  <input id='switch".$r->user_type_id_pk."' type='checkbox' onclick='toggleClicked(".$r->user_type_id_pk.");' value='".$val."'".$chk.">
-	  <span class='slider round'></span>
-	</label></center></td></tr>";
-}	
-?>
-   </table>
-  <center>
-		</center></center>
-  </body>
- </html> 
+  <section class='content'>
+    <div class='container-fluid'>
+      <div class='row'>
+	  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/switch.css">
+        <div class="col-md-11" id='refresh'>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title"><strong>USER TYPE Datatable</strong></h3>
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+              <table id="example1" class="table table-bordered table-striped table-hover">
+                <thead>
+                <tr>
+					<th><center>User Type Id</center></th>
+					<th><center>Designation</center></th>
+					<th><center>Active Status</center></th>
+					<th><center>Turn Active Status ON/OFF</center></th>
+                </tr>
+                </thead>
+                <tbody>
+                <?php
+				foreach($records as $r)
+				{
+					$chk = " checked";
+					$val = "ON";
+					if($r->active_status == 0){
+						$chk = "";
+						$val = "OFF";
+					}
+					echo "<tr><td><center>".$r->user_type_id_pk."</center></td><td><center>".$r->desig."</center></td><td><center>".$r->active_status."</center></td><td><center>
+					<label class='switch'>
+					<input id='switch".$r->user_type_id_pk."' type='checkbox' onclick='toggleClicked(".$r->user_type_id_pk.");' value='".$val."'".$chk.">
+					<span class='slider round'></span>
+					</label></center></td></tr>";
+				}	
+				?>
+                </tbody>
+                <tfoot>
+                <tr>
+                  
+                </tr>
+                </tfoot>
+              </table>
+            </div>
+            <!-- /.card-body -->
+          </div>
+        </div>
+        
+      <!-- right column -->
+      <div class='col-md-1'>
+      
+
+      </div>
+      <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+</div>
 
 <script type="text/javascript">
 	function toggleClicked(userId){
