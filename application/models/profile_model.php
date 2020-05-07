@@ -25,7 +25,7 @@ class profile_model extends CI_Model {
 	public function get_login_details($d){
         $query = $this->db->get_where('mpr_semitrans_login', array('username' => $d));
         $row = $query->row();
-        return $row->desig_id_fk;
+        return $row;
     }
 	
     public function get_designation(){
@@ -33,7 +33,7 @@ class profile_model extends CI_Model {
 		$tables = $this->db->get('mpr_master_designation');
 		$desi_name ;
         foreach($tables->result() as $desigs){
-			if($desigs->desig_id_pk == $data){
+			if($desigs->desig_id_pk == $data->desig_id_fk){
 				$desi_name= $desigs->desig_name;
 			}
         }
@@ -45,7 +45,7 @@ class profile_model extends CI_Model {
 		$tables = $this->db->get('mpr_master_department');
 		$dep_name;
         foreach($tables->result() as $desigs){
-			if($desigs->dept_id_pk == $data){
+			if($desigs->dept_id_pk == $data->dept_id_fk){
 				$dep_name = $desigs->dept_name;
 			}
         }
@@ -56,7 +56,7 @@ class profile_model extends CI_Model {
 		$tables = $this->db->get('mpr_master_office');
 		$off_name;
         foreach($tables->result() as $desigs){
-			if($desigs->office_id_pk == $data){
+			if($desigs->office_id_pk == $data->office_id_fk){
 				$off_name = $desigs->office_name;
 			}
         }

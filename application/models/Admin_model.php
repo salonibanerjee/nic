@@ -8,7 +8,7 @@ class Admin_model extends CI_Model {
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
-                'schcd' => $row->schcd,
+                'schcd' => $row->location_code,
                 'username' => $row->username,
                 'password' => $row->password,
                 'desig_id_fk'=> $row->desig_id_fk,

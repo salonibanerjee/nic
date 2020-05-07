@@ -143,7 +143,7 @@ class Crud_model extends CI_Model {
         public function gp_id($n){
                 $query = $this->db->get_where('mpr_semitrans_login', array('username' => $n));
                 $row = $query->row();
-                return $row->schcd;
+                return $row->location_code;
         }
 
         //custom form validation 
