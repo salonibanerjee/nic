@@ -377,9 +377,9 @@ class summary extends MY_Controller {
 					'username' =>$this->session->userdata('uid'),
 					'email' => $email,
 					'image' => $image,
-					'designation' =>$desig,
-					'department' =>$dep,
-					'office' =>$off,
+					//'designation' =>$desig,
+					//'department' =>$dep,
+					//'office' =>$off,
 					'district' =>$dist,
 				);
 				if($res){
