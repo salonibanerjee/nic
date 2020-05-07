@@ -24,7 +24,7 @@
                 <thead>
                 <tr>
                   <?php $i=0; foreach($data as $row){
-                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                         $i++;
                         continue;
                       }else{
@@ -41,7 +41,7 @@
                     foreach($main_data as $row){
                         echo "<tr>";
                         foreach($row as $key=>$row1){
-                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='schcd' || $key=='nodal_check'){
+                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
                                 continue;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";

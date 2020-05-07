@@ -21,12 +21,12 @@ class Crud_model extends CI_Model {
         }
         function update($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r['session'],'schcd'=>$r['schcd'],'month'=>$r['month']));
+                $this->db->where(array('session'=>$r['session'],'location_code'=>$r['location_code'],'month'=>$r['month']));
                 $this->db->update($n,$r);
         }
-        function update_schcd($r,$n){
+        function update_location_code($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('schcd'=>$r['schcd']));
+                $this->db->where(array('location_code'=>$r['location_code']));
                 $this->db->update($n,$r);
         }
         function isempty($a){
@@ -112,19 +112,19 @@ class Crud_model extends CI_Model {
         public function get($n,$v,$v1){	
 		$query = $this->db->select('*')
 			->from($n)
-			->where(array('session'=>$v,'schcd'=>$v1))
+			->where(array('session'=>$v,'location_code'=>$v1))
 			->get();
 		return $query->result()[0];
         }
-        public function get_schcd($n,$v){	
+        public function get_location_code($n,$v){	
 		$query = $this->db->select('*')
 			->from($n)
-			->where(array('schcd'=>$v))
+			->where(array('location_code'=>$v))
 			->get();
 		return $query->result()[0];
         }
         public function region_name($n){
-                $query = $this->db->get_where('mpr_master_location_data',array('location_schcd'=>$n));
+                $query = $this->db->get_where('mpr_master_location_data',array('location_code'=>$n));
                 $row = $query->row();
                 //print_r($row);
                 return $row->location_area;
@@ -149,8 +149,8 @@ class Crud_model extends CI_Model {
         //custom form validation 
         //$n->tablename, $s-> session 
         public function unique_data_entry($n,$s,$k){
-                $var=$this->session->userdata('schcd');
-                $query = $this->db->get_where($n, array('session' => $s,'schcd' => $var, 'month' => $k));
+                $var=$this->session->userdata('location_code');
+                $query = $this->db->get_where($n, array('session' => $s,'location_code' => $var, 'month' => $k));
                 $row = $query->row();
                 if($row){
                         return $row; 
@@ -160,30 +160,30 @@ class Crud_model extends CI_Model {
         }
 
         public function draft_data_fetch($table_name){
-                $var = $this->session->userdata('schcd');
-                $last_row=$this->db->select('*')->where('schcd',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                $var = $this->session->userdata('location_code');
+                $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
         }
         //for tabular view
         public function data_fetch($table_name){
-                $var = $this->session->userdata('schcd');
+                $var = $this->session->userdata('location_code');
                 $count=0;
-                $count = $this->db->select('*')->where(['schcd'=>$var])->from($table_name)->count_all_results();
+                $count = $this->db->select('*')->where(['location_code'=>$var])->from($table_name)->count_all_results();
                 if($count>0){
-                        $query = $this->db->select('*')->where(array('nodal_check'=>1))->like('schcd', $var, 'after')->order_by('month')->get($table_name)->result_array();
+                        $query = $this->db->select('*')->where(array('nodal_check'=>1))->like('location_code', $var, 'after')->order_by('month')->get($table_name)->result_array();
                         return $query;
                 }else{
                         return 0;
                 }
         }
         public function filter_data($table_name,$sm,$em,$yr){
-                $schcd = $this->session->userdata('schcd');
+                $location_code = $this->session->userdata('location_code');
                 $this->db->select('*');
                 $this->db->from($table_name);
                 $this->db->where('month>=',$sm);
                 $this->db->where('month<=',$em);
                 $this->db->where('session',$yr);
-                $this->db->like('schcd', $schcd, 'after');
+                $this->db->like('location_code', $location_code, 'after');
                 $query=$this->db->order_by('month')->get()->result_array();
                 if($query){
                         return $query;
@@ -195,7 +195,7 @@ class Crud_model extends CI_Model {
 
         function update_sub($r,$n){
                 //$this->db->where('session', $r['session']);
-                $this->db->where(array('session'=>$r->session,'schcd'=>$r->schcd,'month'=>$r->month));
+                $this->db->where(array('session'=>$r->session,'location_code'=>$r->location_code,'month'=>$r->month));
                 $this->db->update($n,$r);
         }
         function delete_sub($r,$n){
@@ -204,8 +204,8 @@ class Crud_model extends CI_Model {
         }
 
         public function draft_filter($table_name,$month,$year){
-                $var = $this->session->userdata('schcd');
-                $row = $this->db->select('*')->where(array('schcd'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                $var = $this->session->userdata('location_code');
+                $row = $this->db->select('*')->where(array('location_code'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 if($row)
                         return $row;
                 else

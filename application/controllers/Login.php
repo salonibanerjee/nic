@@ -39,7 +39,7 @@ class Login extends CI_Controller {
 			    if($hashPassInDb == $hash){
                     $this->session->set_userdata('uid',$this->input->post('email'));
                     $this->session->set_userdata('logged_in', TRUE);
-                    $this->session->set_userdata('schcd',$this->Crud_model->gp_id($this->input->post('email')));
+                    $this->session->set_userdata('location_code',$this->Crud_model->gp_id($this->input->post('email')));
                     $this->session->set_userdata('loginid',$res->Login_id_pk);
                     $this->session->set_userdata('dept',$res->dept_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));

@@ -125,6 +125,7 @@ $("form").on("submit", function (event){
 		},
     cache: false,
     success: function(result){
+      console.log(result)
       if(result[1]=='p'){
         document.getElementById('pass').value = "";
         document.getElementById('captcha').value = "";

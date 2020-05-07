@@ -94,7 +94,7 @@ class summary extends MY_Controller {
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
-		$gp=$this->session->userdata('schcd');
+		$gp=$this->session->userdata('location_code');
         $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
         $res = $this->db->query($q)->result();
 		$data['noti']=$res;
@@ -197,7 +197,7 @@ class summary extends MY_Controller {
 			'right' => true,
 			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
 			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name'),
-			'c_name_right' => $this->Dashboard_model->list_table('mpr_master_location_data','location_schcd'),
+			'c_name_right' => $this->Dashboard_model->list_table('mpr_master_location_data','location_code'),
 			'f_name_right' => $this->Dashboard_model->fullname('mpr_master_location_data','location_area')
 		);
 

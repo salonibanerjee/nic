@@ -104,7 +104,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                         foreach($uff[$temp]['data'] as $row){
                             //echo $draft_data->$row;
                             $s_name = $uff[$temp]['s_name'];
-                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                                 $i++;
                                 continue;
                             } else {
