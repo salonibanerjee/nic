@@ -185,7 +185,7 @@ class Super_Admin extends CI_Controller {
 		   $data;
 		   $i = 0;
 	   	  foreach($res as $r){
-			  $code = $r->location_schcd;//$r->location_code;
+			  $code = $r->location_code;
 			  $type = $r->location_area;
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
