@@ -31,6 +31,10 @@ class Sup_admin extends CI_Model {
 	public function schemes_count(){
 		return $this->db->get('mpr_master_scheme_table')->num_rows();
 	}
+	//counting audit logs
+	public function audit_count(){
+		return $this->db->get('mpr_trans_audit_log')->num_rows();
+	}
 
 
 

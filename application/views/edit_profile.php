@@ -135,8 +135,7 @@
           <!-- /.card-body -->
           <?php echo validation_errors();?>
           <div class="card-footer">
-          
-            <button type="submit" name= "sub1" id="sub1" class="btn btn-primary">Submit</button>
+            <button type="submit" name= "sub1" id="sub1" class="btn btn-primary" style="display: block; margin-left: auto;  margin-right: auto;">Save Profile Details</button>
           </div>
       </div>
     </div>

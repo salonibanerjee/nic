@@ -97,6 +97,36 @@
               <a href="#" class="small-box-footer">Add More <i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
+
+            <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-purple">
+              <div class="inner">
+                <h3><?php echo $audit_count; ?></h3>
+
+                <p>Audit Log Count</p>
+              </div>
+              <div class="icon">
+                <i class="fa  fa-history"></i>
+              </div>
+              <a href="#" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
+            </div><!--small box-->
+            </div>
+
+            <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box bg-teal">
+              <div class="inner">
+                <h3>Year</h3>
+
+                <p>Month</p>
+              </div>
+              <div class="icon">
+                <i class="fa  fa-calendar"></i>
+              </div>
+              <a href="#" class="small-box-footer">Enter DBA financial year<i class="fas fa-arrow-circle-right"></i></a>
+            </div><!--small box-->
+            </div>
         </div>
 
 

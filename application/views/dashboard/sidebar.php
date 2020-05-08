@@ -29,6 +29,16 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <?php
+            $icon[1] = 'fa-tv text-purple';
+            $icon[2] = 'fa-user text-blue';
+            $icon[3] = 'fa-edit text-maroon';
+            $icon[4] = 'fa-list-alt text-info';
+            $icon[5] = 'fa-check text-green';
+            $icon[6] = 'fa-user-secret text-orange';
+            $icon[7] = 'fa-calendar-check text-teal';
+            $icon[8] = 'fa-bell text-yellow';
+            $icon[10] = 'fa-power-off text-danger';
+
             $data=$this->cache->get('Active_status')['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
             $scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
@@ -48,10 +58,8 @@
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link'>";
                   }else
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
-                if($x['privilege_id_fk']==1||$x['privilege_id_fk']==3||$x['privilege_id_fk']==5){
-                  echo "<i class='nav-icon fas fa-plus'></i>";
-                }else
-                  echo "<i class='nav-icon fas fa-circle'></i>";
+        
+                  echo "<i class='nav-icon fas ".$icon[$x['privilege_id_fk']]."'></i>";
                 echo "<p>";
                 echo $x['page_name'];
                 echo "</p>";

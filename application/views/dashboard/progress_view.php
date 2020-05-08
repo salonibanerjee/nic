@@ -13,7 +13,7 @@
             <table class="table table-bordered">
               <thead>                  
                 <tr>
-                  <th style="width: 10px">SL</th>
+                  <th style="width: 10px">Location</th>
                   <th>Project Name</th>
                   <th>Progress</th>
                   <th style="width: 40px">%</th>
@@ -22,7 +22,7 @@
               <tbody>
                 {work_progress}
                 <tr>
-                  <td>{sl_no}</td>
+                  <td>{location}</td>
                   <td>{p_name}</td>
                   <td>
                     <div class="progress progress-xs">

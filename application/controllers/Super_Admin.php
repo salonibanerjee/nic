@@ -19,7 +19,8 @@ class Super_Admin extends CI_Controller {
         $data['active_user_type_count']= $this->Sup_admin->active_user_type_count();
         $data['active_user_privilege_count']= $this->Sup_admin->active_user_privilege_count();
         $data['active_privilege_count']= $this->Sup_admin->active_privilege_count();
-        $data['schemes_count']= $this->Sup_admin->schemes_count();
+		$data['schemes_count']= $this->Sup_admin->schemes_count();
+		$data['audit_count']= $this->Sup_admin->audit_count();
         $this->load->view('super_admin_view',$data);
     }
     
