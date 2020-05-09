@@ -4,7 +4,7 @@
         <div class='container-fluid'>           
             <!-- TABLE: LATEST ORDERS -->
             <div class='card'>
-                <div class='card-header border-transparent'>
+                <div class='card-header border-transparent bg-purple'>
                 <h3 class='card-title'>Nodal Check</h3>
 
                 <div class='card-tools'>
@@ -20,9 +20,9 @@
                 <div class='card-body p-0'>
                 <div class='table-responsive'>
                     <table class='table m-0'>
-                    <thead>
+                    <thead >
                     <tr>
-                        <th>Scheme ID</th>
+                        <!--<th>Scheme ID</th>-->
                         <th>Scheme Name</th>
                         <th>Status</th>
                         <th>Review</th>
@@ -33,20 +33,20 @@
                         foreach($fetch_draft as $row){
                             if($count_check[$i] == 0){
                                 echo "<tr>";
-                                echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
-                                echo    "<td>".$draft_name[$i]."</td>";
-                                echo     "<td><span class='badge badge-success'>Checked</span></td>";
+                                //echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
+                                echo    "<td style='font-size:17px;'>".$draft_name[$i]."</td>";
+                                echo     "<td><span class='badge badge-success' style='font-size:17px;'>Checked</span></td>";
                                 echo     "<td>";
-                                echo     "<a href='javascript:void(0)' class='btn btn-xs btn-default float-left disabled'>Review</a>";
+                                echo     "<a href='javascript:void(0)' style='font-size:17px;' class='btn btn-xs btn-default float-left disabled'>Review</a>";
                                 echo     "</td>";
                                 echo "</tr>";
                             } else {
                                 echo "<tr>";
-                                echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
-                                echo     "<td>".$draft_name[$i]."</td>";
-                                echo     "<td><span class='badge badge-warning'>Pending</span></td>";
+                                //echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
+                                echo     "<td style='font-size:17px;'>".$draft_name[$i]."</td>";
+                                echo     "<td><span class='badge badge-warning' style='font-size:17px;'>Pending</span></td>";
                                 echo     "<td>";
-                                echo     "<a href='javascript:void(0)' id='".str_replace('_draft', '', $row)."' onClick='reply_click(this.id)' data-toggle='modal' data-target='#".str_replace('_draft', '', $row)."_modal' class='btn btn-xs btn-info float-left'>Review</a>";
+                                echo     "<a href='javascript:void(0)' style='font-size:17px;' id='".str_replace('_draft', '', $row)."' onClick='reply_click(this.id)' data-toggle='modal' data-target='#".str_replace('_draft', '', $row)."_modal' class='btn btn-xs btn-primary float-left'>Review</a>";
                                 echo     "</td>";
                                 echo "</tr>";
                             }
@@ -69,6 +69,7 @@
 
         <!-- Modal -->
 <?php
+$i=0;
 foreach($fetch_draft as $sh_name){
     $temp = str_replace('_draft', '', $sh_name);
     //echo $temp;
@@ -77,23 +78,23 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
 
         <!-- Modal content-->
         <div class='modal-content'>
-        <div class='modal-header'>
-            <!--<button type='button' class='close' data-dismiss='modal'>&times;</button>-->
-            <h4 class='modal-title'>".$temp."</h4>
+        <div class='modal-header bg-lime'>
+            <h4 class='modal-title'>".$draft_name[$i]."</h4>
+            <button type='button' class='close' data-dismiss='modal'>&times;</button>
         </div>
         <form role='form' method='post' id='form'>
             <div class='modal-body'>
             <div class='card'>
-              <div class='card-header'>
-                <h3 class='card-title'>Striped Full Width Table</h3>
+              <div class='card-header bg-primary'>
+                <h3 class='card-title'>Data to be Checked</h3>
               </div>
               <!-- /.card-header -->
               <div class='card-body p-0'>
-                <table class='table table-striped'>
+                <table class='table table-striped table-responsive'>
                   <thead>
                     <tr>
-                      <th style='width: 10px'>#</th>
-                      <th>Task</th>
+                      <th style='width: 10px'>Sl.No.</th>
+                      <th>Particulars</th>
                       <th>Progress</th>
                     </tr>
                     </thead>
@@ -109,7 +110,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                                 continue;
                             } else {
                                 if(isset($uff[$temp]['draft_data']->$row)){
-                                    
+                                    $j++;
                                     if($s_name[$i]=='Month'){
                                         echo '<tr>';
                                         echo '<td>'.$j.'.</td>';
@@ -132,7 +133,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                                 }
                             }
                             $i++;
-                            $j++;
+                            
                         }
                         
                         
@@ -141,20 +142,16 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
               </div>
               <!-- /.card-body -->
               <div class='card-footer'>
-              <button type='submit' class='btn btn-xs btn-primary' name='sub1' id='sub1' value='Accept'>Accept</button>
-                    <button type='submit' class='btn btn-xs btn-primary' name='sub2' id='sub2' value='Reject'>Reject</button>              </div>
+              <button type='submit' class='btn btn-xs btn-primary bg-success mx-success' style='width:48%;font-size:20px;' name='sub1' id='sub1' value='Accept'>Accept</button>
+                <button type='submit' class='btn btn-xs btn-primary bg-danger mx-auto' style='width:48%; font-size:20px;' name='sub2' id='sub2' value='Reject'>Reject</button>              </div>
             </div>
             <!-- /.card -->
-
-
-            </div>
-            <div class='modal-footer'>
-                
             </div>
         </form>
         </div>
     </div>
 </div>";
+$i++;
 }
 ?>
 

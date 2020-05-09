@@ -11,7 +11,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
-                <table class="table table-condensed">
+                <table class="table table-condensed table-responsive">
                   <thead>
                     <tr>
                       <th style="width: 10px">SL.</th>

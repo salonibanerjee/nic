@@ -12,16 +12,16 @@
     <div class='container-fluid'>
       <div class='row'>
 
-        <div class="col-md-11" id='refresh'>
+        <div class="col-md-12" id='refresh'>
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-indigo">
               <h3 class="card-title"><strong><?php echo $name.' ';?>Datatable</strong></h3>
-              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white"><i class="fas fa-edit" style="font-size:20px; padding-top:7px;"></i></button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped table-hover">
-                <thead>
+              <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
+                <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
                       if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
@@ -155,6 +155,13 @@
 
 
 <script type="text/javascript">
+
+$(document).ready(function() {
+    $('#example1').dataTable( {
+        "scrollX": true
+    } );
+} );
+
 
 /*function myFunction() {
 // Declare variables

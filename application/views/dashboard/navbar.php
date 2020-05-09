@@ -3,7 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Summary | Dashboard</title>
+  <?php
+    $varx=$this->cache->get('User_type'.$var)['user_privilege'];
+    $var1=current_url();
+    $m=0;
+    foreach($varx as $x){
+      $var2 = 'http://localhost/NIC/index.php/'.$x['link'];
+      if($var1 == $var2 ){
+        echo "<title>".$x['page_name']."</title>";
+      }else{
+        $m=1;
+      }
+    }
+    if($m==1){
+      if(strpos($var1,'load')!=FALSE){
+        if(strpos($var1,'Get_table')!=FALSE)
+          echo "<title>Input Data</title>";
+        if(strpos($var1,'View_data')!=FALSE)
+        echo "<title>View Data</title>";
+      }else
+        echo "<title>".$this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']."</title>";
+    }
+  ?>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   

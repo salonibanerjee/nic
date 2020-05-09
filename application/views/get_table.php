@@ -9,14 +9,14 @@
     </div>
   </div>
   <section class='content'>
-    <div class='container-fluid'>
+    <div class='container-fluid '>
       <div class='row'>
-          <div class="col-md-11">
+          <div class="col-md-9">
             <!-- Widget: user widget style 2 -->
             <div class="card card-widget widget-user">
               <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-orange">
-              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
+              <div class="widget-user-header bg-indigo">
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white; font-size:30px;"><i class="fas fa-edit"></i></button>
                 <div class="widget-user-image">
                   <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
                 </div>
@@ -55,7 +55,7 @@
             <!-- /.widget-user -->
           </div>
         <!-- left column -->
-        <div class='col-md-11'>
+        <div class='col-md-9'>
           <div class='card card-primary'>
             <div class='card-header'>
               <h3 class='card-title'><?php echo $name; ?></h3>

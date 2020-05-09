@@ -47,11 +47,11 @@
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >
-                    <table id="example1" class="table table-bordered table-striped table-hover">
+                    <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
                       <thead class="bg-warning">
                       <tr>
-                        <th>Notification ID</th>
-                        <th>Notification Title</th>
+                        <th>ID</th>
+                        <th>Title</th>
                         <th>Notification Body</th>
                       </tr>
                       </thead>
