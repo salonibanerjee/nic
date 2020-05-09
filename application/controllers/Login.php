@@ -46,11 +46,11 @@ class Login extends CI_Controller {
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
                     $this->Admin_model->scheme_hier_cache();
                     //checking whether user type cache present or not
-                    $var = $this->cache->get('Active_status')['user_type_id_fk'];
+                    $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
                         $this->Admin_model->user_type_cache($var);
                     }
-                    if($this->cache->get('Active_status')['active_status']==1 && $this->cache->get('User_type'.$var)['active_status']==1){
+                    if($this->cache->get('Active_status'.$this->session->userdata('loginid'))['active_status']==1 && $this->cache->get('User_type'.$var)['active_status']==1){
                         $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                         current_url(),
                                                         'Login',

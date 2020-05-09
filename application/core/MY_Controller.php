@@ -7,7 +7,7 @@ class MY_Controller extends CI_Controller {
     }
     public function check_privilege($page_id = NULL){
         $this->load->driver('cache', array('adapter' => 'file'));
-        $data=$this->cache->get('Active_status')['user_type_id_fk'];
+        $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
         $var=$this->cache->get('User_type'.$data)['user_privilege'];
         $flag=0;
         $privilege_active_status=0;
@@ -31,7 +31,7 @@ class MY_Controller extends CI_Controller {
 
     public function sidebar_load($upid){
         $this->load->driver('cache', array('adapter' => 'file'));
-        $data=$this->cache->get('Active_status')['user_type_id_fk'];
+        $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
         $var=$this->cache->get('User_type'.$data)['user_privilege'];
         $flag=0;
         foreach($var as $x){

@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Super_Admin extends CI_Controller {
     public function index(){
         $this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -29,7 +29,7 @@ class Super_Admin extends CI_Controller {
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		//$this->load->view('dashboard/navbar');
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -64,7 +64,7 @@ class Super_Admin extends CI_Controller {
     public function notification(){
 
         $this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -107,7 +107,7 @@ class Super_Admin extends CI_Controller {
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -287,7 +287,7 @@ class Super_Admin extends CI_Controller {
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -325,7 +325,7 @@ class Super_Admin extends CI_Controller {
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -365,7 +365,7 @@ class Super_Admin extends CI_Controller {
 	{      
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;

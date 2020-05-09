@@ -82,7 +82,7 @@ class profile_model extends CI_Model {
 	}*/
 
     public function get_profile_info($username){
-        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
+        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->session->userdata('loginid')));
         $row=$query->row();
 		$res=$this->get_f($username);
 		//$r = $this->get_designation($username);

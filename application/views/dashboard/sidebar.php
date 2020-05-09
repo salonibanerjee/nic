@@ -22,7 +22,7 @@
             echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
           </div>
-        
+                  
       </div>
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
@@ -39,7 +39,7 @@
             $icon[8] = 'fa-bell text-yellow';
             $icon[10] = 'fa-power-off text-danger';
 
-            $data=$this->cache->get('Active_status')['user_type_id_fk'];
+            $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
             $scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
             $i=0;
@@ -52,12 +52,12 @@
                   if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link active'>";
                   }else
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link active'>";
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link bg-black'>";
                 }else
                   if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link'>";
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }else
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
         
                   echo "<i class='nav-icon fas ".$icon[$x['privilege_id_fk']]."'></i>";
                 echo "<p>";

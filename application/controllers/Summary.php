@@ -10,14 +10,14 @@ class summary extends MY_Controller {
 		//$this->check_privilege(1);
 		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
 		
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-		//print_r($this->cache->get('Active_status'))	;	
+		//print_r($this->cache->get('Active_status'.$this->session->userdata('loginid')))	;	
 		
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
@@ -31,7 +31,7 @@ class summary extends MY_Controller {
 
 		$info_box = array(
 			'data_list' => array(
-				array('num' => '42', 'desc' => 'Number of Scheme'),
+				array('num' => '31', 'desc' => 'Number of Schemes'),
 				array('num' => '15', 'desc' => 'Body 2'),
 				array('num' => '19', 'desc' => 'Body 3')
 			)
@@ -387,7 +387,7 @@ class summary extends MY_Controller {
 	public function profile(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -404,7 +404,7 @@ class summary extends MY_Controller {
 	public function edit_profile(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -417,7 +417,6 @@ class summary extends MY_Controller {
 		$this->load->model('Admin_model');
 		$dat=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$desi=$this->profile_model->get_designation();
-		print_r($desi['0']);
 		$dep=$this->profile_model->get_depart();
 		$off=$this->profile_model->get_office();
 		$user = array();
@@ -520,7 +519,7 @@ class summary extends MY_Controller {
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();

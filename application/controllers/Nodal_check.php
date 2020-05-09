@@ -13,8 +13,8 @@ class Nodal_check extends CI_Controller {
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
-        $var = $this->cache->get('Active_status')['user_type_id_fk'];
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+        $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
