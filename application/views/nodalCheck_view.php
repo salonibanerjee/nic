@@ -69,7 +69,7 @@
 
         <!-- Modal -->
 <?php
-$i=0;
+$i1=0;
 foreach($fetch_draft as $sh_name){
     $temp = str_replace('_draft', '', $sh_name);
     //echo $temp;
@@ -79,7 +79,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
         <!-- Modal content-->
         <div class='modal-content'>
         <div class='modal-header bg-lime'>
-            <h4 class='modal-title'>".$draft_name[$i]."</h4>
+            <h4 class='modal-title'>".$draft_name[$i1]."</h4>
             <button type='button' class='close' data-dismiss='modal'>&times;</button>
         </div>
         <form role='form' method='post' id='form'>
@@ -95,7 +95,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                     <tr>
                       <th style='width: 10px'>Sl.No.</th>
                       <th>Particulars</th>
-                      <th>Progress</th>
+                      <th>Values</th>
                     </tr>
                     </thead>
                     <tbody>";
@@ -142,8 +142,8 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
               </div>
               <!-- /.card-body -->
               <div class='card-footer'>
-              <button type='submit' class='btn btn-xs btn-primary bg-success mx-success' style='width:48%;font-size:20px;' name='sub1' id='sub1' value='Accept'>Accept</button>
-                <button type='submit' class='btn btn-xs btn-primary bg-danger mx-auto' style='width:48%; font-size:20px;' name='sub2' id='sub2' value='Reject'>Reject</button>              </div>
+              <button type='submit' class='btn btn-xs btn-primary bg-success mx-success' style='width:48%;font-size:20px;' name='sub1' id='sub1' value='Accept'><i class='fa fa-check float-left' style='padding-top:5px;'></i>Accept</button>
+                <button type='submit' class='btn btn-xs btn-primary bg-danger mx-auto' style='width:48%; font-size:20px;' name='sub2' id='sub2' value='Reject'><i class='fa fa-trash float-left' style='padding-top:5px;'></i>Reject</button>              </div>
             </div>
             <!-- /.card -->
             </div>
@@ -151,7 +151,7 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
         </div>
     </div>
 </div>";
-$i++;
+$i1++;
 }
 ?>
 
