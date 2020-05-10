@@ -39,15 +39,14 @@
           <div class='container-fluid'>
             <div class='row'>
 
-              <div class="col-md-11" id='refresh'>
+              <div class="col-md-12" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
                     <h3 class="card-title">Previous 5 Notifications</strong></h3>
-                    <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >
-                    <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
+                    <table id="example1" class="table table-bordered table-striped table-hover table-responsive" style="max-height:500px;">
                       <thead class="bg-warning">
                       <tr>
                         <th>ID</th>

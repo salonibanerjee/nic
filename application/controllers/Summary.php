@@ -28,12 +28,13 @@ class summary extends MY_Controller {
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
 		//$this->load->view('dashboard/container');
-
+		$this->load->model('Sup_admin');
+		$scheme_count = $this->Sup_admin->schemes_count();
 		$info_box = array(
 			'data_list' => array(
-				array('num' => '31', 'desc' => 'Number of Schemes'),
-				array('num' => '15', 'desc' => 'Body 2'),
-				array('num' => '19', 'desc' => 'Body 3')
+				array('num' => $scheme_count, 'desc' => 'Number of Schemes','color'=>'indigo','icon'=>'ion-stats-bars'),
+				array('num' => '15', 'desc' => 'Body 2','color'=>'yellow','icon'=>'ion-person'),
+				array('num' => '19', 'desc' => 'Body 3','color'=>'teal','icon'=>'ion-calendar')
 			)
 		);
 		
@@ -255,7 +256,7 @@ class summary extends MY_Controller {
 
 		$bar_chart1 = array(
 			'id' => 'bar1',
-			'title' => 'Example',
+			'title' => 'Fund Utilised',
 			'block' => $schemename_bar,
 			'no_bar' => 2,
 			'bar' => array('Fund Received','Fund Utilised'),
@@ -327,7 +328,7 @@ class summary extends MY_Controller {
 
 		$bar_chart2 = array(
 			'id' => 'bar2',
-			'title' => 'Example 1',
+			'title' => 'Area Wise Progress',
 			'block' => $loc,
 			'no_bar' => $size_sch,
 			'bar' => $schemename_pro,
