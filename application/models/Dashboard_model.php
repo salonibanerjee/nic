@@ -211,7 +211,7 @@ class Dashboard_model extends CI_Model{
     function sch_name($n,$num)
     {
         $this->db->select('name,s_name');
-        $tables = $this->db->get('mpr_master_dashboard_info');
+        $tables = $this->db->get('mpr_master_scheme_table');
         $b = array();
         $i = 0;
         while($i<$num)

@@ -22,8 +22,22 @@ class summary extends MY_Controller {
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
 
-		
 		$this->load->view('dashboard/sidebar',$da);
+
+		//--------------------------------------------------------------------------
+		$scheme_hier=$this->cache->get('scheme_hier_'.$this->session->userdata('dept'));
+		//--------------------------------------------------------------------------
+		
+		$scheme_link = array();
+		$scheme_link_name = array();
+
+		foreach($scheme_hier as $row){
+			array_push($scheme_link, $row['scheme_link']);
+			array_push($scheme_link_name, $row['scheme_name']);
+		}
+
+
+		//print_r($scheme_hier['scheme_link']);
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
@@ -47,7 +61,7 @@ class summary extends MY_Controller {
 		//change here
 		$loc_schcd = $this->session->userdata('location_code');
 
-		$scheme_name = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
+		$scheme_name = $scheme_link;
 
 		$progress_m = (int)date('m');
 		$progress_y = date('Y');
@@ -82,8 +96,8 @@ class summary extends MY_Controller {
 			'left' => true,
 			'right' => true,
 			'session' => true,
-			'c_left_name' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
-			'f_left_name' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name'),
+			'c_left_name' => $scheme_link,
+			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
@@ -142,7 +156,7 @@ class summary extends MY_Controller {
 
 		//=========================================================
 
-		$scheme_pie = array("mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand");
+		$scheme_pie = $scheme_link;
 
 		//$bar1_location = array("19161","191615","191614");
 
@@ -169,8 +183,8 @@ class summary extends MY_Controller {
 			'left' => true,
 			'right' => false,
 			'session' => true,
-			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
-			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
+			'c_left_name' => $scheme_link,
+			'f_left_name' => $scheme_link_name
 			
 		);
 
@@ -204,9 +218,7 @@ class summary extends MY_Controller {
 		//================BAR CHART 1===============================
 		
 		//Insert data for bar chart in an array format 
-		$scheme_bar1 = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
-
-		$bar1_location = array("19161","191615","191614");
+		$scheme_bar1 = $scheme_link;
 
 		$bar1_m = (int)date('m');
 		$bar1_y = date('Y');
@@ -231,8 +243,8 @@ class summary extends MY_Controller {
 			'left' => true,
 			'right' => false,
 			'session' => true,
-			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
-			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name')
+			'c_left_name' => $scheme_link,
+			'f_left_name' => $scheme_link_name
 			
 		);
 
@@ -242,10 +254,12 @@ class summary extends MY_Controller {
 		$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$bar1_m,$bar1_y);
 		$tempschemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
 
+		//print_r($result);
+
 		$schemename_bar=array();
 		$target = array();
 		$progress = array();
-		for($i=0,$j=0;$i<10;$i+=2,$j++){
+		for($i=0,$j=0;$i<2*sizeof($scheme_bar1);$i+=2,$j++){
 			if($result[$i]=="false"){
 				continue;
 			}
@@ -306,8 +320,8 @@ class summary extends MY_Controller {
 			'y' => $bar2_y,
 			'left' => true,
 			'right' => true,
-			'c_name_left' => $this->Dashboard_model->list_table('mpr_master_dashboard_info','s_name'),
-			'f_name_left' => $this->Dashboard_model->fullname('mpr_master_dashboard_info','name'),
+			'c_left_name' => $scheme_link,
+			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
@@ -349,7 +363,7 @@ class summary extends MY_Controller {
 		$alert_m = (int)date('m');
 		$alert_y = date('Y');
 
-		$scheme_alert = array("mpr_scheme_kcc","mpr_scheme_kishanm","mpr_scheme_anand","mpr_scheme_doc","mpr_scheme_dog");
+		//$scheme_hier['scheme_link'];
 		$tempresult_alert = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
 		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
 		$data = array();
