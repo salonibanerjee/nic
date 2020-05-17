@@ -56,7 +56,7 @@
                       </tr>
                       </thead>
                       <?php
-                          $i=0;
+                          $i=1;
                           foreach($noti1 as $row){
                             echo "<tbody>";
                             echo "<th>".$row['audience_id']."</th>";
