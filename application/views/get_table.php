@@ -111,7 +111,7 @@
         <!-- left column -->
         
       <!--/.col (left) -->
-      <div class="col-md-5">
+      <div class="col-md-6">
           <!-- Widget: user widget style 2 -->
           <div class="card card-widget widget-user">
             <!-- Add the bg color to the header using any of the bg-* classes -->
@@ -156,52 +156,6 @@
           </div>
       <!-- right column -->
       <!--/.col (right) -->
-
-
-          <div class="col-md-6">
-            <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-indigo">
-              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white; font-size:30px;"><i class="fas fa-edit"></i></button>
-                <div class="widget-user-image">
-                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
-                </div>
-                <!-- /.widget-user-image -->
-                <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
-                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name." ";?><strong>Last Entry</strong></h5>
-              </div>
-              <div class="card-footer p-0" id="div123">
-                  <ul class="nav flex-column">
-                    <?php
-                        $i=0;
-                        foreach($data as $row){
-                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
-                                $i++;
-                                continue;
-                            }else{
-                                echo "<li class='nav-item'>";
-                                echo "<a  class='nav-link'>";
-                                if(isset($draft_data->$row)){
-                                    if($s_name[$i]=="Month")
-                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
-                                    else
-                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
-                                }
-                                else
-                                    echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
-                                echo "</a>";
-                                echo "</li>";
-                            }
-                            $i++;
-                        }
-                    ?>
-                  </ul>
-              </div>
-            </div>
-            <!-- /.widget-user -->
-          </div>
-        <!-- left column -->
         
       </div>
       <!-- /.row -->

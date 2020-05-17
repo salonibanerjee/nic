@@ -55,7 +55,7 @@
                       </thead>
                         <tbody>
                             <th><center><?php echo $year_range->financial_year_range;?></center></th>
-                            <th><center><?php echo $year_range->month;?></center></th>
+                            <th><center><?php echo $month[$year_range->month];?></center></th>
                         </tbody>
                       
                     </table>

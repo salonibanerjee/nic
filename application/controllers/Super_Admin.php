@@ -13,7 +13,8 @@ class Super_Admin extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $this->load->view('dashboard/sidebar',$da);
         //mandatory requirements end
-        $this->load->model('Sup_admin');
+		$this->load->model('Sup_admin');
+		$this->load->model('Crud_model');
         $data['login_count']= $this->Sup_admin->user_count();
         $data['active_user_count']= $this->Sup_admin->active_user_count();
         $data['active_user_type_count']= $this->Sup_admin->active_user_type_count();
@@ -21,6 +22,8 @@ class Super_Admin extends MY_Controller {
         $data['active_privilege_count']= $this->Sup_admin->active_privilege_count();
 		$data['schemes_count']= $this->Sup_admin->schemes_count();
 		$data['audit_count']= $this->Sup_admin->audit_count();
+		$data['year_range'] = $this->Crud_model->dba_fyear_range();
+		$data['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
         $this->load->view('super_admin_view',$data);
     }
     

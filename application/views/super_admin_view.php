@@ -117,9 +117,9 @@
             <!-- small box -->
             <div class="small-box bg-teal">
               <div class="inner">
-                <h3>Year</h3>
+                <h3><?php echo $year_range->financial_year_range;?></h3>
 
-                <p>Month</p>
+                <p><?php $var=$year_range->month; echo $month[$var];?></p>
               </div>
               <div class="icon">
                 <i class="fa  fa-calendar"></i>
