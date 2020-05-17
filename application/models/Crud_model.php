@@ -211,4 +211,14 @@ class Crud_model extends CI_Model {
                 else
                         return NULL;
         }
+
+        public function dba_fyear_range(){
+                $row = $this->db->select('*')->order_by('dba_financial_range_table_id_pk')->limit(1)->get('mpr_semitrans_dba_financial_range')->row();
+                return $row;
+        }
+
+        public function dba_fyear_update($var){
+                $result = $this->db->where(array('dba_financial_range_table_id_pk'=>1))->update('mpr_semitrans_dba_financial_range',$var);
+                return $result;
+        }
 }

@@ -124,7 +124,7 @@
               <div class="icon">
                 <i class="fa  fa-calendar"></i>
               </div>
-              <a href="#" class="small-box-footer">Enter DBA financial year<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url();?>index.php/Super_Admin/dba_fyear_range" class="small-box-footer">Enter DBA financial year<i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
         </div>

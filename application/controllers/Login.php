@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {    
+class Login extends MY_Controller {    
     public function index(){
         //to create the captcha folder automatically
         $path = './captcha';
@@ -41,6 +41,7 @@ class Login extends CI_Controller {
                     $this->session->set_userdata('logged_in', TRUE);
                     $this->session->set_userdata('location_code',$this->Crud_model->gp_id($this->input->post('email')));
                     $this->session->set_userdata('loginid',$res->Login_id_pk);
+                    $this->session->set_userdata('user_type',$res->user_type_id_fk);
                     $this->session->set_userdata('dept',$res->dept_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));

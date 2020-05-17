@@ -43,6 +43,7 @@ class View_data extends MY_Controller {
             $result['data_table']=$this->Crud_model->list_table();
             $result['s_name_table']=$this->Crud_model->fullname();
             $result['username'] = $this->session->userdata('uid');
+            $result['year_range'] = $this->Crud_model->dba_fyear_range();
             //new added for table show
             $result['main_data'] = $this->Crud_model->data_fetch($n);
             //$this->form_validation->set_rules('modmonthst', 'Starting Month', 'required');

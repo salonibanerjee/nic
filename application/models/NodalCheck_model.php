@@ -40,5 +40,7 @@ class NodalCheck_model extends CI_Model{
     str_replace($search, '', $subject)
     echo $this->db->count_all('my_table');
     */
+
+    
 }
 ?>

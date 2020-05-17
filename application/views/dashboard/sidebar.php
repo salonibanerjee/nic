@@ -15,7 +15,7 @@
             echo "<img src='data: image/jpeg; base64, $image' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
           }?>
         </div>
-        <div style="margin-left:10px; margin-top:-7px;">
+        <div style="margin-left:10px; margin-top:-7px;" id="x" class="x">
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $designation ?></small></a>
           <?php if($update_prof==1){
@@ -49,22 +49,22 @@
                 $var2= 'http://localhost/NIC/index.php/'.$x['link'];
                 echo "<li class='nav-item'>";
                 if($var1==$var2){
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link bg-black'>";
+                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                 }elseif(strpos($var1,'load')!=FALSE){
                   if(strpos($var1,'Get_table')!=FALSE){
                     if($x['privilege_id_fk']==3){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==4){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }elseif(strpos($var1,'View_data')!=FALSE){
                     if($x['privilege_id_fk']==4){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==3){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link'>";
+                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }
                 }else
                   if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
@@ -100,7 +100,7 @@
                     foreach($scheme_hier as $row){
                         $var2= $row['scheme_link'];
                         if(strpos($var1,$var2)!=False){
-                          echo "<li class='nav-item bg-black' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
+                          echo "<li class='nav-item bg-black' style='max-width: 230px; border-radius:5px;'><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
                         }else
                           echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
                         $i++;
@@ -134,3 +134,28 @@
     
 
   </script>
+
+  <style>
+.x {
+  width:200px;
+  overflow-x:scroll;
+}
+.x::-webkit-scrollbar {
+    height: 7px;
+}
+
+.x::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 7px black;
+  border-radius: 5px;
+  height:5px;
+}
+
+.x::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 5px;
+  height: 2px;
+}
+.x::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
+  </style>

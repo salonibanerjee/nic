@@ -40,6 +40,7 @@ class Get_table extends MY_Controller {
             $result['data'] =$this->Crud_model->get_table($n);
             $result['name'] =$this->Crud_model->search_table($n);
             $result['username'] = $this->session->userdata('uid');
+            $result['year_range'] = $this->Crud_model->dba_fyear_range();
             $mon=$this->input->post('modmonth');
             $yr = $this->input->post('modyear');
             if(isset($mon) && isset($yr)){
@@ -87,20 +88,33 @@ class Get_table extends MY_Controller {
         $this->load->driver('cache',array('adapter' => 'file'));
         $this->load->model('Crud_model');
         $result['data'] =$this->Crud_model->get_table($n);
+        $result['year_range'] = $this->Crud_model->dba_fyear_range();
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         foreach($x as $field){
             if($field->name=="id_pk" || $field->name=="login_id_fk" || $field->name=="inserted_at" || $field->name=="ip" || $field->name=='nodal_check'){
                 continue;
             }
-            $z=$field->max_length;
-            $w=$this->Crud_model->get_type($field->type);
-            $ij=$this->Crud_model->search_attri($field->name);
-            $y[]=array(
-                'field' => $field->name,
-                'label' => $ij,
-                'rules' => "required|max_length[$z]|$w"
-            );
+            if($field->name=="month"){
+                if($this->input->post('session')<=$result['year_range']->financial_year_range){
+                    $var=$result['year_range']->month;
+                    $ij=$this->Crud_model->search_attri($field->name);
+                    $y[]=array(
+                        'field' => $field->name,
+                        'label' => $ij,
+                        'rules' => "required|greater_than_equal_to[$var]"
+                    );
+                }
+            }else{
+                $z=$field->max_length;
+                $w=$this->Crud_model->get_type($field->type);
+                $ij=$this->Crud_model->search_attri($field->name);
+                $y[]=array(
+                    'field' => $field->name,
+                    'label' => $ij,
+                    'rules' => "required|max_length[$z]|$w"
+                );
+            }
         }
         $this->form_validation->set_rules($y);
         if($this->form_validation->run()==TRUE){

@@ -10,6 +10,20 @@
   </div>
   <section class='content'>
     <div class='container-fluid'>
+    <div class='row'>
+      <div class="col-md-6">
+            <div class="info-box bg-gradient-warning">
+              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text"><b> Data can be viewed from:</b></span>
+                <span class="info-box-number"><?php echo $month[$year_range->month].",".$year_range->financial_year_range;?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+      </div>
       <div class='row'>
 
         <div class="col-md-12" id='refresh'>
@@ -119,7 +133,7 @@
                   <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
                   <?php $year=intval(date('Y')); 
                   echo "<option value='".$year."' selected>".$year."</option>";
-                  for($x=$year-1;$x>=2019;$x--){
+                  for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
                                 echo "<option value='".$x."'>".$x."</option>";
                               }?>
                   </select>

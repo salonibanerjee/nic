@@ -551,5 +551,5 @@ class summary extends MY_Controller {
 				echo "<p>Old Password is wrong.</p>\n";
             }
         }
-    }
+	}
 }

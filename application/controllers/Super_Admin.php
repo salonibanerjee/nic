@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Super_Admin extends CI_Controller {
+class Super_Admin extends MY_Controller {
     public function index(){
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -98,7 +98,41 @@ class Super_Admin extends CI_Controller {
                 $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
             }
         }
-    }
+	}
+	
+	public function dba_fyear_range(){
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		
+		$this->load->model('Crud_model');
+		$u_type['year_range'] = $this->Crud_model->dba_fyear_range();
+		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+
+		$this->form_validation->set_rules('year', 'Year', 'required');
+		$this->form_validation->set_rules('month', 'Month', 'required');
+		if ($this->form_validation->run() == FALSE){
+			echo validation_errors();
+			$this->load->view('dba_fyear_range',$u_type);
+        }else{
+			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
+			if($this->Crud_model->dba_fyear_update($a)){
+				?><script>
+
+					Toast.fire({
+						icon: 'warning',
+						title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
+					});
+				</script><?php
+			}
+		}
+	}
 
 
     //Super Admin functionalities
