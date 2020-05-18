@@ -9,54 +9,24 @@
     </div>
   </div>
   <section class='content'>
-    <div class='container-fluid'>
+    <div class='container-fluid '>
       <div class='row'>
-          <div class="col-md-11">
-            <!-- Widget: user widget style 2 -->
-            <div class="card card-widget widget-user">
-              <!-- Add the bg color to the header using any of the bg-* classes -->
-              <div class="widget-user-header bg-orange">
-              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
-                <div class="widget-user-image">
-                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
-                </div>
-                <!-- /.widget-user-image -->
-                <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
-                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name." ";?><strong>Last Entry</strong></h5>
+      <div class="col-md-6">
+            <div class="info-box bg-gradient-warning">
+              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text"><b> Data can be inserted from:</b></span>
+                <span class="info-box-number"><?php echo $month[$year_range->month].",".$year_range->financial_year_range;?></span>
               </div>
-              <div class="card-footer p-0" id="div123">
-                  <ul class="nav flex-column">
-                    <?php
-                        $i=0;
-                        foreach($data as $row){
-                            if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
-                                $i++;
-                                continue;
-                            }else{
-                                echo "<li class='nav-item'>";
-                                echo "<a  class='nav-link'>";
-                                if(isset($draft_data->$row)){
-                                    if($s_name[$i]=="Month")
-                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
-                                    else
-                                        echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
-                                }
-                                else
-                                    echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
-                                echo "</a>";
-                                echo "</li>";
-                            }
-                            $i++;
-                        }
-                    ?>
-                  </ul>
-              </div>
+              <!-- /.info-box-content -->
             </div>
-            <!-- /.widget-user -->
+            <!-- /.info-box -->
           </div>
-        <!-- left column -->
-        <div class='col-md-11'>
-          <div class='card card-primary'>
+      </div>
+      <div class='row'>
+      <div class='col-md-6'>
+          <div class='card card-indigo'>
             <div class='card-header'>
               <h3 class='card-title'><?php echo $name; ?></h3>
             </div>
@@ -76,7 +46,7 @@
                           echo "<div class='form-group'>";
                           echo    "<label>$s_name[$i]</label>";
                           echo    "<select name='$row' id='$row' class='form-control select2 select2-hidden-accessible' style='width: 100%;' data-select2-id='1' tabindex='-1' aria-hidden='true'>";
-                                    for($x=$year;$x>=2019;$x--){
+                                    for($x=$year;$x>=$year_range->financial_year_range;$x--){
                                         echo "<option value='$x'".set_select($row,$x).">".$x."</option>";
                                     }
                           echo    "</select>";
@@ -108,10 +78,10 @@
                           echo "</div>";
                           $i++;
                       }
-                      elseif($row == 'schcd'){
+                      elseif($row == 'location_code'){
                         echo "<div class='form-group'>";
                         echo    "<label>Region</label>";
-                        echo    "<input type='hidden' name='$row' id='$row' placeholder='Enter Value' value='".$this->session->userdata('schcd')."'>";
+                        echo    "<input type='hidden' name='$row' id='$row' placeholder='Enter Value' value='".$this->session->userdata('location_code')."'>";
                         echo    "<input type='text' class='form-control' name='dude' id='dude' placeholder='Enter Value' value='".$region."' readonly>";
                         echo    "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
                         echo "</div>";
@@ -135,15 +105,58 @@
                 <button type='submit' class='btn btn-primary' name='form_sub' id='form_sub' form="form" value="Submit">Submit</button>
               </div>
           </form>
-          </div>
-          <!-- /.card -->
-          </div>
-      <!--/.col (left) -->
-      <!-- right column -->
-      <div class='col-md-1'>
-
+        </div>
+        <!-- /.card -->
       </div>
+        <!-- left column -->
+        
+      <!--/.col (left) -->
+      <div class="col-md-6">
+          <!-- Widget: user widget style 2 -->
+          <div class="card card-widget widget-user">
+            <!-- Add the bg color to the header using any of the bg-* classes -->
+            <div class="widget-user-header bg-indigo">
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white; font-size:30px;"><i class="fas fa-edit"></i></button>
+                <div class="widget-user-image">
+                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
+                </div>
+                <!-- /.widget-user-image -->
+                <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
+                <h5 class="widget-user-desc"><?php echo $f_name." ".$l_name." ";?><strong>Last Entry</strong></h5>
+              </div>
+              <div class="card-footer p-0" id="div123">
+                <ul class="nav flex-column">
+                  <?php
+                      $i=0;
+                      foreach($data as $row){
+                          if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
+                              $i++;
+                              continue;
+                          }else{
+                              echo "<li class='nav-item'>";
+                              echo "<a  class='nav-link'>";
+                              if(isset($draft_data->$row)){
+                                  if($s_name[$i]=="Month")
+                                      echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
+                                  else
+                                      echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                              }
+                              else
+                                  echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                              echo "</a>";
+                              echo "</li>";
+                          }
+                          $i++;
+                      }
+                  ?>
+                </ul>
+              </div>
+            </div>
+            <!-- /.widget-user -->
+          </div>
+      <!-- right column -->
       <!--/.col (right) -->
+        
       </div>
       <!-- /.row -->
     </div><!-- /.container-fluid -->
@@ -171,7 +184,7 @@
             <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
             <?php $year=intval(date('Y')); 
             echo "<option value='".$year."' selected>".$year."</option>";
-            for($x=$year-1;$x>=2019;$x--){
+            for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
                           echo "<option value='".$x."'>".$x."</option>";
                         }?>
             </select>

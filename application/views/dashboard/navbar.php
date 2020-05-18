@@ -3,7 +3,28 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Summary | Dashboard</title>
+  <?php
+    $varx=$this->cache->get('User_type'.$var)['user_privilege'];
+    $var1=current_url();
+    $m=0;
+    foreach($varx as $x){
+      $var2 = 'http://localhost/NIC/index.php/'.$x['link'];
+      if($var1 == $var2 ){
+        echo "<title>".$x['page_name']."</title>";
+      }else{
+        $m=1;
+      }
+    }
+    if($m==1){
+      if(strpos($var1,'load')!=FALSE){
+        if(strpos($var1,'Get_table')!=FALSE)
+          echo "<title>Input Data</title>";
+        if(strpos($var1,'View_data')!=FALSE)
+        echo "<title>View Data</title>";
+      }else
+        echo "<title>".$this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']."</title>";
+    }
+  ?>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
@@ -51,8 +72,14 @@
         <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
+    
 
     <ul class="navbar-nav ml-auto">
+    <li class="nav-item">
+    <div id="alertsfrommydb">
+    </div>
+    </li>
+
     <li class="nav-item">
       <a class="nav-link" href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
         <i class="fas fa-home" style="font-size:27px;"></i>
@@ -63,12 +90,12 @@
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-right " style="max-height:800px; max-width:750px; padding:3px;">
+        <div class="dropdown-menu dropdown-menu-right" style="max-height:800px; max-width:750px; padding:3px;">
         <a href='#' class='dropdown-item'>
         <label>Hover to enlarge</label>
         </a>
         <div class="dropdown-divider"></div>
-        <a target="_blank" href="http://localhost/NIC/css/dist/img/Sitemapocto.png" class='dropdown-item'>
+        <a target="_blank" href="http://localhost/NIC/css/dist/img/Sitemapocto.png" class='dropdown-item table-responsive'>
           <img id='zoom' src="http://localhost/NIC/css/dist/img/Sitemapocto.png" alt="Smiley face" height="250" width="250">
         </a><div class='thumb' attribute='onclick'>
         </div>
@@ -186,7 +213,7 @@ foreach($noti1 as $row){
 			$(this).animate({width:'150px',height:'150px'});
 			$(this).css("opacity","1");
 		});
-	});
+  });
 </script>
   </body>
 </html>

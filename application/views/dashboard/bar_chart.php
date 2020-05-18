@@ -1,7 +1,7 @@
 
   
             <!-- BAR CHART -->
-            <div class="card card-success">
+            <div class="card card-teal">
               <div class="card-header">
                 <h3 class="card-title"><?php echo $title; ?></h3>
                 <div class="card-tools">

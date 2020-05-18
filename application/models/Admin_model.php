@@ -8,7 +8,7 @@ class Admin_model extends CI_Model {
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
-                'schcd' => $row->schcd,
+                'schcd' => $row->location_code,
                 'username' => $row->username,
                 'password' => $row->password,
                 'desig_id_fk'=> $row->desig_id_fk,
@@ -29,12 +29,9 @@ class Admin_model extends CI_Model {
 
         $this->load->driver('cache', array('adapter' => 'file'));
 
-        if ( ! $foo = $this->cache->get('Active Status')){
+        if ( ! $foo = $this->cache->get('Active_status'.$this->session->userdata('loginid'))){
             $foo = $result;
-            $this->cache->save('Active_status', $foo, 3000);
-        }elseif($this->cache->get('Active Status')['username']!=$uname){
-            $this->cache->delete('Active_status');
-            $this->cache->save('Active_status', $result, 3000);
+            $this->cache->save('Active_status'.$this->session->userdata('loginid'), $foo, 3000);
         }
         $this->db->cache_off();
         return $result;
@@ -90,6 +87,7 @@ class Admin_model extends CI_Model {
 
     public function user_type_cache($var){
         //from login table
+        $user_type=$this->db->get_where('mpr_semitrans_user_type',array('user_type_id_pk'=>$var))->row()->active_status;
         $a = array();
         $query_user_privilege = $this->db->get_where('mpr_semitrans_user_privilege',array('user_type_id_fk'=>$var));
         $table2 = $query_user_privilege->result();
@@ -117,7 +115,7 @@ class Admin_model extends CI_Model {
             $result = array(
                 'user_type_id_pk'=>$var,
                // 'desig' => $row->desig,
-                //'active_status'=> $row->active_status,
+                'active_status'=> $user_type,
                 'user_privilege'=>$a
             );
     
@@ -133,7 +131,7 @@ class Admin_model extends CI_Model {
     }
 
     public function check_first_user(){
-        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status')['Login_id_pk']));
+        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
@@ -147,7 +145,7 @@ class Admin_model extends CI_Model {
         $this->db->update('mpr_semitrans_login',array('password'=>$password));
     }
     public function update_first_profile(){
-        $this->db->where('user_id_pk',$this->cache->get('Active_status')['Login_id_pk']);
+        $this->db->where('user_id_pk',$this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk']);
         $this->db->update('mpr_semitrans_check_first_user',array('check_profile_updated_once' => 0 ));
     }
     public function update_first_pass($username){

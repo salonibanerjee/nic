@@ -21,8 +21,8 @@ class Get_table extends MY_Controller {
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
-        $var = $this->cache->get('Active_status')['user_type_id_fk'];
-        $u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+        $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
+        $u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
         $noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
@@ -40,6 +40,7 @@ class Get_table extends MY_Controller {
             $result['data'] =$this->Crud_model->get_table($n);
             $result['name'] =$this->Crud_model->search_table($n);
             $result['username'] = $this->session->userdata('uid');
+            $result['year_range'] = $this->Crud_model->dba_fyear_range();
             $mon=$this->input->post('modmonth');
             $yr = $this->input->post('modyear');
             if(isset($mon) && isset($yr)){
@@ -64,7 +65,7 @@ class Get_table extends MY_Controller {
             $x=$this->Crud_model->get_attri($n);
             $y=array();
             $result['s_name']=array();
-            $result['region']=$this->Crud_model->region_name($this->session->userdata('schcd'));
+            $result['region']=$this->Crud_model->region_name($this->session->userdata('location_code'));
             $flag=0;
             //setting array for form validations
             foreach($x as $field){
@@ -87,34 +88,47 @@ class Get_table extends MY_Controller {
         $this->load->driver('cache',array('adapter' => 'file'));
         $this->load->model('Crud_model');
         $result['data'] =$this->Crud_model->get_table($n);
+        $result['year_range'] = $this->Crud_model->dba_fyear_range();
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         foreach($x as $field){
             if($field->name=="id_pk" || $field->name=="login_id_fk" || $field->name=="inserted_at" || $field->name=="ip" || $field->name=='nodal_check'){
                 continue;
             }
-            $z=$field->max_length;
-            $w=$this->Crud_model->get_type($field->type);
-            $ij=$this->Crud_model->search_attri($field->name);
-            $y[]=array(
-                'field' => $field->name,
-                'label' => $ij,
-                'rules' => "required|max_length[$z]|$w"
-            );
+            if($field->name=="month"){
+                if($this->input->post('session')<=$result['year_range']->financial_year_range){
+                    $var=$result['year_range']->month;
+                    $ij=$this->Crud_model->search_attri($field->name);
+                    $y[]=array(
+                        'field' => $field->name,
+                        'label' => $ij,
+                        'rules' => "required|greater_than_equal_to[$var]"
+                    );
+                }
+            }else{
+                $z=$field->max_length;
+                $w=$this->Crud_model->get_type($field->type);
+                $ij=$this->Crud_model->search_attri($field->name);
+                $y[]=array(
+                    'field' => $field->name,
+                    'label' => $ij,
+                    'rules' => "required|max_length[$z]|$w"
+                );
+            }
         }
         $this->form_validation->set_rules($y);
         if($this->form_validation->run()==TRUE){
             $r=array();
             foreach($result['data'] as $row){
-                if($row=="id_pk" || $row=="schcd"){
+                if($row=="id_pk" || $row=="location_code"){
                     continue;
                 }
                 $r[$row]=$this->input->post($row);
             }
-            $r['login_id_fk'] = $this->cache->get('Active_status')['Login_id_pk'];
+            $r['login_id_fk'] = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk'];
             $r['inserted_at'] = date('Y-m-d H:i:s');
             $r['ip'] = $this->input->ip_address();
-            $r['schcd'] = $this->session->userdata('schcd');
+            $r['location_code'] = $this->session->userdata('location_code');
             $r['nodal_check'] = -1;
             $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['month']);
             if($old_value){

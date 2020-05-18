@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MPR | Notify</title>
+  <title>MPR | DBA YEAR RANGE</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 	<!--	Encryption-->
@@ -19,12 +19,12 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>BROADCAST <b>NOTIFICATION</b></h1>
+          <h1>SET  <b>YEAR RANGE</b></h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Profile</a></li>
-            <li class="breadcrumb-item active">BROADCAST</li>
+            <li class="breadcrumb-item"><a href="#">Super Admin</a></li>
+            <li class="breadcrumb-item active">year range</li>
           </ol>
         </div>
       </div>
@@ -42,37 +42,22 @@
               <div class="col-md-12" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
-                    <h3 class="card-title">Previous 5 Notifications</strong></h3>
+                    <h3 class="card-title">Financial Year Range</strong></h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >
-                    <table id="example1" class="table table-bordered table-striped table-hover table-responsive" style="max-height:500px;">
+                    <table id="example1" class="table table-bordered table-striped table-hover" style="max-height:500px;">
                       <thead class="bg-warning">
                       <tr>
-                        <th>ID</th>
-                        <th>Title</th>
-                        <th>Notification Body</th>
+                        <th><center>Year</center></th>
+                        <th><center>Month</center></th>
                       </tr>
                       </thead>
-                      <?php
-                          $i=1;
-                          foreach($noti1 as $row){
-                            echo "<tbody>";
-                            echo "<th>".$row['audience_id']."</th>";
-                            echo "<th>".$row['notification_head']."</th>";
-                            echo "<th>".$row['notification_text']."</th>";
-                            echo "</tbody>";
-                            $i++;
-                            if($i>5)
-                              break;
-                          }
-                      ?>
+                        <tbody>
+                            <th><center><?php echo $year_range->financial_year_range;?></center></th>
+                            <th><center><?php echo $month[$year_range->month];?></center></th>
+                        </tbody>
                       
-                      <tfoot>
-                      <tr>
-                        <!-- nothing for footer now -->
-                      </tr>
-                      </tfoot>
                     </table>
                   </div>
                   <!-- /.card-body -->
@@ -93,30 +78,34 @@
     <div class="col-md-6">
       <div class="card card-primary card-outline mx-auto" style="max-width: 500px">
         <div class="card-body login-card-body">
-          <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
-          <?php echo form_open('Super_Admin/notification','id="form"');?>
+          <p class="login-box-msg"><strong>ENTER FINANCIAL YEAR RANGE DETAILS</strong></p>
+          <?php echo form_open('Super_Admin/dba_fyear_range','id="form"');?>
           <!--<form method="POST" action="" id="form"> -->
             <div class="input-group mb-3">
-              <input name="noti_head" id="noti_head" type="text" class="form-control" placeholder="Notification Title" >
+            <select id='year' name="year" class="form-control">
+                <?php $year=intval(date('Y')); 
+                    echo "<option value='".$year."' selected>".$year."</option>";
+                    for($x=$year-1;$x>=1950;$x--){
+                                echo "<option value='".$x."'>".$x."</option>";
+                        }?>
+            </select>
               <div class="input-group-append">
                 <div class="input-group-text">
-                  <span class="fas fa-quote-right"></span>
+                  <span class="fas fa-calendar"></span>
                 </div>
               </div>
             </div>
             <div class="input-group mb-3">
-                    <textarea name="noti_text" id="noti_text" class="form-control" rows="3" placeholder="Enter Notification body..."></textarea>
-              <div class="input-group-append">
+            <select id='month' name="month" class="form-control">
+                    <option value='1' selected>January</option>
+                    <?php for($x=2;$x<=12;$x++){
+                                  echo "<option value='".$x."'>".$month[$x]."</option>";
+                                }?>
+                    </select>
+            </select>    
+                <div class="input-group-append">
                 <div class="input-group-text">
-                  <span class="fas fa-bell"></span>
-                </div>
-              </div>
-            </div>
-            <div class="input-group mb-3">
-              <input name="audience_id" id="audience_id" type="text"  class="form-control" placeholder="Notification code" >
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-envelope"></span>
+                  <span class="fas fa-calendar"></span>
                 </div>
               </div>
             </div>

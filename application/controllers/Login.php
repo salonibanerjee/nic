@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends CI_Controller {    
+class Login extends MY_Controller {    
     public function index(){
         //to create the captcha folder automatically
         $path = './captcha';
@@ -39,18 +39,19 @@ class Login extends CI_Controller {
 			    if($hashPassInDb == $hash){
                     $this->session->set_userdata('uid',$this->input->post('email'));
                     $this->session->set_userdata('logged_in', TRUE);
-                    $this->session->set_userdata('schcd',$this->Crud_model->gp_id($this->input->post('email')));
+                    $this->session->set_userdata('location_code',$this->Crud_model->gp_id($this->input->post('email')));
                     $this->session->set_userdata('loginid',$res->Login_id_pk);
+                    $this->session->set_userdata('user_type',$res->user_type_id_fk);
                     $this->session->set_userdata('dept',$res->dept_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
                     $this->Admin_model->scheme_hier_cache();
                     //checking whether user type cache present or not
-                    $var = $this->cache->get('Active_status')['user_type_id_fk'];
+                    $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
                         $this->Admin_model->user_type_cache($var);
                     }
-                    if($this->cache->get('Active_status')['active_status']==1){
+                    if($this->cache->get('Active_status'.$this->session->userdata('loginid'))['active_status']==1 && $this->cache->get('User_type'.$var)['active_status']==1){
                         $this->Crud_model->audit_upload($this->session->userdata('uid'),
                                                         current_url(),
                                                         'Login',

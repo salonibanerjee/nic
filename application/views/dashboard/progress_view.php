@@ -1,7 +1,7 @@
 
   
         <div class="card">
-          <div class="card-header">
+          <div class="card-header bg-lime">
             <h3 class="card-title">Scheme wise physical work progress</h3>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
@@ -13,7 +13,7 @@
             <table class="table table-bordered">
               <thead>                  
                 <tr>
-                  <th style="width: 10px">SL</th>
+                  <th style="width: 10px">Location</th>
                   <th>Project Name</th>
                   <th>Progress</th>
                   <th style="width: 40px">%</th>
@@ -22,7 +22,7 @@
               <tbody>
                 {work_progress}
                 <tr>
-                  <td>{sl_no}</td>
+                  <td>{location}</td>
                   <td>{p_name}</td>
                   <td>
                     <div class="progress progress-xs">

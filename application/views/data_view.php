@@ -10,21 +10,35 @@
   </div>
   <section class='content'>
     <div class='container-fluid'>
+    <div class='row'>
+      <div class="col-md-6">
+            <div class="info-box bg-gradient-warning">
+              <span class="info-box-icon"><i class="far fa-calendar-alt"></i></span>
+
+              <div class="info-box-content">
+                <span class="info-box-text"><b> Data can be viewed from:</b></span>
+                <span class="info-box-number"><?php echo $month[$year_range->month].",".$year_range->financial_year_range;?></span>
+              </div>
+              <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+          </div>
+      </div>
       <div class='row'>
 
-        <div class="col-md-11" id='refresh'>
+        <div class="col-md-12" id='refresh'>
           <div class="card">
-            <div class="card-header">
+            <div class="card-header bg-indigo">
               <h3 class="card-title"><strong><?php echo $name.' ';?>Datatable</strong></h3>
-              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: black"><i class="fas fa-edit"></i></button>
+              <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white"><i class="fas fa-edit" style="font-size:20px; padding-top:7px;"></i></button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped table-hover">
-                <thead>
+              <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
+                <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
-                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='schcd' || $row=='nodal_check'){
+                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                         $i++;
                         continue;
                       }else{
@@ -41,7 +55,7 @@
                     foreach($main_data as $row){
                         echo "<tr>";
                         foreach($row as $key=>$row1){
-                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='schcd' || $key=='nodal_check'){
+                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
                                 continue;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
@@ -119,7 +133,7 @@
                   <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
                   <?php $year=intval(date('Y')); 
                   echo "<option value='".$year."' selected>".$year."</option>";
-                  for($x=$year-1;$x>=2019;$x--){
+                  for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
                                 echo "<option value='".$x."'>".$x."</option>";
                               }?>
                   </select>
@@ -155,6 +169,13 @@
 
 
 <script type="text/javascript">
+
+$(document).ready(function() {
+    $('#example1').dataTable( {
+        "scrollX": true
+    } );
+} );
+
 
 /*function myFunction() {
 // Declare variables

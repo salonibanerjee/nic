@@ -2,8 +2,8 @@
         <div class="row">
           <div class="col">
             <div class="card">
-              <div class="card-header">
-                <h3 class="card-title">Alerts on Project</h3>
+              <div class="card-header bg-danger">
+                <h3 class="card-title">Alerts on Schemes</h3>
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
                   <button type="button" class="btn btn-tool" data-card-widget="remove" style="color: black"><i class="fas fa-times"></i></button>
@@ -11,7 +11,7 @@
               </div>
               <!-- /.card-header -->
               <div class="card-body p-0">
-                <table class="table table-condensed">
+                <table class="table table-condensed table-responsive">
                   <thead>
                     <tr>
                       <th style="width: 10px">SL.</th>

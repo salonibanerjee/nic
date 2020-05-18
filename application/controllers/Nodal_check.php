@@ -1,25 +1,27 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Nodal_check extends CI_Controller {
+class Nodal_check extends MY_Controller {
 
 	public function index()
 	{	
         $this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');
+		$this->load->model('NodalCheck_model');
 		$this->load->model('Admin_model');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
-        $var = $this->cache->get('Active_status')['user_type_id_fk'];
-		$u_type = array('var'=>$this->cache->get('Active_status')['user_type_id_fk']);
+        $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
-        $this->load->view('dashboard/navbar',$u_type);
+		$this->load->view('dashboard/navbar',$u_type);
+		$this->load->view('dashboard/sidebar',$da);
         if((strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)) && (strtotime(mdate('%Y-%m-%d %H:%i', now())) < strtotime($row->end_time))){
             ?>
                      <script type=text/javascript>
@@ -29,7 +31,6 @@ class Nodal_check extends CI_Controller {
             <?php
 		
 		} else {
-			$this->load->model('NodalCheck_model');
 			$result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
 			$result_main['draft_name'] = $this->NodalCheck_model->draft_name($result_main['fetch_draft']);
 			$result_main['count_check'] = $this->NodalCheck_model->check($result_main['fetch_draft']);
@@ -56,7 +57,6 @@ class Nodal_check extends CI_Controller {
 			//	$da['data_table']=$result['data_table'];
 			//	$da['s_name_table']=$result['s_name_table'];
 			//}
-			$this->load->view('dashboard/sidebar',$da);
 			//$result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
 			//$flag=0;
 
@@ -128,5 +128,5 @@ class Nodal_check extends CI_Controller {
             }
 
 		}
-    }
+	}
 }
