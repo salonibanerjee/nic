@@ -26,11 +26,11 @@
 					<th><center>ID</center></th>
 					<th><center>Email</center></th>
 					<th><center>User Type</center></th>
-					<th><center>Location Code</center></th>
-					<th><center>Status</center></th>
-					<th><center>Department ID</center> </th>
-					<th><center>Office Id</center></th>
+					<th><center>Location Area</center></th>
+					<th><center>Office</center></th>
+					<th><center>Department</center> </th>
 					<th><center>Designation</center></th>
+					<th><center>Status</center></th>
 					<th><center>Turn ON/OFF</center></th>
                 </tr>
                 </thead>
@@ -44,7 +44,7 @@
 							$chk = "";
 							$val = "OFF";
 						}
-						echo "<tr><td><center>".$r->login_id_pk."</center></td><td><center>".$r->username."</center></td><td><center>".$r->user_type_id_fk."</center></td><td><center>".$r->location_code."</center></td><td><center>".$r->active_status."</center></td><td><center>".$r->dept_id_fk."</center></td><td><center>".$r->office_id_fk."</center></td><td><center>".$r->desig_id_fk."</center></td><td><center>
+						echo "<tr><td><center>".$r->login_id_pk."</center></td><td><center>".$r->username."</center></td><td><center>".$r->desig."</center></td><td><center>".$r->location_area."</center></td><td><center>".$r->office_name."</center></td><td><center>".$r->dept_name."</center></td><td><center>".$r->desig_name."</center></td><td><center>".$r->active_status."</center></td><td><center>
 						<label class='switch'>
 						<input id='switch".$r->login_id_pk."' type='checkbox' onclick='toggleClicked(".$r->login_id_pk.");' value='".$val."'".$chk.">
 						<span class='slider round'></span>

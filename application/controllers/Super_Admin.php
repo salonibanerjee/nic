@@ -160,9 +160,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 		$uname=$this->input->post('email');
 		$data=array("username"=>$uname);
-		//$dat=array("user_priv_id_pk"=>$id);
-	    $query=$this->Sup_admin->find_id($data);
-        $query=$this->db->get_where("mpr_semitrans_login",$data);//---------------------------------------------------------NEEDS TO BE CHANGED TO MODEL----------------------------------------------------------------------------------
+	    $query=$this->Sup_admin->exist_user($data);
         $res=$query->result_array();
 		if ($res){
 			foreach($res as $r){
@@ -232,29 +230,7 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
-	function department()  //get all records from database  
-	{
-	   $result;
-		  $this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->department();
-		  $res=$query->result();
-	   if($res){
-		   $data;
-		   $i = 0;
-	   	  foreach($res as $r){
-			  $code = $r->dept_id_pk;
-			  $type = $r->dept_name;
-			  $data[$i] = array('code'=>$code,'type'=>$type);
-			  $i = $i+1;
-		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   	}
-		else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   	}
-	   echo json_encode($result);
-     }
+	
 	function office()  //get all records from database  
 	{
 	   $result;
@@ -278,11 +254,38 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
+	function department()  //get all records from database  
+	{
+	   $result;
+		  $this->load->model('Sup_admin');
+		  $office=$this->input->post('office');
+	      $dat=array("office_id_fk"=>$office);
+	   $query=$this->Sup_admin->department($dat);
+		  $res=$query->result();
+	   if($res){
+		   $data;
+		   $i = 0;
+	   	  foreach($res as $r){
+			  $code = $r->dept_id_pk;
+			  $type = $r->dept_name;
+			  $data[$i] = array('code'=>$code,'type'=>$type);
+			  $i = $i+1;
+		  }
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+	   	}
+		else{
+		   $result = array('status'=>0,'message'=>'no data found');
+
+	   	}
+	   echo json_encode($result);
+     }
 	function designation()  //get all records from database  
 	{
 	   $result;
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->designation();
+		$dept=$this->input->post('dept');
+	    $dat=array("dept_id_fk"=>$dept);
+	   $query=$this->Sup_admin->designation($dat);
 		  $res=$query->result();
 	   if($res){
 		   $data;
@@ -323,7 +326,7 @@ class Super_Admin extends MY_Controller {
  	{
 	 $this->load->model('Sup_admin');
 	 $id=$this->uri->segment('3');
-	 $dat=array("login_id_pk"=>$id);
+	 $dat=array("Login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
 	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
 	 $da['records']=$query->result();
