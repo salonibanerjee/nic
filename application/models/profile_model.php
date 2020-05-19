@@ -185,7 +185,7 @@ class profile_model extends CI_Model {
 
 	public function savenotifs($target_audience,$noti_text,$noti_head)
 	{
-		$result = $this->db->insert('mpr_trans_notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
+		$result = $this->db->insert('mpr_trans_notification',array('timestamp'=> date('Y-m-d H:i:s'),'audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
 									'active_status'=>1));
 		return $result;
 	}

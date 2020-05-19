@@ -251,7 +251,7 @@ class Dashboard_model extends CI_Model{
 
 function list_table_withloc($n,$m){
         $this->db->select($m);
-        $this->db->like($m,'19161', $this->session->userdata('location_code'), 'after');
+        $this->db->like($m, $this->session->userdata('location_code'), 'after');
         $tables = $this->db->get($n);
         $b = array();
         foreach($tables->result() as $row){
