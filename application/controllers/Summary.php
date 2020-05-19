@@ -437,14 +437,16 @@ class summary extends MY_Controller {
 		$user = array();
 		$user = $this->profile_model->get_user_id();
 		//print_r($user);
-
-
+		$dat['desi']=$desi;
+		$dat['dep']=$dep;
+		$dat['off']=$off;
+		/*
 		$dat = array(
 			'desi' =>$desi,
 			'dep' =>$dep,
 			'off' =>$off,
 			'user' =>$user,
-		);
+		);*/
 		//print_r($desi);
 		$validate = array(
 			array(
@@ -495,10 +497,7 @@ class summary extends MY_Controller {
 				$last = $this->input->post('last');
 				$mobile = $this->input->post('mob');
 				$email = $this->input->post('email');
-				$desig = $this->profile_model->get_designation();
 				$dist = $this->input->post('dist');
-				$dep=$this->profile_model->get_depart();
-				$off=$this->profile_model->get_office();
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
@@ -506,24 +505,24 @@ class summary extends MY_Controller {
 				}
 				$data = array(
 					'f_name' => $first,
+					'profile_id_pk' => $this->session->userdata('loginid'),
 					'm_name' => $mid,
 					'l_name' => $last,
 					'mobile' => $mobile,
 					'username' =>$this->session->userdata('uid'),
 					'email' => $email,
 					'image' => $image,
-					//'designation' =>$desig,
-					//'department' =>$dep,
-					//'office' =>$off,
+					'desig' =>$desi,
+					'dept' =>$dep,
+					'office' =>$off,
 					'district' =>$dist,
 				);
 				if($res){
 					$this->profile_model->update($this->session->userdata('uid'),$data);
-					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}else{
 					$this->profile_model->upload($data);
-					
+					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}
 			}
