@@ -63,7 +63,7 @@ class Sup_admin extends CI_Model {
 	public function update_user($data,$id)
 	{
 	  $this->db->set($data);
-	  $this->db->where("Login_id_pk",$id);
+	  $this->db->where("login_id_pk",$id);
 	  $this->db->update("mpr_semitrans_login",$data);
 		return true;
 	}
@@ -119,7 +119,7 @@ class Sup_admin extends CI_Model {
 	}
 	public function fetch_login()
 	{
-		$query=$this->db->order_by('Login_id_pk')->get_where("mpr_semitrans_login");
+		$query=$this->db->order_by('login_id_pk')->get_where("mpr_semitrans_login");
 		return $query;
 	}
 	public function fetch_user_privilege()

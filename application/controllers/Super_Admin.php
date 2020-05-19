@@ -84,22 +84,10 @@ class Super_Admin extends MY_Controller {
 			echo validation_errors();
 			$this->load->view('notify',$u_type);
         }else{
-            if($this->session->userdata('location_code') != 19161)
-            {
-                ?>
-                    <script type=text/javascript>
-                        alert("You are Not Authorized to Broadcast Notifications");
-                        window.location.href = "http://localhost/NIC/index.php/Summary";
-                    </script>
-                <?php
-            }
-            else
-            {
-                $noti_head = $this->input->post('noti_head');
-                $noti_text= $this->input->post('noti_text');
-                $target_audience=$this->input->post('audience_id');
-                $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
-            }
+            $noti_head = $this->input->post('noti_head');
+            $noti_text= $this->input->post('noti_text');
+            $target_audience=$this->input->post('audience_id');
+            $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
         }
 	}
 	
@@ -125,15 +113,7 @@ class Super_Admin extends MY_Controller {
 			$this->load->view('dba_fyear_range',$u_type);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
-			if($this->Crud_model->dba_fyear_update($a)){
-				?><script>
-
-					Toast.fire({
-						icon: 'warning',
-						title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-					});
-				</script><?php
-			}
+			$suc=$this->Crud_model->dba_fyear_update($a);
 		}
 	}
 
@@ -199,7 +179,7 @@ class Super_Admin extends MY_Controller {
 			if($this->Sup_admin->add_login($data)){
 				echo "<font color=green>Data Added Successfully</font>";
                 $res=$this->Sup_admin->find_id($data);
-			    $id =$res->Login_id_pk;
+			    $id =$res->login_id_pk;
 				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 				$this->Sup_admin->add_check_first_user($data1);
 			}
@@ -343,7 +323,7 @@ class Super_Admin extends MY_Controller {
  	{
 	 $this->load->model('Sup_admin');
 	 $id=$this->uri->segment('3');
-	 $dat=array("Login_id_pk"=>$id);
+	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
 	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
 	 $da['records']=$query->result();

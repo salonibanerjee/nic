@@ -38,11 +38,11 @@ class Crud_model extends CI_Model {
         }
         
         function list_table(){
-                $this->db->select('s_name');
+                $this->db->select('short_name');
                 $tables = $this->db->get('mpr_master_scheme_table');
                 $b = array();
                 foreach($tables->result() as $row){
-                        $b[] = $row->s_name;
+                        $b[] = $row->short_name;
                 }
                 return $b;
         }
@@ -58,7 +58,7 @@ class Crud_model extends CI_Model {
         }
 
 	function search_table($n){
-                $query = $this->db->get_where('mpr_master_scheme_table', array('s_name' => $n));
+                $query = $this->db->get_where('mpr_master_scheme_table', array('short_name' => $n));
                 $row = $query->row();
                 if (isset($row)){
                         return $row->name;
@@ -68,10 +68,10 @@ class Crud_model extends CI_Model {
                 }
         }
         function search_attri($n){
-                $query = $this->db->get_where('mpr_master_attri_table', array('a_name' => $n));
+                $query = $this->db->get_where('mpr_master_attri_table', array('attri_name' => $n));
                 $row = $query->row();
                 if (isset($row)){
-                        return $row->name;
+                        return $row->actual_name;
                 }
                 else{
                         return $n;
@@ -131,11 +131,11 @@ class Crud_model extends CI_Model {
         }
         public function audit_upload($user,$section,$action,$request){
                 $sess_data = array(
-                        'user' => $user,
+                        'login_id_fk' => $user,
                         'section' => $section,
                         'action' => $action,
                         'request' => $request,
-                        'stamp' => date('Y-m-d H:i:s'),
+                        'timestamp' => date('Y-m-d H:i:s'),
                         'ip_addr' => $this->input->ip_address()
                     );
                 $this->db->insert('mpr_trans_audit_log', $sess_data);  

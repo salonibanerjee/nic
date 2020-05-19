@@ -14,7 +14,7 @@ class Get_table extends MY_Controller {
         $this->load->model('Admin_model');
         $this->Crud_model->backup_draft_table($n,'backup');
         $this->Crud_model->backup_draft_table($n,'draft');
-        $this->Crud_model->audit_upload($this->session->userdata('uid'),
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Backup & draft create- '.$n,
                                             'Custom Message here');
@@ -89,6 +89,7 @@ class Get_table extends MY_Controller {
         $this->load->model('Crud_model');
         $result['data'] =$this->Crud_model->get_table($n);
         $result['year_range'] = $this->Crud_model->dba_fyear_range();
+        $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         foreach($x as $field){
@@ -102,7 +103,8 @@ class Get_table extends MY_Controller {
                     $y[]=array(
                         'field' => $field->name,
                         'label' => $ij,
-                        'rules' => "required|greater_than_equal_to[$var]"
+                        'rules' => "required|greater_than_equal_to[$var]",
+                        'errors'=>array('greater_than_equal_to' => 'The Month should be from on and after '.$result['month'][$var])
                     );
                 }
             }else{
@@ -125,7 +127,7 @@ class Get_table extends MY_Controller {
                 }
                 $r[$row]=$this->input->post($row);
             }
-            $r['login_id_fk'] = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk'];
+            $r['login_id_fk'] = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['login_id_pk'];
             $r['inserted_at'] = date('Y-m-d H:i:s');
             $r['ip'] = $this->input->ip_address();
             $r['location_code'] = $this->session->userdata('location_code');

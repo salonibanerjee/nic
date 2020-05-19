@@ -15,7 +15,7 @@ class Admin_model extends CI_Model {
                 'office_id_fk'=> $row->office_id_fk,
                 'dept_id_fk'=> $row->dept_id_fk,
                 'user_type_id_fk'=> $row->user_type_id_fk,
-                'Login_id_pk'=> $row->Login_id_pk,
+                'login_id_pk'=> $row->login_id_pk,
                 'active_status'=> $row->active_status
             );
         }else{
@@ -45,7 +45,7 @@ class Admin_model extends CI_Model {
             $scheme = $this->db->get_where('mpr_master_scheme_table',array('scheme_id_pk'=>$row['scheme_id_fk']))->row();
             $result[]=array(
                 'scheme_name' => $scheme->name,
-                'scheme_link' => $scheme->s_name
+                'scheme_link' => $scheme->short_name
             );
         }
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -131,7 +131,7 @@ class Admin_model extends CI_Model {
     }
 
     public function check_first_user(){
-        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk']));
+        $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status'.$this->session->userdata('loginid'))['login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
@@ -145,7 +145,7 @@ class Admin_model extends CI_Model {
         $this->db->update('mpr_semitrans_login',array('password'=>$password));
     }
     public function update_first_profile(){
-        $this->db->where('user_id_pk',$this->cache->get('Active_status'.$this->session->userdata('loginid'))['Login_id_pk']);
+        $this->db->where('user_id_pk',$this->cache->get('Active_status'.$this->session->userdata('loginid'))['login_id_pk']);
         $this->db->update('mpr_semitrans_check_first_user',array('check_profile_updated_once' => 0 ));
     }
     public function update_first_pass($username){

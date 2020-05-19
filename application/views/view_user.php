@@ -44,9 +44,9 @@
 							$chk = "";
 							$val = "OFF";
 						}
-						echo "<tr><td><center>".$r->Login_id_pk."</center></td><td><center>".$r->username."</center></td><td><center>".$r->user_type_id_fk."</center></td><td><center>".$r->location_code."</center></td><td><center>".$r->active_status."</center></td><td><center>".$r->dept_id_fk."</center></td><td><center>".$r->office_id_fk."</center></td><td><center>".$r->desig_id_fk."</center></td><td><center>
+						echo "<tr><td><center>".$r->login_id_pk."</center></td><td><center>".$r->username."</center></td><td><center>".$r->user_type_id_fk."</center></td><td><center>".$r->location_code."</center></td><td><center>".$r->active_status."</center></td><td><center>".$r->dept_id_fk."</center></td><td><center>".$r->office_id_fk."</center></td><td><center>".$r->desig_id_fk."</center></td><td><center>
 						<label class='switch'>
-						<input id='switch".$r->Login_id_pk."' type='checkbox' onclick='toggleClicked(".$r->Login_id_pk.");' value='".$val."'".$chk.">
+						<input id='switch".$r->login_id_pk."' type='checkbox' onclick='toggleClicked(".$r->login_id_pk.");' value='".$val."'".$chk.">
 						<span class='slider round'></span>
 						</label><center></td></tr>";
 					}	
