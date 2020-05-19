@@ -270,7 +270,7 @@ $("#form").on("submit", function (event) {
         console.log("error");
       }else{ 
         $('#errors').html("");
-        $("#form")[0].reset();
+        $("form")[0].reset();
         $("#div123").load(location.href + " #div123");
         console.log("submit");
       }

@@ -34,7 +34,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
+              <table id="tblCustomers" class="table table-bordered table-striped table-hover table-responsive">
                 <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
@@ -73,6 +73,7 @@
                 }
                 ?>
                 </tbody>
+                <!--
                 <tfoot>
                 <tr>
                   <th>Rendering engine</th>
@@ -81,7 +82,7 @@
                   <th>Engine version</th>
                   <th>CSS grade</th>
                 </tr>
-                </tfoot>
+                </tfoot> -->
               </table>
             </div>
             <!-- /.card-body -->
@@ -91,7 +92,7 @@
       <!-- right column -->
       <div class='col-md-1'>
       
-
+      <input type="button" class='btn btn-primary' id="btnExport" value="Export" onclick="Export()" />
       </div>
       <!--/.col (right) -->
       </div>
@@ -170,12 +171,29 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+        function Export() {
+            html2canvas(document.getElementById('tblCustomers'), {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Table<?php echo $name;?>.pdf");
+                }
+            });
+        }
+</script>
 
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('#example1').dataTable( {
+    $('#tblCustomers').dataTable( {
         "scrollX": true
     } );
 } );

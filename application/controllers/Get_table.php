@@ -147,14 +147,14 @@ class Get_table extends MY_Controller {
                 $this->Crud_model->update($r,$n.'_draft');
                 unset($old_value->id_pk);
                 $this->Crud_model->save_data($old_value,$n.'_backup');
-                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Update - into '.$n.'_draft',
                                             'Custom Message here');
                 echo "Records Updated Successfully";
             }else{
                 $this->Crud_model->save_data($r,$n.'_draft');
-                $this->Crud_model->audit_upload($this->session->userdata('uid'),
+                $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Insert - into '.$n.'_draft',
                                             'Custom Message here');
