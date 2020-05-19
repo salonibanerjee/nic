@@ -136,7 +136,7 @@
                               echo "<li class='nav-item'>";
                               echo "<a  class='nav-link'>";
                               if(isset($draft_data->$row)){
-                                  if($s_name[$i]=="Month")
+                                  if($s_name[$i]=="month")
                                       echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
                                   else
                                       echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";

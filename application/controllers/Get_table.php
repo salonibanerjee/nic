@@ -107,6 +107,16 @@ class Get_table extends MY_Controller {
                         'errors'=>array('greater_than_equal_to' => 'The Month should be from on and after '.$result['month'][$var])
                     );
                 }
+                if($this->input->post('session')>=$year=intval(date('Y'))){
+                    $ij=$this->Crud_model->search_attri($field->name);
+                    $month=intval(date('n'));
+                    $y[]=array(
+                        'field' => $field->name,
+                        'label' => $ij,
+                        'rules' => "required|less_than_equal_to[$month]",
+                        'errors'=>array('less_than_equal_to' => 'The Month should be before '.$result['month'][$month])
+                    );
+                }
             }else{
                 $z=$field->max_length;
                 $w=$this->Crud_model->get_type($field->type);

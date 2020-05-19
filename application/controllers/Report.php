@@ -201,7 +201,7 @@ class Report extends MY_Controller
                     }
                     else
                     {
-                        foreach ($temp5['ses1'][0] as $y1)
+                        foreach ($temp5['ses1'] as $y1)
                         {
                             array_push($temp5['ses_temp1'],$y1);
                         }
@@ -214,7 +214,7 @@ class Report extends MY_Controller
                     }
                     else
                     {
-                        foreach ($temp5['ses2'][0] as $y1) 
+                        foreach ($temp5['ses2'] as $y1) 
                         {
                             array_push($temp5['ses_temp2'],$y1);
                         }

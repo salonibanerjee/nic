@@ -96,7 +96,7 @@ class Report_model extends CI_Model
 			return $arr;
 
 		}
-		if($scheme_type==1 && $scheme_type==4)
+		if($scheme_type==1 || $scheme_type==4)
 		{
 			$this->db->select($attri)->from($temp_tab)->where('location_code',$schcd);
 			$this->db->order_by('month','DESC');
