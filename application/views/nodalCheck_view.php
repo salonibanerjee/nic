@@ -111,10 +111,10 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                             } else {
                                 if(isset($uff[$temp]['draft_data']->$row)){
                                     $j++;
-                                    if($s_name[$i]=='Month'){
+                                    if($s_name[$i]=='month'){
                                         echo '<tr>';
                                         echo '<td>'.$j.'.</td>';
-                                        echo '<td>'.$s_name[$i].'</td>';
+                                        echo '<td>'."Month".'</td>';
                                         echo '<td>'.$uff[$temp]['month'][$uff[$temp]['draft_data']->$row].'</td>';
                                         echo '</tr>';
                                     } else {

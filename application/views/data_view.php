@@ -41,7 +41,11 @@
                       if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                         $i++;
                         continue;
-                      }else{
+                      }else if($row=='month'){
+                        echo "<th>"."Month"."</th>";
+                        $i++;
+                      }
+                      else{
                         echo "<th>".$s_name[$i]."</th>";
                         $i++;
                       }
