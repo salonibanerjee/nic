@@ -139,10 +139,15 @@
                                   if($s_name[$i]=="month")
                                       echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
                                   else
-                                      echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                                      echo "$s_name[$i]"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
                               }
-                              else
+                              else{
+                                if($s_name[$i]=="month"){
+                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                }else{
                                   echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                }
+                              }
                               echo "</a>";
                               echo "</li>";
                           }
