@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-            <select name ="desig" id="desig" class="form-control" ></select>
+            <select name ="desig" id="desig" class="form-control" onchange="locationData();"  ></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user-plus"></span>
@@ -90,7 +90,6 @@
 
 <script type="text/javascript">
 		fetchType();
-        locationData();
 	    office();
 		function hashPassword(){
 			$('#field_name').html("");
@@ -162,6 +161,34 @@
             }
         });
 	  }
+	  function office() {
+		 console.log("office");
+        $("#office").empty();
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/Super_Admin/office",
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			},
+            success: function (result) {
+				console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+                if (status == 1) {
+					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
+                            "</option>";
+                        $("#office").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
+                            "</option>";
+                        $("#office").append(type_item);
+						
+                    });
+                }
+            }
+        });
+	  }
 	function department() {
 		 var office = $('#office').val();
 		 console.log("department"+office);
@@ -196,34 +223,7 @@
             }
         });
 	  }
-	function office() {
-		 console.log("office");
-        $("#office").empty();
-        $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/office",
-            type: "POST",
-            dataType: 'json',
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
-			},
-            success: function (result) {
-				console.log(result);
-                var type_arr = result.data;
-                var status = result.status;
-                if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
-                            "</option>";
-                        $("#office").append(type_item);
-                    $.each(type_arr, function (idx, val) {
-                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
-                            "</option>";
-                        $("#office").append(type_item);
-						
-                    });
-                }
-            }
-        });
-	  }
+	
 	function designation() {
 		var dept = $('#dept').val();
 		 console.log("designation"+dept);
@@ -258,10 +258,16 @@
 	  }
 	
 	function locationData() {
+		var desig = $('#desig').val();
+		console.log("locationData"+desig);
         $("#region_code").empty();
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/location_data",
             type: "POST",
+			data:
+			{
+				desig:desig
+			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);

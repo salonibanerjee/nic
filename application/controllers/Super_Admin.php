@@ -208,28 +208,32 @@ class Super_Admin extends MY_Controller {
 	   }
 	   echo json_encode($result);
      }
-	function location_data()  //get all records from database  
-	{
-	   $result;
-		  $query=$this->db->get_where("mpr_master_location_data");
-		  $res=$query->result();
-	   if($res){
-		   $data;
-		   $i = 0;
-	   	  foreach($res as $r){
-			  $code = $r->location_code;
-			  $type = $r->location_area;
-			  $data[$i] = array('code'=>$code,'type'=>$type);
-			  $i = $i+1;
-		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   	}
-		else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   	}
-	   echo json_encode($result);
-     }
+	 function location_data()  //get all records from database  
+	 {
+		$result;
+			$this->load->model('Sup_admin');
+		   $desig=$this->input->post('desig');
+		   //$dat=array("user_type_id_fk"=>$desig);
+		$query=$this->Sup_admin->mapping($desig);
+		   //$query=$this->db->get_where("mpr_master_location_mapping");
+		   $res=$query->result();
+		if($res){
+			$data;
+			$i = 0;
+			  foreach($res as $r){
+			   $code = $r->location_code;
+			   $type = $r->location_area;
+			   $data[$i] = array('code'=>$code,'type'=>$type);
+			   $i = $i+1;
+		   }
+			$result = array('status'=>1,'message'=>'data found','data'=>$data);
+			}
+		 else{
+			$result = array('status'=>0,'message'=>'no data found');
+ 
+			}
+		echo json_encode($result);
+	  }
 	
 	function office()  //get all records from database  
 	{
