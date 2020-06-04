@@ -162,6 +162,23 @@ class Sup_admin extends CI_Model {
 		$query=$this->db->order_by('user_type_id_pk')->get_where("mpr_semitrans_user_type");
 		return $query;
 	}
+	public function page_view()
+	{
+		$query=$this->db->order_by('privilege_id_pk')->get_where("mpr_semitrans_privilege");
+		return $query;
+	}
+	public function privilege_id_pk($dat)
+	{
+	 $query=$this->db->get_where("mpr_semitrans_privilege",$dat);
+		return $query;
+	}
+	public function update_page_view($data,$id)
+	{
+	  $this->db->set($data);
+	  $this->db->where("privilege_id_pk",$id);
+	  $this->db->update("mpr_semitrans_privilege",$data);
+		return true;
+	}
 }
 	
 ?>

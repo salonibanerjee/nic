@@ -42,7 +42,7 @@
               <div class="col-md-12" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
-                    <h3 class="card-title">Previous 5 Notifications</strong></h3>
+                    <h3 class="card-title">Previous Five Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >
