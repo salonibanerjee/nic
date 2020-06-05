@@ -437,5 +437,94 @@ class Super_Admin extends MY_Controller {
 		 echo 'failed';
 	 }
 	}	   
+//---------------------------------------------------------------------------------------------------------
+function seek_record(){
+	//mandatory
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+	// ends here
+	
+	$data;
+	$this->load->model('seek_record_model');
+	$da['check'] = "false";
+	//if ($da['check'] == 'false'){
+		$this->load->view('seek_record',$da);
+		if(isset($_POST['sub1'])){
+			$username = $this->input->post('uname');
+			$scheme = $this->input->post('scheme');
+			$nodal = $this->input->post('nodal');
+			$year = $this->input->post('year');
+			$smonth = $this->input->post('smonth');
+			$fmonth = $this->input->post('fmonth');
+			//$data = $this->seek_record_model->fetch_details($username);
+			$da['check'] = 'true';
+			//$res=$this->profile_model->get_f($this->session->userdata('uid'));
 
+			$i=0;
+			$fields = array();
+			$table = 'mpr_scheme_'.$scheme.'_backup';  
+			//$field_data = $this->db->field_data($table);
+			$fields = $this->db->list_fields($table);
+			$d = $this->seek_record_model->filter_data($username,$table,$smonth,$fmonth,$year);
+			$dat = array();
+			$dad = array();
+			foreach($fields as $da){
+				$dat[]= $da;
+				//$i++;
+			//	print_r($da->login_id_fk);
+			//	$i++;
+			//	
+			}
+
+			foreach($d as $da){
+				$dad[]= $da;
+				//$i++;
+			//	print_r($da->login_id_fk);
+			//	$i++;
+			//	
+			}
+			$da['fields'] = $dat;
+			$da['filter_data'] = $dad;
+			//foreach ($dat as $field){
+				print_r($d);
+			//}
+
+			/*
+			$table = 'mpr_scheme_'.$scheme.'_backup';  
+			$da['field_data'] = $this->db->field_data($table);
+			$da['fields'] = $this->db->list_fields($table);
+			$dat = array();
+			foreach($da['field_data'] as $da){
+				$dat[]= $da;
+				//$i++;
+				
+				$i++;
+				
+			}
+			print_r($dat);
+			//print_r($da['fields']);
+			
+			*/
+			
+			
+		}
+	//}
+		//else {
+		//	$da['check'] = "true";
+		//	print_r($data);
+		//}
+		//$this->load->view('show_record',$da);
+		//header("location: http://localhost/NIC/index.php/Super_Admin/show_record");
+		}
+	function show_record(){
+		$this->load->view('show_record');
+
+	}
 }
