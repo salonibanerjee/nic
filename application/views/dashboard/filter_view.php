@@ -75,6 +75,8 @@
                                 echo "<div class='form-group'>";
                                     echo "<label>Select Month & Year: </label>";
                                         echo "<select class='form-control' name='".$filter_id."_month'>";
+                                            if($m == "0") echo "<option value='0' selected>Latest Entry</option>";
+                                            else echo "<option value='0'>Latest Entry</option>";
                                             if($m == "1") echo "<option value='1' selected>Jan</option>";
                                             else echo "<option value='1'>Jan</option>";
                                             if($m == "2") echo "<option value='2' selected>Feb</option>";
@@ -102,6 +104,8 @@
                                         echo "</select>";
                                         
                                         echo "<select class='form-control' name='".$filter_id."_year'>";
+                                            if($m=='0') echo "<option value='0' selected>Latest Entry</option>";
+                                            else echo "<option value='0'>Latest Entry</option>";
                                             if($y=='2019') echo "<option value='2019' selected>2019</option>";
                                             else echo "<option value='2019'>2019</option>";
                                             if($y=='2020') echo "<option value='2020' selected>2020</option>";

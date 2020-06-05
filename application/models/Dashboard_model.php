@@ -96,8 +96,11 @@ class Dashboard_model extends CI_Model{
         $pro = array();
         $tar = array();
         while($i<$num)
-        {
-            $this->db->select('*')->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+        {   
+            if($m != 0)
+                $this->db->select('*')->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            else   
+                $this->db->select('*')->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
             $table1 = $this->db->get($n[$i])->row();
             $temp1 = $b[$i];
             $temp2 = $a[$i];
@@ -151,7 +154,10 @@ class Dashboard_model extends CI_Model{
         $d = array();
         while($i<$num)
         {
-            $this->db->select($b[$i])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+            if($m != 0)
+                $this->db->select($b[$i])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            else
+                $this->db->select($b[$i])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
             $table2 = $this->db->get($n[$i])->row();
             $temp = $b[$i];
             if($table2)
@@ -193,8 +199,13 @@ class Dashboard_model extends CI_Model{
         //$y = date('Y');
         while($j<(2*$num))
         {
-            $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
-            $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+            if($m != 0){
+                $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+                $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            } else {
+                $this->db->select($b[$j])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+                $this->db->select($b[$j+1])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            }
             $table2 = $this->db->get($n[$x])->row();
             $temp1 = $b[$j];
             $temp2 = $b[$j+1];
