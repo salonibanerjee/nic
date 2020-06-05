@@ -400,6 +400,8 @@ class summary extends MY_Controller {
 	}
 	
 	public function profile(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -417,6 +419,8 @@ class summary extends MY_Controller {
 	}
 
 	public function edit_profile(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -530,6 +534,8 @@ class summary extends MY_Controller {
 	}
 
 	public function password_change_within(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');

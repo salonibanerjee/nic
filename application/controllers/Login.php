@@ -78,14 +78,18 @@ class Login extends MY_Controller {
     }
     //to logout and destroy the session and redirects back to login page
     public function logout(){
-        $this->load->model('Crud_model');
-        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-                                            current_url(),
-                                            'Logout',
-                                            'Custom Message here');
-        $this->session->set_userdata('logged_in', FALSE);
-        $this->session->sess_destroy();
-        redirect(base_url()."index.php/Login");
+        if(!isset($_SESSION['logged_in']))
+            header("Location: http://localhost/NIC/index.php/Login");
+        else{
+            $this->load->model('Crud_model');
+            $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Logout',
+                                                'Custom Message here');
+            $this->session->set_userdata('logged_in', FALSE);
+            $this->session->sess_destroy();
+            redirect(base_url()."index.php/Login");
+        }
     }
 
     public function forget()
