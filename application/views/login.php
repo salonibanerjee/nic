@@ -27,12 +27,14 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href=#><b>M</b>PR</a>
+    <a href=#><b>MPR</b></a>
   </div>
   <!-- /.login-logo -->
-  <div class="card">
+  <div class="card text-center">
+      <div class="card-header bg-primary">
+        <b>MPR</b> LOG IN
+      </div>
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in </p>
 
       <form action="Login/login_MPR" method="POST" id="form">
         <div class="input-group mb-3">
@@ -47,13 +49,13 @@
           <input id="pass" type="password" name="pass" class="form-control" placeholder="Password" >
           <div class="input-group-append">
             <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+              <span class="fas fa-eye toggle-password" style="cursor:pointer;"></span>
             </div>
           </div>
         </div>
         <div id="div123">
         <p id="captcha-img"><?php echo $image; ?>
-        <img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42" onclick="captchaChange();">
+        <img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42" onclick="captchaChange();" style="cursor:pointer;">
         <input type="hidden" id="salt" name="salt" value="<?php echo $_SESSION['salt']; ?>">
         </div>
           <div class="input-group mb-3">
@@ -62,7 +64,7 @@
           <div id="errors" style="color:red;"></div>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
+            <div class="icheck-primary float-left text-yellow">
               <input type="checkbox" id="remember">
               <label for="remember">
                 Remember Me
@@ -71,7 +73,7 @@
           </div>
           <!-- /.col -->
           <div class="col-4">
-            <button type="submit" name='submit' id='submit' value="Login" class="btn btn-primary btn-block" >Sign In</button>
+            <button type="submit" name='submit' id='submit' value="Login" class="btn btn-success btn-block" >Sign In</button>
           </div>
           <!-- /.col -->
         </div>
@@ -80,7 +82,7 @@
     <!-- /.login-card-body -->
   </div>
   <div id="link_container">
-      <a href="Login/forget" id="forgot">Forgot your Password?</a>
+      <a href="Login/forget" id="forgot" class="text-danger"><b>Forgot your Password?</b></a>
   </div>
 </div>
 <!-- /.login-box -->
@@ -137,6 +139,17 @@ $("form").on("submit", function (event){
       }
     }
   });
+});
+
+$("body").on('click', '.toggle-password', function() {
+  $(this).toggleClass("fa-eye fa-eye-slash");
+  var input = $("#pass");
+  if (input.attr("type") === "password") {
+    input.attr("type", "text");
+  } else {
+    input.attr("type", "password");
+  }
+
 });
 </script>
 </body>
