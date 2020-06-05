@@ -9,6 +9,7 @@ class View_data extends MY_Controller {
     public function load($n){
 
         //Load 'CRUD' model
+        $this->cache_update();
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');

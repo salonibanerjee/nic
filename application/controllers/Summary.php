@@ -8,6 +8,7 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//$this->check_privilege(1);
+		$this->cache_update();
 		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -403,6 +404,7 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -422,6 +424,7 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -537,6 +540,7 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);

@@ -45,5 +45,26 @@ class MY_Controller extends CI_Controller {
             return 0;
     }
 
+    public function cache_update(){
+        $this->load->model('Admin_model');
+        $this->load->driver('cache', array('adapter' => 'file'));
+        if(isset($_SESSION['logged_in'])){
+            if ( ! $foo = $this->cache->get('Active_status'.$this->session->userdata('loginid'))){
+                $this->Admin_model->store_cache($this->session->userdata('uid'));
+                $this->Admin_model->store_profile($this->session->userdata('uid'));
+                $this->Admin_model->scheme_hier_cache();
+                $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
+                if(!$this->cache->get('User_type'.$var)){
+                    $this->Admin_model->user_type_cache($var);
+                }
+            }
+        }
+    }
+
+    public function del_cache(){
+        $this->load->driver('cache', array('adapter' => 'file'));
+        $this->db->cache_delete_all();
+    }
+
 }
     

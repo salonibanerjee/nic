@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Super_Admin extends MY_Controller {
     public function index(){
+		$this->cache_update();
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -28,6 +29,7 @@ class Super_Admin extends MY_Controller {
     }
     
     public function meeting_schedule(){
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
@@ -65,7 +67,7 @@ class Super_Admin extends MY_Controller {
     }
     
     public function notification(){
-
+		$this->cache_update();
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -92,6 +94,7 @@ class Super_Admin extends MY_Controller {
 	}
 	
 	public function dba_fyear_range(){
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -123,6 +126,7 @@ class Super_Admin extends MY_Controller {
     //-------------------------------------------------------------------------------------------------------------------------------
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -310,6 +314,7 @@ class Super_Admin extends MY_Controller {
      }
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -348,6 +353,7 @@ class Super_Admin extends MY_Controller {
 	}
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -388,6 +394,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_desig_type()  //get all records from database  
 	{      
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -427,6 +434,7 @@ class Super_Admin extends MY_Controller {
 	function page_view()  //get all records from database  
 	{      
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -459,6 +467,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_page_view($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
