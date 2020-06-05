@@ -3,6 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Super_Admin extends MY_Controller {
     public function index(){
+		$this->cache_update();
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -28,6 +29,7 @@ class Super_Admin extends MY_Controller {
     }
     
     public function meeting_schedule(){
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
@@ -65,7 +67,7 @@ class Super_Admin extends MY_Controller {
     }
     
     public function notification(){
-
+		$this->cache_update();
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -84,26 +86,15 @@ class Super_Admin extends MY_Controller {
 			echo validation_errors();
 			$this->load->view('notify',$u_type);
         }else{
-            if($this->session->userdata('location_code') != 19161)
-            {
-                ?>
-                    <script type=text/javascript>
-                        alert("You are Not Authorized to Broadcast Notifications");
-                        window.location.href = "http://localhost/NIC/index.php/Summary";
-                    </script>
-                <?php
-            }
-            else
-            {
-                $noti_head = $this->input->post('noti_head');
-                $noti_text= $this->input->post('noti_text');
-                $target_audience=$this->input->post('audience_id');
-                $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
-            }
+            $noti_head = $this->input->post('noti_head');
+            $noti_text= $this->input->post('noti_text');
+            $target_audience=$this->input->post('audience_id');
+            $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
         }
 	}
 	
 	public function dba_fyear_range(){
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -125,15 +116,7 @@ class Super_Admin extends MY_Controller {
 			$this->load->view('dba_fyear_range',$u_type);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
-			if($this->Crud_model->dba_fyear_update($a)){
-				?><script>
-
-					Toast.fire({
-						icon: 'warning',
-						title: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr.'
-					});
-				</script><?php
-			}
+			$suc=$this->Crud_model->dba_fyear_update($a);
 		}
 	}
 
@@ -143,6 +126,7 @@ class Super_Admin extends MY_Controller {
     //-------------------------------------------------------------------------------------------------------------------------------
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -180,9 +164,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 		$uname=$this->input->post('email');
 		$data=array("username"=>$uname);
-		//$dat=array("user_priv_id_pk"=>$id);
-	    $query=$this->Sup_admin->find_id($data);
-        $query=$this->db->get_where("mpr_semitrans_login",$data);//---------------------------------------------------------NEEDS TO BE CHANGED TO MODEL----------------------------------------------------------------------------------
+	    $query=$this->Sup_admin->exist_user($data);
         $res=$query->result_array();
 		if ($res){
 			foreach($res as $r){
@@ -199,7 +181,7 @@ class Super_Admin extends MY_Controller {
 			if($this->Sup_admin->add_login($data)){
 				echo "<font color=green>Data Added Successfully</font>";
                 $res=$this->Sup_admin->find_id($data);
-			    $id =$res->Login_id_pk;
+			    $id =$res->login_id_pk;
 				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 				$this->Sup_admin->add_check_first_user($data1);
 			}
@@ -230,51 +212,33 @@ class Super_Admin extends MY_Controller {
 	   }
 	   echo json_encode($result);
      }
-	function location_data()  //get all records from database  
-	{
-	   $result;
-		  $query=$this->db->get_where("mpr_master_location_data");
-		  $res=$query->result();
-	   if($res){
-		   $data;
-		   $i = 0;
-	   	  foreach($res as $r){
-			  $code = $r->location_code;
-			  $type = $r->location_area;
-			  $data[$i] = array('code'=>$code,'type'=>$type);
-			  $i = $i+1;
-		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   	}
-		else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   	}
-	   echo json_encode($result);
-     }
-	function department()  //get all records from database  
-	{
-	   $result;
-		  $this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->department();
-		  $res=$query->result();
-	   if($res){
-		   $data;
-		   $i = 0;
-	   	  foreach($res as $r){
-			  $code = $r->dept_id_pk;
-			  $type = $r->dept_name;
-			  $data[$i] = array('code'=>$code,'type'=>$type);
-			  $i = $i+1;
-		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   	}
-		else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   	}
-	   echo json_encode($result);
-     }
+	 function location_data()  //get all records from database  
+	 {
+		$result;
+			$this->load->model('Sup_admin');
+		   $desig=$this->input->post('desig');
+		   //$dat=array("user_type_id_fk"=>$desig);
+		$query=$this->Sup_admin->mapping($desig);
+		   //$query=$this->db->get_where("mpr_master_location_mapping");
+		   $res=$query->result();
+		if($res){
+			$data;
+			$i = 0;
+			  foreach($res as $r){
+			   $code = $r->location_code;
+			   $type = $r->location_area;
+			   $data[$i] = array('code'=>$code,'type'=>$type);
+			   $i = $i+1;
+		   }
+			$result = array('status'=>1,'message'=>'data found','data'=>$data);
+			}
+		 else{
+			$result = array('status'=>0,'message'=>'no data found');
+ 
+			}
+		echo json_encode($result);
+	  }
+	
 	function office()  //get all records from database  
 	{
 	   $result;
@@ -298,11 +262,38 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
+	function department()  //get all records from database  
+	{
+	   $result;
+		  $this->load->model('Sup_admin');
+		  $office=$this->input->post('office');
+	      $dat=array("office_id_fk"=>$office);
+	   $query=$this->Sup_admin->department($dat);
+		  $res=$query->result();
+	   if($res){
+		   $data;
+		   $i = 0;
+	   	  foreach($res as $r){
+			  $code = $r->dept_id_pk;
+			  $type = $r->dept_name;
+			  $data[$i] = array('code'=>$code,'type'=>$type);
+			  $i = $i+1;
+		  }
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+	   	}
+		else{
+		   $result = array('status'=>0,'message'=>'no data found');
+
+	   	}
+	   echo json_encode($result);
+     }
 	function designation()  //get all records from database  
 	{
 	   $result;
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->designation();
+		$dept=$this->input->post('dept');
+	    $dat=array("dept_id_fk"=>$dept);
+	   $query=$this->Sup_admin->designation($dat);
 		  $res=$query->result();
 	   if($res){
 		   $data;
@@ -323,6 +314,7 @@ class Super_Admin extends MY_Controller {
      }
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -354,6 +346,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
@@ -361,6 +354,7 @@ class Super_Admin extends MY_Controller {
 	}
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -393,6 +387,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
@@ -401,6 +396,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_desig_type()  //get all records from database  
 	{      
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -433,6 +429,48 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
+	 }else{
+		 echo 'failed';
+	 }
+	}
+	function page_view()  //get all records from database  
+	{      
+		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+
+		$this->load->model('Sup_admin');
+	   $query=$this->Sup_admin->page_view();
+		  $data['records']=$query->result();
+		  //print_r($data);
+		 $this->load->view('page_view',$data); 
+  	}
+	function inactive_page_view() //load a form with data to be updated
+ 	{
+	 $this->load->model('Sup_admin');
+	 $id=$this->uri->segment('3');
+	 $dat=array("privilege_id_pk"=>$id);
+	 $query=$this->Sup_admin->privilege_id_pk($dat);
+//	 $query=$this->db->get_where("mpr_semitrans_user_type",array("user_type_id_pk"=>$id));
+	 $da['records']=$query->result();
+	// $this->load->view('update',$data);
+	 $data=array("active_status"=>$this->input->post('state'));
+	 $id=$this->input->post('id');
+	 $this->load->model('Sup_admin');
+		$res = $this->Sup_admin->update_page_view($data,$id);
+	 if($res){
+		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }

@@ -2,8 +2,14 @@
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-sm-9">
-            <h1>Scheme Form</h1>
+        <div class="col-sm-6">
+            <h1>SCHEME <b>DATA ENTRY</b></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item active">Data Entry</li>
+          </ol>
         </div>
       </div>
     </div>
@@ -58,7 +64,7 @@
                       elseif($row == 'month'){
                         $year=intval(date('Y'));
                         echo "<div class='form-group'>";
-                        echo    "<label>$s_name[$i]</label>";
+                        echo    "<label>Month</label>";
                         echo    "<select name='$row' id='$row' class='form-control select2 select2-hidden-accessible' style='width: 100%;' data-select2-id='1' tabindex='-1' aria-hidden='true'>";
                         for($x=1;$x<=12;$x++){
                           echo "<option value='$x'".set_select($row,$x).">".$month[$x]."</option>";
@@ -136,13 +142,18 @@
                               echo "<li class='nav-item'>";
                               echo "<a  class='nav-link'>";
                               if(isset($draft_data->$row)){
-                                  if($s_name[$i]=="Month")
-                                      echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
+                                  if($s_name[$i]=="month")
+                                      echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
                                   else
-                                      echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
+                                      echo "$s_name[$i]"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
                               }
-                              else
+                              else{
+                                if($s_name[$i]=="month"){
+                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                }else{
                                   echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                }
+                              }
                               echo "</a>";
                               echo "</li>";
                           }
@@ -265,7 +276,7 @@ $("#form").on("submit", function (event) {
         console.log("error");
       }else{ 
         $('#errors').html("");
-        $("#form")[0].reset();
+        $("form")[0].reset();
         $("#div123").load(location.href + " #div123");
         console.log("submit");
       }

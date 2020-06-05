@@ -21,6 +21,12 @@
           echo "<title>Input Data</title>";
         if(strpos($var1,'View_data')!=FALSE)
         echo "<title>View Data</title>";
+      }elseif(strpos($var1,'profile')!=FALSE){
+        echo "<title>Profile</title>";
+      }elseif(strpos($var1,'password')!=FALSE){
+        echo "<title>Password Change</title>";
+      }elseif(strpos($var1,'Super_Admin')!=FALSE){
+        echo "<title>Super Admin</title>";
       }else
         echo "<title>".$this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']."</title>";
     }

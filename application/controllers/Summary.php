@@ -8,6 +8,7 @@ class summary extends MY_Controller {
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//$this->check_privilege(1);
+		$this->cache_update();
 		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -63,8 +64,8 @@ class summary extends MY_Controller {
 
 		$scheme_name = $scheme_link;
 
-		$progress_m = (int)date('m');
-		$progress_y = date('Y');
+		$progress_m = 0;
+		$progress_y = 0;
 		
 		$progress_location = array($loc_schcd);
 
@@ -160,8 +161,8 @@ class summary extends MY_Controller {
 
 		//$bar1_location = array("19161","191615","191614");
 
-		$pie_m = (int)date('m');
-		$pie_y = date('Y');
+		$pie_m = 0;
+		$pie_y = 0;
 		
 		if(isset($_POST['pie_submit'])){
 			if(!empty($_POST['pie_left_check_list'])){
@@ -220,8 +221,8 @@ class summary extends MY_Controller {
 		//Insert data for bar chart in an array format 
 		$scheme_bar1 = $scheme_link;
 
-		$bar1_m = (int)date('m');
-		$bar1_y = date('Y');
+		$bar1_m = 0;
+		$bar1_y = 0;
 		
 		if(isset($_POST['bar1_submit'])){
 			if(!empty($_POST['bar1_left_check_list'])){
@@ -291,8 +292,8 @@ class summary extends MY_Controller {
 		//"mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand"
 		$location = array($loc_schcd);
 
-		$bar2_m = (int)date('m');
-		$bar2_y = date('Y');
+		$bar2_m = 0;
+		$bar2_y = 0;
 		
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
@@ -360,8 +361,8 @@ class summary extends MY_Controller {
 
 		//=================== ALERT VIEW =================================================================
 
-		$alert_m = (int)date('m');
-		$alert_y = date('Y');
+		$alert_m = 0;
+		$alert_y = 0;
 
 		//$scheme_hier['scheme_link'];
 		$tempresult_alert = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
@@ -400,7 +401,10 @@ class summary extends MY_Controller {
 	}
 	
 	public function profile(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -417,7 +421,10 @@ class summary extends MY_Controller {
 	}
 
 	public function edit_profile(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -437,14 +444,16 @@ class summary extends MY_Controller {
 		$user = array();
 		$user = $this->profile_model->get_user_id();
 		//print_r($user);
-
-
+		$dat['desi']=$desi;
+		$dat['dep']=$dep;
+		$dat['off']=$off;
+		/*
 		$dat = array(
 			'desi' =>$desi,
 			'dep' =>$dep,
 			'off' =>$off,
 			'user' =>$user,
-		);
+		);*/
 		//print_r($desi);
 		$validate = array(
 			array(
@@ -495,10 +504,7 @@ class summary extends MY_Controller {
 				$last = $this->input->post('last');
 				$mobile = $this->input->post('mob');
 				$email = $this->input->post('email');
-				$desig = $this->profile_model->get_designation();
 				$dist = $this->input->post('dist');
-				$dep=$this->profile_model->get_depart();
-				$off=$this->profile_model->get_office();
 				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 				$res=$this->profile_model->get_f($this->session->userdata('uid'));
 				if ($image == NULL){
@@ -506,24 +512,24 @@ class summary extends MY_Controller {
 				}
 				$data = array(
 					'f_name' => $first,
+					'profile_id_pk' => $this->session->userdata('loginid'),
 					'm_name' => $mid,
 					'l_name' => $last,
 					'mobile' => $mobile,
 					'username' =>$this->session->userdata('uid'),
 					'email' => $email,
 					'image' => $image,
-					//'designation' =>$desig,
-					//'department' =>$dep,
-					//'office' =>$off,
+					'desig' =>$desi,
+					'dept' =>$dep,
+					'office' =>$off,
 					'district' =>$dist,
 				);
 				if($res){
 					$this->profile_model->update($this->session->userdata('uid'),$data);
-					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}else{
 					$this->profile_model->upload($data);
-					
+					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}
 			}
@@ -531,7 +537,10 @@ class summary extends MY_Controller {
 	}
 
 	public function password_change_within(){
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
+		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);

@@ -9,14 +9,15 @@ class View_data extends MY_Controller {
     public function load($n){
 
         //Load 'CRUD' model
+        $this->cache_update();
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');
         $this->Crud_model->backup_draft_table($n,'backup');
         $this->Crud_model->backup_draft_table($n,'draft');
-        $this->Crud_model->audit_upload($this->session->userdata('uid'),
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
-                                            'Backup & draft create- '.$n,
+                                            'View tables- '.$n,
                                             'Custom Message here');
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));

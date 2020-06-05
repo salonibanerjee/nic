@@ -1,5 +1,20 @@
 <div class='content-wrapper'>
     <!-- Content Header (Page header) -->
+    <section class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <h1><b>NODAL CHECK</b></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item active">Nodal Check</li>
+          </ol>
+        </div>
+      </div>
+    </div><!-- /.container-fluid -->
+  </section>
     <section class='content-header'>
         <div class='container-fluid'>           
             <!-- TABLE: LATEST ORDERS -->
@@ -111,10 +126,10 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                             } else {
                                 if(isset($uff[$temp]['draft_data']->$row)){
                                     $j++;
-                                    if($s_name[$i]=='Month'){
+                                    if($s_name[$i]=='month'){
                                         echo '<tr>';
                                         echo '<td>'.$j.'.</td>';
-                                        echo '<td>'.$s_name[$i].'</td>';
+                                        echo '<td>'."Month".'</td>';
                                         echo '<td>'.$uff[$temp]['month'][$uff[$temp]['draft_data']->$row].'</td>';
                                         echo '</tr>';
                                     } else {

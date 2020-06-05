@@ -2,8 +2,14 @@
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-sm-9">
-            <h1>Scheme Form</h1>
+        <div class="col-sm-6">
+            <h1>SCHEME DATA <b>VIEW</b></h1>
+        </div>
+        <div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item active">View Data</li>
+          </ol>
         </div>
       </div>
     </div>
@@ -27,21 +33,25 @@
       <div class='row'>
 
         <div class="col-md-12" id='refresh'>
-          <div class="card">
+          <div class="card" id="tblCustomers" >
             <div class="card-header bg-indigo">
               <h3 class="card-title"><strong><?php echo $name.' ';?>Datatable</strong></h3>
               <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white"><i class="fas fa-edit" style="font-size:20px; padding-top:7px;"></i></button>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped table-hover table-responsive">
+              <table class="table table-bordered table-striped table-hover table-responsive">
                 <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
                       if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                         $i++;
                         continue;
-                      }else{
+                      }else if($row=='month'){
+                        echo "<th>"."Month"."</th>";
+                        $i++;
+                      }
+                      else{
                         echo "<th>".$s_name[$i]."</th>";
                         $i++;
                       }
@@ -69,6 +79,7 @@
                 }
                 ?>
                 </tbody>
+                <!--
                 <tfoot>
                 <tr>
                   <th>Rendering engine</th>
@@ -77,7 +88,7 @@
                   <th>Engine version</th>
                   <th>CSS grade</th>
                 </tr>
-                </tfoot>
+                </tfoot> -->
               </table>
             </div>
             <!-- /.card-body -->
@@ -87,7 +98,7 @@
       <!-- right column -->
       <div class='col-md-1'>
       
-
+      <input type="button" class='btn btn-primary' id="btnExport" value="Export" onclick="Export()" />
       </div>
       <!--/.col (right) -->
       </div>
@@ -166,12 +177,29 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../../dist/js/demo.js"></script>
 <!-- page script -->
-
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.22/pdfmake.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+<script type="text/javascript">
+        function Export() {
+            html2canvas(document.getElementById('tblCustomers'), {
+                onrendered: function (canvas) {
+                    var data = canvas.toDataURL();
+                    var docDefinition = {
+                        content: [{
+                            image: data,
+                            width: 500
+                        }]
+                    };
+                    pdfMake.createPdf(docDefinition).download("Table<?php echo $name;?>.pdf");
+                }
+            });
+        }
+</script>
 
 <script type="text/javascript">
 
 $(document).ready(function() {
-    $('#example1').dataTable( {
+    $('#tblCustomers').dataTable( {
         "scrollX": true
     } );
 } );

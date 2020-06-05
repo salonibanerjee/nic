@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MPR | Notify</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--	Encryption-->
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-	<!--	C:\xampp\htdocs\nic1\js\JavaScript_MD5\js-->
-	<script type='text/javascript' src="<?php echo base_url();?>js/js-sha256-master/build/sha256.min.js"></script>
-	
-</head>
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
@@ -23,8 +8,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Profile</a></li>
-            <li class="breadcrumb-item active">BROADCAST</li>
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item active">Notification</li>
           </ol>
         </div>
       </div>
@@ -42,7 +27,7 @@
               <div class="col-md-12" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
-                    <h3 class="card-title">Previous 5 Notifications</strong></h3>
+                    <h3 class="card-title">Previous Five Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >

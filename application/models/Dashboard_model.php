@@ -4,14 +4,14 @@ class Dashboard_model extends CI_Model{
     function matrix($block,$sch,$nblo,$nsch)
     {
         $i=0;
-        $this->db->select('a_progress,s_name');
+        $this->db->select('attri_progress,sch_tab_name');
         $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         while($i<$nsch){
             foreach($table->result() as $row){    
-                if($row->s_name==$sch[$i]) 
+                if($row->sch_tab_name==$sch[$i]) 
                 {   
-                    $b[$i] = $row->a_progress;
+                    $b[$i] = $row->attri_progress;
                     $i++;
                     break;
                 }
@@ -73,7 +73,7 @@ class Dashboard_model extends CI_Model{
     function get_progress($n,$num,$loc,$m,$y)
     {
         
-        $this->db->select('a_target,a_progress,s_name');
+        $this->db->select('attr_target,attri_progress,sch_tab_name');
         $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         $a = array();
@@ -81,10 +81,10 @@ class Dashboard_model extends CI_Model{
         while($i<$num)
         { 
             foreach($table->result() as $row){    
-                if($row->s_name==$n[$i]) 
+                if($row->sch_tab_name==$n[$i]) 
                 {       
-                    $b[$i] = $row->a_progress;
-                    $a[$i] = $row->a_target;
+                    $b[$i] = $row->attri_progress;
+                    $a[$i] = $row->attr_target;
                     $i++;
                     break;
                 }
@@ -96,8 +96,11 @@ class Dashboard_model extends CI_Model{
         $pro = array();
         $tar = array();
         while($i<$num)
-        {
-            $this->db->select('*')->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+        {   
+            if($m != 0)
+                $this->db->select('*')->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            else   
+                $this->db->select('*')->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
             $table1 = $this->db->get($n[$i])->row();
             $temp1 = $b[$i];
             $temp2 = $a[$i];
@@ -131,16 +134,16 @@ class Dashboard_model extends CI_Model{
     function get_prog($n,$num,$loc,$m,$y)
 	{
         
-		$this->db->select('a_target,a_progress,s_name');
+		$this->db->select('attr_target,attri_progress,sch_tab_name');
 		$table = $this->db->get('mpr_master_dashboard_info');
 		$b = array();
         $i = 0;
         while($i<$num)
         { 
             foreach($table->result() as $row){    
-                if($row->s_name==$n[$i]) 
+                if($row->sch_tab_name==$n[$i]) 
                 {	    
-                    $b[$i] = $row->a_progress;
+                    $b[$i] = $row->attri_progress;
                     $i++;
                     break;
                 }
@@ -151,7 +154,10 @@ class Dashboard_model extends CI_Model{
         $d = array();
         while($i<$num)
         {
-            $this->db->select($b[$i])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+            if($m != 0)
+                $this->db->select($b[$i])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            else
+                $this->db->select($b[$i])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
             $table2 = $this->db->get($n[$i])->row();
             $temp = $b[$i];
             if($table2)
@@ -169,17 +175,17 @@ class Dashboard_model extends CI_Model{
     
     function get_data($n, $num,$loc,$m,$y)
     {
-        $this->db->select('a_target, a_progress, s_name');
+        $this->db->select('attr_target, attri_progress, sch_tab_name');
         $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
         $i=0;
         $x=0;
         while($x<$num){
             foreach($table->result() as $row){
-                if($row->s_name==$n[$x]) 
+                if($row->sch_tab_name==$n[$x]) 
                 {     
-                    $b[$i] = $row->a_target;
-                    $b[$i+1] = $row->a_progress;
+                    $b[$i] = $row->attr_target;
+                    $b[$i+1] = $row->attri_progress;
                     $i=$i+2;
                     $x=$x+1;
                     break;
@@ -193,8 +199,13 @@ class Dashboard_model extends CI_Model{
         //$y = date('Y');
         while($j<(2*$num))
         {
-            $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
-            $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('id_pk',"desc")->limit(1);
+            if($m != 0){
+                $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+                $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            } else {
+                $this->db->select($b[$j])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+                $this->db->select($b[$j+1])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
+            }
             $table2 = $this->db->get($n[$x])->row();
             $temp1 = $b[$j];
             $temp2 = $b[$j+1];
@@ -210,14 +221,14 @@ class Dashboard_model extends CI_Model{
 
     function sch_name($n,$num)
     {
-        $this->db->select('name,s_name');
+        $this->db->select('name,short_name');
         $tables = $this->db->get('mpr_master_scheme_table');
         $b = array();
         $i = 0;
         while($i<$num)
         {
             foreach($tables->result() as $row){
-                if($row->s_name == $n[$i])
+                if($row->short_name == $n[$i])
                 {
                     $temp = $row->name;
                     array_push($b, $temp);
@@ -251,7 +262,7 @@ class Dashboard_model extends CI_Model{
 
 function list_table_withloc($n,$m){
         $this->db->select($m);
-        $this->db->like($m,'19161', $this->session->userdata('location_code'), 'after');
+        $this->db->like($m, $this->session->userdata('location_code'), 'after');
         $tables = $this->db->get($n);
         $b = array();
         foreach($tables->result() as $row){

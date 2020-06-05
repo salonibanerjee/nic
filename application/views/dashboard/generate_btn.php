@@ -8,10 +8,10 @@
     <div class="row text-center" style="padding-top: 5px">
         <div class="col-md-6">
         
-            <button type="button" class="btn btn-block bg-danger" style="margin-bottom:3px;"><i class="fa fa-file-pdf float-left" style="font-size:30px;"></i>PDF Format</button>
+            <a href="https://localhost/NIC/index.php/Report/pdfreport"><button type="button" class="btn btn-block bg-danger" style="margin-bottom:3px;"><i class="fa fa-file-pdf float-left" style="font-size:30px;"></i>PDF Format</button></a>
         </div>
         <div class="col-md-6">
-            <button type="button" class="btn btn-block bg-success"><i class="fa fa-file-excel float-left" style="font-size:30px;"></i>Excel Format</button>
+            <a href="https://localhost/NIC/index.php/Report/excelreport"><button type="button" class="btn btn-block bg-success"><i class="fa fa-file-excel float-left" style="font-size:30px;",name="excel" id="excel"></i>Excel Format</button></a>
         </div>
     </div>
     <div class="row text-center align-items-center">
@@ -30,3 +30,9 @@
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    function generate()
+    {
+        window.location.href="https://localhost/NIC/index.php/Report/pdfreport";
+    }
+</script>

@@ -2,8 +2,14 @@
   <div class="content-header">
     <div class="container-fluid">
       <div class="row mb-2">
-        <div class="col-sm-9">
+        <div class="col-sm-6">
             <h1>CHANGE USER PRIVILEGE ACTIVE STATUS</h1>
+        </div>
+		<div class="col-sm-6">
+          <ol class="breadcrumb float-sm-right">
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item active">User Privilege</li>
+          </ol>
         </div>
       </div>
     </div>
@@ -24,8 +30,8 @@
                 <thead>
                 <tr>
 					<th><center>User Privilege Id</center></th>
-					<th><center>Privilege Id</center></th>
-					<th><center>User Type Id</center></th>
+					<th><center>Page Name</center></th>
+					<th><center>Designation</center></th>
 					<th><center>Active Status</center></th>
 					<th><center>Turn ON/OFF</center></th>
                 </tr>
@@ -40,7 +46,7 @@ foreach($records as $r)
 		$chk = "";
 		$val = "OFF";
 	}
-	 echo "<tr><td><center>".$r->user_priv_id_pk."</center></td><td><center>".$r->privilege_id_fk."</center></td><td><center>".$r->user_type_id_fk."</center></td><td><center>".$r->active_status."</center></td><td><center>
+	 echo "<tr><td><center>".$r->user_priv_id_pk."</center></td><td><center>".$r->page_name."</center></td><td><center>".$r->desig."</center></td><td><center>".$r->active_status."</center></td><td><center>
 	<label class='switch'>
 	  <input id='switch".$r->user_priv_id_pk."' type='checkbox' onclick='toggleClicked(".$r->user_priv_id_pk.");' value='".$val."'".$chk.">
 	  <span class='slider round'></span>

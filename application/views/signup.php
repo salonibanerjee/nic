@@ -8,8 +8,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Super_Admin</a></li>
-            <li class="breadcrumb-item active">Add_User</li>
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item active">Add User</li>
           </ol>
         </div>
       </div>
@@ -33,7 +33,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-            <select name ="desig" id="desig" class="form-control" ></select>
+            <select name ="desig" id="desig" class="form-control" onchange="locationData();"  ></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user-plus"></span>
@@ -48,22 +48,23 @@
             </div>
           </div>
         </div>
-        <div class="input-group mb-3">
-            <select id="dept"  name="dept" class="form-control"  ></select>
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-building"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-            <select id="office"  name="office" class="form-control"  ></select>
+		<div class="input-group mb-3">
+            <select id="office"  name="office" class="form-control" onchange="department();" ></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas  fa-university"></span>
             </div>
           </div>
         </div>
+        <div class="input-group mb-3">
+            <select id="dept"  name="dept" class="form-control" onchange="designation();"  ></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-building"></span>
+            </div>
+          </div>
+        </div>
+        
         <div class="input-group mb-3">
             <select id="desig_name"  name="desig_name" class="form-control" ></select>
           <div class="input-group-append">
@@ -80,7 +81,6 @@
           </div>
           <!-- /.col -->
         </div>
-      </form>
     </div>
     <!-- /.login-card-body -->
   </div>
@@ -90,35 +90,31 @@
 
 <script type="text/javascript">
 		fetchType();
-        locationData();
-	    department();
 	    office();
-	    designation();
 		function hashPassword(){
 			$('#field_name').html("");
 			var email = $('#email').val();
-			var password = "";//$('#pass').val();
 			var user_type = $('#desig').val();
 			var region_code = $('#region_code').val();
 			var dept = $('#dept').val();
 			var office = $('#office').val();
 			var desig_name = $('#desig_name').val();
 		
-			console.log("function called:"+email+","+password+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
-			if(userid !="" && email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
-				signupdo(email,password,user_type,region_code,dept,office,desig_name);
+			console.log("function called:"+email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+			if(email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
+				signupdo(email,user_type,region_code,dept,office,desig_name);
 			}else{
 				$('#field_name').html("Please fill all fields*");
 			}
 		
 		}
 		
-	function signupdo(email,password,user_type,region_code,dept,office,desig_name){
-		console.log("card data:" +email+","+password+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+	function signupdo(email,user_type,region_code,dept,office,desig_name){
+		console.log("card data:" +email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/signupdo",
 			type: "POST",
-			data:{email:email,password:password,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
+			data:{email:email,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
@@ -126,7 +122,7 @@
 			success:function(result) 
 			{
 				$('#email').val("");
-				//$('#pass').val("");
+				$('#pass').val("");
 				$('#desig').val("select");
 				$('#region_code').val("select");
 				$('#dept').val("select");
@@ -165,12 +161,45 @@
             }
         });
 	  }
+	  function office() {
+		 console.log("office");
+        $("#office").empty();
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/Super_Admin/office",
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			},
+            success: function (result) {
+				console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+                if (status == 1) {
+					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
+                            "</option>";
+                        $("#office").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
+                            "</option>";
+                        $("#office").append(type_item);
+						
+                    });
+                }
+            }
+        });
+	  }
 	function department() {
-		 console.log("department");
+		 var office = $('#office').val();
+		 console.log("department"+office);
         $("#dept").empty();
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/department",
             type: "POST",
+			data:
+			{
+				office:office
+			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -194,39 +223,18 @@
             }
         });
 	  }
-	function office() {
-		 console.log("office");
-        $("#office").empty();
-        $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/office",
-            type: "POST",
-            dataType: 'json',
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
-			},
-            success: function (result) {
-				console.log(result);
-                var type_arr = result.data;
-                var status = result.status;
-                if (status == 1) {
-					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
-                            "</option>";
-                        $("#office").append(type_item);
-                    $.each(type_arr, function (idx, val) {
-                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
-                            "</option>";
-                        $("#office").append(type_item);
-                    });
-                }
-            }
-        });
-	  }
+	
 	function designation() {
-		 console.log("designation");
+		var dept = $('#dept').val();
+		 console.log("designation"+dept);
         $("#desig_name").empty();
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/designation",
             type: "POST",
+			data:
+			{
+				dept:dept
+			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -250,10 +258,16 @@
 	  }
 	
 	function locationData() {
+		var desig = $('#desig').val();
+		console.log("locationData"+desig);
         $("#region_code").empty();
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/location_data",
             type: "POST",
+			data:
+			{
+				desig:desig
+			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -316,6 +330,7 @@
 //	}
 
 </script>
+
 </body>
 </html>
 

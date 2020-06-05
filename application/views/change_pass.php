@@ -23,7 +23,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Profile</a></li>
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Summary/profile">Profile</a></li>
             <li class="breadcrumb-item active">Change Password</li>
           </ol>
         </div>
