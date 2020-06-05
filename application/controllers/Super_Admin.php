@@ -346,6 +346,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
@@ -386,6 +387,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
@@ -427,6 +429,7 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 if($res){
 		 echo 'done';
+		 $this->del_cache();
 	 }else{
 		 echo 'failed';
 	 }
