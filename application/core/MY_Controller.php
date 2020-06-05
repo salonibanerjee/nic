@@ -62,8 +62,13 @@ class MY_Controller extends CI_Controller {
     }
 
     public function del_cache(){
-        $this->load->driver('cache', array('adapter' => 'file'));
-        $this->db->cache_delete_all();
+        $this->load->helper('file');
+        $files = get_filenames('./application/cache/');
+        foreach ($files as $key => $value) {
+            if ($value != 'index.html') {
+                unlink('./application/cache/'.$value);
+            }
+        }
     }
 
 }
