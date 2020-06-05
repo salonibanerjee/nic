@@ -8,8 +8,8 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Super_Admin</a></li>
-            <li class="breadcrumb-item active">Add_User</li>
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item active">Add User</li>
           </ol>
         </div>
       </div>
