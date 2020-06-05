@@ -79,7 +79,7 @@
               <div class="icon">
                 <i class="fa fa-file"></i>
               </div>
-              <a href="#" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/page_view" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 

@@ -208,28 +208,32 @@ class Super_Admin extends MY_Controller {
 	   }
 	   echo json_encode($result);
      }
-	function location_data()  //get all records from database  
-	{
-	   $result;
-		  $query=$this->db->get_where("mpr_master_location_data");
-		  $res=$query->result();
-	   if($res){
-		   $data;
-		   $i = 0;
-	   	  foreach($res as $r){
-			  $code = $r->location_code;
-			  $type = $r->location_area;
-			  $data[$i] = array('code'=>$code,'type'=>$type);
-			  $i = $i+1;
-		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   	}
-		else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   	}
-	   echo json_encode($result);
-     }
+	 function location_data()  //get all records from database  
+	 {
+		$result;
+			$this->load->model('Sup_admin');
+		   $desig=$this->input->post('desig');
+		   //$dat=array("user_type_id_fk"=>$desig);
+		$query=$this->Sup_admin->mapping($desig);
+		   //$query=$this->db->get_where("mpr_master_location_mapping");
+		   $res=$query->result();
+		if($res){
+			$data;
+			$i = 0;
+			  foreach($res as $r){
+			   $code = $r->location_code;
+			   $type = $r->location_area;
+			   $data[$i] = array('code'=>$code,'type'=>$type);
+			   $i = $i+1;
+		   }
+			$result = array('status'=>1,'message'=>'data found','data'=>$data);
+			}
+		 else{
+			$result = array('status'=>0,'message'=>'no data found');
+ 
+			}
+		echo json_encode($result);
+	  }
 	
 	function office()  //get all records from database  
 	{
@@ -414,6 +418,45 @@ class Super_Admin extends MY_Controller {
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
 		$res = $this->Sup_admin->update_user_type($data,$id);
+	 if($res){
+		 echo 'done';
+	 }else{
+		 echo 'failed';
+	 }
+	}
+	function page_view()  //get all records from database  
+	{      
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+
+		$this->load->model('Sup_admin');
+	   $query=$this->Sup_admin->page_view();
+		  $data['records']=$query->result();
+		  //print_r($data);
+		 $this->load->view('page_view',$data); 
+  	}
+	function inactive_page_view() //load a form with data to be updated
+ 	{
+	 $this->load->model('Sup_admin');
+	 $id=$this->uri->segment('3');
+	 $dat=array("privilege_id_pk"=>$id);
+	 $query=$this->Sup_admin->privilege_id_pk($dat);
+//	 $query=$this->db->get_where("mpr_semitrans_user_type",array("user_type_id_pk"=>$id));
+	 $da['records']=$query->result();
+	// $this->load->view('update',$data);
+	 $data=array("active_status"=>$this->input->post('state'));
+	 $id=$this->input->post('id');
+	 $this->load->model('Sup_admin');
+		$res = $this->Sup_admin->update_page_view($data,$id);
 	 if($res){
 		 echo 'done';
 	 }else{

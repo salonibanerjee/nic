@@ -106,6 +106,15 @@ class Sup_admin extends CI_Model {
 		$query=$this->db->get_where("mpr_master_office");
 		return $query;
 	}
+	public function mapping($desig)
+	{
+		$SQL="SELECT mpr_master_location_data.location_area, mpr_master_location_data.location_code
+	FROM mpr_master_location_data INNER JOIN mpr_semitrans_location_mapping 
+	ON mpr_master_location_data.location_id_pk = mpr_semitrans_location_mapping.location_id_fk
+	WHERE mpr_semitrans_location_mapping.user_type_id_fk =".$desig;
+		$query = $this->db->query($SQL);
+		return $query;
+	}
 	public function location_data()
 	{
 		$query=$this->db->get_where("mpr_master_location_data");
@@ -161,6 +170,23 @@ class Sup_admin extends CI_Model {
 	{
 		$query=$this->db->order_by('user_type_id_pk')->get_where("mpr_semitrans_user_type");
 		return $query;
+	}
+	public function page_view()
+	{
+		$query=$this->db->order_by('privilege_id_pk')->get_where("mpr_semitrans_privilege");
+		return $query;
+	}
+	public function privilege_id_pk($dat)
+	{
+	 $query=$this->db->get_where("mpr_semitrans_privilege",$dat);
+		return $query;
+	}
+	public function update_page_view($data,$id)
+	{
+	  $this->db->set($data);
+	  $this->db->where("privilege_id_pk",$id);
+	  $this->db->update("mpr_semitrans_privilege",$data);
+		return true;
 	}
 }
 	
