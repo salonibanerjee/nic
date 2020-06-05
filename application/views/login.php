@@ -61,7 +61,7 @@
           <div class="input-group mb-3">
           <input id="captcha" name="captcha" class="form-control" type="text" placeholder="Captcha" >
           </div>
-          <div id="errors" style="color:red;"></div>
+          <div id="errors" style="color:red; font-weight: bold;"></div>
         <div class="row">
           <div class="col-8">
             <div class="icheck-primary float-left text-yellow">
