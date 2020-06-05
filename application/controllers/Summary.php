@@ -63,8 +63,8 @@ class summary extends MY_Controller {
 
 		$scheme_name = $scheme_link;
 
-		$progress_m = (int)date('m');
-		$progress_y = date('Y');
+		$progress_m = 0;
+		$progress_y = 0;
 		
 		$progress_location = array($loc_schcd);
 
@@ -160,8 +160,8 @@ class summary extends MY_Controller {
 
 		//$bar1_location = array("19161","191615","191614");
 
-		$pie_m = (int)date('m');
-		$pie_y = date('Y');
+		$pie_m = 0;
+		$pie_y = 0;
 		
 		if(isset($_POST['pie_submit'])){
 			if(!empty($_POST['pie_left_check_list'])){
@@ -220,8 +220,8 @@ class summary extends MY_Controller {
 		//Insert data for bar chart in an array format 
 		$scheme_bar1 = $scheme_link;
 
-		$bar1_m = (int)date('m');
-		$bar1_y = date('Y');
+		$bar1_m = 0;
+		$bar1_y = 0;
 		
 		if(isset($_POST['bar1_submit'])){
 			if(!empty($_POST['bar1_left_check_list'])){
@@ -291,8 +291,8 @@ class summary extends MY_Controller {
 		//"mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand"
 		$location = array($loc_schcd);
 
-		$bar2_m = (int)date('m');
-		$bar2_y = date('Y');
+		$bar2_m = 0;
+		$bar2_y = 0;
 		
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
@@ -360,8 +360,8 @@ class summary extends MY_Controller {
 
 		//=================== ALERT VIEW =================================================================
 
-		$alert_m = (int)date('m');
-		$alert_y = date('Y');
+		$alert_m = 0;
+		$alert_y = 0;
 
 		//$scheme_hier['scheme_link'];
 		$tempresult_alert = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
