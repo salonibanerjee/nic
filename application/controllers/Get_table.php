@@ -147,6 +147,9 @@ class Get_table extends MY_Controller {
             $r['location_code'] = $this->session->userdata('location_code');
             $r['nodal_check'] = -1;
             $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['month']);
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
             if($old_value){
                 $this->Crud_model->update($r,$n.'_draft');
                 unset($old_value->id_pk);
@@ -165,11 +168,7 @@ class Get_table extends MY_Controller {
                 echo "Records Saved Successfully";
             }
             //commit and rollback
-            if($this->db->trans_status()==FALSE)
-                $this->db->trans_rollback();
-            else{
-                $this->db->trans_commit();
-            }
+            $this->db->trans_complete();
         }else{
             echo validation_errors();
         }

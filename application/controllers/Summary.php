@@ -416,12 +416,14 @@ class summary extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
-
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
 		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'View Profile',
                                             $this->session->userdata('uid'));
-
+		$this->db->trans_complete();
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
 	}
@@ -532,7 +534,9 @@ class summary extends MY_Controller {
 					'office' =>$off,
 					'district' =>$dist,
 				);
-
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
 				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Profile Updated Successfully',
@@ -546,6 +550,7 @@ class summary extends MY_Controller {
 					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}
+				$this->db->trans_complete();
 			}
 		} //validation else brace ending 
 	}
@@ -583,12 +588,16 @@ class summary extends MY_Controller {
             $res=$this->Admin_model->findpass($user);
 			$passInDb =$res->password;
             if($passInDb === $old_pass){
-                $password=$this->input->post('pass1');
+				$password=$this->input->post('pass1');
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
 				$this->Admin_model->update_login($user,$password);
 				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Password Updated Successfully',
-                                            $this->session->userdata('uid'));
+											$this->session->userdata('uid'));
+				$this->db->trans_complete();
 				echo "http://localhost/nic/index.php/Summary/profile";
             }else{
 				echo "<p>Old Password is wrong.</p>\n";

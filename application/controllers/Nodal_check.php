@@ -98,7 +98,9 @@ class Nodal_check extends MY_Controller {
 			if($this->input->post('sub1')=="Accept"){
 
 				$n = $_COOKIE['jvar'];
-
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
 				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Nodal Check Accepted - '.$n,
@@ -113,7 +115,7 @@ class Nodal_check extends MY_Controller {
                     $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n);
                 }
 				$this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
-				
+				$this->db->trans_complete();
 				
 
                 ?>
@@ -125,7 +127,9 @@ class Nodal_check extends MY_Controller {
             }
             if($this->input->post('sub2')=="Reject"){
 				$n = $_COOKIE['jvar'];
-
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
 				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Nodal Check Rejected - '.$n,
@@ -135,7 +139,8 @@ class Nodal_check extends MY_Controller {
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
                 $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
-                ?>
+				$this->db->trans_complete();
+				?>
                         <script type=text/javascript>
                             alert("Value rejected");
                             window.location.href = "http://localhost/NIC/index.php/Nodal_check";

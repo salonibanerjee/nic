@@ -52,10 +52,14 @@ class Login extends MY_Controller {
                         $this->Admin_model->user_type_cache($var);
                     }
                     if($this->cache->get('Active_status'.$this->session->userdata('loginid'))['active_status']==1 && $this->cache->get('User_type'.$var)['active_status']==1){
+                        $this->db->trans_off();
+                        $this->db->trans_strict(FALSE);
+                        $this->db->trans_start();
                         $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                                         current_url(),
                                                         'Login',
                                                         'Logging in as '.$this->session->userdata('uid'));
+                        $this->db->trans_complete();    
                             //user_type_cache
                         unset($_SESSION['salt']);
                         if($this->Admin_model->check_first_user()==1){
@@ -82,10 +86,14 @@ class Login extends MY_Controller {
             header("Location: http://localhost/NIC/index.php/Login");
         else{
             $this->load->model('Crud_model');
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
             $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                                 current_url(),
                                                 'Logout',
                                                 'Custom Message here');
+            $this->db->trans_complete();
             $this->session->set_userdata('logged_in', FALSE);
             $this->session->sess_destroy();
             redirect(base_url()."index.php/Login");
@@ -130,7 +138,11 @@ class Login extends MY_Controller {
             $encuser=hash('sha256',$user);
             if($enc==$encuser){
                 $password=$this->input->post('pass1');
+                $this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
                 $this->Admin_model->update_login($user,$password);
+                $this->db->trans_complete();
                 echo "http://localhost/nic/index.php/Login";
             }else{
                 echo "*http://localhost/nic/index.php/Login";
@@ -151,8 +163,12 @@ class Login extends MY_Controller {
         }else{
             $user=$this->input->post('email');
             $password=$this->input->post('pass1');
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
             $this->Admin_model->update_login($user,$password);
             $this->Admin_model->update_first_pass($user);
+            $this->db->trans_complete();
             echo "http://localhost/nic/index.php/Login";
         }
     }

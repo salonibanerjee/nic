@@ -68,13 +68,17 @@ class Super_Admin extends MY_Controller {
 				'start_time'=> $start_time,
 				'end_time'=> $end_time
 			);
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			$this->load->view('schedule',$data);
 
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
-                                            $start_time.' - '.$end_time);
+											$start_time.' - '.$end_time);
+			$this->db->trans_complete();
 		}
     }
     
@@ -104,13 +108,17 @@ class Super_Admin extends MY_Controller {
         }else{
             $noti_head = $this->input->post('noti_head');
             $noti_text= $this->input->post('noti_text');
-            $target_audience=$this->input->post('audience_id');
+			$target_audience=$this->input->post('audience_id');
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
 			
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Notification Inserted - '.$noti_head,
-                                            'Custom Message here');
+											'Custom Message here');
+			$this->db->trans_complete();
         }
 	}
 	
@@ -140,12 +148,15 @@ class Super_Admin extends MY_Controller {
 			$this->load->view('dba_fyear_range',$u_type);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'DBA Financial Year Updated',
                                             $a['financial_year_range'].' - '.$a['month']);
 			$suc=$this->Crud_model->dba_fyear_update($a);
-
+			$this->db->trans_complete();
 			
 		}
 	}
@@ -171,10 +182,14 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
 		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
 		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Create New User',
                                             $this->session->userdata('uid'));
+		$this->db->trans_complete();
 		$this->load->view('signup');
     }
 	public function signupdo(){
@@ -216,6 +231,9 @@ class Super_Admin extends MY_Controller {
 			//$id1 = $this->input->post('id1');
 			$pass=hash('sha256',$password);
 			$data=array("username"=>$this->input->post('email'),"password"=>$pass,"user_type_id_fk"=>$this->input->post('user_type'),"location_code"=>$this->input->post('region_code'),"active_status"=>1,"dept_id_fk"=>$this->input->post('dept'),"office_id_fk"=>$this->input->post('office'),"desig_id_fk"=>$this->input->post('desig_name'));
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			if($this->Sup_admin->add_login($data)){
 				echo "<font color=green>Data Added Successfully</font>";
                 $res=$this->Sup_admin->find_id($data);
@@ -226,6 +244,7 @@ class Super_Admin extends MY_Controller {
 			else{ 
 				echo "Data is not Added";
 			}
+			$this->db->trans_complete();
 		}
     }
     function fetch_user_type()  //get all records from database  
@@ -371,11 +390,14 @@ class Super_Admin extends MY_Controller {
 		$data['records']=$query->result();
 		  //print_r($data);
 		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
 		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
 							current_url(),
 							'Active user visited',
 							'Custom message here');
-		  
+		$this->db->trans_complete();
 		$this->load->view('view_user',$data); 
   	}
 	function inactive_login() //load a form with data to be updated
@@ -390,7 +412,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
-		$res = $this->Sup_admin->update_user($data,$id);
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
+	 $res = $this->Sup_admin->update_user($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -419,12 +445,15 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 	   	$query=$this->Sup_admin->fetch_user_privilege();
 		$data['records']=$query->result();
-
 		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
 		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
 							current_url(),
 							'Visited User Privilage Active page',
 							'Custom message here');
+		$this->db->trans_complete();
 		  //print_r($data);
 		$this->load->view('view_user_privilege',$data); 
   	}
@@ -440,7 +469,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -473,11 +506,14 @@ class Super_Admin extends MY_Controller {
 		//print_r($data);
 
 		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
 		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
 							current_url(),
 							'User type active page visited',
 							'Custom message here');
-		 
+		$this->db->trans_complete();
 		$this->load->view('view_user_type',$data); 
   	}
 	function inactive_user_type() //load a form with data to be updated
@@ -492,7 +528,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -523,11 +563,14 @@ class Super_Admin extends MY_Controller {
 		  $data['records']=$query->result();
 
 		  $this->load->model('Crud_model');
+		  $this->db->trans_off();
+          $this->db->trans_strict(FALSE);
+          $this->db->trans_start();
 		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
 							  current_url(),
 							  'Pages active page visited',
 							  'Custom message here');
-		  
+		  $this->db->trans_complete();
 		 $this->load->view('page_view',$data); 
   	}
 	function inactive_page_view() //load a form with data to be updated
@@ -542,7 +585,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+	 $this->db->trans_strict(FALSE);
+	 $this->db->trans_start();
 		$res = $this->Sup_admin->update_page_view($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();

@@ -17,10 +17,14 @@ class View_data extends MY_Controller {
         $this->load->model('Admin_model');
         $this->Crud_model->backup_draft_table($n,'backup');
         $this->Crud_model->backup_draft_table($n,'draft');
+        $this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
         $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'View tables- '.$n,
                                             'Custom Message here');
+        $this->db->trans_complete();
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
