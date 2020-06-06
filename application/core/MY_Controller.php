@@ -76,5 +76,22 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    public function scheme_privilege(){
+        $this->load->driver('cache', array('adapter' => 'file'));
+        $var = $this->cache->get('Scheme_hier_'.$this->session->userdata('dept'));
+        $currentURL = current_url();
+        $check=0;
+        if(strpos($currentURL,'/load/')!=FALSE){
+            foreach($var as $link){
+                if(strpos($currentURL,$link['scheme_link'])!=FALSE){
+                    $check=1;
+                }
+            }
+        }
+        if($check==0){
+            show_404();
+        }
+    }
+
 }
     

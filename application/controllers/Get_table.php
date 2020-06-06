@@ -8,6 +8,7 @@ class Get_table extends MY_Controller {
 
     public function load($n){
         $this->check_privilege(3);
+        $this->scheme_privilege();
         //Load 'CRUD' model
         $this->cache_update();
         if(!isset($_SESSION['logged_in']))
