@@ -335,7 +335,7 @@ class Super_Admin extends MY_Controller {
  	{
 	 $this->load->model('Sup_admin');
 	 $id=$this->uri->segment('3');
-	 $dat=array("Login_id_pk"=>$id);
+	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
 	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
 	 $da['records']=$query->result();
