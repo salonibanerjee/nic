@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class View_data extends MY_Controller {
     public function index(){
-
+        show_404();
     }
 
     public function load($n){
-        $this->check_privilege(4);
-        $this->scheme_privilege();
         $this->cache_update();
+        $this->check_privilege(6);
+        $this->scheme_privilege();
         if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');

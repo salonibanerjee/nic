@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Super_Admin extends MY_Controller {
     public function index(){
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(8);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -32,8 +32,8 @@ class Super_Admin extends MY_Controller {
     }
     
     public function meeting_schedule(){
-		$this->check_privilege(7);
 		$this->cache_update();
+		$this->check_privilege(17);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -73,8 +73,8 @@ class Super_Admin extends MY_Controller {
     }
     
     public function notification(){
-		$this->check_privilege(8);
 		$this->cache_update();
+		$this->check_privilege(18);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -103,8 +103,8 @@ class Super_Admin extends MY_Controller {
 	}
 	
 	public function dba_fyear_range(){
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(15);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -138,8 +138,8 @@ class Super_Admin extends MY_Controller {
     //-------------------------------------------------------------------------------------------------------------------------------
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(9);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -329,8 +329,8 @@ class Super_Admin extends MY_Controller {
      }
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(10);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -372,8 +372,8 @@ class Super_Admin extends MY_Controller {
 	}
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(12);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -417,8 +417,8 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_desig_type()  //get all records from database  
 	{      
 		//mandatory requirements for pages loading nav and sidebar
-		$this->check_privilege(6);
 		$this->cache_update();
+		$this->check_privilege(11);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -460,9 +460,9 @@ class Super_Admin extends MY_Controller {
 	}
 	function page_view()  //get all records from database  
 	{      
-		$this->check_privilege(6);
-		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(13);
+		//mandatory requirements for pages loading nav and sidebar
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));

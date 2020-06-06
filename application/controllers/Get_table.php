@@ -3,14 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
     public function index(){
-
+        show_404();
     }
 
     public function load($n){
-        $this->check_privilege(3);
+        $this->cache_update();
+        $this->check_privilege(5);
         $this->scheme_privilege();
         //Load 'CRUD' model
-        $this->cache_update();
         if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');
