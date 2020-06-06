@@ -57,6 +57,11 @@ class MY_Controller extends CI_Controller {
                 if(!$this->cache->get('User_type'.$var)){
                     $this->Admin_model->user_type_cache($var);
                 }
+
+                $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['active_status'];
+                if($data==0){
+                    unset($_SESSION['logged_in']);
+                }
             }
         }
     }

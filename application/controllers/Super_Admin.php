@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Super_Admin extends MY_Controller {
     public function index(){
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -30,6 +32,8 @@ class Super_Admin extends MY_Controller {
     
     public function meeting_schedule(){
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
@@ -68,6 +72,8 @@ class Super_Admin extends MY_Controller {
     
     public function notification(){
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -95,6 +101,8 @@ class Super_Admin extends MY_Controller {
 	
 	public function dba_fyear_range(){
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -127,6 +135,8 @@ class Super_Admin extends MY_Controller {
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -315,6 +325,8 @@ class Super_Admin extends MY_Controller {
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -335,7 +347,7 @@ class Super_Admin extends MY_Controller {
  	{
 	 $this->load->model('Sup_admin');
 	 $id=$this->uri->segment('3');
-	 $dat=array("Login_id_pk"=>$id);
+	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
 	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
 	 $da['records']=$query->result();
@@ -355,6 +367,8 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -397,6 +411,8 @@ class Super_Admin extends MY_Controller {
 	{      
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -438,6 +454,8 @@ class Super_Admin extends MY_Controller {
 	{      
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');

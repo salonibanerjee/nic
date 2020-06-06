@@ -10,6 +10,8 @@ class View_data extends MY_Controller {
 
         //Load 'CRUD' model
         $this->cache_update();
+        if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');
