@@ -402,7 +402,7 @@ class summary extends MY_Controller {
 	
 	public function profile(){
 		$this->cache_update();
-		$this->check_privilege(2);
+		$this->load->model('Crud_model');
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
@@ -417,11 +417,17 @@ class summary extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
 
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'View Profile',
+                                            $this->session->userdata('uid'));
+
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
 	}
 
 	public function edit_profile(){
+		$this->load->model('Crud_model');
 		$this->cache_update();
 		$this->check_privilege(4);
 		if(!isset($_SESSION['logged_in']))
@@ -526,6 +532,12 @@ class summary extends MY_Controller {
 					'office' =>$off,
 					'district' =>$dist,
 				);
+
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Profile Updated Successfully',
+                                            $this->session->userdata('uid'));
+
 				if($res){
 					$this->profile_model->update($this->session->userdata('uid'),$data);
 					header("location: http://localhost/NIC/index.php/Summary/profile");
@@ -540,6 +552,7 @@ class summary extends MY_Controller {
 
 	public function password_change_within(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
 		$this->check_privilege(3);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -572,6 +585,10 @@ class summary extends MY_Controller {
             if($passInDb === $old_pass){
                 $password=$this->input->post('pass1');
 				$this->Admin_model->update_login($user,$password);
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Password Updated Successfully',
+                                            $this->session->userdata('uid'));
 				echo "http://localhost/nic/index.php/Summary/profile";
             }else{
 				echo "<p>Old Password is wrong.</p>\n";

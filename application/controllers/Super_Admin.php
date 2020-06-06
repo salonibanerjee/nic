@@ -33,6 +33,7 @@ class Super_Admin extends MY_Controller {
     
     public function meeting_schedule(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
 		$this->check_privilege(17);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -69,11 +70,17 @@ class Super_Admin extends MY_Controller {
 			);
 			$this->Admin_model->meeting_schedule($data);
 			$this->load->view('schedule',$data);
+
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Meeting Schedule Updated',
+                                            $start_time.' - '.$end_time);
 		}
     }
     
     public function notification(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
 		$this->check_privilege(18);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -98,7 +105,12 @@ class Super_Admin extends MY_Controller {
             $noti_head = $this->input->post('noti_head');
             $noti_text= $this->input->post('noti_text');
             $target_audience=$this->input->post('audience_id');
-            $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
+			
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Notification Inserted - '.$noti_head,
+                                            'Custom Message here');
         }
 	}
 	
@@ -128,7 +140,13 @@ class Super_Admin extends MY_Controller {
 			$this->load->view('dba_fyear_range',$u_type);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'DBA Financial Year Updated',
+                                            $a['financial_year_range'].' - '.$a['month']);
 			$suc=$this->Crud_model->dba_fyear_update($a);
+
+			
 		}
 	}
 
@@ -152,6 +170,11 @@ class Super_Admin extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
+		$this->load->model('Crud_model');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Create New User',
+                                            $this->session->userdata('uid'));
 		$this->load->view('signup');
     }
 	public function signupdo(){
@@ -347,6 +370,12 @@ class Super_Admin extends MY_Controller {
 	   	$query=$this->Sup_admin->fetch_login();
 		$data['records']=$query->result();
 		  //print_r($data);
+		$this->load->model('Crud_model');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'Active user visited',
+							'Custom message here');
+		  
 		$this->load->view('view_user',$data); 
   	}
 	function inactive_login() //load a form with data to be updated
@@ -390,6 +419,12 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 	   	$query=$this->Sup_admin->fetch_user_privilege();
 		$data['records']=$query->result();
+
+		$this->load->model('Crud_model');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'Visited User Privilage Active page',
+							'Custom message here');
 		  //print_r($data);
 		$this->load->view('view_user_privilege',$data); 
   	}
@@ -433,10 +468,17 @@ class Super_Admin extends MY_Controller {
 		//mandatory requirements end
 
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->fetch_user_desig_type();
-		  $data['records']=$query->result();
-		  //print_r($data);
-		 $this->load->view('view_user_type',$data); 
+	   	$query=$this->Sup_admin->fetch_user_desig_type();
+		$data['records']=$query->result();
+		//print_r($data);
+
+		$this->load->model('Crud_model');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User type active page visited',
+							'Custom message here');
+		 
+		$this->load->view('view_user_type',$data); 
   	}
 	function inactive_user_type() //load a form with data to be updated
  	{
@@ -477,9 +519,15 @@ class Super_Admin extends MY_Controller {
 		//mandatory requirements end
 
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->page_view();
+	   	$query=$this->Sup_admin->page_view();
 		  $data['records']=$query->result();
-		  //print_r($data);
+
+		  $this->load->model('Crud_model');
+		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Pages active page visited',
+							  'Custom message here');
+		  
 		 $this->load->view('page_view',$data); 
   	}
 	function inactive_page_view() //load a form with data to be updated

@@ -250,7 +250,9 @@ class Report extends MY_Controller
             //echo $this->Report_model->generate_table($temp3,$ses,$month_name);
     		array_push($scheme_header,$this->Report_model->generate_table($temp3,$ses,$month_name));
     	}
-    	$this->Report_model->generate_pdf($scheme_header);
+        $this->Report_model->generate_pdf($scheme_header);
+        
+    
     }
     public function excelreport()
     {

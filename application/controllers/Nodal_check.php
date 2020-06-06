@@ -99,6 +99,11 @@ class Nodal_check extends MY_Controller {
 
 				$n = $_COOKIE['jvar'];
 
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Accepted - '.$n,
+                                            'Custom Message here');
+
                 $result_main['uff'][$n]['draft_data']->nodal_check=1;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
@@ -107,7 +112,10 @@ class Nodal_check extends MY_Controller {
                 }else{
                     $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n);
                 }
-                $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				$this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				
+				
+
                 ?>
                         <script type=text/javascript>
                             alert("Value accepted");
@@ -117,6 +125,12 @@ class Nodal_check extends MY_Controller {
             }
             if($this->input->post('sub2')=="Reject"){
 				$n = $_COOKIE['jvar'];
+
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Rejected - '.$n,
+                                            'Custom Message here');
+
                 $result_main['uff'][$n]['draft_data']->nodal_check=0;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
