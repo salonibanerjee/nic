@@ -10,8 +10,9 @@ class Nodal_check extends MY_Controller {
 		$this->load->model('Crud_model');
 		$this->load->model('NodalCheck_model');
 		$this->load->model('Admin_model');
-
 		$this->cache_update();
+		if(!isset($_SESSION['logged_in']))
+			header("Location: http://localhost/NIC/index.php/Login");
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
