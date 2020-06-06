@@ -7,8 +7,8 @@ class View_data extends MY_Controller {
     }
 
     public function load($n){
-
-        //Load 'CRUD' model
+        $this->check_privilege(4);
+        $this->scheme_privilege();
         $this->cache_update();
         if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");

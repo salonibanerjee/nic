@@ -3,8 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nodal_check extends MY_Controller {
 
-	public function index()
-	{	
+	public function index(){	
+		$this->check_privilege(5);
         $this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');

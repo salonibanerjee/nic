@@ -5,7 +5,7 @@ class summary extends MY_Controller {
 
 	public function index()
 	{	
-		//$this->check_privilege(1);
+		$this->check_privilege(1);
 		$this->cache_update();
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -401,6 +401,7 @@ class summary extends MY_Controller {
 	}
 	
 	public function profile(){
+		$this->check_privilege(2);
 		$this->cache_update();
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -421,6 +422,7 @@ class summary extends MY_Controller {
 	}
 
 	public function edit_profile(){
+		$this->check_privilege(2);
 		$this->cache_update();
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -537,10 +539,11 @@ class summary extends MY_Controller {
 	}
 
 	public function password_change_within(){
+		$this->check_privilege(2);
+		$this->cache_update();
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
-		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
