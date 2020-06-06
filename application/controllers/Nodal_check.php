@@ -3,16 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nodal_check extends MY_Controller {
 
-	public function index(){	
-		$this->check_privilege(5);
+	public function index()
+	{	
         $this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');
 		$this->load->model('NodalCheck_model');
 		$this->load->model('Admin_model');
-		$this->cache_update();
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
+
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -99,6 +97,11 @@ class Nodal_check extends MY_Controller {
 
 				$n = $_COOKIE['jvar'];
 
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Accepted - '.$n,
+                                            'Custom Message here');
+
                 $result_main['uff'][$n]['draft_data']->nodal_check=1;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
@@ -107,7 +110,10 @@ class Nodal_check extends MY_Controller {
                 }else{
                     $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n);
                 }
-                $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				$this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				
+				
+
                 ?>
                         <script type=text/javascript>
                             alert("Value accepted");
@@ -117,6 +123,12 @@ class Nodal_check extends MY_Controller {
             }
             if($this->input->post('sub2')=="Reject"){
 				$n = $_COOKIE['jvar'];
+
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Rejected - '.$n,
+                                            'Custom Message here');
+
                 $result_main['uff'][$n]['draft_data']->nodal_check=0;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
