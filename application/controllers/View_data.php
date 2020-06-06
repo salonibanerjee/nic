@@ -6,7 +6,7 @@ class View_data extends MY_Controller {
         show_404();
     }
 
-    public function load($n){
+    public function load($n=""){
         $this->cache_update();
         $this->check_privilege(6);
         $this->scheme_privilege();

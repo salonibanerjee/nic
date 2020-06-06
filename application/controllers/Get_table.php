@@ -6,7 +6,7 @@ class Get_table extends MY_Controller {
         show_404();
     }
 
-    public function load($n){
+    public function load($n=""){
         $this->cache_update();
         $this->check_privilege(5);
         $this->scheme_privilege();
