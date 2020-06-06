@@ -5,8 +5,8 @@ class summary extends MY_Controller {
 
 	public function index()
 	{	
-		$this->check_privilege(1);
 		$this->cache_update();
+		$this->check_privilege(1);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->model('profile_model');
@@ -401,7 +401,6 @@ class summary extends MY_Controller {
 	}
 	
 	public function profile(){
-		$this->check_privilege(2);
 		$this->cache_update();
 		$this->load->model('Crud_model');
 		if(!isset($_SESSION['logged_in']))
@@ -429,8 +428,8 @@ class summary extends MY_Controller {
 
 	public function edit_profile(){
 		$this->load->model('Crud_model');
-		$this->check_privilege(2);
 		$this->cache_update();
+		$this->check_privilege(4);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
@@ -552,9 +551,9 @@ class summary extends MY_Controller {
 	}
 
 	public function password_change_within(){
-		$this->check_privilege(2);
 		$this->cache_update();
 		$this->load->model('Crud_model');
+		$this->check_privilege(3);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
