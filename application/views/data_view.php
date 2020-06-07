@@ -33,13 +33,13 @@
       <div class='row'>
 
         <div class="col-md-12" id='refresh'>
-          <div class="card" id="tblCustomers" >
+          <div class="card" >
             <div class="card-header bg-indigo">
               <h3 class="card-title"><strong><?php echo $name.' ';?>Datatable</strong></h3>
               <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white"><i class="fas fa-edit" style="font-size:20px; padding-top:7px;"></i></button>
             </div>
             <!-- /.card-header -->
-            <div class="card-body">
+            <div class="card-body" id="tblCustomers">
               <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                 <thead class="bg-success">
                 <tr>

@@ -37,6 +37,16 @@
     <div class="card-body login-card-body">
       <p class="login-box-msg"><strong>CHANGE PASSWORD</strong></p>
 
+      <div class="text-center">
+      <?php if($image==""||$image==NULL){
+                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
+                }else{
+                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='data: image/jpeg; base64, $image' alt='User profile picture' style='width:150px; height:150px;'>";
+                }?> 
+          <img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/lock.png' alt='User profile picture' style='width:150px; height:150px;'>  
+          <p></p>
+        </div>
+
       <form method="POST" action="" id="form">
         <div class="input-group mb-3">
           <input name="pass0" id="pass0" type="password" class="form-control" placeholder="Old Password" >
