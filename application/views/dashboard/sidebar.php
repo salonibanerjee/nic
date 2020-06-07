@@ -99,10 +99,13 @@
                     $var1=current_url();
                     foreach($scheme_hier as $row){
                         $var2= $row['scheme_link'];
+                        $str = $row['scheme_name'];
+
                         if(strpos($var1,$var2)!=False){
-                          echo "<li class='nav-item bg-black' style='max-width: 230px; border-radius:5px;'><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
-                        }else
-                          echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
+                            echo "<li class='nav-item bg-black' style='max-width: 230px; border-radius:5px;'><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".substr($str,0,30)."<br>".substr($str,30)."</a></li>";
+                        }else{
+                            echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".substr($str,0,30)."<br>".substr($str,30)."</a></li>";
+                        }
                         $i++;
                     }
               echo "</ul>";

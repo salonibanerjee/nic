@@ -77,6 +77,8 @@ class Get_table extends MY_Controller {
             }
             $this->load->view('get_table',$result);
         }
+
+        $this->load->view('dashboard/footer');
     }
     function submit_draft($n){
         $this->load->model('Crud_model');

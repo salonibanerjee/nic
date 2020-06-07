@@ -397,6 +397,7 @@ class summary extends MY_Controller {
 		//=========== PASSING ALL DATA TO CONTAINER ============================
 
 		$this->load->view('dashboard/container',$container);
+		$this->load->view('dashboard/footer');
 		
 	}
 	
@@ -426,6 +427,7 @@ class summary extends MY_Controller {
 		$this->db->trans_complete();
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
+		$this->load->view('dashboard/footer');
 	}
 
 	public function edit_profile(){

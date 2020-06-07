@@ -149,5 +149,7 @@ class Nodal_check extends MY_Controller {
             }
 
 		}
+
+		$this->load->view('dashboard/footer');
 	}
 }
