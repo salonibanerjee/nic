@@ -3,14 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nodal_check extends MY_Controller {
 
-	public function index()
-	{	
+	public function index(){	
+		$this->cache_update();
+		$this->check_privilege(7);
         $this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');
 		$this->load->model('NodalCheck_model');
 		$this->load->model('Admin_model');
-		$this->cache_update();
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
@@ -71,7 +71,7 @@ class Nodal_check extends MY_Controller {
 				//Fetch Attribute name. n - schema name
 				$result['data'] =$this->Crud_model->get_table($n1);
 				$result['draft_data'] = $this->Crud_model->draft_data_fetch($n1."_draft");
-				$result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+				$result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 				$x=$this->Crud_model->get_attri($n1);
 				$result['s_name']=array();
 				
@@ -98,6 +98,13 @@ class Nodal_check extends MY_Controller {
 			if($this->input->post('sub1')=="Accept"){
 
 				$n = $_COOKIE['jvar'];
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Accepted - '.$n,
+                                            'Custom Message here');
 
                 $result_main['uff'][$n]['draft_data']->nodal_check=1;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
@@ -107,7 +114,10 @@ class Nodal_check extends MY_Controller {
                 }else{
                     $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n);
                 }
-                $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				$this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
+				$this->db->trans_complete();
+				
+
                 ?>
                         <script type=text/javascript>
                             alert("Value accepted");
@@ -117,11 +127,20 @@ class Nodal_check extends MY_Controller {
             }
             if($this->input->post('sub2')=="Reject"){
 				$n = $_COOKIE['jvar'];
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Nodal Check Rejected - '.$n,
+                                            'Custom Message here');
+
                 $result_main['uff'][$n]['draft_data']->nodal_check=0;
                 $this->Crud_model->delete_sub($result_main['uff'][$n]['draft_data']->id_pk,$n.'_draft');
                 unset($result_main['uff'][$n]['draft_data']->id_pk);
                 $this->Crud_model->save_data($result_main['uff'][$n]['draft_data'],$n.'_backup');
-                ?>
+				$this->db->trans_complete();
+				?>
                         <script type=text/javascript>
                             alert("Value rejected");
                             window.location.href = "http://localhost/NIC/index.php/Nodal_check";
@@ -130,5 +149,7 @@ class Nodal_check extends MY_Controller {
             }
 
 		}
+
+		$this->load->view('dashboard/footer');
 	}
 }

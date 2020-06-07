@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class View_data extends MY_Controller {
     public function index(){
-
+        show_404();
     }
 
-    public function load($n){
-
-        //Load 'CRUD' model
+    public function load($n=""){
         $this->cache_update();
+        $this->check_privilege(6);
+        $this->scheme_privilege();
         if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');
@@ -17,10 +17,14 @@ class View_data extends MY_Controller {
         $this->load->model('Admin_model');
         $this->Crud_model->backup_draft_table($n,'backup');
         $this->Crud_model->backup_draft_table($n,'draft');
+        $this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
         $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'View tables- '.$n,
                                             'Custom Message here');
+        $this->db->trans_complete();
 
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
@@ -58,7 +62,7 @@ class View_data extends MY_Controller {
                     $result['main_data']=$this->Crud_model->filter_data($n,$s_month,$e_month,$yr);
             }
             $result['profile'] = $da;
-            $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+            $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
             if($da['flag']==0){
                 $da['flag']=1;
                 $da['data_table']=$result['data_table'];

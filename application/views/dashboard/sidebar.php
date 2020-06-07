@@ -31,13 +31,13 @@
           <?php
             $icon[1] = 'fa-tv text-purple';
             $icon[2] = 'fa-user text-blue';
-            $icon[3] = 'fa-edit text-maroon';
-            $icon[4] = 'fa-list-alt text-info';
-            $icon[5] = 'fa-check text-green';
-            $icon[6] = 'fa-user-secret text-orange';
-            $icon[7] = 'fa-calendar-check text-teal';
-            $icon[8] = 'fa-bell text-yellow';
-            $icon[10] = 'fa-power-off text-danger';
+            $icon[5] = 'fa-edit text-maroon';
+            $icon[6] = 'fa-list-alt text-info';
+            $icon[7] = 'fa-check text-green';
+            $icon[8] = 'fa-user-secret text-orange';
+            $icon[17] = 'fa-calendar-check text-teal';
+            $icon[18] = 'fa-bell text-yellow';
+            $icon[20] = 'fa-power-off text-danger';
 
             $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
@@ -52,22 +52,22 @@
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                 }elseif(strpos($var1,'load')!=FALSE){
                   if(strpos($var1,'Get_table')!=FALSE){
-                    if($x['privilege_id_fk']==3){
+                    if($x['privilege_id_fk']==5){
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
-                    }elseif($x['privilege_id_fk']==4){
+                    }elseif($x['privilege_id_fk']==6){
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }elseif(strpos($var1,'View_data')!=FALSE){
-                    if($x['privilege_id_fk']==4){
+                    if($x['privilege_id_fk']==6){
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
-                    }elseif($x['privilege_id_fk']==3){
+                    }elseif($x['privilege_id_fk']==5){
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
                       echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }
                 }else
-                  if($x['privilege_id_fk']==3 || $x['privilege_id_fk']== 4 ){
+                  if($x['privilege_id_fk']==5 || $x['privilege_id_fk']== 6 ){
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }else
                     echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
@@ -99,10 +99,13 @@
                     $var1=current_url();
                     foreach($scheme_hier as $row){
                         $var2= $row['scheme_link'];
+                        $str = $row['scheme_name'];
+
                         if(strpos($var1,$var2)!=False){
-                          echo "<li class='nav-item bg-black' style='max-width: 230px; border-radius:5px;'><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
-                        }else
-                          echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".$row['scheme_name']."</a></li>";
+                            echo "<li class='nav-item bg-black' style='max-width: 230px; border-radius:5px;'><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".substr($str,0,30)."<br>".substr($str,30)."</a></li>";
+                        }else{
+                            echo "<li class='nav-item' style='max-width: 230px; '><a style='word-wrap: break-word;' href='./".$row['scheme_link']."' class='nav-link'>".substr($str,0,30)."<br>".substr($str,30)."</a></li>";
+                        }
                         $i++;
                     }
               echo "</ul>";

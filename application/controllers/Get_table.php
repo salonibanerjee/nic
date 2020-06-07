@@ -3,13 +3,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
     public function index(){
-
+        show_404();
     }
 
-    public function load($n){
-        $this->check_privilege(3);
-        //Load 'CRUD' model
+    public function load($n=""){
         $this->cache_update();
+        $this->check_privilege(5);
+        $this->scheme_privilege();
+        //Load 'CRUD' model
         if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');
@@ -58,7 +59,7 @@ class Get_table extends MY_Controller {
                 $result['draft_data'] = $this->Crud_model->draft_data_fetch($n."_draft");
             }
             $result['profile'] = $da;
-            $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+            $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
             //if($da['flag']==0){
             $da['flag']=1;
             $da['data_table']=$this->Crud_model->list_table();
@@ -76,6 +77,8 @@ class Get_table extends MY_Controller {
             }
             $this->load->view('get_table',$result);
         }
+
+        $this->load->view('dashboard/footer');
     }
     function submit_draft($n){
         $this->load->model('Crud_model');
@@ -92,7 +95,7 @@ class Get_table extends MY_Controller {
         $this->load->model('Crud_model');
         $result['data'] =$this->Crud_model->get_table($n);
         $result['year_range'] = $this->Crud_model->dba_fyear_range();
-        $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+        $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         foreach($x as $field){
@@ -146,6 +149,9 @@ class Get_table extends MY_Controller {
             $r['location_code'] = $this->session->userdata('location_code');
             $r['nodal_check'] = -1;
             $old_value=$this->Crud_model->unique_data_entry($n.'_draft',$r['session'],$r['month']);
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
             if($old_value){
                 $this->Crud_model->update($r,$n.'_draft');
                 unset($old_value->id_pk);
@@ -164,11 +170,7 @@ class Get_table extends MY_Controller {
                 echo "Records Saved Successfully";
             }
             //commit and rollback
-            if($this->db->trans_status()==FALSE)
-                $this->db->trans_rollback();
-            else{
-                $this->db->trans_commit();
-            }
+            $this->db->trans_complete();
         }else{
             echo validation_errors();
         }

@@ -23,6 +23,9 @@
       <p class="login-box-msg"><strong>Enter User Details</strong></p>
 
       <?php echo form_open('','id="form"');?>
+        <div class="text-center">
+          <img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar002.png' alt='User profile picture' style='width:150px; height:150px;'>  
+        </div>
 
         <div class="input-group mb-3">
         <input id="email" type="email" name="email" class="form-control" placeholder="Email">

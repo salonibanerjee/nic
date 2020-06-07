@@ -5,8 +5,8 @@ class summary extends MY_Controller {
 
 	public function index()
 	{	
-		//$this->check_privilege(1);
 		$this->cache_update();
+		$this->check_privilege(1);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->model('profile_model');
@@ -43,17 +43,8 @@ class summary extends MY_Controller {
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
 		//$this->load->view('dashboard/container');
-		$this->load->model('Sup_admin');
-		$scheme_count = $this->Sup_admin->schemes_count();
-		$info_box = array(
-			'data_list' => array(
-				array('num' => $scheme_count, 'desc' => 'Number of Schemes','color'=>'indigo','icon'=>'ion-stats-bars'),
-				array('num' => '15', 'desc' => 'Body 2','color'=>'yellow','icon'=>'ion-person'),
-				array('num' => '19', 'desc' => 'Body 3','color'=>'teal','icon'=>'ion-calendar')
-			)
-		);
 		
-		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
+		//IMP: INFO BOX MOVED AFTER ALERT
 
 		//============================================================
 
@@ -393,15 +384,56 @@ class summary extends MY_Controller {
 
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 
+		//==================== INFO BOX =====================================
+
+		$best_scheme;
+		$worst_scheme;
+		try{
+			$best_scheme = $schemename_alert[0];
+			$worst_scheme = $schemename_alert[0];
+			$max_scheme = $data[0];
+			$min_scheme = $data[0];
+			for($i=1;$i<sizeof($data);$i++){
+				if($max_scheme<$data[$i]){
+					$max_scheme=$data[$i];
+					$best_scheme=$schemename_alert[$i];
+				}
+				if($min_scheme>$data[$i]){
+					$min_scheme=$data[$i];
+					$worst_scheme=$schemename_alert[$i];
+				}
+			}
+		}
+		catch(Exception $e){
+			$best_scheme="No Active Scheme Found";
+			$worst_scheme="No Active Scheme Found";
+		}
+
+		$this->load->model('Sup_admin');
+		$scheme_count = $this->Sup_admin->schemes_count();
+		$s_count = $this->profile_model->scheme_under();
+		$pec = ($s_count/$scheme_count)*100;
+		$info_box = array(
+			'data_list' => array(
+				array('num' => $s_count, 'desc' => 'Number of Schemes for Current User','color'=>'yellow','icon'=>'ion-stats-bars','tot' =>$pec.'%','text'=>$s_count.' Out of '.$scheme_count.' schemes'),
+				array('num' => $max_scheme.'%', 'desc' => $best_scheme,'color'=>'success','icon'=>'ion-checkmark','tot'=>$max_scheme.'%', 'text'=>'Best Scheme Performance:'.$max_scheme.'%'),
+				array('num' => $min_scheme.'%', 'desc' => $worst_scheme,'color'=>'danger','icon'=>'ion-close','tot'=>$min_scheme.'%', 'text'=>'Worst Scheme Performance:'.$min_scheme.'%')
+			)
+		);
+		
+		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
+
 		//======================================================================
 		//=========== PASSING ALL DATA TO CONTAINER ============================
 
 		$this->load->view('dashboard/container',$container);
+		$this->load->view('dashboard/footer');
 		
 	}
 	
 	public function profile(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
@@ -415,13 +447,23 @@ class summary extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
-
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'View Profile',
+                                            $this->session->userdata('uid'));
+		$this->db->trans_complete();
 		$data=$this->profile_model->get_profile($this->session->userdata('uid'));
 		$this->load->view('profile_view',$data);
+		$this->load->view('dashboard/footer');
 	}
 
 	public function edit_profile(){
+		$this->load->model('Crud_model');
 		$this->cache_update();
+		$this->check_privilege(4);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
@@ -524,6 +566,14 @@ class summary extends MY_Controller {
 					'office' =>$off,
 					'district' =>$dist,
 				);
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Profile Updated Successfully',
+                                            $this->session->userdata('uid'));
+
 				if($res){
 					$this->profile_model->update($this->session->userdata('uid'),$data);
 					header("location: http://localhost/NIC/index.php/Summary/profile");
@@ -532,15 +582,18 @@ class summary extends MY_Controller {
 					$this->Admin_model->update_first_profile();
 					header("location: http://localhost/NIC/index.php/Summary/profile");
 				}
+				$this->db->trans_complete();
 			}
 		} //validation else brace ending 
 	}
 
 	public function password_change_within(){
+		$this->cache_update();
+		$this->load->model('Crud_model');
+		$this->check_privilege(3);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
-		$this->cache_update();
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -567,8 +620,16 @@ class summary extends MY_Controller {
             $res=$this->Admin_model->findpass($user);
 			$passInDb =$res->password;
             if($passInDb === $old_pass){
-                $password=$this->input->post('pass1');
+				$password=$this->input->post('pass1');
+				$this->db->trans_off();
+                $this->db->trans_strict(FALSE);
+                $this->db->trans_start();
 				$this->Admin_model->update_login($user,$password);
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Password Updated Successfully',
+											$this->session->userdata('uid'));
+				$this->db->trans_complete();
 				echo "http://localhost/nic/index.php/Summary/profile";
             }else{
 				echo "<p>Old Password is wrong.</p>\n";

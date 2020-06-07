@@ -27,11 +27,11 @@
               <div class="col-md-12" id='refresh'>
                 <div class="card">
                   <div class="card-header bg-info">
-                    <h3 class="card-title">Previous Five Notifications</strong></h3>
+                    <h3 class="card-title">Previous Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" >
-                    <table id="example1" class="table table-bordered table-striped table-hover table-responsive" style="max-height:500px;">
+                    <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                       <thead class="bg-warning">
                       <tr>
                         <th>ID</th>
@@ -39,20 +39,20 @@
                         <th>Notification Body</th>
                       </tr>
                       </thead>
+                      <tbody>
                       <?php
+                          
                           $i=1;
                           foreach($noti1 as $row){
-                            echo "<tbody>";
-                            echo "<th>".$row['audience_id']."</th>";
-                            echo "<th>".$row['notification_head']."</th>";
-                            echo "<th>".$row['notification_text']."</th>";
-                            echo "</tbody>";
+                            echo "<tr>";
+                            echo "<td>".$row['audience_id']."</td>";
+                            echo "<td>".$row['notification_head']."</td>";
+                            echo "<td>".$row['notification_text']."</td>";
+                            echo "</tr>";
                             $i++;
-                            if($i>5)
-                              break;
                           }
                       ?>
-                      
+                      </tbody>
                       <tfoot>
                       <tr>
                         <!-- nothing for footer now -->
@@ -76,7 +76,7 @@
       </section>
     </div>
     <div class="col-md-6">
-      <div class="card card-primary card-outline mx-auto" style="max-width: 500px">
+      <div class="card card-primary card-outline mx-auto" >
         <div class="card-body login-card-body">
           <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
           <?php echo form_open('Super_Admin/notification','id="form"');?>
@@ -123,14 +123,6 @@
 </div>
 <!-- /.login-box -->
 
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-
-
 <script type="text/javascript">
   $("form").on("submit", function (event){
     event.preventDefault();
@@ -153,6 +145,25 @@
           window.location.href = result.slice(0,pos);
         }
       }
+    });
+  });
+</script>
+
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": false,
+      "info": true,
+      "autoWidth": false,
     });
   });
 </script>

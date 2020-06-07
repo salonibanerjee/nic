@@ -124,3 +124,22 @@ foreach($records as $r)
 		});
 	}
 </script>
+
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    });
+  });
+</script>

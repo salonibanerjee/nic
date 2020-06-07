@@ -4,6 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Super_Admin extends MY_Controller {
     public function index(){
 		$this->cache_update();
+		$this->check_privilege(8);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -26,12 +27,15 @@ class Super_Admin extends MY_Controller {
 		$data['schemes_count']= $this->Sup_admin->schemes_count();
 		$data['audit_count']= $this->Sup_admin->audit_count();
 		$data['year_range'] = $this->Crud_model->dba_fyear_range();
-		$data['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
-        $this->load->view('super_admin_view',$data);
+		$data['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
+		$this->load->view('super_admin_view',$data);
+		$this->load->view('dashboard/footer');
     }
     
     public function meeting_schedule(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
+		$this->check_privilege(17);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -65,13 +69,26 @@ class Super_Admin extends MY_Controller {
 				'start_time'=> $start_time,
 				'end_time'=> $end_time
 			);
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			$this->load->view('schedule',$data);
+
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Meeting Schedule Updated',
+											$start_time.' - '.$end_time);
+			$this->db->trans_complete();
 		}
+
+		$this->load->view('dashboard/footer');
     }
     
     public function notification(){
 		$this->cache_update();
+		$this->load->model('Crud_model');
+		$this->check_privilege(18);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -94,13 +111,25 @@ class Super_Admin extends MY_Controller {
         }else{
             $noti_head = $this->input->post('noti_head');
             $noti_text= $this->input->post('noti_text');
-            $target_audience=$this->input->post('audience_id');
-            $this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
-        }
+			$target_audience=$this->input->post('audience_id');
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
+			
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Notification Inserted - '.$noti_head,
+											'Custom Message here');
+			$this->db->trans_complete();
+		}
+		
+		$this->load->view('dashboard/footer');
 	}
 	
 	public function dba_fyear_range(){
 		$this->cache_update();
+		$this->check_privilege(15);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -115,7 +144,7 @@ class Super_Admin extends MY_Controller {
 		
 		$this->load->model('Crud_model');
 		$u_type['year_range'] = $this->Crud_model->dba_fyear_range();
-		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 
 		$this->form_validation->set_rules('year', 'Year', 'required');
 		$this->form_validation->set_rules('month', 'Month', 'required');
@@ -124,8 +153,19 @@ class Super_Admin extends MY_Controller {
 			$this->load->view('dba_fyear_range',$u_type);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'DBA Financial Year Updated',
+                                            $a['financial_year_range'].' - '.$a['month']);
 			$suc=$this->Crud_model->dba_fyear_update($a);
+			$this->db->trans_complete();
+			
 		}
+
+		$this->load->view('dashboard/footer');
 	}
 
 
@@ -135,6 +175,7 @@ class Super_Admin extends MY_Controller {
     public function signup(){
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(9);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -147,7 +188,18 @@ class Super_Admin extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
+		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Create New User',
+                                            $this->session->userdata('uid'));
+		$this->db->trans_complete();
 		$this->load->view('signup');
+
+		$this->load->view('dashboard/footer');
     }
 	public function signupdo(){
 		$chars_min=8;
@@ -188,6 +240,9 @@ class Super_Admin extends MY_Controller {
 			//$id1 = $this->input->post('id1');
 			$pass=hash('sha256',$password);
 			$data=array("username"=>$this->input->post('email'),"password"=>$pass,"user_type_id_fk"=>$this->input->post('user_type'),"location_code"=>$this->input->post('region_code'),"active_status"=>1,"dept_id_fk"=>$this->input->post('dept'),"office_id_fk"=>$this->input->post('office'),"desig_id_fk"=>$this->input->post('desig_name'));
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
 			if($this->Sup_admin->add_login($data)){
 				echo "<font color=green>Data Added Successfully</font>";
                 $res=$this->Sup_admin->find_id($data);
@@ -198,6 +253,7 @@ class Super_Admin extends MY_Controller {
 			else{ 
 				echo "Data is not Added";
 			}
+			$this->db->trans_complete();
 		}
     }
     function fetch_user_type()  //get all records from database  
@@ -221,7 +277,8 @@ class Super_Admin extends MY_Controller {
 
 	   }
 	   echo json_encode($result);
-     }
+	 }
+	 
 	 function location_data()  //get all records from database  
 	 {
 		$result;
@@ -325,6 +382,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(10);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -341,7 +399,17 @@ class Super_Admin extends MY_Controller {
 	   	$query=$this->Sup_admin->fetch_login();
 		$data['records']=$query->result();
 		  //print_r($data);
+		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'Active user visited',
+							'Custom message here');
+		$this->db->trans_complete();
 		$this->load->view('view_user',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_login() //load a form with data to be updated
  	{
@@ -355,7 +423,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
-		$res = $this->Sup_admin->update_user($data,$id);
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
+	 $res = $this->Sup_admin->update_user($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -367,6 +439,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(12);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -383,8 +456,18 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 	   	$query=$this->Sup_admin->fetch_user_privilege();
 		$data['records']=$query->result();
+		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'Visited User Privilage Active page',
+							'Custom message here');
+		$this->db->trans_complete();
 		  //print_r($data);
 		$this->load->view('view_user_privilege',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_user_privilege() //load a form with data to be updated
  	{
@@ -398,7 +481,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -411,6 +498,7 @@ class Super_Admin extends MY_Controller {
 	{      
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(11);
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -425,10 +513,21 @@ class Super_Admin extends MY_Controller {
 		//mandatory requirements end
 
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->fetch_user_desig_type();
-		  $data['records']=$query->result();
-		  //print_r($data);
-		 $this->load->view('view_user_type',$data); 
+	   	$query=$this->Sup_admin->fetch_user_desig_type();
+		$data['records']=$query->result();
+		//print_r($data);
+
+		$this->load->model('Crud_model');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User type active page visited',
+							'Custom message here');
+		$this->db->trans_complete();
+		$this->load->view('view_user_type',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_user_type() //load a form with data to be updated
  	{
@@ -442,7 +541,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+     $this->db->trans_strict(FALSE);
+     $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -452,8 +555,9 @@ class Super_Admin extends MY_Controller {
 	}
 	function page_view()  //get all records from database  
 	{      
-		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
+		$this->check_privilege(13);
+		//mandatory requirements for pages loading nav and sidebar
 		if(!isset($_SESSION['logged_in']))
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -468,10 +572,20 @@ class Super_Admin extends MY_Controller {
 		//mandatory requirements end
 
 		$this->load->model('Sup_admin');
-	   $query=$this->Sup_admin->page_view();
+	   	$query=$this->Sup_admin->page_view();
 		  $data['records']=$query->result();
-		  //print_r($data);
+
+		  $this->load->model('Crud_model');
+		  $this->db->trans_off();
+          $this->db->trans_strict(FALSE);
+          $this->db->trans_start();
+		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Pages active page visited',
+							  'Custom message here');
+		  $this->db->trans_complete();
 		 $this->load->view('page_view',$data); 
+		 $this->load->view('dashboard/footer');
   	}
 	function inactive_page_view() //load a form with data to be updated
  	{
@@ -485,7 +599,11 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->db->trans_off();
+	 $this->db->trans_strict(FALSE);
+	 $this->db->trans_start();
 		$res = $this->Sup_admin->update_page_view($data,$id);
+	 $this->db->trans_complete();
 	 if($res){
 		 echo 'done';
 		 $this->del_cache();
@@ -661,8 +779,28 @@ function seek_record(){
 			}
 		
 	}
-	function show_record(){
-		$this->load->view('show_record');
+	function audit_view()
+	{
+		//mandatory
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+	// ends here
+		$this->load->model('Sup_Admin');
+		$data['audit']=$this->Sup_Admin->get_user_details();
+		$data['login_as']=array();
+		foreach ($data['audit'] as $key) 
+		{
+			array_push($data['login_as'],$this->Sup_Admin->get_log_id($key['login_id_fk']));
+		}
+		$this->load->view('audit_view',$data);
+
 
 	}
 }
