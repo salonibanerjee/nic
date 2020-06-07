@@ -39,20 +39,20 @@
                         <th>Notification Body</th>
                       </tr>
                       </thead>
+                      <tbody>
                       <?php
+                          
                           $i=1;
                           foreach($noti1 as $row){
-                            echo "<tbody>";
                             echo "<tr>";
                             echo "<td>".$row['audience_id']."</td>";
                             echo "<td>".$row['notification_head']."</td>";
                             echo "<td>".$row['notification_text']."</td>";
                             echo "</tr>";
-                            echo "</tbody>";
                             $i++;
                           }
                       ?>
-                      
+                      </tbody>
                       <tfoot>
                       <tr>
                         <!-- nothing for footer now -->
@@ -122,14 +122,6 @@
 </section>
 </div>
 <!-- /.login-box -->
-
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="../../dist/js/adminlte.min.js"></script>
-
 
 <script type="text/javascript">
   $("form").on("submit", function (event){
