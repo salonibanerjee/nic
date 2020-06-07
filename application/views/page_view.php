@@ -26,7 +26,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table id="example1" class="table table-bordered table-striped table-hover">
+              <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                 <thead>
                 <tr>
 					<th><center>ID</center></th>
@@ -122,4 +122,23 @@
 			}   
 		});
 	}
+</script>
+
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    });
+  });
 </script>

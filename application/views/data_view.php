@@ -40,7 +40,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body">
-              <table class="table table-bordered table-striped table-hover table-responsive">
+              <table id="example1" class="table table-bordered table-striped table-hover table-responsive equal-width">
                 <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
@@ -79,16 +79,6 @@
                 }
                 ?>
                 </tbody>
-                <!--
-                <tfoot>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </tfoot> -->
               </table>
             </div>
             <!-- /.card-body -->
@@ -162,6 +152,25 @@
         <!-- /.modal-dialog -->
       </div>
 
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    });
+  });
+</script>
+
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- jQuery -->
 <script src="../../plugins/jquery/jquery.min.js"></script>
@@ -194,67 +203,4 @@
                 }
             });
         }
-</script>
-
-<script type="text/javascript">
-
-$(document).ready(function() {
-    $('#tblCustomers').dataTable( {
-        "scrollX": true
-    } );
-} );
-
-
-/*function myFunction() {
-// Declare variables
-var input, filter, ul, li, a, i, txtValue;
-input = document.getElementById('schemeSearch');
-filter = input.value.toUpperCase();
-ul = document.getElementById("myUL");
-li = ul.getElementsByTagName('li');
-
-// Loop through all list items, and hide those who don't match the search query
-for (i = 0; i < li.length; i++) {
-  a = li[i].getElementsByTagName("a")[0];
-  txtValue = a.textContent || a.innerText;
-  if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    li[i].style.display = "";
-  } else {
-    li[i].style.display = "none";
-  }
-}
-}*/
-
-/*$("#draft").on("submit",function(e){
-    var postData = $(this).serialize();
-    var formURL = $(this).attr("action");
-    console.log(postData);
-    $.ajax(
-    {
-        url : formURL,
-        type: "POST",
-        data : postData,
-        success:function(data, textStatus, jqXHR) 
-        {
-            if(data[1]=='p'){
-              var pos=data.indexOf('<!DOCTYPE html>');
-              $("#error").html(data.slice(0,pos));
-              console.log('errors');
-            }else{
-              document.getElementById("hi").click();
-              console.log('errorfree');
-              $("#refresh").load(location.href + " #refresh");
-            }
-            
-            //data: return data from server
-        },
-        error: function(jqXHR, textStatus, errorThrown) 
-        {
-            console.log("Form cannot be submitted...");
-            //if fails      
-        }
-    });
-    //e.preventDefault(); //STOP default action
-    //e.unbind(); //unbind. to stop multiple form submit.
-});*/
 </script>

@@ -59,7 +59,7 @@ class Get_table extends MY_Controller {
                 $result['draft_data'] = $this->Crud_model->draft_data_fetch($n."_draft");
             }
             $result['profile'] = $da;
-            $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+            $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
             //if($da['flag']==0){
             $da['flag']=1;
             $da['data_table']=$this->Crud_model->list_table();
@@ -95,7 +95,7 @@ class Get_table extends MY_Controller {
         $this->load->model('Crud_model');
         $result['data'] =$this->Crud_model->get_table($n);
         $result['year_range'] = $this->Crud_model->dba_fyear_range();
-        $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+        $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
         $x=$this->Crud_model->get_attri($n);
         $y=array();
         foreach($x as $field){

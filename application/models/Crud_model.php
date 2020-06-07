@@ -170,7 +170,7 @@ class Crud_model extends CI_Model {
                 $count=0;
                 $count = $this->db->select('*')->where(['location_code'=>$var])->from($table_name)->count_all_results();
                 if($count>0){
-                        $query = $this->db->select('*')->where(array('nodal_check'=>1))->like('location_code', $var, 'after')->order_by('month')->get($table_name)->result_array();
+                        $query = $this->db->select('*')->where(array('nodal_check'=>1))->like('location_code', $var, 'after')->order_by("session DESC,month DESC")->get($table_name)->result_array();
                         return $query;
                 }else{
                         return 0;

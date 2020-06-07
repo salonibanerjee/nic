@@ -62,7 +62,7 @@ class View_data extends MY_Controller {
                     $result['main_data']=$this->Crud_model->filter_data($n,$s_month,$e_month,$yr);
             }
             $result['profile'] = $da;
-            $result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+            $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
             if($da['flag']==0){
                 $da['flag']=1;
                 $da['data_table']=$result['data_table'];

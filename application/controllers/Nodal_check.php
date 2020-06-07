@@ -71,7 +71,7 @@ class Nodal_check extends MY_Controller {
 				//Fetch Attribute name. n - schema name
 				$result['data'] =$this->Crud_model->get_table($n1);
 				$result['draft_data'] = $this->Crud_model->draft_data_fetch($n1."_draft");
-				$result['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+				$result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 				$x=$this->Crud_model->get_attri($n1);
 				$result['s_name']=array();
 				
