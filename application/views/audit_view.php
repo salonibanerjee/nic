@@ -24,6 +24,7 @@
             <form class="float-sm-right" method="post">
               <input type="text" name="search_text" onkeyup="myFunction()" id="myInput" placeholder="Search for E-mail...">
               <input type="date" name="search_date" onchange="myFunction()" id="myInputdate" placeholder="Pick Date"><br>
+              <input type="button" name="reset" value="Clear" onclick="window.location.reload()">
             </form>
           </div>
           <!-- /.card-header -->
