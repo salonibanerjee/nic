@@ -13,12 +13,6 @@
             <div class="icon">
               <i class="ion {icon}"></i>
             </div>
-            <div class="progress">
-                  <div class="progress-bar" style="width: 70%"></div>
-            </div>
-            <span class="progress-description">
-                  70% Increase in 30 Days
-            </span>
             <!--<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
           </div>
         </div>
