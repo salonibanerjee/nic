@@ -13,6 +13,13 @@
             <div class="icon">
               <i class="ion {icon}"></i>
             </div>
+
+            <div class="progress bg-white" style="height:10px;  border-radius:10px; margin-left:5px; margin-right:5px;">
+                  <div class="progress-bar bg-black" style=" border-radius:20px; width: {tot}; height:60%; margin:2px;"></div>
+            </div>
+            <span class="progress-description" style="padding-left:5px;">
+              {text}
+            </span>
             <!--<a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>-->
           </div>
         </div>

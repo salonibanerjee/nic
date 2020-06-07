@@ -189,4 +189,14 @@ class profile_model extends CI_Model {
 									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s')));
 		return $result;
 	}
+
+	public function scheme_under(){
+		$this->load->driver('cache', array('adapter' => 'file'));
+		$var = $this->cache->get('Scheme_hier_'.$this->session->userdata('dept'));
+		$i=0;
+		foreach($var as $row){
+			$i++;
+		}
+		return $i;
+	}
 }
