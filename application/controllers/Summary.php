@@ -411,11 +411,13 @@ class summary extends MY_Controller {
 
 		$this->load->model('Sup_admin');
 		$scheme_count = $this->Sup_admin->schemes_count();
+		$s_count = $this->profile_model->scheme_under();
+		$pec = ($s_count/$scheme_count)*100;
 		$info_box = array(
 			'data_list' => array(
-				array('num' => $scheme_count, 'desc' => 'Number of Schemes','color'=>'indigo','icon'=>'ion-stats-bars'),
-				array('num' => $max_scheme.'%', 'desc' => $best_scheme,'color'=>'yellow','icon'=>'ion-person'),
-				array('num' => $min_scheme.'%', 'desc' => $worst_scheme,'color'=>'teal','icon'=>'ion-calendar')
+				array('num' => $s_count, 'desc' => 'Number of Schemes for Current User','color'=>'yellow','icon'=>'ion-stats-bars','tot' =>$pec.'%','text'=>$s_count.' Out of '.$scheme_count.' schemes'),
+				array('num' => $max_scheme.'%', 'desc' => $best_scheme,'color'=>'success','icon'=>'ion-checkmark','tot'=>$max_scheme.'%', 'text'=>'Best Scheme Performance:'.$max_scheme.'%'),
+				array('num' => $min_scheme.'%', 'desc' => $worst_scheme,'color'=>'danger','icon'=>'ion-close','tot'=>$min_scheme.'%', 'text'=>'Worst Scheme Performance:'.$min_scheme.'%')
 			)
 		);
 		

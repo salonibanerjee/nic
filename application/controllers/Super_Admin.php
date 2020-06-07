@@ -27,7 +27,7 @@ class Super_Admin extends MY_Controller {
 		$data['schemes_count']= $this->Sup_admin->schemes_count();
 		$data['audit_count']= $this->Sup_admin->audit_count();
 		$data['year_range'] = $this->Crud_model->dba_fyear_range();
-		$data['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+		$data['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 		$this->load->view('super_admin_view',$data);
 		$this->load->view('dashboard/footer');
     }
@@ -144,7 +144,7 @@ class Super_Admin extends MY_Controller {
 		
 		$this->load->model('Crud_model');
 		$u_type['year_range'] = $this->Crud_model->dba_fyear_range();
-		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
+		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 
 		$this->form_validation->set_rules('year', 'Year', 'required');
 		$this->form_validation->set_rules('month', 'Month', 'required');
