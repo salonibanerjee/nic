@@ -43,17 +43,8 @@ class summary extends MY_Controller {
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
 		//$this->load->view('dashboard/container');
-		$this->load->model('Sup_admin');
-		$scheme_count = $this->Sup_admin->schemes_count();
-		$info_box = array(
-			'data_list' => array(
-				array('num' => $scheme_count, 'desc' => 'Number of Schemes','color'=>'indigo','icon'=>'ion-stats-bars'),
-				array('num' => '15', 'desc' => 'Body 2','color'=>'yellow','icon'=>'ion-person'),
-				array('num' => '19', 'desc' => 'Body 3','color'=>'teal','icon'=>'ion-calendar')
-			)
-		);
 		
-		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
+		//IMP: INFO BOX MOVED AFTER ALERT
 
 		//============================================================
 
@@ -392,6 +383,43 @@ class summary extends MY_Controller {
 		$table_data = array('data' => $fits );
 
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
+
+		//==================== INFO BOX =====================================
+
+		$best_scheme;
+		$worst_scheme;
+		try{
+			$best_scheme = $schemename_alert[0];
+			$worst_scheme = $schemename_alert[0];
+			$max_scheme = $data[0];
+			$min_scheme = $data[0];
+			for($i=1;$i<sizeof($data);$i++){
+				if($max_scheme<$data[$i]){
+					$max_scheme=$data[$i];
+					$best_scheme=$schemename_alert[$i];
+				}
+				if($min_scheme>$data[$i]){
+					$min_scheme=$data[$i];
+					$worst_scheme=$schemename_alert[$i];
+				}
+			}
+		}
+		catch(Exception $e){
+			$best_scheme="No Active Scheme Found";
+			$worst_scheme="No Active Scheme Found";
+		}
+
+		$this->load->model('Sup_admin');
+		$scheme_count = $this->Sup_admin->schemes_count();
+		$info_box = array(
+			'data_list' => array(
+				array('num' => $scheme_count, 'desc' => 'Number of Schemes','color'=>'indigo','icon'=>'ion-stats-bars'),
+				array('num' => $max_scheme.'%', 'desc' => $best_scheme,'color'=>'yellow','icon'=>'ion-person'),
+				array('num' => $min_scheme.'%', 'desc' => $worst_scheme,'color'=>'teal','icon'=>'ion-calendar')
+			)
+		);
+		
+		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
 
 		//======================================================================
 		//=========== PASSING ALL DATA TO CONTAINER ============================

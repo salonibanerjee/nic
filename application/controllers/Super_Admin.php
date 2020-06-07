@@ -704,6 +704,17 @@ function seek_record(){
 	}
 	function audit_view()
 	{
+		//mandatory
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+	// ends here
 		$this->load->model('Sup_Admin');
 		$data['audit']=$this->Sup_Admin->get_user_details();
 		$data['login_as']=array();
