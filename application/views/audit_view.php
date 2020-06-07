@@ -23,7 +23,8 @@
             <h3 class="card-title">Audit Log Data</h3>
             <form class="float-sm-right" method="post">
               <input type="text" name="search_text" onkeyup="myFunction()" id="myInput" placeholder="Search for E-mail...">
-              <input type="date" name="search_date" onchange="myFunction()" id="myInputdate" placeholder="Pick Date"><br>
+              <input type="date" name="search_date" onchange="myFunction()" id="myInputdate" placeholder="Pick Date">
+              <input type="button" name="reset" value="Clear" onclick="window.location.reload()">
             </form>
           </div>
           <!-- /.card-header -->

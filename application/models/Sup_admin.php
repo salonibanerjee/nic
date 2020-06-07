@@ -191,7 +191,7 @@ class Sup_admin extends CI_Model {
 	public function get_user_details()
 	{
 		$attri=array('section','action','request','comment','ip_addr','timestamp','login_id_fk');
-		$this->db->select($attri)->from('mpr_trans_audit_log');
+		$this->db->select($attri)->from('mpr_trans_audit_log')->order_by('audit_id_pk','DESC');
 		return $this->db->get()->result_array();
 	}
 	public function get_log_id($name)
