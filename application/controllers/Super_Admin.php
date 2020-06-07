@@ -510,75 +510,157 @@ function seek_record(){
 	$data;
 	$this->load->model('seek_record_model');
 	$da['check'] = "false";
-	//if ($da['check'] == 'false'){
+	
+
+
+	$validate = array(
+		array(
+				'field' => 'uname',
+				'label' => 'Username',
+				'rules' => 'required|valid_email',
+				'errors' => array(
+						'required' => 'You must provide a %s.',
+				)
+		),
+		array(
+				'field' => 'scheme',
+				'label' => 'Scheme Name',
+				'rules' => 'required|alpha|max_length[50]',
+				'errors' => array(
+						'required' => 'You must provide a %s.',
+				),
+		),
+		array(
+				'field' => 'nodal',
+				'label' => 'Nodal',
+				'rules' => 'required|integer',
+				'errors' => array(
+					'required' => 'You must provide a %s.',
+			),
+		),
+		array(
+				'field' => 'year',
+				'label' => 'Year',
+				'rules' => 'required|numeric|exact_length[4]',
+				'errors' => array(
+					'required' => 'You must provide a %s.',
+			),
+		),
+		array(
+			'field' => 'smonth',
+			'label' => 'Starting Month',
+			'rules' => 'required|max_length[2]',
+			'errors' => array(
+				'required' => 'You must provide a %s.',
+		),
+		),
+		array(
+			'field' => 'fmonth',
+			'label' => 'Final Month',
+			'rules' => 'required|max_length[2]',
+			'errors' => array(
+				'required' => 'You must provide a %s.',
+		),
+		),
+	);
+	$this->form_validation->set_rules($validate);
+	if ($this->form_validation->run() == FALSE){
+		$da['fields'] = "";
+		$da['dad'] = "";
 		$this->load->view('seek_record',$da);
-		if(isset($_POST['sub1'])){
-			$username = $this->input->post('uname');
-			$scheme = $this->input->post('scheme');
-			$nodal = $this->input->post('nodal');
-			$year = $this->input->post('year');
-			$smonth = $this->input->post('smonth');
-			$fmonth = $this->input->post('fmonth');
-			//$data = $this->seek_record_model->fetch_details($username);
-			$da['check'] = 'true';
-			//$res=$this->profile_model->get_f($this->session->userdata('uid'));
+	}
 
-			$i=0;
-			$fields = array();
-			$table = 'mpr_scheme_'.$scheme.'_backup';  
-			//$field_data = $this->db->field_data($table);
-			$fields = $this->db->list_fields($table);
-			$d = $this->seek_record_model->filter_data($username,$table,$smonth,$fmonth,$year);
-			$dat = array();
-			$dad = array();
-			foreach($fields as $da){
-				$dat[]= $da;
-				//$i++;
-			//	print_r($da->login_id_fk);
-			//	$i++;
-			//	
-			}
 
-			foreach($d as $da){
-				$dad[]= $da;
-				//$i++;
-			//	print_r($da->login_id_fk);
-			//	$i++;
-			//	
-			}
-			$da['fields'] = $dat;
-			$da['filter_data'] = $dad;
-			//foreach ($dat as $field){
-				print_r($d);
-			//}
 
-			/*
-			$table = 'mpr_scheme_'.$scheme.'_backup';  
-			$da['field_data'] = $this->db->field_data($table);
-			$da['fields'] = $this->db->list_fields($table);
-			$dat = array();
-			foreach($da['field_data'] as $da){
-				$dat[]= $da;
-				//$i++;
-				
-				$i++;
-				
+
+	else{
+			//if ($da['check'] == 'false'){
+				$da['check'] = "false";
+				if(isset($_POST['sub1'])){
+					$username = $this->input->post('uname');
+					$scheme = $this->input->post('scheme');
+					$nodal = $this->input->post('nodal');
+					$year = $this->input->post('year');
+					$smonth = $this->input->post('smonth');
+					$fmonth = $this->input->post('fmonth');
+					//$data = $this->seek_record_model->fetch_details($username);
+					$da['check'] = 'true';
+					//$res=$this->profile_model->get_f($this->session->userdata('uid'));
+
+					$i=0;
+					$fields = array();
+					$table = 'mpr_scheme_'.$scheme.'_backup';  
+					//$field_data = $this->db->field_data($table);
+					$fields = $this->db->list_fields($table);
+					$d = $this->seek_record_model->filter_data($username,$table,$smonth,$fmonth,$year,$nodal);
+					if($d == NULL){ ?>
+						<script> alert("No record found")</script> <?php
+						
+						header("Location: http://localhost/NIC/index.php/Super_Admin/seek_record");
+						//$this->load->view('seek_record',$da);
+						exit();
+					}
+					else{
+						
+						if($d != 0){
+						$dat = array();
+						$dad = array();
+						foreach($fields as $da){
+							$dat[]= $da;
+							//$i++;
+						//	print_r($da->login_id_fk);
+						//	$i++;
+						//	
+						}
+
+						foreach($d as $da){
+							$dad[]= $da;
+							//$i++;
+						//	print_r($da->login_id_fk);
+						//	$i++;
+						//	
+						}
+						
+
+						$da['fields'] = $dat;
+						//$da['filter_data'] = $dad;
+						//foreach ($dat as $field){
+							//print_r($dad);
+							$da['dad'] = $dad;
+							$this->load->view('seek_record',$da);
+						//}
+
+						/*
+						$table = 'mpr_scheme_'.$scheme.'_backup';  
+						$da['field_data'] = $this->db->field_data($table);
+						$da['fields'] = $this->db->list_fields($table);
+						$dat = array();
+						foreach($da['field_data'] as $da){
+							$dat[]= $da;
+							//$i++;
+							
+							$i++;
+							
+						}
+						print_r($dat);
+						//print_r($da['fields']);
+						
+						*/
+						}
+						
+						
+					}
+				}
+				//}
+					//else {
+					//	$da['check'] = "true";
+					//	print_r($data);
+					//}
+					//$this->load->view('show_record',$da);
+					//header("location: http://localhost/NIC/index.php/Super_Admin/show_record");
 			}
-			print_r($dat);
-			//print_r($da['fields']);
-			
-			*/
-			
-			
-		}
-	//}
-		//else {
-		//	$da['check'] = "true";
-		//	print_r($data);
-		//}
-		//$this->load->view('show_record',$da);
-		//header("location: http://localhost/NIC/index.php/Super_Admin/show_record");
-		}
+		
+	}
 	function show_record(){
 		$this->load->view('show_record');
 
