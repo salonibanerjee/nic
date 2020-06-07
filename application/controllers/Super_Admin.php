@@ -28,7 +28,8 @@ class Super_Admin extends MY_Controller {
 		$data['audit_count']= $this->Sup_admin->audit_count();
 		$data['year_range'] = $this->Crud_model->dba_fyear_range();
 		$data['month']=array("NULL","January","February","March","April","May","June","July","August","Semptember","October","November","December");
-        $this->load->view('super_admin_view',$data);
+		$this->load->view('super_admin_view',$data);
+		$this->load->view('dashboard/footer');
     }
     
     public function meeting_schedule(){
@@ -80,6 +81,8 @@ class Super_Admin extends MY_Controller {
 											$start_time.' - '.$end_time);
 			$this->db->trans_complete();
 		}
+
+		$this->load->view('dashboard/footer');
     }
     
     public function notification(){
@@ -119,7 +122,9 @@ class Super_Admin extends MY_Controller {
                                             'Notification Inserted - '.$noti_head,
 											'Custom Message here');
 			$this->db->trans_complete();
-        }
+		}
+		
+		$this->load->view('dashboard/footer');
 	}
 	
 	public function dba_fyear_range(){
@@ -159,6 +164,8 @@ class Super_Admin extends MY_Controller {
 			$this->db->trans_complete();
 			
 		}
+
+		$this->load->view('dashboard/footer');
 	}
 
 
@@ -191,6 +198,8 @@ class Super_Admin extends MY_Controller {
                                             $this->session->userdata('uid'));
 		$this->db->trans_complete();
 		$this->load->view('signup');
+
+		$this->load->view('dashboard/footer');
     }
 	public function signupdo(){
 		$chars_min=8;
@@ -268,7 +277,8 @@ class Super_Admin extends MY_Controller {
 
 	   }
 	   echo json_encode($result);
-     }
+	 }
+	 
 	 function location_data()  //get all records from database  
 	 {
 		$result;
@@ -399,6 +409,7 @@ class Super_Admin extends MY_Controller {
 							'Custom message here');
 		$this->db->trans_complete();
 		$this->load->view('view_user',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_login() //load a form with data to be updated
  	{
@@ -456,6 +467,7 @@ class Super_Admin extends MY_Controller {
 		$this->db->trans_complete();
 		  //print_r($data);
 		$this->load->view('view_user_privilege',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_user_privilege() //load a form with data to be updated
  	{
@@ -515,6 +527,7 @@ class Super_Admin extends MY_Controller {
 							'Custom message here');
 		$this->db->trans_complete();
 		$this->load->view('view_user_type',$data); 
+		$this->load->view('dashboard/footer');
   	}
 	function inactive_user_type() //load a form with data to be updated
  	{
@@ -572,6 +585,7 @@ class Super_Admin extends MY_Controller {
 							  'Custom message here');
 		  $this->db->trans_complete();
 		 $this->load->view('page_view',$data); 
+		 $this->load->view('dashboard/footer');
   	}
 	function inactive_page_view() //load a form with data to be updated
  	{
