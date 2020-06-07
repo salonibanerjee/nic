@@ -211,8 +211,8 @@
       </div>
 
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-
-<script type="text/javascript">
+<script src="http://localhost/NIC/js/notify.js"></script>
+<script type="text/javascript" >
 
 function myFunction() {
 // Declare variables
@@ -278,6 +278,7 @@ $("#form").on("submit", function (event) {
         $('#errors').html("");
         $("form")[0].reset();
         $("#div123").load(location.href + " #div123");
+        $(".btn").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }
