@@ -99,18 +99,18 @@
 
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-pink">
+            <div class="small-box bg-lime">
               <div class="inner">
                 <h3><?php echo $schemes_count; ?></h3>
 
-                <p>Schemes Active</p>
+                <p>Show Schemes Record</p>
               </div>
               <div class="icon">
-                <i class="fa  fa-strikethrough"></i>
+                <i class="fas fa-th-list"></i>
               </div>
-              <a href="#" class="small-box-footer">Add More <i class="fas fa-arrow-circle-right"></i></a>
-            </div><!--small box-->
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/seek_record" class="small-box-footer bg-success">Show Record <i class="fas fa-arrow-circle-right"></i></a>
             </div>
+          </div>
 
             <div class="col-lg-3 col-6">
             <!-- small box -->
@@ -143,22 +143,6 @@
             </div>
         </div>
 <!--------------------------------------- -->
-        <div class="row">
-          <div class="col-lg-3 col-6">
-            <!-- small box -->
-            <div class="small-box bg-yellow">
-              <div class="inner">
-                <h3><?php echo ""; ?></h3>
-
-                <p>Show Record</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-person-add"></i>
-              </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/seek_record" class="small-box-footer bg-orange">Show Record <i class="fas fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-          </div>
 
 
 
