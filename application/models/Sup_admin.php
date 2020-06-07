@@ -188,6 +188,16 @@ class Sup_admin extends CI_Model {
 	  $this->db->update("mpr_semitrans_privilege",$data);
 		return true;
 	}
+	public function get_user_details()
+	{
+		$attri=array('section','action','request','comment','ip_addr','timestamp','login_id_fk');
+		$this->db->select($attri)->from('mpr_trans_audit_log');
+		return $this->db->get()->result_array();
+	}
+	public function get_log_id($name)
+	{
+		return $this->db->select('username')->from('mpr_semitrans_login')->where('login_id_pk',$name)->get()->result_array()[0]['username'];
+	}
 }
 	
 ?>

@@ -697,8 +697,22 @@ function seek_record(){
 		//$this->load->view('show_record',$da);
 		//header("location: http://localhost/NIC/index.php/Super_Admin/show_record");
 		}
-	function show_record(){
+	function show_record()
+	{
 		$this->load->view('show_record');
+
+	}
+	function audit_view()
+	{
+		$this->load->model('Sup_Admin');
+		$data['audit']=$this->Sup_Admin->get_user_details();
+		$data['login_as']=array();
+		foreach ($data['audit'] as $key) 
+		{
+			array_push($data['login_as'],$this->Sup_Admin->get_log_id($key['login_id_fk']));
+		}
+		$this->load->view('audit_view',$data);
+
 
 	}
 }

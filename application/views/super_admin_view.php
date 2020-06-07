@@ -123,7 +123,7 @@
               <div class="icon">
                 <i class="fa  fa-history"></i>
               </div>
-              <a href="#" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/audit_view" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
 
@@ -159,6 +159,8 @@
             </div>
           </div>
           </div>
+
+
 
 
 
