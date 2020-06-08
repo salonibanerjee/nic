@@ -739,6 +739,7 @@ function seek_record(){
 					//$res=$this->profile_model->get_f($this->session->userdata('uid'));
 					$dam['scheme_name']=$scheme;
 					$dam['scheme_attri']=$this->seek_record_model->attri($scheme);
+					$dam['nodal']=$nodal;
 					$i=0;
 					$fields = array();
 

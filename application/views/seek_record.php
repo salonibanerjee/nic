@@ -97,9 +97,10 @@
     <?php if ($fields != NULL){ 
             $i =0;?>
             <div class="card-header">
-              <h3 class="card-title"><?php foreach($scheme as $row){if($scheme_name==$row['short_name']) echo $row['name'];}?></h3>
+              <h2 class="card-title"><?php foreach($scheme as $row){if($scheme_name==$row['short_name']) echo $row['name'];}?></h2>
             </div>
             <div class="card-body">
+              <h4><b>Nodal Check: </b><?php if($nodal==1){echo 'Accepted';}elseif($nodal==-1){echo "Rejected";}else{echo "Never Checked";}?></h4>
               <table class="table table-bordered table-striped table-hover table-responsive">
                 <thead>
                 <tr>
