@@ -630,6 +630,9 @@ function seek_record(){
 	// ends here
 	$this->load->model('seek_record_model');
 	$schme = $this->seek_record_model->get_scheme();
+	$this->load->model('Crud_model');
+	$dam['year_range'] = $this->Crud_model->dba_fyear_range();
+	$dam['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 	$dam['fields'] = "";
 	$dam['scheme'] = $schme;
 	$dam['dad'] = "";

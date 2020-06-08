@@ -46,24 +46,40 @@
               <div class="form-group">
                 <label>Nodal Value</label>
                 <select class="form-control" id ="nodal" name= "nodal" >
-                  <option value="-1">-1</option>
-                  <option value="0">0</option>
-                  <option value="1">1</option>
+                  <option value="-1">Discarded Data</option>
+                  <option value="0">Data that is never checked</option>
+                  <option value="1">Accepted Data</option>
                   </select>
                   </div>
               <div class="form-group">
                 <label for="year">Year</label>
-                <input type="text" name="year" class="form-control" id="year" placeholder="Enter Year" value="<?php if(form_error('year')){echo set_value('year');}else{echo "";}?>">
+                <select name="year" class="form-control" id="year">
+                <?php $year=intval(date('Y')); 
+                echo "<option value='".$year."' selected>".$year."</option>";
+                for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
+                              echo "<option value='".$x."'>".$x."</option>";
+                            }?>
+                </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('year'); ?></small></p>
               </div>
               <div class="form-group">
                 <label for="smonth"> Starting Month</label>
-                <input type="text" class="form-control" id="smonth" name="smonth" placeholder="Enter Starting Month" value="<?php if(form_error('smonth')){echo set_value('smonth');}else{echo "";}?>">
+                <select class="form-control" id="smonth" name="smonth">
+                <option value='1' selected>January</option>
+                <?php for($x=2;$x<=12;$x++){
+                            echo "<option value='".$x."'>".$month[$x]."</option>";
+                          }?>
+                </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('smonth'); ?></small></p>
               </div>
               <div class="form-group">
                 <label for="fmonth">Final Month</label>
-                <input type="text" class="form-control" id="fmonth" name="fmonth" placeholder="Enter Final Month" value="<?php if(form_error('fmonth')){echo set_value('fmonth');}else{echo "";}?>">
+                <select class="form-control" id="fmonth" name="fmonth">
+                <option value='1' selected>January</option>
+                <?php for($x=2;$x<=12;$x++){
+                            echo "<option value='".$x."'>".$month[$x]."</option>";
+                          }?>
+                </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('fmonth'); ?></small></p>
               </div>
             </div>
