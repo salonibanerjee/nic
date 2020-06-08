@@ -737,13 +737,12 @@ function seek_record(){
 					//$data = $this->seek_record_model->fetch_details($username);
 					$dam['check'] = 'true';
 					//$res=$this->profile_model->get_f($this->session->userdata('uid'));
-
+					$dam['scheme_name']=$scheme;
+					$dam['scheme_attri']=$this->seek_record_model->attri($scheme);
 					$i=0;
 					$fields = array();
 
 					$table =$scheme.'_backup';  
-					print_r($table);
-					//$field_data = $this->db->field_data($table);
 					$fields = $this->db->list_fields($table);
 					$d = $this->seek_record_model->filter_data($username,$table,$smonth,$fmonth,$year,$nodal);
 					if($d == NULL){ ?>

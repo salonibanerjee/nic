@@ -5,11 +5,11 @@
     <div class="container-fluid">
       <div class="row mb-2">
         <div class="col-sm-6">
-          <h1>Show Record</h1>
+          <h1>SHOW <b>RECORD</b></h1>
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Super_Admin">Super Admin</a></li>
             <li class="breadcrumb-item active">Show Record</li>
           </ol>
         </div>
@@ -19,17 +19,18 @@
  
 
   <section class="content">
+  <div class="row">
+        <div class="col-md-4">
     <div class="container-fluid">
       <!-- general form elements -->
-      <div class="card card-primary mx-auto" style="max-width: 700px">
+      <div class="card card-primary mx-auto">
         
         <!-- form start -->
-        
           <div class="card-body">
             <?php
               echo form_open_multipart("");
             ?>
-              <h3 class="profile-username text-center"><b><?php echo "Fill up the details to see record";?></b></h3>
+              <h3 class="profile-username text-center"><b><?php echo "Enter Record Details";?></b></h3>
               <div class="form-group">
                 <label for="uname">Username</label>
                 <input type="text" class="form-control" name = "uname" id="uname" placeholder="Enter Username" value="<?php if(form_error('uname')){echo set_value('uname');}else{echo "";}?>">
@@ -46,9 +47,9 @@
               <div class="form-group">
                 <label>Nodal Value</label>
                 <select class="form-control" id ="nodal" name= "nodal" >
-                  <option value="-1">Discarded Data</option>
-                  <option value="0">Data that is never checked</option>
                   <option value="1">Accepted Data</option>
+                  <option value="0">Data that is never checked</option>
+                  <option value="-1">Discarded Data</option>
                   </select>
                   </div>
               <div class="form-group">
@@ -90,11 +91,17 @@
           </div>
       </div>
     </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card card-primary mx-auto">
     <?php if ($fields != NULL){ 
             $i =0;?>
+            <div class="card-header">
+              <h3 class="card-title"><?php foreach($scheme as $row){if($scheme_name==$row['short_name']) echo $row['name'];}?></h3>
+            </div>
             <div class="card-body">
               <table class="table table-bordered table-striped table-hover table-responsive">
-                <thead class="bg-success">
+                <thead>
                 <tr>
       <?php foreach($fields as $key){
                 if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
@@ -109,7 +116,10 @@
                   $i++;
                 }
                 else{
-                  echo "<th>".$key."</th>";
+                  foreach($scheme_attri as $row){
+                    if($key==$row['attri_name'])
+                      echo "<th>".$row['actual_name']."</th>";
+                  }
                   $i++;
                 }
             } 
@@ -140,11 +150,16 @@
 
       <?php } ?>
             <?php if ($fields == NULL){ ?>
-              <div class="col-sm-6">
-                <h1>No Record to Show</h1>
-              </div>
+              <div class="card-body">
+              <table class="table table-bordered table-striped table-hover">
+              <thead><tr><th><center>Records Table</center></th></tr></thead>
+              <tbody><tr><td><center>No Records To Show</center></td></tr><tbody>
+            </div>
       
             <?php } ?>
+            </div>
+            </div>
+            </div>
           
   <section>
 </div>

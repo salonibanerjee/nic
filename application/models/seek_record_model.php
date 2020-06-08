@@ -16,8 +16,7 @@ class seek_record_model extends CI_Model {
     }
     public function get_scheme(){
 
-        $this->db->select('short_name');
-        $this->db->select('name');
+        $this->db->select('*');
         $this->db->from('mpr_master_scheme_table');
         $query=$this->db->get()->result_array();
         return $query;
@@ -39,6 +38,17 @@ class seek_record_model extends CI_Model {
         }else{
                 return 0;
         }
-}
+    }
+
+    public function attri($name){
+        $var = $this->get_scheme();
+        $scheme_id=0;
+        foreach($var as $row){
+            if($row['short_name']==$name)
+                $scheme_id=$row['scheme_id_pk'];
+        }
+        $query=$this->db->select('*')->from('mpr_master_attri_table')->where('scheme_id_fk',$scheme_id)->get()->result_array();
+        return $query;
+    }
 	
 }
