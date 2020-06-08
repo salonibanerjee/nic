@@ -22,8 +22,9 @@
           <div class="card-header">
             <h3 class="card-title">Audit Log Data</h3>
             <form class="float-sm-right" method="post">
-              <input type="text" name="search_text" onkeyup="myFunction()" id="myInput" placeholder="Search for E-mail ...">
-              <input type="date" name="search_date" onchange="myFunction1()" id="myInputdate" placeholder="Pick Date"><br>
+              <input type="text" name="search_text" onkeyup="myFunction()" id="myInput" placeholder="Search for E-mail...">
+              <input type="date" name="search_date" onchange="myFunction()" id="myInputdate" placeholder="Pick Date">
+              <input type="button" name="reset" value="Clear" onclick="window.location.reload()">
             </form>
           </div>
           <!-- /.card-header -->
@@ -91,39 +92,27 @@
 
 <script>
 function myFunction() {
-  var input, filter, table, tr, td, i, txtValue;
+  var input, filter, table, tr, td,td2, i, txtValue,txtValue2,input2,filter2;
   input = document.getElementById("myInput");
-  filter = input.value.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}
-function myFunction1() {
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInputdate");
   filter = input.value.toString();
+  input2 = document.getElementById("myInputdate");
+  filter2 = input2.value.toString();
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[7];
-    if (td) {
+  for (i = 0; i < tr.length; i++) 
+  {
+    td = tr[i].getElementsByTagName("td")[1];
+    td2= tr[i].getElementsByTagName("td")[7];
+    if (td || td2) 
+    {
       txtValue = td.textContent || td.innerText;
-      if (txtValue.indexOf(filter) > -1) {
+      txtValue2 = td2.textContent || td2.innerText;
+      if (txtValue.indexOf(filter) > -1 && txtValue2.indexOf(filter2) > -1) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
       }
-    }       
+    } 
   }
 }
 </script>
