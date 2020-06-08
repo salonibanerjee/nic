@@ -14,6 +14,15 @@ class seek_record_model extends CI_Model {
         
         return $data;
     }
+    public function get_scheme(){
+
+        $this->db->select('short_name');
+        $this->db->select('name');
+        $this->db->from('mpr_master_scheme_table');
+        $query=$this->db->get()->result_array();
+        return $query;
+
+    }
 
     public function filter_data($uname,$table,$sm,$fm,$yr,$nodal){
         $data = $this->fetch_details($uname);

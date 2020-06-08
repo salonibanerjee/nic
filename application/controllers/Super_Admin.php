@@ -624,10 +624,33 @@ function seek_record(){
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 	// ends here
+	$this->load->model('seek_record_model');
+	$schme = $this->seek_record_model->get_scheme();
+	$dam['fields'] = "";
+	$dam['scheme'] = $schme;
+	$dam['dad'] = "";
+	//print_r ($schme);
+	//$s_name = array();
+	//$l_name = array();
+	/*foreach($schme as $key){
+		foreach ($key as $result=>$value){
+			if($result == 'name'){
+				$l_name[] = $value;
+			}
+			else{
+				$s_name[] = $value;
+			}
+		}
+	}
+	print_r($l_name);
+	print_r($s_name);
+	$da['s_name'] = $s_name;
+	$da['l_name'] = $l_name;*/
+	
 	
 	$data;
-	$this->load->model('seek_record_model');
-	$da['check'] = "false";
+	
+	$dam['check'] = "false";
 	
 
 
@@ -643,7 +666,7 @@ function seek_record(){
 		array(
 				'field' => 'scheme',
 				'label' => 'Scheme Name',
-				'rules' => 'required|alpha|max_length[50]',
+				'rules' => 'required|max_length[50]',
 				'errors' => array(
 						'required' => 'You must provide a %s.',
 				),
@@ -683,9 +706,8 @@ function seek_record(){
 	);
 	$this->form_validation->set_rules($validate);
 	if ($this->form_validation->run() == FALSE){
-		$da['fields'] = "";
-		$da['dad'] = "";
-		$this->load->view('seek_record',$da);
+
+		$this->load->view('seek_record',$dam);
 	}
 
 
@@ -693,7 +715,11 @@ function seek_record(){
 
 	else{
 			//if ($da['check'] == 'false'){
-				$da['check'] = "false";
+				$dam['check'] = "false";
+				$schme = $this->seek_record_model->get_scheme();
+				$dam['fields'] = "";
+				$dam['scheme'] = $schme;
+				$dam['dad'] = "";
 				if(isset($_POST['sub1'])){
 					$username = $this->input->post('uname');
 					$scheme = $this->input->post('scheme');
@@ -702,12 +728,14 @@ function seek_record(){
 					$smonth = $this->input->post('smonth');
 					$fmonth = $this->input->post('fmonth');
 					//$data = $this->seek_record_model->fetch_details($username);
-					$da['check'] = 'true';
+					$dam['check'] = 'true';
 					//$res=$this->profile_model->get_f($this->session->userdata('uid'));
 
 					$i=0;
 					$fields = array();
-					$table = 'mpr_scheme_'.$scheme.'_backup';  
+
+					$table =$scheme.'_backup';  
+					print_r($table);
 					//$field_data = $this->db->field_data($table);
 					$fields = $this->db->list_fields($table);
 					$d = $this->seek_record_model->filter_data($username,$table,$smonth,$fmonth,$year,$nodal);
@@ -740,12 +768,12 @@ function seek_record(){
 						}
 						
 
-						$da['fields'] = $dat;
+						$dam['fields'] = $dat;
 						//$da['filter_data'] = $dad;
 						//foreach ($dat as $field){
 							//print_r($dad);
-							$da['dad'] = $dad;
-							$this->load->view('seek_record',$da);
+							$dam['dad'] = $dad;
+							$this->load->view('seek_record',$dam);
 						//}
 
 						/*

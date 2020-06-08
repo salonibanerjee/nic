@@ -36,15 +36,21 @@
                 <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
-                <label for="scheme">Scheme Name</label>
-                <input type="text" class="form-control" name="scheme" id="scheme" placeholder="Enter Scheme Name" value="<?php if(form_error('scheme')){echo set_value('scheme');}else{echo "";}?>">
-                <p class='error invalid-feedback'><small><?php echo form_error('scheme'); ?></small></p>
+                <label>Scheme Name</label>
+                <select class="form-control" id ="scheme" name= "scheme" >
+                  <?php  foreach($scheme as $key){ 
+                   echo "<option value=".$key['short_name'].">".$key['name']."</option>";
+                  } ?>
+                </select>
               </div>
               <div class="form-group">
-                <label for="nodal">Nodal value (0 or 1 or -1)</label>
-                <input type="text" class="form-control" name="nodal" id="nodal" placeholder="Enter Nodal Value" value="<?php if(form_error('nodal')){echo set_value('nodal');}else{echo $m_name;}?>">
-                <p class='error invalid-feedback'><small><?php echo form_error('nodal'); ?></small></p>
-              </div>
+                <label>Nodal Value</label>
+                <select class="form-control" id ="nodal" name= "nodal" >
+                  <option value="-1">-1</option>
+                  <option value="0">0</option>
+                  <option value="1">1</option>
+                  </select>
+                  </div>
               <div class="form-group">
                 <label for="year">Year</label>
                 <input type="text" name="year" class="form-control" id="year" placeholder="Enter Year" value="<?php if(form_error('year')){echo set_value('year');}else{echo "";}?>">
@@ -94,6 +100,8 @@
             
 
       ?>
+
+      
       </tr>
       </thead>
       <tbody>
@@ -114,9 +122,14 @@
                     } ?>
 
 
-      <?php }
-        else
-          {} ?>
+      <?php } ?>
+            <?php if ($fields == NULL){ ?>
+              <div class="col-sm-6">
+                <h1>No Record to Show</h1>
+              </div>
+      
+            <?php } ?>
+          
   <section>
 </div>
 <script>
