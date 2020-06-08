@@ -249,6 +249,10 @@ class Super_Admin extends MY_Controller {
 			    $id =$res->login_id_pk;
 				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 				$this->Sup_admin->add_check_first_user($data1);
+				$subject = "One Time Password For Login";
+		    	$body = "Greetings,\nTo login in MPR portal your password is:\n".$password."\nThank you!\nHave a nice day.";
+            	$headers = "From: MPR Portal";
+            	$xy=mail($uname, $subject, $body, $headers);
 			}
 			else{ 
 				echo "Data is not Added";

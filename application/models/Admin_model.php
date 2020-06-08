@@ -150,7 +150,7 @@ class Admin_model extends CI_Model {
     }
     public function update_first_pass($username){
         $row=$this->db->get_where('mpr_semitrans_login',array('username'=>$username))->row();
-        $this->db->where('user_id_pk',$row->id);
+        $this->db->where('user_id_pk',$row->login_id_pk);
         $this->db->update('mpr_semitrans_check_first_user',array('check_if_first_user' => 0 ));
     }
     public function meeting_schedule($data){

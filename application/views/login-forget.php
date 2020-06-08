@@ -94,7 +94,7 @@ $("form").on("submit", function (event){
         $('#errors').html(result.slice(0,pos));
       }else{
         if(result[0]=='*'){
-          alert("Email is nt sent...");
+          alert("Email is not sent...");
           window.location.href = result.slice(1);
         }else{
           window.location.href = result;
