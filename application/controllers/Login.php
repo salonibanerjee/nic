@@ -82,7 +82,7 @@ class Login extends MY_Controller {
     }
     //to logout and destroy the session and redirects back to login page
     public function logout(){
-        if(!isset($_SESSION['logged_in']))
+        if($this->session->userdata('logged_in')=="")
             header("Location: http://localhost/NIC/index.php/Login");
         else{
             $this->load->model('Crud_model');

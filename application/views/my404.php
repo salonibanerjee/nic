@@ -38,8 +38,13 @@
 			</div>
 			<h1>OOPS!</h1>
             <h2>Page Not Found OR Access Denied</h2>
-            <?php $var=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
-			 echo "<a href='http://localhost/NIC/index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']."'>go back</a>";?>
+			<?php if($this->session->userdata('logged_in')==""){ 
+					$var=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
+					 echo "<a href='http://localhost/NIC/index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']."'>go back</a>";
+				}else{
+					echo "<a href='http://localhost/NIC/index.php/Login'>Login</a>";
+				}		 
+			?>
 		</div>
 	</div>
 

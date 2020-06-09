@@ -123,7 +123,7 @@
               <div class="icon">
                 <i class="fa  fa-history"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/audit_view" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/audit_log" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
 

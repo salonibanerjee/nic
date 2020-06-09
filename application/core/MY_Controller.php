@@ -2,9 +2,12 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
-    public function abc(){
-        echo "abc";
-    }
+    public function __construct(){
+		parent::__construct();
+		//sif($this->session->userdata('logged_in')==""){
+          //  header("Location: http://localhost/NIC/index.php/Login"); 
+        //}
+	}
     public function check_privilege($page_id = NULL){
         $this->load->driver('cache', array('adapter' => 'file'));
         $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];

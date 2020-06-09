@@ -4,6 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Nodal_check extends MY_Controller {
 
 	public function index(){	
+		if($this->session->userdata('logged_in')=="")
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->cache_update();
 		$this->check_privilege(7);
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -11,8 +13,6 @@ class Nodal_check extends MY_Controller {
 		$this->load->model('Crud_model');
 		$this->load->model('NodalCheck_model');
 		$this->load->model('Admin_model');
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
         $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $row = $row = $this->Admin_model->previous_meeting_schedule();
         $this->load->driver('cache',array('adapter' => 'file'));

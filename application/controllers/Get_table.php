@@ -7,12 +7,12 @@ class Get_table extends MY_Controller {
     }
 
     public function load($n=""){
+        if($this->session->userdata('logged_in')=="")
+			header("Location: http://localhost/NIC/index.php/Login");
         $this->cache_update();
         $this->check_privilege(5);
         $this->scheme_privilege();
         //Load 'CRUD' model
-        if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
         $this->load->model('profile_model');
         $this->load->model('Crud_model');
         $this->load->model('Admin_model');

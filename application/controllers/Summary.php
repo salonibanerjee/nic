@@ -5,10 +5,10 @@ class summary extends MY_Controller {
 
 	public function index()
 	{	
+		if($this->session->userdata('logged_in')=="")
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->cache_update();
 		$this->check_privilege(1);
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -432,10 +432,12 @@ class summary extends MY_Controller {
 	}
 	
 	public function profile(){
+		if($this->session->userdata('logged_in')==""){
+			header("Location: http://localhost/NIC/index.php/Login");
+			exit;
+		}
 		$this->cache_update();
 		$this->load->model('Crud_model');
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -461,11 +463,11 @@ class summary extends MY_Controller {
 	}
 
 	public function edit_profile(){
+		if($this->session->userdata('logged_in')=="")
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->load->model('Crud_model');
 		$this->cache_update();
 		$this->check_privilege(4);
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
@@ -588,11 +590,11 @@ class summary extends MY_Controller {
 	}
 
 	public function password_change_within(){
+		if($this->session->userdata('logged_in')=="")
+			header("Location: http://localhost/NIC/index.php/Login");
 		$this->cache_update();
 		$this->load->model('Crud_model');
 		$this->check_privilege(3);
-		if(!isset($_SESSION['logged_in']))
-			header("Location: http://localhost/NIC/index.php/Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$this->load->model('profile_model');
