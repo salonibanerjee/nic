@@ -3,7 +3,7 @@
       <!-- Small boxes (Stat box) -->
       <div class="row">
         {data_list}
-        <div class="col-lg-3 col-6">
+        <div class="col-lg-4 col-6">
           <!-- small box -->
           <div class="small-box bg-{color}">
             <div class="inner">

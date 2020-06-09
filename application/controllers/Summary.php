@@ -386,9 +386,11 @@ class summary extends MY_Controller {
 
 		//==================== INFO BOX =====================================
 
+		$max_scheme;
+		$min_scheme;
 		$best_scheme;
 		$worst_scheme;
-		try{
+		if(sizeof($data) != 0){
 			$best_scheme = $schemename_alert[0];
 			$worst_scheme = $schemename_alert[0];
 			$max_scheme = $data[0];
@@ -403,8 +405,13 @@ class summary extends MY_Controller {
 					$worst_scheme=$schemename_alert[$i];
 				}
 			}
+			
+			$max_scheme = $max_scheme.'%';
+			$min_scheme = $min_scheme.'%';
 		}
-		catch(Exception $e){
+		else{
+			$max_scheme = "NA";
+			$min_scheme = "NA";
 			$best_scheme="No Active Scheme Found";
 			$worst_scheme="No Active Scheme Found";
 		}
@@ -416,8 +423,8 @@ class summary extends MY_Controller {
 		$info_box = array(
 			'data_list' => array(
 				array('num' => $s_count, 'desc' => 'Number of Schemes for Current User','color'=>'yellow','icon'=>'ion-stats-bars','tot' =>$pec.'%','text'=>$s_count.' Out of '.$scheme_count.' schemes'),
-				array('num' => $max_scheme.'%', 'desc' => $best_scheme,'color'=>'success','icon'=>'ion-checkmark','tot'=>$max_scheme.'%', 'text'=>'Best Scheme Performance:'.$max_scheme.'%'),
-				array('num' => $min_scheme.'%', 'desc' => $worst_scheme,'color'=>'danger','icon'=>'ion-close','tot'=>$min_scheme.'%', 'text'=>'Worst Scheme Performance:'.$min_scheme.'%')
+				array('num' => $max_scheme, 'desc' => $best_scheme,'color'=>'success','icon'=>'ion-checkmark','tot'=>$max_scheme, 'text'=>'Best Scheme Performance: '.$max_scheme),
+				array('num' => $min_scheme, 'desc' => $worst_scheme,'color'=>'danger','icon'=>'ion-close','tot'=>$min_scheme, 'text'=>'Worst Scheme Performance: '.$min_scheme)
 			)
 		);
 		
