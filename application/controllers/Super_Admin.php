@@ -743,6 +743,7 @@ function seek_record(){
 							$dam['fields'] = $dat;
 							$dam['dad'] = $dad;
 							$this->load->view('seek_record',$dam);
+							$this->load->view('dashboard/footer');
 						}	
 					}
 				}
@@ -773,7 +774,7 @@ function seek_record(){
 			array_push($data['login_as'],$this->Sup_Admin->get_log_id($key['login_id_fk']));
 		}
 		$this->load->view('audit_view',$data);
-
+		$this->load->view('dashboard/footer');
 
 	}
 }

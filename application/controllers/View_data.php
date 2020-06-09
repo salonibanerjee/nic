@@ -85,6 +85,8 @@ class View_data extends MY_Controller {
                 $result['s_name'][]=$ij;
             }
             $this->load->view('data_view',$result);
+            $this->load->view('dashboard/footer');
         }
     }
+    
 }
