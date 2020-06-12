@@ -112,7 +112,7 @@
               <!-- /.card-body -->
               <div class='card-footer'>
               <div id="errors" style="color:red;"></div>
-                <div id='err'>
+                <div id='err' style="max-width:80px">
                 <button type='submit' class='btn btn-primary' name='form_sub' id='form_sub' form="form" value="Submit">Submit</button>
                   </div>
               </div>
