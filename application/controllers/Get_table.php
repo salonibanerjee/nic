@@ -173,7 +173,7 @@ class Get_table extends MY_Controller {
             $ab=array('csrf_token'=>$csrf_token,'res'=>1);
             echo json_encode($ab);
         }else{
-            $ab=array('res'=>0,'errors'=>validation_errors());
+            $ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
             echo json_encode($ab);
         }
     }

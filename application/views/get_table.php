@@ -282,7 +282,7 @@ $("#form").on("submit", function (event) {
     cache: false,
     success: function(result){
       var k=JSON.parse(result);
-      if (k.csrf_token && k.res==1){
+      if (k.csrf_token){
         csrf_token=k.csrf_token;
       }
       if(k.res==0){
