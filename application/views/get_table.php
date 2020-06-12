@@ -38,7 +38,11 @@
             </div>
           <!-- /.card-header -->
           <!-- form start -->
-            <form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table/submit/<?php echo $n;?>">
+          <?php
+          $attributes = array('id' => 'form');
+          echo form_open('Get_table/submit/'.$n, $attributes); 
+          ?>
+            <!--<form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table/submit/<?php //echo $n;?>">-->
               <div class='card-body'>
                 <?php
                   $i=0;
@@ -108,7 +112,9 @@
               <!-- /.card-body -->
               <div class='card-footer'>
               <div id="errors" style="color:red;"></div>
+                <div id='err'>
                 <button type='submit' class='btn btn-primary' name='form_sub' id='form_sub' form="form" value="Submit">Submit</button>
+                  </div>
               </div>
           </form>
         </div>
@@ -259,26 +265,34 @@ $("#draft").on("submit",function(e){
     //e.preventDefault(); //STOP default action
     //e.unbind(); //unbind. to stop multiple form submit.
 }); 
+var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
   $.ajax({
     url: $('#form').attr('action'),
     type: "POST",
-    data: $('#form').serialize(),
+    data: $('#form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
 		},
     cache: false,
     success: function(result){
-      if(result[1]=='p'){
-        $('#errors').html(result);
+      var k=JSON.parse(result);
+      if (k.csrf_token && k.res==1){
+        csrf_token=k.csrf_token;
+      }
+      if(k.res==0){
+        $('#errors').html(k.errors);
         console.log("error");
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
         $("#div123").load(location.href + " #div123");
-        $(".btn").notify("Value accepted",{position:"right", className: 'success'});
+        $("#err").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }

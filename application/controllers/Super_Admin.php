@@ -394,6 +394,7 @@ class Super_Admin extends MY_Controller {
 		$this->check_privilege(10);
 		$this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$check=$this->session->userdata('loginid');
 		$this->load->model('profile_model');
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -403,7 +404,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
 		$this->load->model('Sup_admin');
-	   	$query=$this->Sup_admin->fetch_login();
+	   	$query=$this->Sup_admin->fetch_login($check);
 		$data['records']=$query->result();
 		  //print_r($data);
 		$this->load->model('Crud_model');

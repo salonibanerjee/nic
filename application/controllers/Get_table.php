@@ -98,6 +98,7 @@ class Get_table extends MY_Controller {
         $result['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
         $x=$this->Crud_model->get_attri($n);
         $y=array();
+        $csrf_token=$this->security->get_csrf_hash();
         foreach($x as $field){
             if($field->name=="id_pk" || $field->name=="login_id_fk" || $field->name=="inserted_at" || $field->name=="ip" || $field->name=='nodal_check'){
                 continue;
@@ -160,19 +161,20 @@ class Get_table extends MY_Controller {
                                             current_url(),
                                             'Update - into '.$n.'_draft',
                                             'Custom Message here');
-                echo "Records Updated Successfully";
             }else{
                 $this->Crud_model->save_data($r,$n.'_draft');
                 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Insert - into '.$n.'_draft',
                                             'Custom Message here');
-                echo "Records Saved Successfully";
             }
             //commit and rollback
             $this->db->trans_complete();
+            $ab=array('csrf_token'=>$csrf_token,'res'=>1);
+            echo json_encode($ab);
         }else{
-            echo validation_errors();
+            $ab=array('res'=>0,'errors'=>validation_errors());
+            echo json_encode($ab);
         }
     }
 }

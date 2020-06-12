@@ -130,7 +130,7 @@ class Sup_admin extends CI_Model {
 		$query=$this->db->get_where("mpr_master_designation",$dat);
 		return $query;
 	}
-	public function fetch_login()
+	public function fetch_login($check)
 	{   
 		$SQL="SELECT username, password, user_type_id_fk,login_id_pk,  mpr_semitrans_login.location_code,mpr_semitrans_login.active_status, mpr_semitrans_login.dept_id_fk, mpr_semitrans_login.office_id_fk, mpr_semitrans_login.desig_id_fk,desig, location_area,dept_name, office_name,desig_name
 		FROM public.mpr_semitrans_login
@@ -144,6 +144,7 @@ class Sup_admin extends CI_Model {
 		ON mpr_master_office.office_id_pk = mpr_semitrans_login.office_id_fk
 		INNER JOIN public.mpr_master_designation 
 		ON mpr_master_designation.desig_id_pk = mpr_semitrans_login.desig_id_fk
+		WHERE login_id_pk!=".$check."
 		ORDER BY login_id_pk ASC";
 	 $query = $this->db->query($SQL);
 	 return $query;
