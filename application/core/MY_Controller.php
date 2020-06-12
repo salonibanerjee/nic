@@ -96,5 +96,16 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    public function fetch_notifs(){
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1";
+		$result = $this->db->query($q);	
+		if($result->num_rows() > 0){
+			//$update_query = "UPDATE mpr_trans_notification SET active_status = 0 WHERE active_status = 1";
+			//$this->db->query($update_query);
+			echo "Found";
+		}else
+			echo "not found";
+	}
+
 }
     

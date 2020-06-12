@@ -58,7 +58,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-  <body class="hold-transition sidebar-mini layout-fixed">
+  <body class="hold-transition sidebar-mini layout-fixed" onload="sendRequest()">
 
     <div class="wrapper">
     <!-- Navbar -->
@@ -106,7 +106,7 @@
         </a><div class='thumb' attribute='onclick'>
         </div>
       </li>
-    <li class="nav-item dropdown">
+    <li class="nav-item dropdown" id="noti">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
           <span class="badge badge-danger navbar-badge w3-badge" style="font-size:12px; border-radius:50%; font-weight:bold;"><?php
@@ -220,6 +220,49 @@ foreach($noti1 as $row){
 			$(this).css("opacity","1");
 		});
   });
+</script>
+
+<!--for realtime notifs fetching-->
+<!-- for toastr-->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+<!-- for sweetalerts-->
+<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+
+
+<script type='text/javascript'>
+function sendRequest(){ //requests for new notifs every 10 seconds
+	  
+	    setInterval(function(){
+			  $.ajax({
+				  url: "<?php echo base_url();?>index.php/Summary/fetch_notifs",
+          success: function(result){
+				    if(result == "Found"){
+              //toastr.remove();
+              toastr.warning('New notification!');
+              //$("#noti").load(location.href+" #noti>*","");
+
+              /*Swal.fire({
+                title: 'MPR',
+                text: "You have a new notification!",
+                icon: 'info',
+                //showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                //cancelButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+              }).then((result) => {
+                    if (result.value) {
+                      location.reload();
+                    }
+              })*/
+				    }
+				  }
+			  });
+		  },5000);
+}
+
 </script>
   </body>
 </html>
