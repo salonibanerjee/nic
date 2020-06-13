@@ -241,7 +241,9 @@ function sendRequest(){ //requests for new notifs every 10 seconds
           success: function(result){
 				    if(result == "Found"){
               //toastr.remove();
-              toastr.warning('New notification!');
+              //toastr.warning('New notification!');
+              toastr.options={"timeOut":"500000","positionClass": "toast-top-center",}
+              toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
               //$("#noti").load(location.href+" #noti>*","");
 
               /*Swal.fire({
