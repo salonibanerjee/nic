@@ -101,9 +101,9 @@ class MY_Controller extends CI_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
 		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1";
         $result = $this->db->query($q);	
-        if ($this->cache->get('Noti'.$this->session->userdata('loginid'))){
+        if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
             $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
-        else{
+        }else{
             $prev_noti=0;
         }
 		if($result->num_rows() > $prev_noti){
