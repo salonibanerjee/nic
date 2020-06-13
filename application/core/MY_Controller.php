@@ -73,7 +73,7 @@ class MY_Controller extends CI_Controller {
         $this->load->helper('file');
         $files = get_filenames('./application/cache/');
         foreach ($files as $key => $value) {
-            if ($value != 'index.html') {
+            if ($value != 'index.html' || strpos($value,'Noti')==FALSE) {
                 unlink('./application/cache/'.$value);
             }
         }
