@@ -181,7 +181,8 @@
 </div>
 
 <div class="modal fade" id="modal-sm">
-      <form method="POST" id='draft' action="">
+      <?php echo form_open('','id="draft"');?>
+      <!--<form method="POST" id='draft' action="">-->
         <div class="modal-dialog modal-sm" >
           <div class="modal-content">
             <div class="modal-header">
@@ -212,7 +213,8 @@
           </div>
           <!-- /.modal-content -->
         </div>
-      </form>
+      <!--</form>-->
+      <?php //echo form_close('');?>
         <!-- /.modal-dialog -->
       </div>
 

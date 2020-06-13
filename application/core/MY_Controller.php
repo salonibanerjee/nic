@@ -97,14 +97,24 @@ class MY_Controller extends CI_Controller {
     }
 
     public function fetch_notifs(){
+        $this->load->model('Admin_model');
+        $this->load->driver('cache', array('adapter' => 'file'));
 		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1";
-		$result = $this->db->query($q);	
-		if($result->num_rows() > 0){
+        $result = $this->db->query($q);	
+        if ($this->cache->get('Noti'.$this->session->userdata('loginid'))){
+            $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
+        else{
+            $prev_noti=0;
+        }
+		if($result->num_rows() > $prev_noti){
 			//$update_query = "UPDATE mpr_trans_notification SET active_status = 0 WHERE active_status = 1";
-			//$this->db->query($update_query);
+            //$this->db->query($update_query);
+            unlink('./application/cache/Noti'.$this->session->userdata('loginid'));
+            $this->Admin_model->noti_cache($this->session->userdata('loginid'));
 			echo "Found";
-		}else
-			echo "not found";
+		}else{
+            echo "Not Found";
+        }
 	}
 
 }

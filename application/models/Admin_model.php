@@ -5,6 +5,7 @@ class Admin_model extends CI_Model {
         //from login table
         $query = $this->db->get_where('mpr_semitrans_login',array('username'=>$uname,'active_status'=>1));
         $row = $query->row();
+        //$noti = $this->db->get_where('mpr_trans_notification',array('active_status'=>1))->num_rows();
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
@@ -16,7 +17,8 @@ class Admin_model extends CI_Model {
                 'dept_id_fk'=> $row->dept_id_fk,
                 'user_type_id_fk'=> $row->user_type_id_fk,
                 'login_id_pk'=> $row->login_id_pk,
-                'active_status'=> $row->active_status
+                'active_status'=> $row->active_status,
+                //'noti_count'=>$noti
             );
         }else{
             //to remove the null object error when access denied
@@ -207,5 +209,16 @@ class Admin_model extends CI_Model {
     public function findpass($n){
         $query=$this->db->get_where("mpr_semitrans_login",array('username'=>$n));
         return $query->row();
+    }
+
+    public function noti_cache($id){
+        $noti = $this->db->get_where('mpr_trans_notification',array('active_status'=>1))->num_rows();
+        $result=array('noti_count'=>$noti);
+        $this->load->driver('cache', array('adapter' => 'file'));
+
+        if ( ! $foo = $this->cache->get('Noti'.$this->session->userdata('loginid'))){
+            $foo = $result;
+            $this->cache->save('Noti'.$this->session->userdata('loginid'), $foo, 3000);
+        }
     }
 }
