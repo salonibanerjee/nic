@@ -1,8 +1,7 @@
 <?php
 class Dashboard_model extends CI_Model{
 
-    function matrix($block,$sch,$nblo,$nsch)
-    {
+    function matrix($block,$sch,$nblo,$nsch){
         $i=0;
         $this->db->select('attri_progress,sch_tab_name');
         $table = $this->db->get('mpr_master_dashboard_info');
@@ -16,8 +15,8 @@ class Dashboard_model extends CI_Model{
                     break;
                 }
             }
-            //return $b;
         }
+        
         $j=0;
         $result=array();
         while($j<$nsch)
@@ -133,23 +132,20 @@ class Dashboard_model extends CI_Model{
 
     function get_prog($n,$num,$loc,$m,$y)
 	{
-        
 		$this->db->select('attr_target,attri_progress,sch_tab_name');
 		$table = $this->db->get('mpr_master_dashboard_info');
 		$b = array();
         $i = 0;
-        while($i<$num)
-        { 
+        while($i<$num){ 
             foreach($table->result() as $row){    
-                if($row->sch_tab_name==$n[$i]) 
-                {	    
+                if($row->sch_tab_name==$n[$i]){	    
                     $b[$i] = $row->attri_progress;
                     $i++;
                     break;
                 }
             }
-
         }
+
         $i=0;
         $d = array();
         while($i<$num)
@@ -195,8 +191,8 @@ class Dashboard_model extends CI_Model{
         $j = 0;
         $x = 0;
         $d = array();
-        //$m = (int)date('m');
-        //$y = date('Y');
+        
+    
         while($j<(2*$num))
         {
             if($m != 0){
@@ -206,15 +202,18 @@ class Dashboard_model extends CI_Model{
                 $this->db->select($b[$j])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
                 $this->db->select($b[$j+1])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
             }
+
             $table2 = $this->db->get($n[$x])->row();
             $temp1 = $b[$j];
             $temp2 = $b[$j+1];
+
             if($table2)
                 array_push($d, $table2->$temp1, $table2->$temp2);
             else
                 array_push($d, "false", "false");
             $j=$j+2;
             $x=$x+1;
+
         }
         return $d;
     }
@@ -260,7 +259,7 @@ class Dashboard_model extends CI_Model{
         return $b;
     }
 
-function list_table_withloc($n,$m){
+    function list_table_withloc($n,$m){
         $this->db->select($m);
         $this->db->like($m, $this->session->userdata('location_code'), 'after');
         $tables = $this->db->get($n);

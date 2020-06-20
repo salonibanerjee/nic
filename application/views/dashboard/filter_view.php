@@ -47,19 +47,28 @@
                             $i=0;
                             $flag = false;
                             foreach($c_name_right as $temp) {
-                                foreach ($selected_right as $sel) {
-                                    if($temp == $sel) {
-                                        $flag = true;
-                                        break;
-                                    } else {
-                                        $flag = false;
+                                if($type == 0){
+                                    foreach ($selected_right as $sel) {
+                                        if($temp == $sel) {
+                                            $flag = true;
+                                            break;
+                                        } else {
+                                            $flag = false;
+                                        }
                                     }
+
+                                    echo "<div class='custom-control custom-checkbox'>";
+                                    if($flag) echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp' checked>";
+                                    else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp'>";
+                                    echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
+                                    echo "</div>";
+                                } else if($type == 1){
+                                    echo "<div class='custom-control custom-radio'>";
+                                    if($temp == $selected_right) echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list' type='radio' id='$temp".$filter_id."' value='$temp' checked>";
+                                    else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list' type='radio' id='$temp".$filter_id."' value='$temp'>";
+                                    echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
+                                    echo "</div>";
                                 }
-                                echo "<div class='custom-control custom-checkbox'>";
-                                if($flag) echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp' checked>";
-                                else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp'>";
-                                echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
-                                echo "</div>";
                                 $i++;
                             }
                         echo "</div>";

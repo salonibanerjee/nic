@@ -87,6 +87,7 @@ class summary extends MY_Controller {
 			'y' => $progress_y,
 			'left' => true,
 			'right' => true,
+			'type' => 0,
 			'session' => true,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
@@ -146,11 +147,11 @@ class summary extends MY_Controller {
 		$data['noti']=$res;
 		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
-		//=========================================================
+		//============================ PIE CHART =============================
 
 		$scheme_pie = $scheme_link;
 
-		//$bar1_location = array("19161","191615","191614");
+		$pie_location = $loc_schcd;
 
 		$pie_m = 0;
 		$pie_y = 0;
@@ -163,6 +164,8 @@ class summary extends MY_Controller {
 				}
 			}
 
+			$pie_location = $_POST['pie_right_check_list'];
+
 			$pie_m = $_POST['pie_month'];
 			$pie_y = $_POST['pie_year'];
 		}
@@ -170,14 +173,17 @@ class summary extends MY_Controller {
 		$filter_pie =array(
 			'filter_id' => 'pie',
 			'selected_left' => $scheme_pie,
+			'selected_right' => $pie_location,
 			'm' => $pie_m,
 			'y' => $pie_y,
 			'left' => true,
-			'right' => false,
+			'right' => true,
+			'type' => 1,
 			'session' => true,
 			'c_left_name' => $scheme_link,
-			'f_left_name' => $scheme_link_name
-			
+			'f_left_name' => $scheme_link_name,
+			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
+			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
 
 		//Initialising the filter
@@ -185,7 +191,7 @@ class summary extends MY_Controller {
 
 		$n = count($scheme_pie);
 
-		$tempdata = $this->Dashboard_model->get_prog($scheme_pie, $n, $loc_schcd, $pie_m, $pie_y);
+		$tempdata = $this->Dashboard_model->get_prog($scheme_pie, $n, $pie_location, $pie_m, $pie_y);
 		$tempschemename_pie = $this->Dashboard_model->sch_name($scheme_pie,$n);
 		$data= array();
 		$schemename_pie=array();
@@ -206,11 +212,11 @@ class summary extends MY_Controller {
 
 		$container['pie_chart'] = $this->load->view('dashboard/pie_chart', $pie_view ,TRUE);
 
-
 		//================BAR CHART 1===============================
 		
-		//Insert data for bar chart in an array format 
+		//Insert data for bar chart in an array format
 		$scheme_bar1 = $scheme_link;
+		$bar1_location = $loc_schcd;
 
 		$bar1_m = 0;
 		$bar1_y = 0;
@@ -223,21 +229,26 @@ class summary extends MY_Controller {
 				}
 			}
 
+			$bar1_location = $_POST['bar1_right_check_list'];
+
 			$bar1_m = $_POST['bar1_month'];
 			$bar1_y = $_POST['bar1_year'];
 		}
 
-		$bar1_filter_progress =array(
+		$bar1_filter_progress = array(
 			'filter_id' => 'bar1',
 			'selected_left' => $scheme_bar1,
+			'selected_right' => $bar1_location,
 			'm' => $bar1_m,
 			'y' => $bar1_y,
 			'left' => true,
-			'right' => false,
+			'right' => true,
+			'type' => 1,
 			'session' => true,
 			'c_left_name' => $scheme_link,
-			'f_left_name' => $scheme_link_name
-			
+			'f_left_name' => $scheme_link_name,
+			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
+			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
 
 		//Initialising the filter
@@ -245,8 +256,6 @@ class summary extends MY_Controller {
 
 		$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$bar1_m,$bar1_y);
 		$tempschemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
-
-		//print_r($result);
 
 		$schemename_bar=array();
 		$target = array();
@@ -277,15 +286,14 @@ class summary extends MY_Controller {
 		//==============================================================
 
 
-		//==============BAR CHART 2=====================================
+		//============== BAR CHART 2=====================================
 
 		$scheme_pro = array();
-		//"mpr_scheme_kcc","mpr_scheme_doc","mpr_scheme_dog","mpr_scheme_anand"
 		$location = array($loc_schcd);
 
 		$bar2_m = 0;
 		$bar2_y = 0;
-		
+
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
 				$scheme_pro = array();
@@ -293,6 +301,7 @@ class summary extends MY_Controller {
 					array_push($scheme_pro,$selected);
 				}
 			}
+
 			if(!empty($_POST['bar2_right_check_list'])){
 				$location = array();
 				foreach($_POST['bar2_right_check_list'] as $selected){
@@ -312,6 +321,7 @@ class summary extends MY_Controller {
 			'y' => $bar2_y,
 			'left' => true,
 			'right' => true,
+			'type' => 0,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
@@ -350,19 +360,17 @@ class summary extends MY_Controller {
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
-		//=================== ALERT VIEW =================================================================
+		//====================================== ALERT VIEW =============================================
 
 		$alert_m = 0;
 		$alert_y = 0;
 
-		//$scheme_hier['scheme_link'];
-		$tempresult_alert = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
-		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
+		$tempresult_alert = $this -> Dashboard_model -> get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
+		$tempschemename_alert = $this -> Dashboard_model -> sch_name($scheme_bar1,sizeof($scheme_bar1));
 		$data = array();
 		$schemename_alert=array();
 		$result_alert=array();
-		for($i=0,$j=0;$i<2*sizeof($scheme_bar1);$i+=2,$j++)
-		{
+		for($i=0,$j=0;$i<2*sizeof($scheme_bar1);$i+=2,$j++){
 			if($tempresult_alert[$i]=="false")
 				continue;
 			if($tempresult_alert[$i]!=0)
@@ -374,10 +382,9 @@ class summary extends MY_Controller {
 			array_push($schemename_alert,$tempschemename_alert[$j]);
 		}
 		$fits = array();
-		$j=0;
-		for($i=0;$i<sizeof($data);$i++,$j+=2)
-		{
-			$eachbar = array('c1'=>$i+1,'c2'=>$schemename_alert[$i], 'c3'=>$result_alert[$j], 'c4'=>$result_alert[$j+1], 'c5'=>$data[$i] );
+		$j = 0;
+		for($i=0;$i<sizeof($data);$i++,$j+=2){
+			$eachbar = array('c1'=>$i+1,'c2'=>$schemename_alert[$i], 'c3'=>$result_alert[$j], 'c4'=>$result_alert[$j+1], 'c5'=>$data[$i]);
 			array_push($fits, $eachbar);
 		}
 		$table_data = array('data' => $fits );
@@ -412,14 +419,14 @@ class summary extends MY_Controller {
 		else{
 			$max_scheme = "NA";
 			$min_scheme = "NA";
-			$best_scheme="No Active Scheme Found";
-			$worst_scheme="No Active Scheme Found";
+			$best_scheme = "No Active Scheme Found";
+			$worst_scheme = "No Active Scheme Found";
 		}
 
 		$this->load->model('Sup_admin');
 		$scheme_count = $this->Sup_admin->schemes_count();
 		$s_count = $this->profile_model->scheme_under();
-		$pec = ($s_count/$scheme_count)*100;
+		$pec = ($s_count / $scheme_count) * 100;
 		$info_box = array(
 			'data_list' => array(
 				array('num' => $s_count, 'desc' => 'Number of Schemes for Current User','color'=>'yellow','icon'=>'ion-stats-bars','tot' =>$pec.'%','text'=>$s_count.' Out of '.$scheme_count.' schemes'),
