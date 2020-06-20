@@ -106,7 +106,7 @@
         </a><div class='thumb' attribute='onclick'>
         </div>
       </li>
-    <li class="nav-item dropdown" id="noti">
+    <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
           <span class="badge badge-danger navbar-badge w3-badge" style="font-size:12px; border-radius:50%; font-weight:bold;"><?php
@@ -130,7 +130,7 @@
             <i class="fas fa-calendar-check text-orange "></i> <?php echo $notification['meeting']['msg'];?>
             <span class="float-right text-muted text-sm"><?php echo $notification['meeting']['val'];?></span>
           </a>
-          <div id="" style="overflow:scroll; height:350px;">
+          <div id="noti" style="overflow:scroll; height:350px;">
           <?php
             $i=0;
             foreach($noti1 as $row){
@@ -243,7 +243,7 @@ function sendRequest(){ //requests for new notifs every 10 seconds
               //toastr.remove();
               //toastr.warning('New notification!');
               toastr.options={"timeOut":"500000","positionClass": "toast-top-center",}
-              toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
+              toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
               //$("#noti").load(location.href+" #noti>*","");
 
               /*Swal.fire({
