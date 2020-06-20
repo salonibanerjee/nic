@@ -62,12 +62,15 @@
                                     else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list[]' type='checkbox' id='$temp".$filter_id."' value='$temp'>";
                                     echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
                                     echo "</div>";
+
                                 } else if($type == 1){
+
                                     echo "<div class='custom-control custom-radio'>";
                                     if($temp == $selected_right) echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list' type='radio' id='$temp".$filter_id."' value='$temp' checked>";
                                     else echo    "<input class='custom-control-input' name='".$filter_id."_right_check_list' type='radio' id='$temp".$filter_id."' value='$temp'>";
                                     echo    "<label for='$temp".$filter_id."' class='custom-control-label'>$f_name_right[$i]</label>";
                                     echo "</div>";
+                                    
                                 }
                                 $i++;
                             }

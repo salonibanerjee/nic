@@ -16,7 +16,7 @@ class Dashboard_model extends CI_Model{
                 }
             }
         }
-        
+
         $j=0;
         $result=array();
         while($j<$nsch)
@@ -130,13 +130,12 @@ class Dashboard_model extends CI_Model{
         return $ans;
     }
 
-    function get_prog($n,$num,$loc,$m,$y)
-	{
+    function get_prog($n,$num,$loc,$m,$y){
 		$this->db->select('attr_target,attri_progress,sch_tab_name');
 		$table = $this->db->get('mpr_master_dashboard_info');
 		$b = array();
         $i = 0;
-        while($i<$num){ 
+        while($i<$num){
             foreach($table->result() as $row){    
                 if($row->sch_tab_name==$n[$i]){	    
                     $b[$i] = $row->attri_progress;
@@ -160,8 +159,7 @@ class Dashboard_model extends CI_Model{
             {
                 array_push($d, $table2->$temp);
                 $i++;
-            }else
-            {
+            }else{
                 array_push($d, "false");
                 $i++;
             }

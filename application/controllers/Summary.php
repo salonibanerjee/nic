@@ -254,7 +254,7 @@ class summary extends MY_Controller {
 		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $bar1_filter_progress);
 
-		$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$bar1_m,$bar1_y);
+		$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$bar1_location,$bar1_m,$bar1_y);
 		$tempschemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
 
 		$schemename_bar=array();
