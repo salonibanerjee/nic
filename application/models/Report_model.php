@@ -68,15 +68,15 @@ class Report_model extends CI_Model
 
 	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type)
 	{
-		if($temp_tab=="mpr_master_awcc")
+		if($temp_tab=="mpr_scheme_awcc")
 		{
 			$array=array('location_code'=>$schcd,'session'=>strval($ses));
 			$this->db->select('no_of_new_icds_building_constructed')->from($temp_tab)->where($array);
 			$this->db->order_by('month','DESC');
 			$a1=$this->db->get()->row_array();
 
-			$array=array('location_code'=>$schcd,'session'=>strval($ses-1));
-			$this->db->select('no_of_new_icds_building_constructed')->from($temp_tab)->where($array);
+			$array1=array('location_code'=>$schcd,'session'=>strval($ses-1));
+			$this->db->select('no_of_new_icds_building_constructed')->from($temp_tab)->where($array1);
 			$this->db->order_by('month','DESC');
 			$a2=$this->db->get()->row_array();
 
@@ -88,19 +88,28 @@ class Report_model extends CI_Model
 			$this->db->order_by('month','DESC');
 			$a4=$this->db->get()->row_array();
 
+			if(empty($a2))
+			$a2['no_of_new_icds_building_constructed']=0;
+			if(empty($a3))
+			$a3['no_of_icds_cenetres_devoid_of_own_building']=0;
+			if(empty($a1))
+			$a1['no_of_new_icds_building_constructed']=0;
+			if(empty($a4))
+			$a4['no_of_icds_centres_running_in_open_space']=0;
+
 			$arr=array();
-			array_push($arr,$a3);
-			array_push($arr,$a2);
-			array_push($arr,$a1);
-			array_push($arr,$a4);
+			array_push($arr,$a3['no_of_icds_cenetres_devoid_of_own_building']);
+			array_push($arr,$a2['no_of_new_icds_building_constructed']);
+			array_push($arr,$a1['no_of_new_icds_building_constructed']);
+			array_push($arr,$a4['no_of_icds_centres_running_in_open_space']);
 			return $arr;
 
 		}
-		if($scheme_type==1 || $scheme_type==4)
+		if(($scheme_type==1 || $scheme_type==4) && $temp_tab!="mpr_master_awcc")
 		{
 			$this->db->select($attri)->from($temp_tab)->where('location_code',$schcd);
 			$this->db->order_by('month','DESC');
-			return $this->db->get()->row_array();
+			 return ($this->db->get()->row_array());
 		}
 		if($scheme_type==2)
 		{
@@ -113,7 +122,7 @@ class Report_model extends CI_Model
 			}
 			else
 			{
-				$array=array('location_code'=>$schcd,'session'=>strval($ses-1));
+				$array=array('location_code'=>$schcd,'session'=>strval($ses));
 				$this->db->select($attri)->from($temp_tab)->where($array);
 				$this->db->order_by('month','DESC');
 				return $this->db->get()->row_array();
