@@ -61,7 +61,10 @@ class Super_Admin extends MY_Controller {
 			$span = $this->input->post('date');
 			$start_time = substr($span,0,16);
 			$end_time=substr($span,19,35);
-			
+			$noti_head="New Meeting";
+			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
+			$target_audience="NMEET00";
+
             //2hours relaxation on the provided time
             $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
@@ -73,8 +76,8 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_strict(FALSE);
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
-			$this->load->view('schedule',$data);
-
+			//$this->load->view('schedule',$data);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
