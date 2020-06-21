@@ -115,7 +115,32 @@ class MY_Controller extends CI_Controller {
 		}else{
             echo "Not Found";
         }
-	}
+    }
+    
+    public function nodal_alert(){
+        $this->load->model('NodalCheck_model');
+        $this->load->model('profile_model');
+        $result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
+        $scheme_cnt = $this->NodalCheck_model->check($result_main['fetch_draft']);
+        
+        $flag = false;
+        foreach ($scheme_cnt as $val) {
+            if($val != 0)
+                $flag == true;
+        }
+
+        $result = $this->NodalCheck_model->alert();
+        if($result == true and $flag == true){
+            $head = "Audit Check Pending";
+			$text = "Custom message here";
+			echo "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa";
+			$target_audience = "1";
+			$this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
+			$this->profile_model->savenotifs($target_audience,$text,$head);
+        }
+    }
 
 }
     

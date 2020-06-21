@@ -150,6 +150,10 @@ class Nodal_check extends MY_Controller {
 
 		}
 
+		//$this->load->model('NodalCheck_model');
+        //$this->load->model('profile_model');
+        
+
 		$this->load->view('dashboard/footer');
 	}
 }
