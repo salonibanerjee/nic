@@ -58,7 +58,7 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
 
-  <body class="hold-transition sidebar-mini layout-fixed" onload="sendRequest()">
+  <body class="hold-transition sidebar-mini layout-fixed" onload="start()">
 
     <div class="wrapper">
     <!-- Navbar -->
@@ -263,6 +263,26 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 				  }
 			  });
 		  },5000);
+}
+
+function send_nodal(){ //requests for new notifs every 10 seconds
+	  
+    setInterval(function(){
+      $.ajax({
+        url: "<?php echo base_url();?>index.php/Summary/nodal_alert",
+        success: function(result){
+            //console.log("Nodal");
+            if(result=="found")
+              toastr.options={"positionClass": "toast-top-center",}
+              toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
+          }
+      });
+    },10000);
+}
+
+function start(){
+    sendRequest();
+    send_nodal();
 }
 
 </script>

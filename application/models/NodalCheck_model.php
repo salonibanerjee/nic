@@ -37,14 +37,18 @@ class NodalCheck_model extends CI_Model{
 
     function alert(){
         $query = $this->db->select('start_time')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
-        $time = $query->start_time;
-        //$time = strtotime($start_time);
-        $start_time = mdate('%Y-%m-%d %H:%i', strtotime($time));
-        $current_time = mdate('%Y-%M-%d %H:%i',strtotime('+6 hours', now()));
+        if($query!=NULL){
+            $time = $query->start_time;
+            //$time = strtotime($start_time);
+            $start_time = mdate('%Y-%m-%d %H:%i', strtotime($time));
+            $end_time= mdate('%Y-%m-%d %H:%i', strtotime('+6 hours',strtotime($query->end_time)));
+            $current_time = mdate('%Y-%M-%d %H:%i',strtotime('+6 hours', now()));
 
-        if($current_time > $start_time)
-            return true;
-        else
+            if($current_time > $start_time && $current_time<$end_time)
+                return true;
+            else
+                return false;
+        }else
             return false;
 
     }
