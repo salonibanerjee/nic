@@ -117,7 +117,15 @@ class Sup_admin extends CI_Model {
 	}
 	public function location_data()
 	{
-		$query=$this->db->get_where("mpr_master_location_data");
+		$query=$this->db->select('*')->get("mpr_master_location_data")->result_array();
+		return $query;
+	}
+	public function search_table(){
+		$query=$this->db->select('*')->get("mpr_master_scheme_table")->result_array();
+		return $query;
+	}
+	public function funds_table($data){
+		$query=$this->db->insert('mpr_trans_fundalloc',$data);
 		return $query;
 	}
 	public function department($dat)
