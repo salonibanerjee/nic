@@ -25,11 +25,13 @@ class Fund extends MY_Controller {
         //print_r($resscheme);
         $data["loc"]=$resloc;
         $data["scheme"]=$resscheme;
+        $data['funds']=$this->Sup_admin->fetch_funds();
         $this->load->view('fund',$data);
         $this->load->view('dashboard/footer');
     }
     public function fund_submit(){
         $this->load->model('Sup_admin');
+        $this->load->model('Crud_model');
         $csrf_token=$this->security->get_csrf_hash();
         $validate = array(
             array(
@@ -55,10 +57,18 @@ class Fund extends MY_Controller {
             echo json_encode($ab);
         }else{
             $data['scheme_id_fk'] = $this->input->post('scheme');
-            $data['funds_allocated'] = $this->input->post('funu');
-            $data['funds_utilised'] = $this->input->post('funa');
+            $data['funds_allocated'] = $this->input->post('funa');
+            $data['funds_utilised'] = $this->input->post('funu');
             $data['location_id_fk'] = $this->input->post('loc');
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
             $res=$this->Sup_admin->funds_table($data);
+            $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Funds Inserted',
+                                            'Custom Message here');
+            $this->db->trans_complete();
             $ab=array('csrf_token'=>$csrf_token,'res'=>1);
             echo json_encode($ab);
         }

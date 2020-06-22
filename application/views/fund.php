@@ -67,7 +67,60 @@
       </div>
     </div>
   </div>
-</div>
+
+
+<div class="col-md-8">
+                <div class="card">
+                  <div class="card-header bg-primary">
+                    <h3 class="card-title">Previous Notifications</strong></h3>
+                  </div>
+                  <!-- /.card-header -->
+                  <div class="card-body" id='refresh'>
+                    <table id="example1" class="table table-bordered table-striped table-hover equal-width">
+                      <thead class="bg-lime">
+                      <tr>
+                        <th>Location</th>
+                        <th>Scheme</th>
+                        <th>Fund Alloted</th>
+                        <th>Fund Utilised</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                          
+                          $i=1;
+                          foreach($funds as $row){
+                            echo "<tr>";
+                            foreach($loc as $l){
+                              if($row['location_id_fk']==$l['location_id_pk']){
+                                echo "<td>".$l['location_area']."</td>";
+                              }
+                            }
+                            foreach($scheme as $l){
+                              if($row['scheme_id_fk']==$l['scheme_id_pk']){
+                                echo "<td>".$l['name']."</td>";
+                              }
+                            }
+                            echo "<td>".$row['funds_allocated']."</td>";
+                            echo "<td>".$row['funds_utilised']."</td>";
+                            echo "</tr>";
+                            $i++;
+                          }
+                      ?>
+                      </tbody>
+                      <tfoot>
+                      <tr>
+                        <!-- nothing for footer now -->
+                      </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                  <!-- /.card-body -->
+                </div>
+              </div>
+            </div>
+          </div>
+</section>
 
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
@@ -98,10 +151,30 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
+        $("#refresh").load(location.href+" #refresh>*","");
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }
   });
 });
+</script>
+
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+    });
+  });
 </script>

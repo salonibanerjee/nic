@@ -125,9 +125,21 @@ class Sup_admin extends CI_Model {
 		return $query;
 	}
 	public function funds_table($data){
-		$query=$this->db->insert('mpr_trans_fundalloc',$data);
-		return $query;
+		$row=$this->db->get_where('mpr_trans_fundalloc',array('scheme_id_fk'=>$data['scheme_id_fk'],'location_id_fk'=>$data['location_id_fk']))->row();
+		if($row){
+			$update=$this->db->where('fundalloc_id_pk',$row->fundalloc_id_pk)->update('mpr_trans_fundalloc',$data);
+			return $update;
+		}else{
+			$query=$this->db->insert('mpr_trans_fundalloc',$data);
+			return $query;
+		}
 	}
+
+	public function fetch_funds(){
+		$funds=$this->db->select('*')->get('mpr_trans_fundalloc')->result_array();
+		return $funds;
+	}
+
 	public function department($dat)
 	{
 		$query=$this->db->get_where("mpr_master_department",$dat);
