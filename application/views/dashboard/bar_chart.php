@@ -1,22 +1,22 @@
 
   
-            <!-- BAR CHART -->
-            <div class="card card-teal">
-              <div class="card-header">
-                <h3 class="card-title"><?php echo $title; ?></h3>
-                <div class="card-tools">
-                  <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
-                  </button>
-                  <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#<?php echo $id; ?>" style="color: black"><i class="fas fa-edit"></i></button>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="chart">
-                  <canvas id="<?php echo $id; ?>_canvas" style="height:230px; min-height:230px"></canvas>
-                </div>
-              </div>
-              <!-- /.card-body -->
-            </div>
+<!-- BAR CHART -->
+<div class="card card-teal">
+  <div class="card-header">
+    <h3 class="card-title"><?php echo $title; ?></h3>
+    <div class="card-tools">
+      <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
+      </button>
+      <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#<?php echo $id; ?>" style="color: black"><i class="fas fa-edit"></i></button>
+    </div>
+  </div>
+  <div class="card-body" style="height: 290px;">
+    <div class="chart">
+      <canvas id="<?php echo $id; ?>_canvas" style="height:230px; min-height:230px"></canvas>
+    </div>
+  </div>
+  <!-- /.card-body -->
+</div>
    
 
 <script>
@@ -32,9 +32,9 @@
           datasets: [
             <?php
               $i=0;
-              $color = array('#007bff','#28a745','#ffc107','#dc3545');
+              $color = array('#007bff','#28a745','#ffc107','#dc3545','#c603fc','#fcf803','#fca103','#03e7fc','#03fc98','#fc0398');
               for ($i=0; $i < $no_bar; $i++) { 
-                $j = $i % 4;
+                $j = $i % 10;
                 echo "{";
                 echo  "label: '$bar[$i]',";
                 echo  "backgroundColor: '$color[$j]',";

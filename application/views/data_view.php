@@ -72,7 +72,7 @@
                                 continue;
                             }else if($key=='location_code'){
                               echo "<td>".$this->Crud_model->region_name($row1)."</td>";
-                              $i++;
+                              //$i++;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
                             }else{
