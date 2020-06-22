@@ -233,7 +233,7 @@ class Report extends MY_Controller
                 {
                     if(($k==0 && ($j==2)) || ($k==1 && ($j==2 || $j==2 || $j==6 || $j==7)) || ($k==4 && ($j==4 || $j==5)) || ($k==5 && ($j==12 || $j==13)) || ($k==6 && ($j==0 || $j==1)))
                     {
-                        $sum[$j]=$sum[$j]+intval($temp4[$j+2]/19);
+                        $sum[$j]=$sum[$j]+($temp4[$j+2]/17);
                     }
                     else
                         $sum[$j]=$sum[$j]+$temp4[$j+2];
@@ -449,12 +449,12 @@ class Report extends MY_Controller
             }
 
             $tk=array(4,10,11,14,15,42,43,56,57,58,59);
-            for($j=2;$j<2*$su;$j++)
+            for($j=2;$j<$h1+2;$j++)
             {
                 if(in_array($j, $tk))
-                $tem[$j]=$tem[$j]+$data1[$j]/19;
+                $tem[$j-2]=$tem[$j-2]+$data1[$j]/17;
                 else
-                $tem[$j]=$tem[$j]+$data1[$j];
+                $tem[$j-2]=$tem[$j-2]+$data1[$j];
             }
             array_push($temp['data'], $data1);
             $h++;

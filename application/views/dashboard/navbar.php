@@ -274,7 +274,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
             //console.log("Nodal");
             if(result=="found")
               toastr.options={"positionClass": "toast-top-center",}
-              toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
+              //toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
           }
       });
     },10000);

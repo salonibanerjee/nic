@@ -44,11 +44,14 @@
                 <thead class="bg-success">
                 <tr>
                   <?php $i=0; foreach($data as $row){
-                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
+                      if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='nodal_check'){
                         $i++;
                         continue;
                       }else if($row=='month'){
                         echo "<th>"."Month"."</th>";
+                        $i++;
+                      }else if($row=='location_code'){
+                        echo "<th>"."Region"."</th>";
                         $i++;
                       }
                       else{
@@ -65,8 +68,11 @@
                     foreach($main_data as $row){
                         echo "<tr>";
                         foreach($row as $key=>$row1){
-                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
+                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='nodal_check'){
                                 continue;
+                            }else if($key=='location_code'){
+                              echo "<td>".$this->Crud_model->region_name($row1)."</td>";
+                              $i++;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
                             }else{
