@@ -13,7 +13,7 @@
             <table class="table table-bordered">
               <thead>                  
                 <tr>
-                  <th style="width: 10px">Location</th>
+                  <th style="width: 10px">Sl.</th>
                   <th>Project Name</th>
                   <th>Progress</th>
                   <th style="width: 40px">%</th>

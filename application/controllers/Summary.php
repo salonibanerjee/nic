@@ -190,8 +190,8 @@ class summary extends MY_Controller {
 		$scheme_pie = $scheme_link;
 
 		$pie_location = $loc_schcd;
-		if($pie_location == "1911")
-			$pie_location = "19111";
+		// if($pie_location == "1911")
+		// 	$pie_location = "19111";
 
 		$pie_m = 0;
 		$pie_y = 0;
@@ -217,9 +217,9 @@ class summary extends MY_Controller {
 			'm' => $pie_m,
 			'y' => $pie_y,
 			'left' => true,
-			'right' => true,
+			'right' => false,
 			'type' => 1,
-			'session' => true,
+			'session' => false,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
@@ -231,19 +231,27 @@ class summary extends MY_Controller {
 
 		$n = count($scheme_pie);
 
-		$tempdata = $this->Dashboard_model->get_prog($scheme_pie, $n, $pie_location, $pie_m, $pie_y);
+		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
+		$scheme_ID=$this-> Dashboard_model ->schID($scheme_pie,sizeof($scheme_pie),$loc_schcdID);
+
+		//$tempdata = $this->Dashboard_model->get_prog($scheme_pie, $n, $pie_location, $pie_m, $pie_y);
+		$tempdata = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
 		$tempschemename_pie = $this->Dashboard_model->sch_name($scheme_pie,$n);
 		$data= array();
 		$schemename_pie=array();
 		$i=0;
+		$j=0;
 		while($i<sizeof($tempdata)){
 			if($tempdata[$i]=="false"){
-				$i++;continue;
+				$i+=2;
+				$j++;
+				continue;
 			}
 			else{
-				array_push($data, $tempdata[$i]);
-				array_push($schemename_pie, $tempschemename_pie[$i]);
-				$i++;
+				array_push($data, $tempdata[$i+1]);
+				array_push($schemename_pie, $tempschemename_pie[$j]);
+				$i+=2;
+				$j++;
 			}
 		}
 		
@@ -256,9 +264,10 @@ class summary extends MY_Controller {
 		
 		//Insert data for bar chart in an array format
 		$scheme_bar1 = $scheme_link;
+		//print_r($scheme_bar1);
 		$bar1_location = $loc_schcd;
-		if($bar1_location == "1911")
-			$bar1_location = "19111";
+		// if($bar1_location == "1911")
+		// 	$bar1_location = "19111";
 
 		$bar1_m = 0;
 		$bar1_y = 0;
@@ -284,9 +293,9 @@ class summary extends MY_Controller {
 			'm' => $bar1_m,
 			'y' => $bar1_y,
 			'left' => true,
-			'right' => true,
+			'right' => false,
 			'type' => 1,
-			'session' => true,
+			'session' => false,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
@@ -296,7 +305,11 @@ class summary extends MY_Controller {
 		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $bar1_filter_progress);
 
-		$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$bar1_location,$bar1_m,$bar1_y);
+		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
+		$scheme_ID=$this-> Dashboard_model ->schID($scheme_bar1,sizeof($scheme_bar1),$loc_schcdID);
+		
+		//$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$bar1_location,$bar1_m,$bar1_y);
+		$result = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
 		$tempschemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
 
 		$schemename_bar=array();
@@ -402,6 +415,50 @@ class summary extends MY_Controller {
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
+		//====================== New Alert work =============================
+		//print($loc_schcd);
+		//fetching location id to work easyly
+		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
+		//print_r($loc_schcdID);
+		//this are few defalut scheme which already selected
+		$scheme_n = $scheme_link;
+		$tempsch = $this -> Dashboard_model -> sch_name($scheme_n,sizeof($scheme_n));
+		//print_r($tempschemename_alert);
+		$scheme_ID=$this-> Dashboard_model ->schID($scheme_n,sizeof($scheme_n),$loc_schcdID);
+		//print_r($scheme_ID);
+
+		//$tempresult_alert=$this-> Dashboard_model ->get_alert($loc_schcdID,$scheme_pro);
+
+
+		//Now forming a Matrix
+		$aldata = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
+		//print_r($aldata);
+
+		$data1 = array();
+		$schemename_al=array();
+		$result_al=array();
+		for($i=0,$j=0;$i<2*sizeof($tempsch);$i+=2,$j++){
+			if($aldata[$i]=="false")
+				continue;
+			if($aldata[$i]!=0)
+				$per=(int)($aldata[$i+1]/$aldata[$i]*100);
+			else
+				$per=0;
+			array_push($result_al,$aldata[$i],$aldata[$i+1]);
+			array_push($data1, $per);
+			array_push($schemename_al,$tempsch[$j]);
+		}
+		$fits = array();
+		$j = 0;
+		for($i=0;$i<sizeof($data1);$i++,$j+=2){
+			$eachbar = array('c1'=>$i+1,'c2'=>$schemename_al[$i], 'c3'=>$result_al[$j], 'c4'=>$result_al[$j+1], 'c5'=>$data1[$i]);
+			array_push($fits, $eachbar);
+		}
+		$table_data = array('data' => $fits );
+		//print_r($table_data);
+		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
+
+
 		//====================================== ALERT VIEW =============================================
 
 		$alert_m = 0;
@@ -437,7 +494,13 @@ class summary extends MY_Controller {
 		// }
 		// array_multisort($temp_arr, SORT_DESC, $table_data);
 
-		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
+		//$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
+
+
+
+
+
+
 
 		//==================== INFO BOX =====================================
 

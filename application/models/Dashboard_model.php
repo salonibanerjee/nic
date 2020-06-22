@@ -49,6 +49,10 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
+    function get_alert($loc,$scheme){
+
+    }
+
     function get_loc($n,$num)
     {
         $this->db->select('location_area,location_code');
@@ -128,6 +132,12 @@ class Dashboard_model extends CI_Model{
             array_push($ans, $temp);
         }
         return $ans;
+    }
+
+    function getlocID($loc){
+        $this->db->select('location_id_pk')->where(array('location_code'=>$loc));
+        $table = $this->db->get('mpr_master_location_data')->row();
+        return $table->location_id_pk;
     }
 
     function get_prog($n,$num,$loc,$m,$y){
@@ -279,6 +289,41 @@ class Dashboard_model extends CI_Model{
 
         }
         return $d;
+    }
+
+    function schID($sch,$n,$loc){
+        $i=0;
+        $res = array();
+        while($i<$n){
+            $this->db->select('scheme_id_pk,short_name')->where(array('short_name' => $sch[$i]));
+            $table=$this->db->get('mpr_master_scheme_table')->row();
+            array_push($res, $table->scheme_id_pk);
+            $i++;
+        }
+        return $res;
+    }
+
+    function alert_data($loc,$sch,$n){
+        $i=0;
+        $result=array();
+        while($i<$n){
+            $this->db->select('*')->where(array('scheme_id_fk'=>$sch[$i],'location_id_fk'=>$loc));
+            $table=$this->db->get('mpr_trans_fundalloc')->row();
+            //return table
+            if($table){
+                //$fundall='funds_allocated';
+                //$funduti='funds-utilised';
+                array_push($result, $table->funds_allocated);
+                array_push($result, $table->funds_utilised);
+                $i++;
+            }
+            else{
+                array_push($result, 'false');
+                array_push($result, 'false');
+                $i++;
+            }
+        }
+        return $result;
     }
 
     function sch_name($n,$num)
