@@ -76,7 +76,7 @@
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" id='refresh'>
-                    <table id="example1" class="table table-bordered table-striped table-hover equal-width">
+                    <table id="example1" class="table table-bordered table-striped table-hover equal-width" >
                       <thead class="bg-lime">
                       <tr>
                         <th>Location</th>
@@ -85,28 +85,8 @@
                         <th>Fund Utilised</th>
                       </tr>
                       </thead>
-                      <tbody>
-                      <?php
-                          
-                          $i=1;
-                          foreach($funds as $row){
-                            echo "<tr>";
-                            foreach($loc as $l){
-                              if($row['location_id_fk']==$l['location_id_pk']){
-                                echo "<td>".$l['location_area']."</td>";
-                              }
-                            }
-                            foreach($scheme as $l){
-                              if($row['scheme_id_fk']==$l['scheme_id_pk']){
-                                echo "<td>".$l['name']."</td>";
-                              }
-                            }
-                            echo "<td>".$row['funds_allocated']."</td>";
-                            echo "<td>".$row['funds_utilised']."</td>";
-                            echo "</tr>";
-                            $i++;
-                          }
-                      ?>
+                      <tbody name="desig" id="desig">
+                      <div ></div>
                       </tbody>
                       <tfoot>
                       <tr>
@@ -125,6 +105,7 @@
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
+fetchType();
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();
@@ -151,20 +132,49 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
-        $("#refresh").load(location.href+" #refresh>*","");
+        fetchType();
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }
   });
 });
+function fetchType() {
+  $("#desig").empty();
+		 console.log("fetchType");
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/Fund/fetchdata",
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			},
+            success: function (result) {
+				console.log(result);
+                var status = result.status;
+                if (status == 1) {
+                  var type_arr = result.data;
+                    $.each(type_arr, function (idx, val) {
+                        var type_item="";
+                        type_item = "<tr>";
+                        type_item = type_item +"<td>" + val['location'] + "</td>";
+                        type_item = type_item +"<td>" + val['scheme'] + "</td>";
+                        type_item = type_item +"<td>" + val['funds_allocated'] + "</td>";
+                        type_item = type_item +"<td>" + val['funds_utilised'] + "</td>";
+                        type_item = type_item +"</tr>";
+                        $("#desig").append(type_item);
+                    });
+                }
+            }
+        });
+	  }
 </script>
 
 <!-- DataTables -->
 <script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
 <script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
 
-<!-- page script -->
+<!-- page script 
 <script>
   $(function () {
     //$("#myTable").DataTable();
@@ -177,4 +187,4 @@ $("#form").on("submit", function (event) {
       "autoWidth": false,
     });
   });
-</script>
+</script>-->
