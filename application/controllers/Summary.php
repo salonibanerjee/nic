@@ -377,6 +377,7 @@ class summary extends MY_Controller {
 			'left' => true,
 			'right' => true,
 			'type' => 0,
+			'session' =>true,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
