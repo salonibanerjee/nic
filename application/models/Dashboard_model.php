@@ -165,7 +165,72 @@ class Dashboard_model extends CI_Model{
             }
         }
         return $d;
-	}
+    }
+    
+    function get_alertdata($n, $num,$loc,$m,$y)
+    {
+        $this->db->select('attr_target, attri_progress, sch_tab_name');
+        $table = $this->db->get('mpr_master_dashboard_info');
+        $b = array();
+        $i=0;
+        $x=0;
+        while($x<$num){
+            foreach($table->result() as $row){
+                if($row->sch_tab_name==$n[$x]) 
+                {     
+                    $b[$i] = $row->attr_target;
+                    $b[$i+1] = $row->attri_progress;
+                    $i=$i+2;
+                    $x=$x+1;
+                    break;
+                }
+            }
+        }
+        $j = 0;
+        $x = 0;
+        $d = array();
+        
+    
+        while($j<(2*$num))
+        {
+            if($m != 0){
+                $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+                $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            } else {
+                $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+                $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            }
+
+            $table2 = $this->db->get($n[$x])->result();
+            
+            $te1 = $b[$j];
+            $te2 = $b[$j+1];
+            $temp1=0;
+            $temp2=0; 
+            $testing = array();
+
+            if(sizeof($table2)!=0){
+                foreach ($table2 as $row ){
+                    $atripro=$row->$te1;
+                    $atritar=$row->$te2;
+                    array_push($testing,$atripro);
+                    array_push($testing,$atritar);
+                }
+                for($i=0;$i<sizeof($testing);$i+=2){
+                    $temp1+=$testing[$i];
+                    $temp2+=$testing[$i+1];
+                }
+                array_push($d, $temp1,$temp2);
+            }
+            else
+                array_push($d, "false", "false");
+            $j=$j+2;
+            $x=$x+1;
+
+        }
+        return $d;
+    }
+
     
     function get_data($n, $num,$loc,$m,$y)
     {

@@ -3,7 +3,7 @@
         <h3 class="card-title"><b>Notifications</b></h3>
     </div>
     <!-- /.card-header -->
-    <div class="card-body table-responsive" style="height: 150px; width: 400px">
+    <div class="card-body table-responsive" style="height: 150px; min-width: 330px">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner" >
             <?php

@@ -48,6 +48,13 @@ class summary extends MY_Controller {
 
 		//============================================================
 
+		$temploc = $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code');
+		$all_loc = array();
+		foreach ($temploc as $val) {
+			array_push($all_loc,$val);
+		}
+		
+
 		//================PROGRESS LIST===============================
 
 		//change here
@@ -58,7 +65,8 @@ class summary extends MY_Controller {
 		$progress_m = 0;
 		$progress_y = 0;
 		
-		$progress_location = array($loc_schcd);
+		$progress_location = $all_loc;
+		//$progress_location = array($loc_schcd);
 
 		if(isset($_POST['progress_submit'])){
 			if(!empty($_POST['progress_left_check_list'])){
@@ -86,9 +94,9 @@ class summary extends MY_Controller {
 			'm' => $progress_m,
 			'y' => $progress_y,
 			'left' => true,
-			'right' => true,
+			'right' => false,
 			'type' => 0,
-			'session' => true,
+			'session' => false,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
@@ -106,10 +114,33 @@ class summary extends MY_Controller {
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
 		//$data = $this->Dashboard_model->get_prog($scheme_name,$size_sch,$loc_schcd,$progress_m,$progress_y);
 		
+		//$work_progress = array();
+		
+		$alert_m = 0;
+		$alert_y = 0;
+
+		$tempresult_alert = $this -> Dashboard_model -> get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$alert_m,$alert_y);
+		$tempschemename_alert = $this -> Dashboard_model -> sch_name($scheme_name,sizeof($scheme_name));
+		$data = array();
+		$schemename_alert=array();
+		$result_alert=array();
+		for($i=0,$j=0;$i<2*sizeof($scheme_name);$i+=2,$j++){
+			if($tempresult_alert[$i]=="false")
+				continue;
+			if($tempresult_alert[$i]!=0)
+				$per=(int)($tempresult_alert[$i+1]/$tempresult_alert[$i]*100);
+			else
+				$per=0;
+			array_push($result_alert,$tempresult_alert[$i],$tempresult_alert[$i+1]);
+			array_push($data, $per);
+			array_push($schemename_alert,$tempschemename_alert[$j]);
+		}
+
+		
 		$work_progress = array();
-		$j=0;
-		while($j<sizeof($progress_location)){
-			$data = $this->Dashboard_model->get_progress($scheme_name,$size_sch,$progress_location[$j],$progress_m,$progress_y);
+		// $j=0;
+		// while($j<sizeof($progress_location)){
+			//$data = $this->Dashboard_model->get_progress($scheme_name,$size_sch,$progress_location[$j],$progress_m,$progress_y);
 			//print_r($data);
 			$i=0;
 			while($i<sizeof($data))
@@ -127,7 +158,7 @@ class summary extends MY_Controller {
 					$find='danger';
 
 				$d = array(
-					'location' => $scheme_location[$j],
+					'location' => $i+1,
 					'p_name' => $schemename_pro[$i],
 					'sign' => $find,
 					'progress' => $data[$i]
@@ -135,8 +166,15 @@ class summary extends MY_Controller {
 				array_push($work_progress, $d);	
 				$i++;
 			}
-			$j++;
-		}
+			
+			$temp_arr = array();
+			foreach($work_progress as $key => $row){
+				$temp_arr[$key] = $row['progress'];
+			}
+			array_multisort($temp_arr, SORT_DESC, $work_progress);
+			
+			// $j++;
+		// }
 		$progress_view = array('work_progress' => $work_progress);
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
@@ -152,6 +190,8 @@ class summary extends MY_Controller {
 		$scheme_pie = $scheme_link;
 
 		$pie_location = $loc_schcd;
+		if($pie_location == "1911")
+			$pie_location = "19111";
 
 		$pie_m = 0;
 		$pie_y = 0;
@@ -217,6 +257,8 @@ class summary extends MY_Controller {
 		//Insert data for bar chart in an array format
 		$scheme_bar1 = $scheme_link;
 		$bar1_location = $loc_schcd;
+		if($bar1_location == "1911")
+			$bar1_location = "19111";
 
 		$bar1_m = 0;
 		$bar1_y = 0;
@@ -288,8 +330,8 @@ class summary extends MY_Controller {
 
 		//============== BAR CHART 2=====================================
 
-		$scheme_pro = array();
-		$location = array($loc_schcd);
+		$scheme_pro = array_slice($scheme_link,0,5,true);
+		$location = array_slice($all_loc,0,5,true);
 
 		$bar2_m = 0;
 		$bar2_y = 0;
@@ -365,7 +407,7 @@ class summary extends MY_Controller {
 		$alert_m = 0;
 		$alert_y = 0;
 
-		$tempresult_alert = $this -> Dashboard_model -> get_data($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
+		$tempresult_alert = $this -> Dashboard_model -> get_alertdata($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
 		$tempschemename_alert = $this -> Dashboard_model -> sch_name($scheme_bar1,sizeof($scheme_bar1));
 		$data = array();
 		$schemename_alert=array();
@@ -388,6 +430,12 @@ class summary extends MY_Controller {
 			array_push($fits, $eachbar);
 		}
 		$table_data = array('data' => $fits );
+
+		// $temp_arr = array();
+		// foreach($table_data as $key => $row){
+		// 	$temp_arr[$key] = $row['c5'];
+		// }
+		// array_multisort($temp_arr, SORT_DESC, $table_data);
 
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 

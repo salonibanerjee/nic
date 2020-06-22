@@ -9,7 +9,7 @@
               <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#progress" style="color: black"><i class="fas fa-edit"></i></button>
             </div>
           </div> 
-          <div class="card-body">
+          <div class="card-body" style="height: 273px; overflow-y: auto">
             <table class="table table-bordered">
               <thead>                  
                 <tr>
