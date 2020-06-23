@@ -2,8 +2,9 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
+    var $node=1;
     public function __construct(){
-		parent::__construct();
+        parent::__construct();
 		//sif($this->session->userdata('logged_in')==""){
           //  header("Location: http://localhost/NIC/index.php/Login"); 
         //}
@@ -124,19 +125,18 @@ class MY_Controller extends CI_Controller {
         $result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
         if($result_main['fetch_draft']!=NULL){
             $scheme_cnt = $this->NodalCheck_model->check($result_main['fetch_draft']);
-            //print_r($scheme_cnt);
-            
-            $flag = false;
+            $flag = 0;
             foreach ($scheme_cnt as $val) {
                 if($val != 0){
-                    $flag = true;
+                    $flag = 1;
                     break;
                 }
             }
-
             $result = $this->NodalCheck_model->alert();
-            if($result == true && $flag == true){
+            $users=['1','2','9'];
+            if($result == true && $flag == 1 && $this->node==1 && in_array($this->session->userdata('user_type'),$users)){
                 echo "found";
+                $this->node=0;
             }
         }
     }

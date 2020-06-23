@@ -242,7 +242,7 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 				    if(result == "Found"){
               //toastr.remove();
               //toastr.warning('New notification!');
-              toastr.options={"timeOut":"500000","positionClass": "toast-top-center",}
+              toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
               toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
               //$("#noti").load(location.href+" #noti>*","");
 
@@ -267,17 +267,16 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 
 function send_nodal(){ //requests for new notifs every 10 seconds
 	  
-    setInterval(function(){
+    //setInterval(function(){
       $.ajax({
         url: "<?php echo base_url();?>index.php/Summary/nodal_alert",
         success: function(result){
             //console.log("Nodal");
             if(result=="found")
-              toastr.options={"positionClass": "toast-top-center",}
-              //toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
+              toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
           }
       });
-    },10000);
+    //},10000);
 }
 
 function start(){
