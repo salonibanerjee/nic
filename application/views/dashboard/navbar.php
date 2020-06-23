@@ -240,25 +240,9 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 				  url: "<?php echo base_url();?>index.php/Summary/fetch_notifs",
           success: function(result){
 				    if(result == "Found"){
-              //toastr.remove();
-              //toastr.warning('New notification!');
               toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
               toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
               //$("#noti").load(location.href+" #noti>*","");
-
-              /*Swal.fire({
-                title: 'MPR',
-                text: "You have a new notification!",
-                icon: 'info',
-                //showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                //cancelButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-              }).then((result) => {
-                    if (result.value) {
-                      location.reload();
-                    }
-              })*/
 				    }
 				  }
 			  });
