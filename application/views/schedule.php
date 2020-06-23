@@ -7,7 +7,7 @@
           <h1>MEETING <b>SCHEDULE</b></h1>
         </div>
         <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
+          <ol class="breadcrumb float-sm-right" id="err">
             <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Meeting Schedule</li>
           </ol>
@@ -19,7 +19,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
-      <?php echo form_open_multipart("");?>
+      <?php echo form_open("Super_Admin/schedule",'id="form"');?>
       
         <div class="row">
           <div class="col-md-6">
@@ -94,4 +94,42 @@
       }
     })
   })
+</script>
+<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="http://localhost/NIC/js/notify.js"></script>
+<script type="text/javascript" >
+var csrf_token='';
+$("#form").on("submit", function (event) {
+  event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
+  $.ajax({
+    url: $('#form').attr('action'),
+    type: "POST",
+    data: $('#form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+      if(k.res==0){
+        $('#errors').html(k.errors);
+        console.log("error");
+      }else{ 
+        $('#errors').html("");
+        //$("form")[0].reset();
+        $("#form").load(location.href+" #form>*","");
+        //fetchType();
+        $("#err").notify("Value accepted",{position:"left", className: 'success'});
+        console.log("submit");
+      }
+    }
+  });
+});
 </script>

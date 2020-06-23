@@ -146,16 +146,16 @@
 <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
-            <div class="small-box bg-gray">
+            <div class="small-box bg-white">
               <div class="inner">
                 <h3>₹</h3>
 
                 <p>Funds Details</p>
               </div>
               <div class="icon">
-                <i class="fa fa-rupee"></i>
+                <i>₹</i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Fund" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>index.php/Fund" class="small-box-footer">Update Funds<i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
         </div>

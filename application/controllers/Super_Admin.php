@@ -56,8 +56,16 @@ class Super_Admin extends MY_Controller {
                 'end_time'=> mdate('%Y-%M-%d %H:%i',strtotime('-2 hours', strtotime( $row->end_time ))),
 			);
 		$this->load->view('schedule',$data);
-		
-		if(isset($_POST['sub'])){
+		$this->load->view('dashboard/footer');
+	}
+	
+	public function schedule(){
+		$this->load->model('Sup_admin');
+		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
+		$this->load->model('profile_model');
+		$csrf_token=$this->security->get_csrf_hash();
+		//functionality
 			$span = $this->input->post('date');
 			$start_time = substr($span,0,16);
 			$end_time=substr($span,19,35);
@@ -83,10 +91,10 @@ class Super_Admin extends MY_Controller {
                                             'Meeting Schedule Updated',
 											$start_time.' - '.$end_time);
 			$this->db->trans_complete();
-		}
 
-		$this->load->view('dashboard/footer');
-    }
+		$ab=array('csrf_token'=>$csrf_token,'res'=>1);
+        echo json_encode($ab);
+	}
     
     public function notification(){
 		if($this->session->userdata('logged_in')=="")
@@ -103,14 +111,24 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/navbar',$u_type);
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $this->load->view('dashboard/sidebar',$da);
+		$this->load->view('notify',$u_type);
+		$this->load->view('dashboard/footer');
+	}
 
-        $this->form_validation->set_rules('noti_head', 'Notification head', 'required');
+	public function notify(){
+		$this->load->model('Sup_admin');
+		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
+		$this->load->model('profile_model');
+		$csrf_token=$this->security->get_csrf_hash();
+
+		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
         $this->form_validation->set_rules('noti_text', 'Notification text', 'required');
         $this->form_validation->set_rules('audience_id', 'Notification Code', 'required');
         if ($this->form_validation->run() == FALSE)
         {
-			echo validation_errors();
-			$this->load->view('notify',$u_type);
+			$ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
+            echo json_encode($ab);
         }else{
             $noti_head = $this->input->post('noti_head');
             $noti_text= $this->input->post('noti_text');
@@ -125,9 +143,10 @@ class Super_Admin extends MY_Controller {
                                             'Notification Inserted - '.$noti_head,
 											'Custom Message here');
 			$this->db->trans_complete();
+
+			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
+            echo json_encode($ab);
 		}
-		
-		$this->load->view('dashboard/footer');
 	}
 	
 	public function dba_fyear_range(){
@@ -148,12 +167,21 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Crud_model');
 		$u_type['year_range'] = $this->Crud_model->dba_fyear_range();
 		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
+		$this->load->view('dba_fyear_range',$u_type);
+		$this->load->view('dashboard/footer');
+	}
 
+	public function dba_year(){
+		$this->load->model('Sup_admin');
+		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
+		$this->load->model('profile_model');
+		$csrf_token=$this->security->get_csrf_hash();
 		$this->form_validation->set_rules('year', 'Year', 'required');
 		$this->form_validation->set_rules('month', 'Month', 'required');
 		if ($this->form_validation->run() == FALSE){
-			echo validation_errors();
-			$this->load->view('dba_fyear_range',$u_type);
+			$ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
+            echo json_encode($ab);
         }else{
 			$a=array('financial_year_range'=>$this->input->post('year'),'month'=>$this->input->post('month'));
 			$this->db->trans_off();
@@ -165,10 +193,9 @@ class Super_Admin extends MY_Controller {
                                             $a['financial_year_range'].' - '.$a['month']);
 			$suc=$this->Crud_model->dba_fyear_update($a);
 			$this->db->trans_complete();
-			
+			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
+            echo json_encode($ab);
 		}
-
-		$this->load->view('dashboard/footer');
 	}
 
 

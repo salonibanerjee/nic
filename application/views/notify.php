@@ -24,13 +24,13 @@
           <div class='container-fluid'>
             <div class='row'>
 
-              <div class="col-md-12" id='refresh'>
+              <div class="col-md-12">
                 <div class="card">
                   <div class="card-header bg-info">
                     <h3 class="card-title">Previous Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
-                  <div class="card-body" >
+                  <div class="card-body" id='refresh'>
                     <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                       <thead class="bg-warning">
                       <tr>
@@ -79,7 +79,7 @@
       <div class="card card-primary card-outline mx-auto" >
         <div class="card-body login-card-body">
           <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
-          <?php echo form_open('Super_Admin/notification','id="form"');?>
+          <?php echo form_open('Super_Admin/notify','id="form"');?>
           <!--<form method="POST" action="" id="form"> -->
             <div class="input-group mb-3">
               <input name="noti_head" id="noti_head" type="text" class="form-control" placeholder="Notification Title" >
@@ -108,7 +108,7 @@
             <div id="errors" style="color:red;"></div>
             <div class="row">
               <div class="col-12">
-                <button type="submit" id="submit" name="submit" value="Submit" class="btn btn-primary float-right" style="border-radius: 50%;" ><span class="fas fa-paper-plane"></span></button>
+                <button type="submit" id='err' id="submit" name="submit" value="Submit" class="btn btn-primary float-right" style="border-radius: 50%;" ><span class="fas fa-paper-plane"></span></button>
               </div>
               <!-- /.col -->
             </div>
@@ -123,30 +123,42 @@
 </div>
 <!-- /.login-box -->
 
-<script type="text/javascript">
-  $("form").on("submit", function (event){
-    event.preventDefault();
-    $.ajax({
-      url: $('form').attr('action'),
-      type: "POST",
-      data: $('form').serialize(),
-      //dataType: 'html',
-      error: function(){
-			  console.log("Form cannot be submitted...");
-		  },
-      cache: false,
-      success: function(result){
-        var pos=result.indexOf('<!DOCTYPE html>');
-        if(result[1]=='p'){
-          $('#errors').html(result.slice(0,pos));
-        }else{
-          $('#errors').html("");
-          //alert(result.slice(0,pos));
-          window.location.href = result.slice(0,pos);
-        }
+<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="http://localhost/NIC/js/notify.js"></script>
+<script type="text/javascript" >
+var csrf_token='';
+$("#form").on("submit", function (event) {
+  event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
+  $.ajax({
+    url: $('#form').attr('action'),
+    type: "POST",
+    data: $('#form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
       }
-    });
+      if(k.res==0){
+        $('#errors').html(k.errors);
+        console.log("error");
+      }else{ 
+        $('#errors').html("");
+        $("form")[0].reset();
+        $("#refresh").load(location.href+" #refresh>*","");
+        $("#err").notify("Value accepted",{position:"left", className: 'success'});
+        console.log("submit");
+      }
+    }
   });
+});
 </script>
 
 <!-- DataTables -->
