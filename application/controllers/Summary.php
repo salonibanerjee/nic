@@ -75,16 +75,6 @@ class summary extends MY_Controller {
 					array_push($scheme_name,$selected);
 				}
 			}
-
-			if(!empty($_POST['progress_right_check_list'])){
-				$progress_location = array();
-				foreach($_POST['progress_right_check_list'] as $selected){
-					array_push($progress_location,$selected);
-				}
-			}
-
-			$progress_m = $_POST['progress_month'];
-			$progress_y = $_POST['progress_year'];
 		}
 
 		$filter_progress =array(
@@ -203,11 +193,6 @@ class summary extends MY_Controller {
 					array_push($scheme_pie,$selected);
 				}
 			}
-
-			$pie_location = $_POST['pie_right_check_list'];
-
-			$pie_m = $_POST['pie_month'];
-			$pie_y = $_POST['pie_year'];
 		}
 
 		$filter_pie =array(
@@ -274,16 +259,12 @@ class summary extends MY_Controller {
 		
 		if(isset($_POST['bar1_submit'])){
 			if(!empty($_POST['bar1_left_check_list'])){
-				$scheme_pro = array();
+				$scheme_bar1 = array();
 				foreach($_POST['bar1_left_check_list'] as $selected){
-					array_push($scheme_pro,$selected);
+					array_push($scheme_bar1,$selected);
 				}
 			}
 
-			$bar1_location = $_POST['bar1_right_check_list'];
-
-			$bar1_m = $_POST['bar1_month'];
-			$bar1_y = $_POST['bar1_year'];
 		}
 
 		$bar1_filter_progress = array(
