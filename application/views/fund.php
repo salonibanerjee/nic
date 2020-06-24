@@ -55,6 +55,10 @@
                 <label>Funds Utilised</label>
                 <input type="text" class="form-control" name = "funu" id="funu" placeholder="Enter Fund Utilised">
               </div>
+              <div class="form-group">
+                <label>Threshold %</label>
+                <input type="number" class="form-control" name = "thsd" id="thsd" placeholder="Enter Fund Utilised">
+              </div>
             </div>
           <!-- /.card-body -->
           <?php //echo validation_errors();?>
@@ -83,6 +87,7 @@
                         <th>Scheme</th>
                         <th>Fund Alloted</th>
                         <th>Fund Utilised</th>
+                        <th>Threshold Limit</th>
                       </tr>
                       </thead>
                       <tbody name="desig" id="desig">
@@ -161,6 +166,7 @@ function fetchType() {
                         type_item = type_item +"<td>" + val['scheme'] + "</td>";
                         type_item = type_item +"<td>" + val['funds_allocated'] + "</td>";
                         type_item = type_item +"<td>" + val['funds_utilised'] + "</td>";
+                        type_item = type_item +"<td>" + val['threshold'] + "</td>";
                         type_item = type_item +"</tr>";
                         $("#desig").append(type_item);
                     });

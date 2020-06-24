@@ -43,7 +43,16 @@ class Fund extends MY_Controller {
                     'errors' => array(
                             'required' => 'You must provide a value in %s.',
                     )
+            ),
+            array(
+                    'field' => 'thsd',
+                    'label' => 'threshold',
+                    'rules' => 'required|numeric|max_length[3]',
+                    'errors' => array(
+                            'required' => 'You must provide a value in %s.',
+                    )
             )
+
                     );
         $this->form_validation->set_rules($validate);
         if ($this->form_validation->run() == FALSE){
@@ -54,6 +63,7 @@ class Fund extends MY_Controller {
             $data['funds_allocated'] = $this->input->post('funa');
             $data['funds_utilised'] = $this->input->post('funu');
             $data['location_id_fk'] = $this->input->post('loc');
+            $data['threshold'] = $this->input->post('thsd');
             $this->db->trans_off();
             $this->db->trans_strict(FALSE);
             $this->db->trans_start();
@@ -80,6 +90,7 @@ class Fund extends MY_Controller {
                $data[$i]['scheme']=$this->Sup_admin->table_name($key['scheme_id_fk'])[0]['name'];
                $data[$i]['funds_allocated']=$key['funds_allocated'];
                $data[$i]['funds_utilised']=$key['funds_utilised'];
+               $data[$i]['threshold']=$key['threshold'];
                $i++;
            }
 		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
