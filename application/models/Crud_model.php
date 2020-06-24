@@ -221,4 +221,8 @@ class Crud_model extends CI_Model {
                 $result = $this->db->where(array('dba_financial_range_table_id_pk'=>1))->update('mpr_semitrans_dba_financial_range',$var);
                 return $result;
         }
+
+        public function deo($n){
+                return $this->db->select('username')->where('login_id_pk',$n)->get('mpr_semitrans_login')->row();
+        }
 }

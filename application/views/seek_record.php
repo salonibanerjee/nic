@@ -19,31 +19,34 @@
  
 
   <section class="content">
-  <div class="row">
-        <div class="col-md-4">
     <div class="container-fluid">
       <!-- general form elements -->
       <div class="card card-primary mx-auto">
-        
         <!-- form start -->
           <div class="card-body">
             <?php
               echo form_open_multipart("");
             ?>
-              <h3 class="profile-username text-center"><b><?php echo "Enter Record Details";?></b></h3>
-              <div class="form-group">
-                <label for="uname">Username</label>
-                <input type="text" class="form-control" name = "uname" id="uname" placeholder="Enter Username" value="<?php if(form_error('uname')){echo set_value('uname');}else{echo "";}?>">
-                <p class='error invalid-feedback'><small></small></p>
+            <h3 class="profile-username text-center"><b><?php echo "Enter Record Details";?></b></h3>
+              <div class="row">
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label for="uname">Username</label>
+                  <input type="text" class="form-control" name = "uname" id="uname" placeholder="Enter Username" value="<?php if(form_error('uname')){echo set_value('uname');}else{echo "";}?>">
+                  <p class='error invalid-feedback'><small></small></p>
+                </div>
               </div>
-              <div class="form-group">
-                <label>Scheme Name</label>
-                <select class="form-control" id ="scheme" name= "scheme" >
-                  <?php  foreach($scheme as $key){ 
-                   echo "<option value=".$key['short_name'].">".$key['name']."</option>";
-                  } ?>
-                </select>
+              <div class="col-md-4">
+                <div class="form-group">
+                  <label>Scheme Name</label>
+                  <select class="form-control" id ="scheme" name= "scheme" >
+                    <?php  foreach($scheme as $key){ 
+                    echo "<option value=".$key['short_name'].">".$key['name']."</option>";
+                    } ?>
+                  </select>
+                </div>
               </div>
+              <div class="col-md-4">
               <div class="form-group">
                 <label>Nodal Value</label>
                 <select class="form-control" id ="nodal" name= "nodal" >
@@ -51,7 +54,12 @@
                   <option value="0">Data that is never checked</option>
                   <option value="-1">Discarded Data</option>
                   </select>
-                  </div>
+              </div>
+              </div>
+              </div>
+                  
+              <div class="row">
+              <div class="col-md-4">
               <div class="form-group">
                 <label for="year">Year</label>
                 <select name="year" class="form-control" id="year">
@@ -63,6 +71,8 @@
                 </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('year'); ?></small></p>
               </div>
+              </div>
+              <div class="col-md-4">
               <div class="form-group">
                 <label for="smonth"> Starting Month</label>
                 <select class="form-control" id="smonth" name="smonth">
@@ -73,6 +83,8 @@
                 </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('smonth'); ?></small></p>
               </div>
+              </div>
+              <div class="col-md-4">
               <div class="form-group">
                 <label for="fmonth">Final Month</label>
                 <select class="form-control" id="fmonth" name="fmonth">
@@ -83,6 +95,8 @@
                 </select>
                 <p class='error invalid-feedback'><small><?php echo form_error('fmonth'); ?></small></p>
               </div>
+              </div>
+                        </div>
             </div>
           <!-- /.card-body -->
           <?php //echo validation_errors();?>
@@ -90,9 +104,7 @@
             <button type="submit" name= "sub1" id="sub1" class="btn btn-primary" style="display: block; margin-left: auto;  margin-right: auto;">Show Details</button>
           </div>
       </div>
-    </div>
-  </div>
-  <div class="col-md-8">
+
     <div class="card card-primary mx-auto">
     <?php if ($fields != NULL){ 
             $i =0;?>
@@ -105,7 +117,7 @@
                 <thead>
                 <tr>
       <?php foreach($fields as $key){
-                if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
+                if($key == 'id_pk' || $key == 'inserted_at' ||$key=='ip' || $key=='nodal_check'){
                   $i++;
                   continue;
                 }else if($key=='month'){
@@ -114,6 +126,12 @@
                 }
                 else if($key=='session'){
                   echo "<th>"."Session"."</th>";
+                  $i++;
+                }else if($key=='location_code'){
+                  echo "<th>"."Region"."</th>";
+                  $i++;
+                }else if($key == 'login_id_fk'){
+                  echo "<th>"."Data Entry Operator"."</th>";
                   $i++;
                 }
                 else{
@@ -136,11 +154,16 @@
                         $mnth = array('5','January','February','March','April','May','June','July','August','September','October','November','December');
                         echo "<tr>";
                         foreach($row as $key=>$value){
-                            if($key == 'id_pk' || $key == 'login_id_fk' || $key == 'inserted_at' ||$key=='ip' || $key=='location_code' || $key=='nodal_check'){
+                            if($key == 'id_pk' || $key == 'inserted_at' ||$key=='ip' || $key=='nodal_check'){
                                 continue;
                             }else if($key == 'month'){
                                 echo "<td>".$mnth[$value]."</td>";
-                            }else{
+                            }else if($key=='location_code'){
+                                echo "<td>".$this->Crud_model->region_name($value)."</td>";
+                            }else if($key == 'login_id_fk'){
+                              echo "<td>".$this->Crud_model->deo($value)->username."</td>";
+                            }
+                            else{
                                 echo "<td>".$value."</td>";
                             }
                         }
@@ -208,8 +231,8 @@ function readURL(input) {
     //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
-      "lengthChange": false,
-      "searching": false,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": true,
