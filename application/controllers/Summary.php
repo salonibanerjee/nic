@@ -663,11 +663,11 @@ class summary extends MY_Controller {
 					'label' => 'Email',
 					'rules' => 'required|valid_email'
 			),
-			//array(
-			//	'field' => 'desig',
-			//	'label' => 'Designation',
-			//	'rules' => 'required'
-			//),
+			array(
+				'field' => 'desig',
+				'label' => 'Designation',
+				'rules' => 'required'
+			),
 			array(
 				'field' => 'dist',
 				'label' => 'District',
@@ -678,6 +678,7 @@ class summary extends MY_Controller {
 		//Validation check
 		if ($this->form_validation->run() == FALSE){
 			$this->load->view('edit_profile',$dat);
+			$this->load->view('dashboard/footer');
 		}else{
 			if(isset($_POST['sub1'])){
 				$first = $this->input->post('first');
@@ -753,6 +754,7 @@ class summary extends MY_Controller {
         {
 			echo validation_errors();
 			$this->load->view('change_pass');
+			$this->load->view('dashboard/footer');
         }else{
             $user=$this->session->userdata('uid');
             $old_pass = $this->input->post('pass0');

@@ -84,7 +84,7 @@
               </div>
               <div class="form-group">
                 <label for="email">Email</label>
-                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address" value="<?php if(form_error('email')){echo set_value('email');}else{echo $email;}?>">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Enter Email Address" value="<?php echo $username;?>" disabled>
                 <p class='error invalid-feedback'><small><?php echo form_error('email'); ?></small></p>
               </div>
               <div class="form-group">
@@ -142,6 +142,12 @@
   <section>
 </div>
 <script>
+var input=document.getElementsByClassName('form-control');
+for(var i=0;i<input.length;i++){
+  if(input[i].value=='GENERIC' || input[i].value=='EDITABLE'){
+    input[i].disabled=false;
+  }
+}
 function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
