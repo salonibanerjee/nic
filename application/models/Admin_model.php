@@ -74,21 +74,21 @@ class Admin_model extends CI_Model {
             array_push($result_bar2,$scheme->short_name);
         }
         $this->load->driver('cache', array('adapter' => 'file'));
-        if ( ! $foo = $this->cache->get('dashboard_cache_progress')){
+        if ( ! $foo = $this->cache->get('dashboard_cache_progress'.$this->session->userdata('loginid'))){
             $foo = $result_progress;
-            $this->cache->save('dashboard_cache_progress', $foo, 3000);
+            $this->cache->save('dashboard_cache_progress'.$this->session->userdata('loginid'), $foo, 3000);
         }
-        if ( ! $foo = $this->cache->get('dashboard_cache_bar')){
+        if ( ! $foo = $this->cache->get('dashboard_cache_bar'.$this->session->userdata('loginid'))){
             $foo = $result_bar;
-            $this->cache->save('dashboard_cache_bar', $foo, 3000);
+            $this->cache->save('dashboard_cache_bar'.$this->session->userdata('loginid'), $foo, 3000);
         }
-        if ( ! $foo = $this->cache->get('dashboard_cache_pie')){
+        if ( ! $foo = $this->cache->get('dashboard_cache_pie'.$this->session->userdata('loginid'))){
             $foo = $result_pie;
-            $this->cache->save('dashboard_cache_pie', $foo, 3000);
+            $this->cache->save('dashboard_cache_pie'.$this->session->userdata('loginid'), $foo, 3000);
         }
-        if ( ! $foo = $this->cache->get('dashboard_cache_bar2')){
+        if ( ! $foo = $this->cache->get('dashboard_cache_bar2'.$this->session->userdata('loginid'))){
             $foo = $result_bar2;
-            $this->cache->save('dashboard_cache_bar2', $foo, 3000);
+            $this->cache->save('dashboard_cache_bar2'.$this->session->userdata('loginid'), $foo, 3000);
         }
     }
 
