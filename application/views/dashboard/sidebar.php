@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link bg-primary">
+    <a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="brand-link bg-primary">
       <img src="<?php echo base_url();?>logo/wb_logo.png" alt="Logo" class="brand-image">
       <span class="brand-text font-weight-light"><b>MPR</b></span>
     </a>
