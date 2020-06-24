@@ -443,7 +443,7 @@ class summary extends MY_Controller {
 
 
 		//Now forming a Matrix
-		$aldata = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
+		$aldata = $this->Dashboard_model->alert_filter($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
 		//print_r($aldata);
 
 		$data1 = array();

@@ -49,9 +49,47 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
-    function get_alert($loc,$scheme){
-
+    function alert_filter($loc,$sch,$n){
+        $i=0;
+        $result=array();
+        while($i<$n){
+            $this->db->select('*')->where(array('scheme_id_fk'=>$sch[$i],'location_id_fk'=>$loc));
+            $table=$this->db->get('mpr_trans_fundalloc')->row();
+            //return table
+            if($table){
+                //$fundall='funds_allocated';
+                //$funduti='funds-utilised';
+                //array_push($result, $table->funds_allocated);
+                //array_push($result, $table->funds_utilised);
+                $fundallocated=$table->funds_allocated;
+                $fundutillised=$table->funds_utilised;
+                $thre=$table->threshold;
+                if($fundallocated==0){
+                    array_push($result, 'false');
+                    array_push($result, 'false');
+                }
+                else{
+                    $ans=($fundutillised/$fundallocated)*100;
+                    if($ans<$thre){
+                        array_push($result, $fundallocated);
+                        array_push($result, $fundutillised);
+                    }
+                    else{
+                        array_push($result, 'false');
+                        array_push($result, 'false');
+                    }
+                }
+                $i++;
+            }
+            else{
+                array_push($result, 'false');
+                array_push($result, 'false');
+                $i++;
+            }
+        }
+        return $result;
     }
+
 
     function get_loc($n,$num)
     {
