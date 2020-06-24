@@ -1,9 +1,9 @@
-<div class="card">
-    <div class="card-header bg-warning">
+<div class="card mx-auto">
+    <div class="card-header bg-warning mx-auto">
         <h3 class="card-title"><b>Notifications</b></h3>
     </div>
     <!-- /.card-header -->
-    <div class="card-body table-responsive" style="height: 150px; min-width: 330px">
+    <div class="card-body table-responsive" style="height: 150px; max-width:400px; min-width:400px;">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
             <div class="carousel-inner" >
             <?php
