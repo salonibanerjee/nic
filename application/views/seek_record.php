@@ -101,7 +101,7 @@
             </div>
             <div class="card-body">
               <h4><b>Nodal Check: </b><?php if($nodal==1){echo 'Accepted';}elseif($nodal==-1){echo "Rejected";}else{echo "Never Checked";}?></h4>
-              <table class="table table-bordered table-striped table-hover table-responsive">
+              <table id="example1" class="table table-bordered table-striped table-hover">
                 <thead>
                 <tr>
       <?php foreach($fields as $key){
@@ -196,4 +196,23 @@ function readURL(input) {
             }
             return localStorage.getItem(v);
         }
+</script>
+
+<!-- DataTables -->
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+
+<!-- page script -->
+<script>
+  $(function () {
+    //$("#myTable").DataTable();
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+    });
+  });
 </script>
