@@ -774,11 +774,11 @@ function seek_record(){
 							$dam['fields'] = $dat;
 							$dam['dad'] = $dad;
 							$this->load->view('seek_record',$dam);
-							$this->load->view('dashboard/footer');
 						}	
 					}
 				}
 			}
+		$this->load->view('dashboard/footer');
 	}
 	function audit_log()
 	{

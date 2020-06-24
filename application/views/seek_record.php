@@ -144,20 +144,22 @@
                                 echo "<td>".$value."</td>";
                             }
                         }
-                        echo "<tr>";
+                        echo "</tr>";
                         $i++;
                     } ?>
-
+      </tbody>
+                  </table>
 
       <?php } ?>
             <?php if ($fields == NULL){ ?>
               <div class="card-body">
               <table class="table table-bordered table-striped table-hover">
               <thead><tr><th><center>Records Table</center></th></tr></thead>
-              <tbody><tr><td><center>No Records To Show</center></td></tr><tbody>
-            </div>
+              <tbody><tr><td><center>No Records To Show</center></td></tr><tbody></table>
+              </div>
       
             <?php } ?>
+            </div>
             </div>
             </div>
             </div>
