@@ -373,7 +373,9 @@ class Dashboard_model extends CI_Model{
         $tables = $this->db->get($n);
         $b = array();
         foreach($tables->result() as $row){
-                $b[] = $row->$m;
+            if($row->$m == "1911")
+                continue;
+            $b[] = $row->$m;
         }
         return $b;
     }
@@ -384,7 +386,9 @@ class Dashboard_model extends CI_Model{
         $tables = $this->db->get($n);
         $b = array();
         foreach($tables->result() as $row){
-                $b[] = $row->$m;
+            if($row->$m == "HOWRAH")
+                continue;
+            $b[] = $row->$m;
         }
         return $b;
     }

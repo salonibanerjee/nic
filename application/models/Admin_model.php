@@ -57,6 +57,41 @@ class Admin_model extends CI_Model {
         }
     }
 
+    public function dashboard_cache(){
+        $dept = $this->session->userdata('dept');
+        $query = $this->db->get_where('mpr_master_scheme_dept',array('dept_id_fk'=>$dept))->result_array();
+
+        $result_progress = array();
+        $result_pie = array();
+        $result_bar = array();
+        $result_bar2 = array();
+        foreach($query as $row){
+            $scheme = $this->db->get_where('mpr_master_scheme_table',array('scheme_id_pk'=>$row['scheme_id_fk']))->row();
+
+            array_push($result_progress,$scheme->short_name);
+            array_push($result_bar,$scheme->short_name);
+            array_push($result_pie,$scheme->short_name);
+            array_push($result_bar2,$scheme->short_name);
+        }
+        $this->load->driver('cache', array('adapter' => 'file'));
+        if ( ! $foo = $this->cache->get('dashboard_cache_progress')){
+            $foo = $result_progress;
+            $this->cache->save('dashboard_cache_progress', $foo, 3000);
+        }
+        if ( ! $foo = $this->cache->get('dashboard_cache_bar')){
+            $foo = $result_bar;
+            $this->cache->save('dashboard_cache_bar', $foo, 3000);
+        }
+        if ( ! $foo = $this->cache->get('dashboard_cache_pie')){
+            $foo = $result_pie;
+            $this->cache->save('dashboard_cache_pie', $foo, 3000);
+        }
+        if ( ! $foo = $this->cache->get('dashboard_cache_bar2')){
+            $foo = $result_bar2;
+            $this->cache->save('dashboard_cache_bar2', $foo, 3000);
+        }
+    }
+
     public function store_profile($uname){
         //$this->db->cache_on();
         $query = $this->db->get_where('mpr_semitrans_profile',array('username'=>$uname));

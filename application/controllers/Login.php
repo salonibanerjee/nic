@@ -45,6 +45,7 @@ class Login extends MY_Controller {
                     $this->session->set_userdata('dept',$res->dept_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
+                    $this->Admin_model->dashboard_cache();
                     $this->Admin_model->scheme_hier_cache();
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];

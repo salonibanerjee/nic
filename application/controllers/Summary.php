@@ -37,6 +37,24 @@ class summary extends MY_Controller {
 			array_push($scheme_link_name, $row['scheme_name']);
 		}
 
+		if ( ! $foo = $this->cache->get('dashboard_cache_progress')){
+            $foo = $scheme_link;
+            $this->cache->save('dashboard_cache_progress', $foo, 3000);
+		}
+		
+		if ( ! $foo = $this->cache->get('dashboard_cache_pie')){
+            $foo = $scheme_link;
+            $this->cache->save('dashboard_cache_pie', $foo, 3000);
+		}
+		
+		if ( ! $foo = $this->cache->get('dashboard_cache_bar')){
+            $foo = $scheme_link;
+            $this->cache->save('dashboard_cache_bar', $foo, 3000);
+		}
+		if ( ! $foo = $this->cache->get('dashboard_cache_bar2')){
+            $foo = $scheme_link;
+            $this->cache->save('dashboard_cache_bar2', $foo, 3000);
+        }
 
 		//print_r($scheme_hier['scheme_link']);
 
@@ -60,7 +78,9 @@ class summary extends MY_Controller {
 		//change here
 		$loc_schcd = $this->session->userdata('location_code');
 
-		$scheme_name = $scheme_link;
+
+
+		$scheme_name = $this->cache->get('dashboard_cache_progress');
 
 		$progress_m = 0;
 		$progress_y = 0;
@@ -75,6 +95,10 @@ class summary extends MY_Controller {
 					array_push($scheme_name,$selected);
 				}
 			}
+
+			//$this->cache->delete('dashboard_cache_progress');
+			$this->cache->save('dashboard_cache_progress', $scheme_name);
+
 		}
 
 		$filter_progress =array(
@@ -177,7 +201,7 @@ class summary extends MY_Controller {
 
 		//============================ PIE CHART =============================
 
-		$scheme_pie = $scheme_link;
+		$scheme_pie = $this->cache->get('dashboard_cache_pie');
 
 		$pie_location = $loc_schcd;
 		// if($pie_location == "1911")
@@ -193,6 +217,9 @@ class summary extends MY_Controller {
 					array_push($scheme_pie,$selected);
 				}
 			}
+
+			//$this->cache->delete('dashboard_cache_pie');
+			$this->cache->save('dashboard_cache_pie', $scheme_pie);
 		}
 
 		$filter_pie =array(
@@ -248,7 +275,7 @@ class summary extends MY_Controller {
 		//================BAR CHART 1===============================
 		
 		//Insert data for bar chart in an array format
-		$scheme_bar1 = $scheme_link;
+		$scheme_bar1 = $this->cache->get('dashboard_cache_bar');
 		//print_r($scheme_bar1);
 		$bar1_location = $loc_schcd;
 		// if($bar1_location == "1911")
@@ -264,6 +291,9 @@ class summary extends MY_Controller {
 					array_push($scheme_bar1,$selected);
 				}
 			}
+
+			//$this->cache->delete('dashboard_cache_bar');
+			$this->cache->save('dashboard_cache_bar', $scheme_bar1);
 
 		}
 
@@ -324,7 +354,7 @@ class summary extends MY_Controller {
 
 		//============== BAR CHART 2=====================================
 
-		$scheme_pro = array_slice($scheme_link,0,5,true);
+		$scheme_pro = array_slice($this->cache->get('dashboard_cache_bar2'),0,5,true);
 		$location = array_slice($all_loc,0,5,true);
 
 		$bar2_m = 0;
@@ -337,6 +367,8 @@ class summary extends MY_Controller {
 					array_push($scheme_pro,$selected);
 				}
 			}
+
+			$this->cache->save('dashboard_cache_bar2', $scheme_pro);
 
 			if(!empty($_POST['bar2_right_check_list'])){
 				$location = array();
