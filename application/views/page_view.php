@@ -79,6 +79,7 @@
 </div>
 
 <script type="text/javascript">
+	 var csrf_token="";
 	function toggleClicked(loginId){
 		var button = document.getElementById("switch"+loginId);
 		toggle(button);
@@ -102,10 +103,15 @@
 	}
 	
 	function update(id, state){
+		if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/inactive_page_view",
 			type: "POST",
-			data:{id:id,state:state},
+			data:{ "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+				id:id,state:state},
+			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
@@ -113,11 +119,16 @@
 			success:function(result) 
 			{  
 				console.log(result);
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
 				if(result == 'done'){
 					console.log("<?php echo base_url();?>index.php/Super_Admin/page_view");
 					window.location="<?php echo base_url();?>index.php/Super_Admin/page_view";
 				}else{
-					<?php echo "failed"?>
+					console.log("<?php echo base_url();?>index.php/Super_Admin/page_view");
+					window.location="<?php echo base_url();?>index.php/Super_Admin/page_view";
+				
 				}
 			}   
 		});
@@ -134,8 +145,8 @@
     //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
-      "lengthChange": false,
-      "searching": false,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,

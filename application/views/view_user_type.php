@@ -77,6 +77,7 @@
 </div>
 
 <script type="text/javascript">
+	 var csrf_token="";
 	function toggleClicked(userId){
 		var button = document.getElementById("switch"+userId);
 		toggle(button);
@@ -102,10 +103,15 @@
 	}
 	
 	function update(id, state){
+		if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/inactive_user_type",
 			type: "POST",
-			data:{id:id,state:state},
+			data:{ "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+				id:id,state:state},
+			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
@@ -113,11 +119,16 @@
 			success:function(result) 
 			{  
 				console.log(result);
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
 				if(result == 'done'){
 					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_user_desig_type");
 					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_user_desig_type";
 				}else{
-					<?php echo "failed"?>
+					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_user_desig_type");
+					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_user_desig_type";
+			
 				}
 			}   
 		});

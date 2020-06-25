@@ -18,7 +18,7 @@
     <div class='container-fluid'>
       <div class='row'>
 	  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>css/switch.css">
-        <div class="col-md-11" id='refresh'>
+        <div class="col-md-12" id='refresh'>
           <div class="card">
             <div class="card-header">
               <h3 class="card-title"><strong>USER Datatable</strong></h3>
@@ -82,6 +82,8 @@
 </div>
 
 <script type="text/javascript">
+	
+	 var csrf_token="";
 	function toggleClicked(loginId){
 		var button = document.getElementById("switch"+loginId);
 		toggle(button);
@@ -105,10 +107,15 @@
 	}
 	
 	function update(id, state){
+		if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/inactive_login",
 			type: "POST",
-			data:{id:id,state:state},
+			data:{ "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+				id:id,state:state},
+			 dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
@@ -116,11 +123,16 @@
 			success:function(result) 
 			{  
 				console.log(result);
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
 				if(result == 'done'){
 					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_login");
 					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_login";
 				}else{
-					<?php echo "failed"?>
+					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_login");
+					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_login";
+			
 				}
 			}   
 		});
@@ -136,12 +148,12 @@
   $(function () {
     //$("#myTable").DataTable();
     $('#example1').DataTable({
-      "paging": false,
-      "lengthChange": false,
-      "searching": false,
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
-      "autoWidth": true,
+      "autoWidth": false,
     });
   });
 </script>

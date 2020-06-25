@@ -92,6 +92,9 @@
 </div>
 
 <script type="text/javascript">
+		
+		var csrf_token="";
+		   
 		fetchType();
 	    office();
 		function hashPassword(){
@@ -102,7 +105,6 @@
 			var dept = $('#dept').val();
 			var office = $('#office').val();
 			var desig_name = $('#desig_name').val();
-		
 			console.log("function called:"+email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 			if(email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
 				signupdo(email,user_type,region_code,dept,office,desig_name);
@@ -114,16 +116,23 @@
 		
 	function signupdo(email,user_type,region_code,dept,office,desig_name){
 		console.log("card data:" +email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+		  if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
 		$.ajax({
 			url: "<?php echo base_url();?>index.php/Super_Admin/signupdo",
 			type: "POST",
-			data:{email:email,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
+			data:{  "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+				email:email,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
+		    dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
 			cache: false,
-			success:function(result) 
-			{
+			success:function(result) {
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				} 
 				$('#email').val("");
 				$('#pass').val("");
 				$('#desig').val("select");
@@ -131,7 +140,7 @@
 				$('#dept').val("select");
 				$('#office').val("select");
 				$('#desig_name').val("select");
-				$('#field_name').html(result);
+				$('#field_name').html(result.message);
 				//alert(result);
 				console.log("result");
 			}   
@@ -139,9 +148,15 @@
 	}
 	   function fetchType() {
 		 console.log("fetchType");
-        $("#desig").empty();
+		$("#desig").empty();
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/fetch_user_type",
+			data:{
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
+			},
             type: "POST",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
@@ -151,6 +166,9 @@
 				console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
                 if (status == 1) {
 					var type_item = "<option value=" + "select" + ">" + "USER TYPE" +
                             "</option>";
@@ -167,8 +185,15 @@
 	  function office() {
 		 console.log("office");
         $("#office").empty();
+		 
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/office",
+			data:{
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
+			},
             type: "POST",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
@@ -178,7 +203,10 @@
 				console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
-                if (status == 1) {
+                if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
+				if (status == 1) {
 					var type_item = "<option value=" + "select" + ">" + "OFFICE" +
                             "</option>";
                         $("#office").append(type_item);
@@ -196,11 +224,16 @@
 		 var office = $('#office').val();
 		 console.log("department"+office);
         $("#dept").empty();
+		 
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/department",
             type: "POST",
 			data:
 			{
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
 				office:office
 			},
             dataType: 'json',
@@ -211,6 +244,9 @@
 				console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
                 // console.log(type_arr)
                 // console.log(success)
                 if (status == 1) {
@@ -231,11 +267,16 @@
 		var dept = $('#dept').val();
 		 console.log("designation"+dept);
         $("#desig_name").empty();
+		
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/designation",
             type: "POST",
 			data:
 			{
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token, 
 				dept:dept
 			},
             dataType: 'json',
@@ -246,6 +287,9 @@
 				console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
                 if (status == 1) {
 					var type_item = "<option value=" + "select" + ">" + "DESIGNATION" +
                             "</option>";
@@ -264,12 +308,19 @@
 		var desig = $('#desig').val();
 		console.log("locationData"+desig);
         $("#region_code").empty();
+		 
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
+		   console.log("csrf_token: "+csrf_token);
+		   
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/location_data",
             type: "POST",
 			data:
 			{
-				desig:desig
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+				"desig":desig
 			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
@@ -279,6 +330,9 @@
 				console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
                 if (status == 1) {
 					var type_item = "<option value=" + "select" + ">" + "LOCATION" +
                             "</option>";
