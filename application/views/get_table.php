@@ -181,7 +181,9 @@
 </div>
 
 <div class="modal fade" id="modal-sm">
-      <?php echo form_open('','id="draft"');?>
+<?php
+  $attri1 = array('method' => 'POST', 'id' => 'draft'); 
+  echo form_open("",$attri1);?>
       <!--<form method="POST" id='draft' action="">-->
         <div class="modal-dialog modal-sm" >
           <div class="modal-content">

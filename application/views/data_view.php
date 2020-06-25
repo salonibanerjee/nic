@@ -102,7 +102,10 @@
 </div>
 
 <div class="modal fade" id="modal-sm">
-  <form method="POST" id='draft' action="">
+  <?php
+  $attri = array('method' => 'POST', 'id' => 'draft'); 
+  echo form_open("",$attri);?>
+  <!--<form method="POST" id='draft' action="">-->
     <div class="modal-dialog modal-default" >
       <div class="modal-content">
         <div class="modal-header bg-blue">

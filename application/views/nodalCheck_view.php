@@ -93,8 +93,11 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
         <div class='modal-header bg-lime'>
             <h4 class='modal-title'>".$draft_name[$i1]."</h4>
             <button type='button' class='close' data-dismiss='modal'>&times;</button>
-        </div>
-        <form role='form' method='post' id='form'>
+        </div>";
+  $attri = array('method' => 'POST', 'id' => 'form','role'=>'form'); 
+  echo form_open("",$attri);
+        //<form role='form' method='post' id='form'>
+        echo"
             <div class='modal-body'>
             <div class='card'>
               <div class='card-header bg-primary'>
