@@ -46,8 +46,8 @@
           <img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/lock.png' alt='User profile picture' style='width:150px; height:150px;'>  
           <p></p>
         </div>
-
-      <form method="POST" action="" id="form">
+      <?php echo form_open('','method="POST" id="form"');?>
+      <!--<form method="POST" action="" id="form">-->
         <div class="input-group mb-3">
           <input name="pass0" id="pass0" type="password" class="form-control" placeholder="Old Password" >
           <div class="input-group-append">

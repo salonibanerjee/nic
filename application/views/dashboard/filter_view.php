@@ -11,7 +11,8 @@
                 <!--<button type="button" class="close" data-dismiss="modal">&times;</button>-->
                 <h4 class="modal-title">Filter View</h4>
             </div>
-            <form role='form' method="post" id='form'>
+            <?php echo form_open('','role="form" method="POST" id="form"');?>
+            <!--<form role='form' method="post" id='form'>-->
                 <div class="modal-body">
                     <div class="row">
                         <?php 
