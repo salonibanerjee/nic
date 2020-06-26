@@ -411,7 +411,7 @@ class summary extends MY_Controller {
 
 		$bar_chart2 = array(
 			'id' => 'bar2',
-			'title' => 'Area Wise Progress',
+			'title' => 'Area Wise Physical Progress',
 			'block' => $loc,
 			'no_bar' => $size_sch,
 			'bar' => $schemename_pro,
@@ -430,6 +430,15 @@ class summary extends MY_Controller {
 		//====================== New Alert work =============================
 		//print($loc_schcd);
 		//fetching location id to work easyly
+
+		$threshold = 100;
+
+		if(isset($_POST['alert_submit'])){
+			if(!empty($_POST['alert_input'])){
+				$threshold = intval($_POST['alert_input']);
+			}
+		}
+
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
 		//print_r($loc_schcdID);
 		//this are few defalut scheme which already selected
@@ -456,6 +465,9 @@ class summary extends MY_Controller {
 				$per=(int)($aldata[$i+1]/$aldata[$i]*100);
 			else
 				$per=0;
+			if($threshold < $per)
+				continue;
+		
 			array_push($result_al,$aldata[$i],$aldata[$i+1]);
 			array_push($data1, $per);
 			array_push($schemename_al,$tempsch[$j]);
