@@ -17,9 +17,15 @@ class Fund extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
         $this->load->model('Sup_admin');
         $resloc=$this->Sup_admin->location_data();
+        //print_r($resloc);
+        //echo("<br>");
+        //echo("<br>");
+        //echo("<br>");
         $resscheme=$this->Sup_admin->search_table();
+        //print_r($resscheme);
         $data["loc"]=$resloc;
         $data["scheme"]=$resscheme;
+        $data['funds']=$this->Sup_admin->fetch_funds();
         $this->load->view('fund',$data);
         $this->load->view('dashboard/footer');
     }
@@ -45,14 +51,13 @@ class Fund extends MY_Controller {
                     )
             ),
             array(
-                    'field' => 'thsd',
-                    'label' => 'threshold',
-                    'rules' => 'required|numeric|max_length[3]',
-                    'errors' => array(
-                            'required' => 'You must provide a value in %s.',
-                    )
+                'field' => 'thsd',
+                'label' => 'Funds Threshold Percentage',
+                'rules' => 'required|numeric|max_length[3]',
+                'errors' => array(
+                        'required' => 'You must provide a value in %s.',
+                )
             )
-
                     );
         $this->form_validation->set_rules($validate);
         if ($this->form_validation->run() == FALSE){
@@ -77,27 +82,4 @@ class Fund extends MY_Controller {
             echo json_encode($ab);
         }
     }
-    function fetchdata()  //get all records from database  
-	{
-	   $result;
-	   $this->load->model('Sup_admin');
-	   $res=$this->Sup_admin->fetch_funds();
-	   if($res){
-           $data;
-           $i=0;
-           foreach($res as $key){
-               $data[$i]['location']=$this->Sup_admin->location_name($key['location_id_fk'])[0]['location_area'];
-               $data[$i]['scheme']=$this->Sup_admin->table_name($key['scheme_id_fk'])[0]['name'];
-               $data[$i]['funds_allocated']=$key['funds_allocated'];
-               $data[$i]['funds_utilised']=$key['funds_utilised'];
-               $data[$i]['threshold']=$key['threshold'];
-               $i++;
-           }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
-	   }else{
-		   $result = array('status'=>0,'message'=>'no data found');
-
-	   }
-	   echo json_encode($result);
-	 }
 }

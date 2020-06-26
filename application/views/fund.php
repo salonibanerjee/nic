@@ -57,7 +57,7 @@
               </div>
               <div class="form-group">
                 <label>Threshold %</label>
-                <input type="number" class="form-control" name = "thsd" id="thsd" placeholder="Enter Fund Utilised">
+                <input type="text" class="form-control" name = "thsd" id="thsd" placeholder="Enter threshold percentage">
               </div>
             </div>
           <!-- /.card-body -->
@@ -80,18 +80,39 @@
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" id='refresh'>
-                    <table id="example1" class="table table-bordered table-striped table-hover equal-width" >
+                    <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                       <thead class="bg-lime">
                       <tr>
                         <th>Location</th>
                         <th>Scheme</th>
                         <th>Fund Alloted</th>
                         <th>Fund Utilised</th>
-                        <th>Threshold Limit</th>
+                        <th>Threshold</th>
                       </tr>
                       </thead>
-                      <tbody name="desig" id="desig">
-                      <div ></div>
+                      <tbody>
+                      <?php
+                          
+                          $i=1;
+                          foreach($funds as $row){
+                            echo "<tr>";
+                            foreach($loc as $l){
+                              if($row['location_id_fk']==$l['location_id_pk']){
+                                echo "<td>".$l['location_area']."</td>";
+                              }
+                            }
+                            foreach($scheme as $l){
+                              if($row['scheme_id_fk']==$l['scheme_id_pk']){
+                                echo "<td>".$l['name']."</td>";
+                              }
+                            }
+                            echo "<td>".$row['funds_allocated']."</td>";
+                            echo "<td>".$row['funds_utilised']."</td>";
+                            echo "<td>".$row['threshold']."</td>";
+                            echo "</tr>";
+                            $i++;
+                          }
+                      ?>
                       </tbody>
                       <tfoot>
                       <tr>
@@ -110,7 +131,6 @@
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
-window.onload =fetchType();
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();
@@ -137,60 +157,30 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
-        fetchType();
+        $("#refresh").load(location.href+" #refresh>*","");
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }
   });
 });
-function fetchType() {
-  $("#desig").empty();
-		 console.log("fetchType");
-        $.ajax({
-            url: "<?php echo base_url();?>index.php/Fund/fetchdata",
-            type: "POST",
-            dataType: 'json',
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
-			},
-            success: function (result) {
-				console.log(result);
-                var status = result.status;
-                if (status == 1) {
-                  var type_arr = result.data;
-                    $.each(type_arr, function (idx, val) {
-                        var type_item="";
-                        type_item = "<tr>";
-                        type_item = type_item +"<td>" + val['location'] + "</td>";
-                        type_item = type_item +"<td>" + val['scheme'] + "</td>";
-                        type_item = type_item +"<td>" + val['funds_allocated'] + "</td>";
-                        type_item = type_item +"<td>" + val['funds_utilised'] + "</td>";
-                        type_item = type_item +"<td>" + val['threshold'] + "</td>";
-                        type_item = type_item +"</tr>";
-                        $("#desig").append(type_item);
-                    });
-                }
-            }
-        });
-	  }
 </script>
 
 <!-- DataTables -->
 <script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
 <script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
 
-<!-- page script 
+<!-- page script -->
 <script>
   $(function () {
     //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
-      "lengthChange": false,
-      "searching": false,
+      "lengthChange": true,
+      "searching": true,
       "ordering": true,
       "info": true,
       "autoWidth": false,
     });
   });
-</script>-->
+</script>
