@@ -82,4 +82,26 @@ class Fund extends MY_Controller {
             echo json_encode($ab);
         }
     }
+    function fetchdata()  //get all records from database  
+	{
+	    $result;
+	    $this->load->model('Sup_admin');
+	    $res=$this->Sup_admin->fetch_funds();
+	    if($res){
+            $data;
+            $i=0;
+            foreach($res as $key){
+                $data[$i]['location']=$this->Sup_admin->location_name($key['location_id_fk'])[0]['location_area'];
+                $data[$i]['scheme']=$this->Sup_admin->table_name($key['scheme_id_fk'])[0]['name'];
+                $data[$i]['funds_allocated']=$key['funds_allocated'];
+                $data[$i]['funds_utilised']=$key['funds_utilised'];
+                $data[$i]['threshold']=$key['threshold'];
+                $i++;
+            }
+		    $result = array('status'=>1,'message'=>'data found','data'=>$data);
+	    }else{
+		    $result = array('status'=>0,'message'=>'no data found');
+	    }
+	    echo json_encode($result);
+	}
 }

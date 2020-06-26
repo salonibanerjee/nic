@@ -79,7 +79,7 @@
                     <h3 class="card-title">Previous Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
-                  <div class="card-body" id='refresh'>
+                  <div class="card-body" >
                     <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                       <thead class="bg-lime">
                       <tr>
@@ -91,31 +91,10 @@
                       </tr>
                       </thead>
                       <tbody>
-                      <?php
-                          
-                          $i=1;
-                          foreach($funds as $row){
-                            echo "<tr>";
-                            foreach($loc as $l){
-                              if($row['location_id_fk']==$l['location_id_pk']){
-                                echo "<td>".$l['location_area']."</td>";
-                              }
-                            }
-                            foreach($scheme as $l){
-                              if($row['scheme_id_fk']==$l['scheme_id_pk']){
-                                echo "<td>".$l['name']."</td>";
-                              }
-                            }
-                            echo "<td>".$row['funds_allocated']."</td>";
-                            echo "<td>".$row['funds_utilised']."</td>";
-                            echo "<td>".$row['threshold']."</td>";
-                            echo "</tr>";
-                            $i++;
-                          }
-                      ?>
                       </tbody>
                       <tfoot>
                       <tr>
+                      <div id='refresh'></div>
                         <!-- nothing for footer now -->
                       </tr>
                       </tfoot>
@@ -130,6 +109,8 @@
 
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script type="text/javascript" >
 var csrf_token='';
 $("#form").on("submit", function (event) {
@@ -157,30 +138,58 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
-        $("#refresh").load(location.href+" #refresh>*","");
+        $('#example1').DataTable().ajax.reload();
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }
     }
   });
 });
-</script>
-
-<!-- DataTables -->
-<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
-<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
-
-<!-- page script -->
-<script>
-  $(function () {
-    //$("#myTable").DataTable();
-    $('#example1').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
+$(document).ready(function() {
+  var table=$('#example1').DataTable( {
+    ajax: {
+        url: "<?php echo base_url();?>index.php/Fund/fetchdata",
+        dataSrc: 'data'
+    },
+    columns: [
+                        { data: 'location' },
+                        { data: 'scheme' },
+                        { data: 'funds_allocated' },
+                        { data: 'funds_utilised' },
+                        { data: 'threshold'}
+                      ],
+                      "paging": true,
+                    "lengthChange": true,
+                    "searching": true,
+                    "ordering": true,
+                    "info": true,
+                    "autoWidth": false
+} );
+     
+$('#example1 tbody').on('click', 'tr', function () {
+        var data = table.row(this).data();
+        console.log(data.scheme);
+        var objSelect1 = document.getElementById("loc");
+        for (var i = 0; i < objSelect1.options.length; i++) {
+          if (objSelect1.options[i].text== data.location) {
+            objSelect1.options[i].selected = true;
+        }
+        }
+        var objSelect1 = document.getElementById("scheme");
+        for (var i = 0; i < objSelect1.options.length; i++) {
+          if (objSelect1.options[i].text== data.scheme) {
+            objSelect1.options[i].selected = true;
+        }
+        }
+        var objSelect1 = document.getElementById("funa");
+        objSelect1.value=data.funds_allocated;
+        var objSelect1 = document.getElementById("funu");
+        objSelect1.value=data.funds_utilised;
+        var objSelect1 = document.getElementById("thsd");
+        objSelect1.value=data.threshold;
+        return;
     });
-  });
+} );
+
+
 </script>
