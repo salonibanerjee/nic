@@ -109,6 +109,7 @@ class Super_Admin extends MY_Controller {
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
+		$u_type['noti2']=$this->profile_model->custom_notification1();
 		$this->load->view('dashboard/navbar',$u_type);
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $this->load->view('dashboard/sidebar',$da);

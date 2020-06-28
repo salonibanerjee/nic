@@ -197,8 +197,21 @@ public function get_designation_id(){
 		return $noti;
 	}
 
-	public function custom_notification(){
+	public function custom_notification1(){
 		$query = $this->db->select('*')->order_by('notification_id_pk','DESC')->get_where('mpr_trans_notification', array('active_status'=>1))->result_array();
+		return $query;
+	}
+
+	public function custom_notification(){
+		$query = $this->db->select('*')->from('mpr_trans_notification')
+		->where('active_status',1)
+		->group_start()
+		->where(array('audience_desig'=>$this->session->userdata('desig'),'audience_loc'=>$this->session->userdata('location_code')))
+		->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1'))
+		->group_end()
+		->order_by('notification_id_pk','DESC')
+		->get()
+		->result_array();
 		return $query;
 	}
 

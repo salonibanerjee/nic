@@ -43,7 +43,7 @@
                       <?php
                           
                           $i=1;
-                          foreach($noti1 as $row){
+                          foreach($noti2 as $row){
                             echo "<tr>";
                             echo "<td>".$row['audience_id']."</td>";
                             echo "<td>".$row['notification_head']."</td>";
