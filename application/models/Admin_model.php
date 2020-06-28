@@ -247,7 +247,10 @@ class Admin_model extends CI_Model {
     }
 
     public function noti_cache($id){
-        $noti = $this->db->get_where('mpr_trans_notification',array('active_status'=>1))->num_rows();
+        $mydesig=$this->session->userdata('desig'); //fetching user desig_id_fk
+        $myloc=$this->session->userdata('location_code');
+        $q = $this->db->query("SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1'))");
+        $noti=$q->num_rows();
         $result=array('noti_count'=>$noti);
         $this->load->driver('cache', array('adapter' => 'file'));
 

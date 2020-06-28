@@ -43,6 +43,7 @@ class Login extends MY_Controller {
                     $this->session->set_userdata('loginid',$res->login_id_pk);
                     $this->session->set_userdata('user_type',$res->user_type_id_fk);
                     $this->session->set_userdata('dept',$res->dept_id_fk);
+                    $this->session->set_userdata('desig',$res->desig_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
                     $this->Admin_model->dashboard_cache();

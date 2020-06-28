@@ -19,7 +19,7 @@
     <div class="container-fluid">
   <!-- /.login-logo -->
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-8">
       <section class='content'>
           <div class='container-fluid'>
             <div class='row'>
@@ -30,7 +30,7 @@
                     <h3 class="card-title">Previous Notifications</strong></h3>
                   </div>
                   <!-- /.card-header -->
-                  <div class="card-body" id='refresh'>
+                  <div class="card-body" id="refresh">
                     <table id="example1" class="table table-bordered table-striped table-hover equal-width">
                       <thead class="bg-warning">
                       <tr>
@@ -75,7 +75,7 @@
           </div><!-- /.container-fluid -->
       </section>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-4">
       <div class="card card-primary card-outline mx-auto" >
         <div class="card-body login-card-body">
           <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
@@ -89,6 +89,94 @@
                 </div>
               </div>
             </div>
+
+            <!--Newly added div for restricting target audience-->                        
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function () {
+/*
+  //event listener
+    document.addEventListener("click", function(){
+      if(document.getElementById("audience_desig").value == "1"){
+        $('#audience_loc').val('1');
+      }
+      if(document.getElementById("audience_loc").value == "1"){
+        $('#audience_desig').val('1');
+      }
+    }
+*/
+    $("Hide_desig_loc").click(function () {
+
+      if($("Hide_desig_loc").text() == 'Click here to Broadcast to All')
+      {
+        $('#audience_desig').val('-1');
+        $('#audience_loc').val('-1');
+        $("choose_desigloc").hide();
+      }
+      else
+      {
+        $('#audience_desig').val('');
+        $('#audience_loc').val('');
+        $("choose_desigloc").show();
+      }
+
+        $("Hide_desig_loc").fadeOut(function () {
+            $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'Click here to Broadcast to All') ? 'Click here for Custom notification' : 'Click here to Broadcast to All').fadeIn();
+        })
+
+    })
+  });
+</script>
+
+<hr/>
+<div align="right" style="color:green;text-align:center">
+  <Hide_desig_loc>Click here to Broadcast to All</Hide_desig_loc>
+</div>
+<hr/>
+        <choose_desigloc>
+
+            <div class="col-md-6">
+              <div class="form-group">
+              <label>Target Designation</label>      
+                <select name="audience_desig" id="audience_desig" class="form-control">      
+                  <option value="" selected>Select a Designation</option>
+                  
+                  <?php
+                    $resdes=$this->db->query("SELECT * FROM public.mpr_master_designation ORDER BY desig_name ASC");
+                    //pg_fetch_assoc()
+                    foreach($resdes->result_array() as $desig){ //foreach($resdes->result() as $design)
+                      echo "<option value='".$desig['desig_id_pk']."'>".$desig['desig_name']."</option>";
+                      //echo "<option value=".$design->desig_id_pk.">".$design->desig_name."</option>";
+                    } ?>
+                    <option value="-1">Everyone</option>
+                </select>
+
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="form-group">
+
+                <label>Target Location</label>
+
+                <select name="audience_loc" id="audience_loc" class="form-control"> 
+                  <option value="" selected>Select a location</option>
+                  
+                  <?php
+                    $resloc=$loc=$this->db->query("SELECT * FROM public.mpr_master_location_data ORDER BY location_area ASC");
+                    foreach($resloc->result_array() as $loc){
+                      echo "<option value=".$loc['location_code'].">".$loc['location_area']."</option>";                                        
+                    } ?>  
+                    <option value="-1">Everywhere</option>
+                </select>
+
+              </div>
+            </div>
+
+        </choose_desigloc>
+
+        
+            
             <div class="input-group mb-3">
                     <textarea name="noti_text" id="noti_text" class="form-control" rows="3" placeholder="Enter Notification body..."></textarea>
               <div class="input-group-append">
@@ -97,6 +185,7 @@
                 </div>
               </div>
             </div>
+            <!--
             <div class="input-group mb-3">
               <input name="audience_id" id="audience_id" type="text"  class="form-control" placeholder="Notification code" >
               <div class="input-group-append">
@@ -104,7 +193,7 @@
                   <span class="fas fa-envelope"></span>
                 </div>
               </div>
-            </div>
+            </div>-->
             <div id="errors" style="color:red;"></div>
             <div class="row">
               <div class="col-12">
@@ -143,6 +232,7 @@ $("#form").on("submit", function (event) {
     cache: false,
     success: function(result){
       var k=JSON.parse(result);
+      //console.log(k);
       if (k.csrf_token){
         csrf_token=k.csrf_token;
       }
@@ -153,6 +243,7 @@ $("#form").on("submit", function (event) {
         $('#errors').html("");
         $("form")[0].reset();
         $("#refresh").load(location.href+" #refresh>*","");
+        //$('#example1').DataTable().ajax.reload();
         $("#err").notify("Value accepted",{position:"left", className: 'success'});
         console.log("submit");
       }

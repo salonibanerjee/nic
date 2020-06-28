@@ -40,6 +40,25 @@ class profile_model extends CI_Model {
 		return $desi_name;
 		//return $data;
 	}
+//2 test codes for user specific notifications:
+
+public function get_designation_id(){
+	$data = $this->get_login_details($this->session->userdata('uid'));
+		return $data->desig_id_fk;//bigint
+}
+
+	public function get_location_code(){
+		$data = $this->get_login_details($this->session->userdata('uid'));
+		/*$tables = $this->db->get('mpr_master_location_data');
+		$loc_code ;
+        foreach($tables->result() as $loca){
+			if($loca->location_code == $data->location_code){
+				$loc_code= $loca->location_code;
+			}
+        }*/
+		return $data->location_code;//character_varying
+	}
+
 	public function get_depart(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
 		$tables = $this->db->get('mpr_master_department');
@@ -183,10 +202,10 @@ class profile_model extends CI_Model {
 		return $query;
 	}
 
-	public function savenotifs($target_audience,$noti_text,$noti_head)
+	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc)
 	{
 		$result = $this->db->insert('mpr_trans_notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
-									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s')));
+									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s'), 'audience_desig'=>$audience_desig, 'audience_loc'=>$audience_loc));
 		return $result;
 	}
 
