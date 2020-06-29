@@ -43,7 +43,7 @@
                       <?php
                           
                           $i=1;
-                          foreach($noti2 as $row){
+                          foreach($noti1 as $row){
                             echo "<tr>";
                             echo "<td>".$row['audience_id']."</td>";
                             echo "<td>".$row['notification_head']."</td>";
@@ -94,20 +94,10 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
 $(document).ready(function () {
-/*
-  //event listener
-    document.addEventListener("click", function(){
-      if(document.getElementById("audience_desig").value == "1"){
-        $('#audience_loc').val('1');
-      }
-      if(document.getElementById("audience_loc").value == "1"){
-        $('#audience_desig').val('1');
-      }
-    }
-*/
+
     $("Hide_desig_loc").click(function () {
 
-      if($("Hide_desig_loc").text() == 'CLICK HERE TO BROADCAST TO ALL')
+      if($("Hide_desig_loc").text() == 'Click here to Broadcast to All')
       {
         $('#audience_desig').val('-1');
         $('#audience_loc').val('-1');
@@ -121,16 +111,30 @@ $(document).ready(function () {
       }
 
         $("Hide_desig_loc").fadeOut(function () {
-            $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'CLICK HERE TO BROADCAST TO ALL') ? 'CLICK HERE FOR SPECIFIC BROADCAST' : 'CLICK HERE TO BROADCAST TO ALL').fadeIn();
+            $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'Click here to Broadcast to All') ? 'Click here for Custom notification' : 'Click here to Broadcast to All').fadeIn();
         })
 
     })
-  });
+
+    $("Refresh_page_after_submit").click(function () {
+
+      if($("Hide_desig_loc").text() == 'Click here for Custom notification')
+      {
+        $('#audience_desig').val('-1');
+        $('#audience_loc').val('-1');
+        $("choose_desigloc").hide();
+      }
+      
+})
+
+
+
+});
 </script>
 
 <hr/>
-<div align="right" class="bg-primary" style="color:green;text-align:center; cursor:pointer; padding:10px; border-radius:10px;">
-  <Hide_desig_loc>CLICK HERE TO BROADCAST TO ALL</Hide_desig_loc>
+<div align="right" class="bg-purple" style="color:green;text-align:center; padding:8px; border-radius:5px; cursor:pointer;">
+  <Hide_desig_loc>Click here to Broadcast to All</Hide_desig_loc>
 </div>
 <hr/>
         <choose_desigloc>
@@ -172,7 +176,7 @@ $(document).ready(function () {
 
               </div>
             </div>
-          </div>
+                  </div>
         </choose_desigloc>
 
         
@@ -197,7 +201,9 @@ $(document).ready(function () {
             <div id="errors" style="color:red;"></div>
             <div class="row">
               <div class="col-12">
+              <Refresh_page_after_submit>
                 <button type="submit" id='err' id="submit" name="submit" value="Submit" class="btn btn-primary float-right" style="border-radius: 50%;" ><span class="fas fa-paper-plane"></span></button>
+              </Refresh_page_after_submit>
               </div>
               <!-- /.col -->
             </div>
