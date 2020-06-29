@@ -38,7 +38,7 @@ class Nodal_check extends MY_Controller {
 			$result_main['count_check'] = $this->NodalCheck_model->check($result_main['fetch_draft']);
 			//print_r($result['fetch_draft']);
 			//print_r($result['draft_name']);
-			//print_r($result['count_check']);
+			//print_r($regsult['count_check']);
 
 			
 

@@ -29,7 +29,8 @@ class NodalCheck_model extends CI_Model{
         $count_check = array();
         foreach($tables as $row){
             $this->db->like('location_code', $this->session->userdata('location_code'), 'after');
-            array_push($count_check, $this->db->count_all($row));
+            $this->db->from($row);
+            array_push($count_check, $this->db->count_all_results());
         }
 
         return $count_check;
