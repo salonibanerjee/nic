@@ -107,7 +107,7 @@ $(document).ready(function () {
 */
     $("Hide_desig_loc").click(function () {
 
-      if($("Hide_desig_loc").text() == 'Click here to Broadcast to All')
+      if($("Hide_desig_loc").text() == 'CLICK HERE TO BROADCAST TO ALL')
       {
         $('#audience_desig').val('-1');
         $('#audience_loc').val('-1');
@@ -121,7 +121,7 @@ $(document).ready(function () {
       }
 
         $("Hide_desig_loc").fadeOut(function () {
-            $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'Click here to Broadcast to All') ? 'Click here for Custom notification' : 'Click here to Broadcast to All').fadeIn();
+            $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'CLICK HERE TO BROADCAST TO ALL') ? 'CLICK HERE FOR SPECIFIC BROADCAST' : 'CLICK HERE TO BROADCAST TO ALL').fadeIn();
         })
 
     })
@@ -129,12 +129,12 @@ $(document).ready(function () {
 </script>
 
 <hr/>
-<div align="right" style="color:green;text-align:center">
-  <Hide_desig_loc>Click here to Broadcast to All</Hide_desig_loc>
+<div align="right" class="bg-primary" style="color:green;text-align:center; cursor:pointer; padding:10px; border-radius:10px;">
+  <Hide_desig_loc>CLICK HERE TO BROADCAST TO ALL</Hide_desig_loc>
 </div>
 <hr/>
         <choose_desigloc>
-
+          <div class="row">
             <div class="col-md-6">
               <div class="form-group">
               <label>Target Designation</label>      
@@ -172,7 +172,7 @@ $(document).ready(function () {
 
               </div>
             </div>
-
+          </div>
         </choose_desigloc>
 
         
