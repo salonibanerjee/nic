@@ -101,8 +101,8 @@
         <label>Hover to enlarge</label>
         </a>
         <div class="dropdown-divider"></div>
-        <a target="_blank" href="http://localhost/NIC/css/dist/img/Sitemapocto.png" class='dropdown-item table-responsive'>
-          <img id='zoom' src="http://localhost/NIC/css/dist/img/Sitemapocto.png" alt="Smiley face" height="250" width="250">
+        <a target="_blank" href="http://localhost/NIC/css/dist/img/site.png" class='dropdown-item table-responsive'>
+          <img id='zoom' src="http://localhost/NIC/css/dist/img/site.png" alt="Smiley face" height="250" width="250">
         </a><div class='thumb' attribute='onclick'>
         </div>
       </li>
