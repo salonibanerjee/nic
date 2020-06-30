@@ -79,7 +79,7 @@
                         echo "</div>";
                         $i++;
                     }
-                      elseif($row == 'date' || $row == 'Till_date' || $row == 'Date_of_Inception' || $row == 'Date_of_Inspection'){
+                      elseif($row == 'date' || $row == 'till_date' || $row == 'date_of_inception' || $row == 'date_of_inspection'){
                           $year=date('Y-m-d');
                           echo "<div class='form-group'>";
                           echo "<label>$s_name[$i]</label>";
