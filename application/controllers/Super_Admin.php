@@ -294,7 +294,7 @@ class Super_Admin extends MY_Controller {
 			}
 		}
 		if($exist == 1){
-			echo "This user already exist";
+			$result = array('message'=>"This user already exist",'csrf_token'=>$csrf_token);
 		}else{
 			echo $this->input->post('id1');
 			//$id1 = $this->input->post('id1');
@@ -312,16 +312,21 @@ class Super_Admin extends MY_Controller {
 					$id =$res->login_id_pk;
 					$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 					if($this->Sup_admin->add_check_first_user($data1)){
-						echo "<font color=green>Data Added Successfully</font>";
+						$result = array('message'=>"Data Added Successfully",'csrf_token'=>$csrf_token);
+						
 					}else
-						echo "Data is not Added";
+						$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+						
 				}else
-					echo "Data is not Added";
+					$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+						
 			}else{
-				echo "Data is not Added";
+				 $result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+						
 			}
 			$this->db->trans_complete();
 		}
+		 echo json_encode($result);
     }
     function fetch_user_type()  //get all records from database  
 	{
@@ -482,6 +487,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_login() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
@@ -497,13 +503,16 @@ class Super_Admin extends MY_Controller {
 	 $res = $this->Sup_admin->update_user($data,$id);
 	 $this->db->trans_complete();
 	 if($res){
-		 echo 'done';
+		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
-		 echo 'failed';
+		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
+						
 	 }
+		 echo json_encode($result);
 //	 redirect("/Admin/fetch_login");
 	}
+//	 
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
@@ -540,6 +549,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_user_privilege() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_priv_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_priv_id_pk($dat);
@@ -555,12 +565,15 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
 	 $this->db->trans_complete();
 	 if($res){
-		 echo 'done';
+		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
-		 echo 'failed';
+		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
+			
 	 }
+		echo json_encode($result);
 	}
+	
 	
 	function fetch_user_desig_type()  //get all records from database  
 	{      
@@ -600,6 +613,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_user_type() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_type_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_type_id_pk($dat);
@@ -615,11 +629,13 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 $this->db->trans_complete();
 	 if($res){
-		 echo 'done';
+		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
-		 echo 'failed';
+		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
+			
 	 }
+		echo json_encode($result);
 	}
 	function page_view()  //get all records from database  
 	{      
@@ -658,6 +674,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_page_view() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("privilege_id_pk"=>$id);
 	 $query=$this->Sup_admin->privilege_id_pk($dat);
@@ -673,11 +690,13 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_page_view($data,$id);
 	 $this->db->trans_complete();
 	 if($res){
-		 echo 'done';
+		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
-		 echo 'failed';
+		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
+			
 	 }
+		echo json_encode($result);
 	}	   
 //---------------------------------------------------------------------------------------------------------
 function seek_record(){
