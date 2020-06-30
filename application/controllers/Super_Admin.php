@@ -109,7 +109,6 @@ class Super_Admin extends MY_Controller {
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
 		$u_type['noti1']=$this->profile_model->custom_notification();
-		$u_type['noti2']=$this->profile_model->custom_notification1();
 		$this->load->view('dashboard/navbar',$u_type);
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $this->load->view('dashboard/sidebar',$da);
@@ -117,7 +116,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 
-	
+	/*
 	public function everywhere_everyone($listloc, $audiencedesig){
 		$listdesig=$this->input->post($audiencedesig);
 
@@ -131,7 +130,7 @@ class Super_Admin extends MY_Controller {
 		}
 		return true;
 	}
-	
+	*/
 
 	public function notify(){
 		$this->load->model('Sup_admin');
@@ -141,22 +140,22 @@ class Super_Admin extends MY_Controller {
 		$csrf_token=$this->security->get_csrf_hash();
 
 		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
-        $this->form_validation->set_rules('noti_text', 'Notification text', 'required');
-		//$this->form_validation->set_rules('audience_id', 'Notification Code', 'required');
 		$this->form_validation->set_rules('audience_desig', 'Audience designation', 'required');
-		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_desig]');
-        if ($this->form_validation->run() == FALSE)
+		//$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_desig]');
+		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required');
+        $this->form_validation->set_rules('noti_text', 'Notification text', 'required');
+		
+		if ($this->form_validation->run() == FALSE)
         {
 			$ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
             echo json_encode($ab);
-        }else{
+		}
+		else
+		{
             $noti_head = $this->input->post('noti_head');
-            $noti_text= $this->input->post('noti_text');
-			//$target_audience=$this->input->post('audience_id');
-			$audience_desig=$this->input->post('audience_desig');//string----should be int
+			$audience_desig=$this->input->post('audience_desig');//----should be int
 			$audience_loc=$this->input->post('audience_loc');//string
-
-			//settype($audience_desig,int);//desig_id_fk is changed to bigint for compatibility
+			$noti_text= $this->input->post('noti_text');
 
 			$this->db->trans_off();
             $this->db->trans_strict(FALSE);

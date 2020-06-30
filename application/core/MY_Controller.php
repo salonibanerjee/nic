@@ -1,4 +1,6 @@
 <?php
+
+ini_set('display_errors', 0);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
@@ -96,7 +98,31 @@ class MY_Controller extends CI_Controller {
             show_404();
         }
     }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    public function getrelevantlocation()  
+	{
+	   $result;
+       $this->load->model('profile_model');
+       $desig=$this->input->post('audience_desig');
+       //to get respective location for selected designation from DB
+	   $query=$this->profile_model->getrelevantloc($desig); 
+	   if($query->num_rows()>0){
+		   $data;
+           $i = 0;
+	   	  foreach($query->result_array() as $r){
+                 $code=$r['location_code'];
+                 $area=$r['location_area'];
+			  $data[$i] = array('code'=>$code,'area'=>$area);
+			  $i = $i+1;
+		  }
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+	   }else{
+           $ans = array('status'=>0,'message'=>'no data found');
+	   }
+	   echo json_encode($ans);
+    }
+          
     public function fetch_notifs(){
 
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -105,8 +131,8 @@ class MY_Controller extends CI_Controller {
         $this->load->model('profile_model');
         $mydesig=$this->profile_model->get_designation_id(); //fetching user desig_id_fk
         $myloc=$this->profile_model->get_location_code();//fetching user's location_code
-       
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1'))";
+       //UPDATED QUERY
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))";
         $result = $this->db->query($q);
         	
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
@@ -123,6 +149,8 @@ class MY_Controller extends CI_Controller {
         }
 
     }
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public function nodal_alert(){
         $this->load->driver('cache', array('adapter' => 'file'));

@@ -90,12 +90,17 @@
               </div>
             </div>
 
-            <!--Newly added div for restricting target audience-->                        
+            <!--Newly added for restricting target audience-->                        
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function () {
+  $(document).ready(function () {
+    openingstatus();
+    function openingstatus(){
+      $('#audience_loc').val('');
+      $("choose_loc").hide();
+    }
 
-    $("Hide_desig_loc").click(function () {
+    $("Hide_desig_loc").click(function () {//Toggle bar
 
       if($("Hide_desig_loc").text() == 'Click here to Broadcast to All')
       {
@@ -108,6 +113,8 @@ $(document).ready(function () {
         $('#audience_desig').val('');
         $('#audience_loc').val('');
         $("choose_desigloc").show();
+        $("choose_desig").show();
+        $("choose_loc").hide();
       }
 
         $("Hide_desig_loc").fadeOut(function () {
@@ -116,7 +123,7 @@ $(document).ready(function () {
 
     })
 
-    $("Refresh_page_after_submit").click(function () {
+    $("Refresh_page_after_submit").click(function () {//after submit js refresh
 
       if($("Hide_desig_loc").text() == 'Click here for Custom notification')
       {
@@ -125,58 +132,112 @@ $(document).ready(function () {
         $("choose_desigloc").hide();
       }
       
-})
+    })
 
 
+    function fetchType() {
+		
+      var audience_desig=$('#audience_desig').val()
+      console.log("fetchType"+audience_desig);
+		  $("#audience_loc").empty();
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
 
-});
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/Summary/getrelevantlocation",
+			      data:{
+				            "<?php echo $this->security->get_csrf_token_name();?>": csrf_token,
+                    audience_desig:audience_desig
+			      },
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			      },
+            success: function (result){
+				    console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+				    if(result.csrf_token){
+				    	csrf_token = result.csrf_token;
+			  	  }
+                if (status == 1) {
+					          var type_item = "<option value=" + "" + "  selected>" + "Select a Location" + "</option>";
+                        $("#audience_loc").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['area'] + "</option>";
+                        $("#audience_loc").append(type_item);
+                    });
+                    var type_item = "<option value=" + "-1" + ">" + "Everywhere" + "</option>";
+                        $("#audience_loc").append(type_item);
+
+                }
+            }
+        });
+	  }
+
+    $("#audience_desig").change(function () {
+        var val = $(this).val();
+        if(val == ""){
+          $("choose_loc").hide();
+          $('#audience_loc').val('');
+        }
+        else if(val != ""){
+          $('#audience_loc').val('');
+          $("choose_loc").show();
+          fetchType();
+			  }
+          /*if (val == "41") {
+            $("#audience_loc").html("<option value='test'>item1: test 1</option><option value='test2'>item1: test 2</option>");
+         }*/
+    });
+
+  });
 </script>
 
 <hr/>
-<div align="right" class="bg-purple" style="color:green;text-align:center; padding:8px; border-radius:5px; cursor:pointer;">
+<div align="right" style="color:green;text-align:center">
   <Hide_desig_loc>Click here to Broadcast to All</Hide_desig_loc>
 </div>
 <hr/>
         <choose_desigloc>
-          <div class="row">
-            <div class="col-md-6">
+          <choose_desig>
+            <div class="col-md-8">
               <div class="form-group">
               <label>Target Designation</label>      
                 <select name="audience_desig" id="audience_desig" class="form-control">      
                   <option value="" selected>Select a Designation</option>
                   
                   <?php
-                    $resdes=$this->db->query("SELECT * FROM public.mpr_master_designation ORDER BY desig_name ASC");
+                    $q="SELECT * FROM public.mpr_master_designation WHERE desig_id_pk IN (SELECT DISTINCT desig_id_fk FROM public.mpr_semitrans_login) ORDER BY desig_name ASC";
+                    $resdes=$this->db->query($q);
                     //pg_fetch_assoc()
-                    foreach($resdes->result_array() as $desig){ //foreach($resdes->result() as $design)
+
+                    foreach($resdes->result_array() as $desig){ 
                       echo "<option value='".$desig['desig_id_pk']."'>".$desig['desig_name']."</option>";
-                      //echo "<option value=".$design->desig_id_pk.">".$design->desig_name."</option>";
                     } ?>
                     <option value="-1">Everyone</option>
                 </select>
 
               </div>
             </div>
-
-            <div class="col-md-6">
+          </choose_desig>
+          <choose_loc>
+            <div class="col-md-8">
               <div class="form-group">
-
+                
                 <label>Target Location</label>
 
                 <select name="audience_loc" id="audience_loc" class="form-control"> 
                   <option value="" selected>Select a location</option>
                   
-                  <?php
-                    $resloc=$loc=$this->db->query("SELECT * FROM public.mpr_master_location_data ORDER BY location_area ASC");
-                    foreach($resloc->result_array() as $loc){
-                      echo "<option value=".$loc['location_code'].">".$loc['location_area']."</option>";                                        
-                    } ?>  
+                    
                     <option value="-1">Everywhere</option>
                 </select>
-
               </div>
             </div>
-                  </div>
+          </choose_loc>
         </choose_desigloc>
 
         

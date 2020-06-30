@@ -202,17 +202,36 @@ public function get_designation_id(){
 		return $query;
 	}
 
+	public function getrelevantloc($desig){		//gets respective location for selected designation from database  
+		//$desig=(int)$desig;
+		if($desig == -1){
+			$q="SELECT * FROM public.mpr_master_location_data ORDER BY location_area ASC";
+			$result=$this->db->query($q);
+		}
+		else{
+		$q="SELECT * FROM public.mpr_master_location_data WHERE location_code IN(SELECT location_code FROM public.mpr_semitrans_login WHERE desig_id_fk=$desig) ORDER BY location_area ASC";
+		$result=$this->db->query($q);
+		}
+        return $result;
+	}
+
 	public function custom_notification(){
+		
+		$mydesigid=$this->session->userdata('desig');
+		$myloccode=$this->session->userdata('location_code');
+
 		$query = $this->db->select('*')->from('mpr_trans_notification')
 		->where('active_status',1)
-		->group_start()
-		->where(array('audience_desig'=>$this->session->userdata('desig'),'audience_loc'=>$this->session->userdata('location_code')))
-		->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1'))
-		->group_end()
+			->group_start()
+				->where(array('audience_desig'=>$mydesigid,'audience_loc'=>$myloccode))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1'))
+				->or_where(array('audience_desig'=>$mydesigid,'audience_loc'=>'-1'))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode))
+			->group_end()
 		->order_by('notification_id_pk','DESC')
 		->get()
 		->result_array();
-		return $query;
+			return $query;
 	}
 
 	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc)
