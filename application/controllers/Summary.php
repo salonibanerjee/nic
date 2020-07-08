@@ -634,109 +634,97 @@ class summary extends MY_Controller {
 		$desi=$this->profile_model->get_designation();
 		$dep=$this->profile_model->get_depart();
 		$off=$this->profile_model->get_office();
-		$user = array();
-		$user = $this->profile_model->get_user_id();
 		//print_r($user);
 		$dat['desi']=$desi;
 		$dat['dep']=$dep;
 		$dat['off']=$off;
-		/*
-		$dat = array(
-			'desi' =>$desi,
-			'dep' =>$dep,
-			'off' =>$off,
-			'user' =>$user,
-		);*/
-		//print_r($desi);
-		$validate = array(
-			array(
-					'field' => 'first',
-					'label' => 'First Name',
-					'rules' => 'required|alpha|max_length[50]',
-					'errors' => array(
-							'required' => 'You must provide a %s.',
-					)
-			),
-			array(
-					'field' => 'last',
-					'label' => 'Last Name',
-					'rules' => 'required|alpha|max_length[50]',
-					'errors' => array(
-							'required' => 'You must provide a %s.',
-					),
-			),
-			array(
-					'field' => 'mob',
-					'label' => 'Mobile',
-					'rules' => 'required|numeric|exact_length[10]'
-			),
-			array(
-					'field' => 'email',
-					'label' => 'Email',
-					'rules' => 'required|valid_email'
-			),
-			array(
-				'field' => 'desig',
-				'label' => 'Designation',
-				'rules' => 'required'
-			),
-			array(
-				'field' => 'dist',
-				'label' => 'District',
-				'rules' => 'required'
-			),
-		);
-		$this->form_validation->set_rules($validate);
-		//Validation check
-		if ($this->form_validation->run() == FALSE){
-			$this->load->view('edit_profile',$dat);
-			$this->load->view('dashboard/footer');
-		}else{
-			if(isset($_POST['sub1'])){
-				$first = $this->input->post('first');
-				$mid = $this->input->post('mid');
-				$last = $this->input->post('last');
-				$mobile = $this->input->post('mob');
-				$email = $this->input->post('email');
-				$dist = $this->input->post('dist');
-				$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
-				$res=$this->profile_model->get_f($this->session->userdata('uid'));
-				if ($image == NULL){
-					$image = $res->image;	
-				}
-				$data = array(
-					'f_name' => $first,
-					'profile_id_pk' => $this->session->userdata('loginid'),
-					'm_name' => $mid,
-					'l_name' => $last,
-					'mobile' => $mobile,
-					'username' =>$this->session->userdata('uid'),
-					'email' => $email,
-					'image' => $image,
-					'desig' =>$desi,
-					'dept' =>$dep,
-					'office' =>$off,
-					'district' =>$dist,
-				);
-				$this->db->trans_off();
-                $this->db->trans_strict(FALSE);
-                $this->db->trans_start();
-				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
-                                            current_url(),
-                                            'Profile Updated Successfully',
-                                            $this->session->userdata('uid'));
+		
+		$this->load->view('edit_profile',$dat);
+		$this->load->view('dashboard/footer');
+	}
 
-				if($res){
-					$this->profile_model->update($this->session->userdata('uid'),$data);
-					header("location: http://localhost/NIC/index.php/Summary/profile");
-				}else{
-					$this->profile_model->upload($data);
-					$this->Admin_model->update_first_profile();
-					header("location: http://localhost/NIC/index.php/Summary/profile");
-				}
-				$this->db->trans_complete();
+	public function edit(){
+		$this->load->model('profile_model');
+		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
+		$csrf_token=$this->security->get_csrf_hash();
+		$desi=$this->profile_model->get_designation();
+		$dep=$this->profile_model->get_depart();
+		$off=$this->profile_model->get_office();
+		//validation
+		$validate = array(
+			array('field' => 'first','label' => 'First Name','rules' => 'required|alpha|max_length[50]','errors' => array('required' => 'You must provide a %s.')),
+			array('field' => 'last','label' => 'Last Name','rules' => 'required|alpha|max_length[50]','errors' => array('required' => 'You must provide a %s.')),
+			array('field' => 'mob','label' => 'Mobile','rules' => 'required|numeric|exact_length[10]'),
+			array('field' => 'dist','label' => 'District','rules' => 'required'),
+		);
+		if($desi=="GENERIC"||$desi=="EDITABLE"){
+			$aa=array('field' => 'designation','label' => 'Designation','rules' => 'required|max_length[50]','errors' => array('required' => 'You must provide a %s.'));	
+			$validate[]=$aa;
+		}
+		if($dep=="GENERIC"||$dep=="EDITABLE"){
+			$aa1=array('field' => 'department','label' => 'Department','rules' => 'required|max_length[50]','errors' => array('required' => 'You must provide a %s.'));	
+			$validate[]=$aa1;
+		}	
+		if($off=="GENERIC"||$off=="EDITABLE"){
+			$aa2=array('field' => 'office','label' => 'Office','rules' => 'required|max_length[50]','errors' => array('required' => 'You must provide a %s.'));	
+			$validate[]=$aa2;
+		}
+		//validation array end	
+		$this->form_validation->set_rules($validate);
+		if ($this->form_validation->run() == FALSE)
+        {
+			$ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
+            echo json_encode($ab);
+		}else{
+			$first = $this->input->post('first');
+			$mid = $this->input->post('mid');
+			$last = $this->input->post('last');
+			$mobile = $this->input->post('mob');
+			//$email = $this->input->post('email');
+			$dist = $this->input->post('dist');
+			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			$res=$this->profile_model->get_f($this->session->userdata('uid'));
+			if ($image == NULL){$image = $res->image;	}
+			if($desi=="GENERIC"||$desi=="EDITABLE"){$desi1=$this->input->post('designation');}else	$desi1=$desi;
+			if($dep=="GENERIC"||$dep=="EDITABLE"){$dep1=$this->input->post('department');}else	$dep1=$dep;
+			if($off=="GENERIC"||$off=="EDITABLE"){$off1=$this->input->post('office');}else $off1=$off;
+			$data = array(
+				'f_name' => $first,
+				'profile_id_pk' => $this->session->userdata('loginid'),
+				'm_name' => $mid,
+				'l_name' => $last,
+				'mobile' => $mobile,
+				'username' =>$this->session->userdata('uid'),
+				'email' => $this->session->userdata('uid'),
+				'image' => $image,
+				'desig' =>$desi1,
+				'dept' =>$dep1,
+				'office' =>$off1,
+				'district' =>$dist,
+			);
+			$this->db->trans_off();
+			$this->db->trans_strict(FALSE);
+			$this->db->trans_start();
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+										current_url(),
+										'Profile Updated Successfully',
+										$this->session->userdata('uid'));
+
+			if($res){
+				$this->profile_model->update($this->session->userdata('uid'),$data);
+				//header("location: http://localhost/NIC/index.php/Summary/profile");
+			}else{
+				$this->profile_model->upload($data);
+				$this->Admin_model->update_first_profile();
+				//header("location: http://localhost/NIC/index.php/Summary/profile");
 			}
-		} //validation else brace ending 
+			$this->db->trans_complete();
+
+			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
+            echo json_encode($ab);
+		}
+
 	}
 
 	public function password_change_within(){

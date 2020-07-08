@@ -114,10 +114,10 @@ public function get_designation_id(){
 				'email' =>$res->email,
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
-				'designation' =>$this->get_designation(),
+				'designation' =>$res->desig,
 				'district' =>$res->district,
-				'department' =>$this->get_depart(),
-				'office' =>$this->get_office(),
+				'department' =>$res->department,
+				'office' =>$res->office,
                 'first_user'=>$row->check_if_first_user,
 				'update_prof'=>$row->check_profile_updated_once,
 				'flag'=> 0
@@ -151,9 +151,9 @@ public function get_designation_id(){
 				'email' =>$res->email,
 				'image' => $res->image,
 				'username' =>$this->session->userdata('uid'),
-				'designation' =>$this->get_designation(),
-				'department' =>$this->get_depart(),
-				'office' =>$this->get_office(),
+				'designation' =>$res->desig,
+				'department' =>$res->dept,
+				'office' =>$res->office,
 				//'desi_code' =>$
 				'district' =>$res->district,
 			);

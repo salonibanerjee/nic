@@ -27,7 +27,7 @@
         
           <div class="card-body">
             <?php
-              echo form_open_multipart("");
+              echo form_open_multipart('Summary/edit','id="form"');
               $this->load->model('profile_model');
             ?>
             <div class="box-body box-profile">
@@ -89,17 +89,17 @@
               </div>
               <div class="form-group">
                 <label for="office">Office</label>
-                <input type="text" class="form-control" id="office" value="<?php echo $off ;?>" disabled>
+                <input type="text" class="form-control" id="office" name="office" placeholder="Enter Office" value="<?php echo $off;?>" disabled>
                 <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
                 <label for="department">Department</label>
-                <input type="text" class="form-control" id="department" value="<?php echo $dep ;?>" disabled>
+                <input type="text" class="form-control" id="department" name="department" placeholder="Enter Department" value="<?php echo $dep;?>" disabled>
                 <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
                 <label for="designation">Designation</label>
-                <input type="text" class="form-control" id="designation" value="<?php echo $desi ;?>" disabled>
+                <input type="text" class="form-control" id="designation" name="designation" placeholder="Enter Designation" value="<?php echo $desi;?>" disabled>
                 <p class='error invalid-feedback'><small></small></p>
               </div>
               <div class="form-group">
@@ -133,9 +133,9 @@
               </div>
             </div>
           <!-- /.card-body -->
-          <?php echo validation_errors();?>
+          <div id="errors" style="color:red;"></div>
           <div class="card-footer">
-            <button type="submit" name= "sub1" id="sub1" class="btn btn-primary" style="display: block; margin-left: auto;  margin-right: auto;">Save Profile Details</button>
+            <button type="submit" name= "submit" id="submit" class="btn btn-primary" style="display: block; margin-left: auto;  margin-right: auto;">Save Profile Details</button>
           </div>
       </div>
     </div>
@@ -147,6 +147,13 @@ var input=document.getElementsByClassName('form-control');
 for(var i=0;i<input.length;i++){
   if(input[i].value=='GENERIC' || input[i].value=='EDITABLE'){
     input[i].disabled=false;
+    //input[i].placeholder="Enter";
+    if(input[i].name=="office")
+      input[i].value="<?php echo $office; ?>";
+    if(input[i].name=="department")
+      input[i].value="<?php echo $department; ?>";
+    if(input[i].name=="designation")
+      input[i].value="<?php echo $designation; ?>";
   }
 }
 function readURL(input) {
@@ -165,17 +172,46 @@ function readURL(input) {
         readURL(this);
     });
 </script>
-<script type="text/javascript">
-        document.getElementById("file").value = getSavedValue("file");
-        function saveValue(e){
-            var id = e.id;  
-            var val = e.value;
-            localStorage.setItem(id, val);
-        }
-        function getSavedValue  (v){
-            if (!localStorage.getItem(v)) {
-                return val;
-            }
-            return localStorage.getItem(v);
-        }
+
+<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="http://localhost/NIC/js/notify.js"></script>
+<script type="text/javascript" >
+var csrf_token='';
+$("#form").on("submit", function (event) {
+  event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
+  $.ajax({
+    url: $('#form').attr('action'),
+    type: "POST",
+    data: $('#form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
+    //dataType: 'html',
+    error: function(){
+			console.log("Form cannot be submitted...");
+		},
+    cache: false,
+    success: function(result){
+      console.log(result);
+      var k=JSON.parse(result);
+      //console.log(k);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+      if(k.res==0){
+        $('#errors').html(k.errors);
+        console.log("error");
+      }else{ 
+        $('#errors').html("");
+        $("#form")[0].reset();
+        //$("#form").load(location.href+" #refresh>*","");
+        //$('#example1').DataTable().ajax.reload();
+        //$("#submit").notify("Value accepted",{position:"left", className: 'success'});
+        alert("Profile Updated Successfully");
+        window.location.assign("http://localhost/NIC/index.php/Summary/profile")
+        console.log("submit");
+      }
+    }
+  });
+});
 </script>
