@@ -689,20 +689,9 @@ class summary extends MY_Controller {
 			if($desi=="GENERIC"||$desi=="EDITABLE"){$desi1=$this->input->post('designation');}else	$desi1=$desi;
 			if($dep=="GENERIC"||$dep=="EDITABLE"){$dep1=$this->input->post('department');}else	$dep1=$dep;
 			if($off=="GENERIC"||$off=="EDITABLE"){$off1=$this->input->post('office');}else $off1=$off;
-			$data = array(
-				'f_name' => $first,
-				'profile_id_pk' => $this->session->userdata('loginid'),
-				'm_name' => $mid,
-				'l_name' => $last,
-				'mobile' => $mobile,
-				'username' =>$this->session->userdata('uid'),
-				'email' => $this->session->userdata('uid'),
-				'image' => $image,
-				'desig' =>$desi1,
-				'dept' =>$dep1,
-				'office' =>$off1,
-				'district' =>$dist,
-			);
+			$data = array('f_name' => $first,'profile_id_pk' => $this->session->userdata('loginid'),'m_name' => $mid,'l_name' => $last,'mobile' => $mobile,
+				'username' =>$this->session->userdata('uid'),'email' => $this->session->userdata('uid'),'image' => $image,'desig' =>$desi1,
+				'dept' =>$dep1,'office' =>$off1,'district' =>$dist);
 			$this->db->trans_off();
 			$this->db->trans_strict(FALSE);
 			$this->db->trans_start();
