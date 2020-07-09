@@ -95,26 +95,42 @@
 <script>
   $(document).ready(function () {
     openingstatus();
+
     function openingstatus(){
+      $("radiobuttonsel").show();
+
+      $('#audience_desig').val('');
       $('#audience_loc').val('');
-      $("choose_loc").hide();
+      $('#audience_desig_only').val('');
+
+      $("choose_desigloc").hide();
+      $("choose_desig_only").hide();
     }
 
     $("Hide_desig_loc").click(function () {//Toggle bar
 
       if($("Hide_desig_loc").text() == 'Click here to Broadcast to All')
-      {
+      {    
         $('#audience_desig').val('-1');
         $('#audience_loc').val('-1');
+        $('#audience_desig_only').val('-1');
+
+        $("radiobuttonsel").hide();
+        
         $("choose_desigloc").hide();
+        $("choose_desig_only").hide();
       }
       else
       {
-        $('#audience_desig').val('');
-        $('#audience_loc').val('');
-        $("choose_desigloc").show();
-        $("choose_desig").show();
-        $("choose_loc").hide();
+        
+        $("radiobuttonsel").show();
+        //$("radiobuttonsel").attr(checked,false);
+        document.querySelector('input[name="radiosel"]').checked = false;
+
+        //$('#audience_desig').val('');
+        //$('#audience_loc').val('');
+
+        
       }
 
         $("Hide_desig_loc").fadeOut(function () {
@@ -177,7 +193,7 @@
         });
 	  }
 
-    $("#audience_desig").change(function () {
+    $("#audience_desig").change(function () {     //userType on change
         var val = $(this).val();
         if(val == ""){
           $("choose_loc").hide();
@@ -197,25 +213,35 @@
 </script>
 
 <hr/>
-<div align="right" style="color:green;text-align:center">
-  <Hide_desig_loc>Click here to Broadcast to All</Hide_desig_loc>
+<div>
+  <Hide_desig_loc class="bg-purple" style="text-align:center; padding:10px; border-radius:5px; cursor:pointer; display:block;">Click here to Broadcast to All</Hide_desig_loc>
 </div>
 <hr/>
-        <choose_desigloc>
-          <choose_desig>
+<radiobuttonsel>
+<p>Send Notifications depending on:</p>
+  
+  <input type="radio" id="usertypelocr" name="radiosel" value="usertypelocr" style="cursor:pointer">
+  <label for="usertypelocr">User Type and Location</label>
+<br>
+  <input type="radio" id="designat" name="radiosel" value="designat" style="cursor:pointer">
+  <label for="designat">Designation</label>
+<br>
+
+</radiobuttonsel>
+        <choose_desigloc id="rdd1">
+          <choose_desig>                          <!--  usertype + location  -->
             <div class="col-md-8">
               <div class="form-group">
-              <label>Target Designation</label>      
+              <label>Target UserType</label>      
                 <select name="audience_desig" id="audience_desig" class="form-control">      
-                  <option value="" selected>Select a Designation</option>
+                  <option value="" selected>Select User Type:</option>
                   
                   <?php
-                    $q="SELECT * FROM public.mpr_master_designation WHERE desig_id_pk IN (SELECT DISTINCT desig_id_fk FROM public.mpr_semitrans_login) ORDER BY desig_name ASC";
+                    $q="SELECT * FROM public.mpr_semitrans_user_type WHERE user_type_id_pk IN (SELECT DISTINCT user_type_id_fk FROM public.mpr_semitrans_login)ORDER BY desig ASC";
                     $resdes=$this->db->query($q);
                     //pg_fetch_assoc()
-
                     foreach($resdes->result_array() as $desig){ 
-                      echo "<option value='".$desig['desig_id_pk']."'>".$desig['desig_name']."</option>";
+                      echo "<option value='".$desig['user_type_id_pk']."'>".$desig['desig']."</option>";
                     } ?>
                     <option value="-1">Everyone</option>
                 </select>
@@ -240,8 +266,36 @@
           </choose_loc>
         </choose_desigloc>
 
-        
-            
+
+
+
+
+        <choose_desig_only id="rdd2">
+
+        <div class="col-md-8">
+              <div class="form-group">
+              <label>Target Designation</label>      
+                <select name="audience_desig_only" id="audience_desig_only" class="form-control">      
+                  <option value="" selected>Select Designation:</option>
+                  
+                  <?php
+                    $q="SELECT * FROM public.mpr_master_designation WHERE desig_id_pk IN (SELECT DISTINCT desig_id_fk FROM public.mpr_semitrans_login)ORDER BY desig_name ASC";
+                    $resdes=$this->db->query($q);
+                    //pg_fetch_assoc()
+                    foreach($resdes->result_array() as $desig){ 
+                      echo "<option value='".$desig['desig_id_pk']."'>".$desig['desig_name']."</option>";
+                    } ?>
+                    <option value="-1">Everyone</option>
+                </select>
+
+              </div>
+            </div>
+
+
+        </choose_desig_only>
+
+
+
             <div class="input-group mb-3">
                     <textarea name="noti_text" id="noti_text" class="form-control" rows="3" placeholder="Enter Notification body..."></textarea>
               <div class="input-group-append">
@@ -335,6 +389,23 @@ $("#form").on("submit", function (event) {
       "info": true,
       "autoWidth": false,
     });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+       $('#usertypelocr').click(function () {
+          $("choose_desigloc").show();
+          $("choose_desig_only").hide();
+
+       });
+  });
+
+  $(document).ready(function () {
+       $('#designat').click(function () {
+          $("choose_desigloc").hide();
+          $("choose_desig_only").show();
+       });
   });
 </script>
 </body>

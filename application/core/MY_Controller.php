@@ -98,8 +98,6 @@ class MY_Controller extends CI_Controller {
             show_404();
         }
     }
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
     public function getrelevantlocation()  
 	{
 	   $result;
@@ -121,7 +119,7 @@ class MY_Controller extends CI_Controller {
            $ans = array('status'=>0,'message'=>'no data found');
 	   }
 	   echo json_encode($ans);
-    }
+     }
           
     public function fetch_notifs(){
 
@@ -129,10 +127,13 @@ class MY_Controller extends CI_Controller {
         $this->load->model('Admin_model');
 
         $this->load->model('profile_model');
-        $mydesig=$this->profile_model->get_designation_id(); //fetching user desig_id_fk
+        
+        $mydesig_only=$this->profile_model->get_designation_id(); //fetching user desig_id_fk
+
+        $mydesig=$this->profile_model->get_usertype_id();   //fetching usertype_id_fk
         $myloc=$this->profile_model->get_location_code();//fetching user's location_code
        //UPDATED QUERY
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))";
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=$mydesig_only OR audience_desig_only=-1) OR (audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))";
         $result = $this->db->query($q);
         	
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
@@ -149,8 +150,6 @@ class MY_Controller extends CI_Controller {
         }
 
     }
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     
     public function nodal_alert(){
         $this->load->driver('cache', array('adapter' => 'file'));

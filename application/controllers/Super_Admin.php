@@ -140,10 +140,15 @@ class Super_Admin extends MY_Controller {
 		$csrf_token=$this->security->get_csrf_hash();
 
 		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
-		$this->form_validation->set_rules('audience_desig', 'Audience designation', 'required');
-		//$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_desig]');
+		/*$this->form_validation->set_rules('audience_desig', 'Audience designation', 'required');
 		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required');
-        $this->form_validation->set_rules('noti_text', 'Notification text', 'required');
+		$this->form_validation->set_rules('audience_desig_only', 'Audience designation', 'required');
+		*/
+		$this->form_validation->set_rules('audience_desig', 'Target User Type', 'required');
+		$this->form_validation->set_rules('audience_loc', 'Target location', 'required');
+		$this->form_validation->set_rules('audience_desig_only', 'Target designation', 'required');
+       
+		$this->form_validation->set_rules('noti_text', 'Notification text', 'required');
 		
 		if ($this->form_validation->run() == FALSE)
         {
@@ -155,18 +160,38 @@ class Super_Admin extends MY_Controller {
             $noti_head = $this->input->post('noti_head');
 			$audience_desig=$this->input->post('audience_desig');//----should be int
 			$audience_loc=$this->input->post('audience_loc');//string
+			$audience_desig_only=$this->input->post('audience_desig_only');
 			$noti_text= $this->input->post('noti_text');
 
 			$this->db->trans_off();
             $this->db->trans_strict(FALSE);
 			$this->db->trans_start();
-			if($audience_desig==-1 && $audience_loc=='-1'){
-				$target_audience="NBROADCAST";
+
+			if($audience_desig==-1 && $audience_loc=='-1' && $audience_desig_only==-1){//broadcast
+				$target_audience="N-BROADCAST";
 			}
-			else{
-				$target_audience="ND".$audience_desig."L".$audience_loc;
+
+			else if($audience_desig_only!=-1){//designation only
+				$target_audience="ND-".$audience_desig_only;
 			}
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc);
+
+			else{//usertype+loc
+
+				if($audience_desig!=-1 && $audience_loc!='-1'){
+					$target_audience="N-UT".$audience_desig."-L-".$audience_loc;
+				}
+				else if($audience_desig!=-1 && $audience_loc=='-1'){
+					$target_audience="N-UT-".$audience_desig."-L-ALL";
+				}
+				else if($audience_desig==-1 && $audience_loc!='-1'){
+					$target_audience="N-UT-ALL-L-".$audience_loc;
+				}
+				else if($audience_desig==-1 && $audience_loc=='-1'){
+					$target_audience="N-UT-ALL-L-ALL";
+				}
+			}
+			
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,$audience_desig_only);
 			
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),

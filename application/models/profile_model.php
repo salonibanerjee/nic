@@ -42,10 +42,14 @@ class profile_model extends CI_Model {
 	}
 //2 test codes for user specific notifications:
 
-public function get_designation_id(){
-	$data = $this->get_login_details($this->session->userdata('uid'));
-		return $data->desig_id_fk;//bigint
-}
+	public function get_designation_id(){
+		$data = $this->get_login_details($this->session->userdata('uid'));
+			return $data->desig_id_fk;//bigint
+	}
+	public function get_usertype_id(){
+		$data = $this->get_login_details($this->session->userdata('uid'));
+			return $data->user_type_id_fk;//bigint
+	}
 
 	public function get_location_code(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
@@ -209,7 +213,7 @@ public function get_designation_id(){
 			$result=$this->db->query($q);
 		}
 		else{
-		$q="SELECT * FROM public.mpr_master_location_data WHERE location_code IN(SELECT location_code FROM public.mpr_semitrans_login WHERE desig_id_fk=$desig) ORDER BY location_area ASC";
+		$q="SELECT * FROM public.mpr_master_location_data WHERE location_code IN(SELECT location_code FROM public.mpr_semitrans_login WHERE user_type_id_fk=$desig) ORDER BY location_area ASC";
 		$result=$this->db->query($q);
 		}
         return $result;
@@ -219,14 +223,19 @@ public function get_designation_id(){
 		
 		$mydesigid=$this->session->userdata('desig');
 		$myloccode=$this->session->userdata('location_code');
+		$myusertype=$this->session->userdata('user_type');
 
 		$query = $this->db->select('*')->from('mpr_trans_notification')
 		->where('active_status',1)
 			->group_start()
-				->where(array('audience_desig'=>$mydesigid,'audience_loc'=>$myloccode))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1'))
-				->or_where(array('audience_desig'=>$mydesigid,'audience_loc'=>'-1'))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode))
+				->where(array('audience_desig'=>$myusertype,'audience_loc'=>$myloccode,'audience_desig_only'=>$mydesigid))
+				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>$myloccode,'audience_desig_only'=>-1))
+				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>'-1','audience_desig_only'=>$mydesigid))
+				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>'-1','audience_desig_only'=>-1))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode,'audience_desig_only'=>$mydesigid))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode,'audience_desig_only'=>-1))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1','audience_desig_only'=>$mydesigid))
+				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1','audience_desig_only'=>-1))
 			->group_end()
 		->order_by('notification_id_pk','DESC')
 		->get()
@@ -234,10 +243,10 @@ public function get_designation_id(){
 			return $query;
 	}
 
-	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc)
+	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,$audience_desig_only)
 	{
 		$result = $this->db->insert('mpr_trans_notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
-									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s'), 'audience_desig'=>$audience_desig, 'audience_loc'=>$audience_loc));
+									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s'), 'audience_desig'=>$audience_desig, 'audience_loc'=>$audience_loc, 'audience_desig_only'=>$audience_desig_only));
 		return $result;
 	}
 
