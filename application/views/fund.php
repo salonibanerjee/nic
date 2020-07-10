@@ -90,7 +90,7 @@
                         <th>Threshold</th>
                       </tr>
                       </thead>
-                      <tbody>
+                      <tbody style="cursor:pointer;">
                       </tbody>
                       <tfoot>
                       <tr>
