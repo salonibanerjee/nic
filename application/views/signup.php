@@ -35,6 +35,14 @@
             </div>
           </div>
         </div>
+		<div class="input-group mb-3">
+        <select id="district" type="district" name="district" class="form-control"></select>
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-user-plus"></span>
+            </div>
+          </div>
+        </div>
         <div class="input-group mb-3">
             <select name ="desig" id="desig" class="form-control" onchange="locationData();"  ></select>
           <div class="input-group-append">
@@ -94,28 +102,29 @@
 <script type="text/javascript">
 		
 		var csrf_token="";
-		   
+		district();  
 		fetchType();
 	    office();
 		function hashPassword(){
 			$('#field_name').html("");
 			var email = $('#email').val();
+			var district = $('#district').val();
 			var user_type = $('#desig').val();
 			var region_code = $('#region_code').val();
 			var dept = $('#dept').val();
 			var office = $('#office').val();
 			var desig_name = $('#desig_name').val();
-			console.log("function called:"+email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+			console.log("function called:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 			if(email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
-				signupdo(email,user_type,region_code,dept,office,desig_name);
+				signupdo(email,district,user_type,region_code,dept,office,desig_name);
 			}else{
 				$('#field_name').html("Please fill all fields*");
 			}
 		
 		}
 		
-	function signupdo(email,user_type,region_code,dept,office,desig_name){
-		console.log("card data:" +email+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+	function signupdo(email,district,user_type,region_code,dept,office,desig_name){
+		console.log("card data:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 		  if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
@@ -123,7 +132,7 @@
 			url: "<?php echo base_url();?>index.php/Super_Admin/signupdo",
 			type: "POST",
 			data:{  "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
-				email:email,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
+				email:email,district:district,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
 		    dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
@@ -134,6 +143,7 @@
 					csrf_token = result.csrf_token;
 				} 
 				$('#email').val("");
+				$('#district').val("select");
 				$('#pass').val("");
 				$('#desig').val("select");
 				$('#region_code').val("select");
@@ -174,9 +184,45 @@
                             "</option>";
                         $("#desig").append(type_item);
                     $.each(type_arr, function (idx, val) {
-                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
+                        var type_item = "<option value=" + val['code'] + "_" + val['level'] + ">" + val['type'] +
                             "</option>";
                         $("#desig").append(type_item);
+                    });
+                }
+            }
+        });
+	  }
+	function district() {
+		 console.log("district");
+		$("#desig").empty();
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
+        $.ajax({
+            url: "<?php echo base_url();?>index.php/Super_Admin/fetch_district",
+			data:{
+				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
+			},
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			},
+            success: function (result) {
+				console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+				if(result.csrf_token){
+					csrf_token = result.csrf_token;
+				}
+                if (status == 1) {
+					var type_item = "<option value=" + "select" + ">" + "DISTRICT" +
+                            "</option>";
+                        $("#district").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['type'] +
+                            "</option>";
+                        $("#district").append(type_item);
                     });
                 }
             }
@@ -264,6 +310,7 @@
 	  }
 	
 	function designation() {
+		
 		var dept = $('#dept').val();
 		 console.log("designation"+dept);
         $("#desig_name").empty();
@@ -305,22 +352,23 @@
 	  }
 	
 	function locationData() {
-		var desig = $('#desig').val();
-		console.log("locationData"+desig);
+		var district = $('#district').val();
+		var level = $('#desig').val().split('_')[1];//1_1
+		console.log("locationData: "+level);
         $("#region_code").empty();
 		 
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
 		   console.log("csrf_token: "+csrf_token);
-		   
+		
         $.ajax({
             url: "<?php echo base_url();?>index.php/Super_Admin/location_data",
             type: "POST",
 			data:
 			{
 				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
-				"desig":desig
+				"level":level,"district":district
 			},
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {

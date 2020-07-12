@@ -685,7 +685,7 @@ class summary extends MY_Controller {
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 			$res=$this->profile_model->get_f($this->session->userdata('uid'));
-			if ($image == NULL){$image = $res->image;	}
+			if($image == NULL){$image = $res->image;	}
 			if($desi=="GENERIC"||$desi=="EDITABLE"){$desi1=$this->input->post('designation');}else	$desi1=$desi;
 			if($dep=="GENERIC"||$dep=="EDITABLE"){$dep1=$this->input->post('department');}else	$dep1=$dep;
 			if($off=="GENERIC"||$off=="EDITABLE"){$off1=$this->input->post('office');}else $off1=$off;

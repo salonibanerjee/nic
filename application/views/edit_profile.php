@@ -27,8 +27,8 @@
         
           <div class="card-body">
             <?php
-              echo form_open_multipart('Summary/edit','id="form"');
-              $this->load->model('profile_model');
+              echo form_open_multipart('Summary/edit','id="form" method="post"');
+              //$this->load->model('profile_model');
             ?>
             <div class="box-body box-profile">
               <?php
@@ -39,7 +39,7 @@
                   echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
               ?>
-              <input type="file" name="file" id ="file" class="inputfile"  accept=".png, .jpg, .jpeg, .JFIF" /> <label for="file">CHOOSE IMAGE ⮭</label> 
+              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file">CHOOSE IMAGE ⮭</label> 
               <style>
                 .inputfile {
                   width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;

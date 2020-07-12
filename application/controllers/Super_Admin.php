@@ -365,6 +365,29 @@ class Super_Admin extends MY_Controller {
 	   	  foreach($res as $r){
 			  $code = $r->user_type_id_pk;
 			  $type = $r->desig;
+			  $level= $r->user_level;
+			  $data[$i] = array('code'=>$code,'type'=>$type,'level'=>$level);
+			  $i = $i+1;
+		  }
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+	   }else{
+		   $result = array('status'=>0,'message'=>'no data found');
+
+	   }
+	   echo json_encode($result);
+	 }
+	 function fetch_district()  //get all records from database  
+	{
+	   $result;
+	   $this->load->model('Sup_admin');
+	   $query=$this->Sup_admin->fetch_district();
+		  $res=$query->result();
+	   if($res){
+		   $data;
+		   $i = 0;
+	   	  foreach($res as $r){
+			  $code = $r->location_code;
+			  $type = $r->district_name;
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
 		  }
@@ -380,9 +403,10 @@ class Super_Admin extends MY_Controller {
 	 {
 		$result;
 			$this->load->model('Sup_admin');
-		   $desig=$this->input->post('desig');
+		   $level=$this->input->post('level');
+		   $district=$this->input->post('district');
 		   //$dat=array("user_type_id_fk"=>$desig);
-		$query=$this->Sup_admin->mapping($desig);
+		$query=$this->Sup_admin->mapping($level,$district);
 		   //$query=$this->db->get_where("mpr_master_location_mapping");
 		   $res=$query->result();
 		if($res){

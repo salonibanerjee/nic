@@ -101,20 +101,34 @@ class Sup_admin extends CI_Model {
 		$query=$this->db->get_where("mpr_semitrans_user_type");
 		return $query;
 	}
+	public function fetch_district()
+	{   $SQL="SELECT location_code,district_name
+	FROM mpr_master_district INNER JOIN mpr_master_location_data
+	ON mpr_master_district.location_id_fk =  mpr_master_location_data.location_id_pk";
+		$query=$this->db->query($SQL);
+		return $query;
+	}
 	public function office()
 	{
 		$query=$this->db->get_where("mpr_master_office");
 		return $query;
 	}
-	public function mapping($desig)
-	{
-		$SQL="SELECT mpr_master_location_data.location_area, mpr_master_location_data.location_code
-	FROM mpr_master_location_data INNER JOIN mpr_semitrans_location_mapping 
-	ON mpr_master_location_data.location_id_pk = mpr_semitrans_location_mapping.location_id_fk
-	WHERE mpr_semitrans_location_mapping.user_type_id_fk =".$desig;
+	public function mapping($level,$district)
+	{ 
+		
+		if($level == 1){
+		  $district = $district.'_';
+		} else if($level == 2){
+		  $district = $district.'___';
+		}
+		$SQL="SELECT * FROM mpr_master_location_data
+		WHERE location_code LIKE '$district'";
 		$query = $this->db->query($SQL);
 		return $query;
-	}
+	 }
+		
+		
+	
 	public function location_data()
 	{
 		$query=$this->db->select('*')->get("mpr_master_location_data")->result_array();
