@@ -130,7 +130,11 @@
             <div class="widget-user-header bg-indigo">
               <button type="button" class="btn btn-tool float-right"  data-toggle="modal" data-target="#modal-sm"style="color: white; font-size:30px;"><i class="fas fa-edit"></i></button>
                 <div class="widget-user-image">
-                  <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
+                  <?php if($profile['image']!=NULL){?>
+                    <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
+                  <?php }else{?>
+                    <img class="img-circle elevation-2" src="http://localhost/NIC/css/dist/img/avatar00.png" style='width:70px; height:70px;' alt="User Avatar">
+                  <?php }?>  
                 </div>
                 <!-- /.widget-user-image -->
                 <h1 class="widget-user-username"><strong><?php echo $name; ?></strong></h1>
