@@ -112,6 +112,7 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $filter_progress);
 		
+		//==============Populating data for Progress view=================
 		$size_sch = sizeof($scheme_name);
 		$scheme_location = $this->Dashboard_model->get_loc($progress_location,sizeof($progress_location));
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
@@ -170,6 +171,7 @@ class summary extends MY_Controller {
 		array_multisort($temp_arr, SORT_DESC, $work_progress);
 		
 		$progress_view = array('work_progress' => $work_progress);
+		//===========================================================
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
@@ -214,6 +216,7 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $filter_pie);
 
+		//pie chart data populate
 		$n = count($scheme_pie);
 
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
@@ -279,6 +282,7 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $bar1_filter_progress);
 
+		//bar chart data populate
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
 		$scheme_ID=$this-> Dashboard_model ->schID($scheme_bar1,sizeof($scheme_bar1),$loc_schcdID);
 		
@@ -364,6 +368,7 @@ class summary extends MY_Controller {
 		$size_sch = sizeof($scheme_pro);
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
 
+		//Matrix data for Physical progress view
 		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro));
 
 		$bar_chart2 = array(

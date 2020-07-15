@@ -1,6 +1,7 @@
 <?php
 class Dashboard_model extends CI_Model{
 
+    //Matrix data for Physical progress view bar chart
     function matrix($block,$sch,$nblo,$nsch){
         $i=0;
         $this->db->select('attri_progress,sch_tab_name');
@@ -49,18 +50,14 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
+    //Alert filter data with there respective filters
     function alert_filter($loc,$sch,$n){
         $i=0;
         $result=array();
         while($i<$n){
             $this->db->select('*')->where(array('scheme_id_fk'=>$sch[$i],'location_id_fk'=>$loc));
             $table=$this->db->get('mpr_trans_fundalloc')->row();
-            //return table
             if($table){
-                //$fundall='funds_allocated';
-                //$funduti='funds-utilised';
-                //array_push($result, $table->funds_allocated);
-                //array_push($result, $table->funds_utilised);
                 $fundallocated=$table->funds_allocated;
                 $fundutillised=$table->funds_utilised;
                 $thre=$table->threshold;
@@ -90,7 +87,7 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
-
+    //get location Name repective to there code
     function get_loc($n,$num)
     {
         $this->db->select('location_area,location_code');
@@ -111,110 +108,16 @@ class Dashboard_model extends CI_Model{
         }
         return $b; 
     }
-    function get_progress($n,$num,$loc,$m,$y)
-    {
-        
-        $this->db->select('attr_target,attri_progress,sch_tab_name');
-        $table = $this->db->get('mpr_master_dashboard_info');
-        $b = array();
-        $a = array();
-        $i = 0;
-        while($i<$num)
-        { 
-            foreach($table->result() as $row){    
-                if($row->sch_tab_name==$n[$i]) 
-                {       
-                    $b[$i] = $row->attri_progress;
-                    $a[$i] = $row->attr_target;
-                    $i++;
-                    break;
-                }
-            }
 
-        }
-        //return $a;
-        $i=0;
-        $pro = array();
-        $tar = array();
-        while($i<$num)
-        {   
-            if($m != 0)
-                $this->db->select('*')->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            else   
-                $this->db->select('*')->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            $table1 = $this->db->get($n[$i])->row();
-            $temp1 = $b[$i];
-            $temp2 = $a[$i];
-            if($table1)
-            {
-                array_push($pro, $table1->$temp1);
-                array_push($tar, $table1->$temp2);
-                $i++;
-            }else
-            {
-                array_push($pro, "false");
-                array_push($tar, "false");
-                $i++;
-            }
-        }
-        $ans=array();
-        for($i=0;$i<sizeof($tar);$i++){
-            if($tar[$i]=="false"){
-                $temp="false";
-            }
-            else if($tar[$i]!=0){
-                $temp=(int)($pro[$i]/$tar[$i]*100);
-            }
-            else
-                $temp=0;
-            array_push($ans, $temp);
-        }
-        return $ans;
-    }
-
+    //location ID for current login
     function getlocID($loc){
         $this->db->select('location_id_pk')->where(array('location_code'=>$loc));
         $table = $this->db->get('mpr_master_location_data')->row();
         return $table->location_id_pk;
     }
 
-    function get_prog($n,$num,$loc,$m,$y){
-		$this->db->select('attr_target,attri_progress,sch_tab_name');
-		$table = $this->db->get('mpr_master_dashboard_info');
-		$b = array();
-        $i = 0;
-        while($i<$num){
-            foreach($table->result() as $row){    
-                if($row->sch_tab_name==$n[$i]){	    
-                    $b[$i] = $row->attri_progress;
-                    $i++;
-                    break;
-                }
-            }
-        }
-
-        $i=0;
-        $d = array();
-        while($i<$num)
-        {
-            if($m != 0)
-                $this->db->select($b[$i])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            else
-                $this->db->select($b[$i])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            $table2 = $this->db->get($n[$i])->row();
-            $temp = $b[$i];
-            if($table2)
-            {
-                array_push($d, $table2->$temp);
-                $i++;
-            }else{
-                array_push($d, "false");
-                $i++;
-            }
-        }
-        return $d;
-    }
     
+    //geting progress data
     function get_alertdata($n, $num,$loc,$m,$y)
     {
         $this->db->select('attr_target, attri_progress, sch_tab_name');
@@ -279,56 +182,7 @@ class Dashboard_model extends CI_Model{
         return $d;
     }
 
-    
-    function get_data($n, $num,$loc,$m,$y)
-    {
-        $this->db->select('attr_target, attri_progress, sch_tab_name');
-        $table = $this->db->get('mpr_master_dashboard_info');
-        $b = array();
-        $i=0;
-        $x=0;
-        while($x<$num){
-            foreach($table->result() as $row){
-                if($row->sch_tab_name==$n[$x]) 
-                {     
-                    $b[$i] = $row->attr_target;
-                    $b[$i+1] = $row->attri_progress;
-                    $i=$i+2;
-                    $x=$x+1;
-                    break;
-                }
-            }
-        }
-        $j = 0;
-        $x = 0;
-        $d = array();
-        
-    
-        while($j<(2*$num))
-        {
-            if($m != 0){
-                $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-                $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y,'location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            } else {
-                $this->db->select($b[$j])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-                $this->db->select($b[$j+1])->where(array('location_code'=>$loc))->order_by('month',"desc")->order_by('session',"desc")->limit(1);
-            }
-
-            $table2 = $this->db->get($n[$x])->row();
-            $temp1 = $b[$j];
-            $temp2 = $b[$j+1];
-
-            if($table2)
-                array_push($d, $table2->$temp1, $table2->$temp2);
-            else
-                array_push($d, "false", "false");
-            $j=$j+2;
-            $x=$x+1;
-
-        }
-        return $d;
-    }
-
+    //get location scheme id for fund allocation
     function schID($sch,$n,$loc){
         $i=0;
         $res = array();
@@ -341,16 +195,14 @@ class Dashboard_model extends CI_Model{
         return $res;
     }
 
+    //data for pie chart
     function alert_data($loc,$sch,$n){
         $i=0;
         $result=array();
         while($i<$n){
             $this->db->select('*')->where(array('scheme_id_fk'=>$sch[$i],'location_id_fk'=>$loc));
             $table=$this->db->get('mpr_trans_fundalloc')->row();
-            //return table
             if($table){
-                //$fundall='funds_allocated';
-                //$funduti='funds-utilised';
                 array_push($result, $table->funds_allocated);
                 array_push($result, $table->funds_utilised);
                 $i++;
@@ -364,6 +216,7 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
+    //getting the actual names of schemes
     function sch_name($n,$num)
     {
         $this->db->select('name,short_name');
