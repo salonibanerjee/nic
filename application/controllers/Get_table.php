@@ -1,11 +1,15 @@
 <?php
+//performs data entry on the basis of schemes selected by the data entry operator-------------------------------------------------
+//only those schemes will be loaded which the DEO has access to-------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Get_table extends MY_Controller {
+    //invalid link----------------------------------------------------------------------------------------------------------------
     public function index(){
         show_404();
     }
 
+    //loads the input data entry form , the arguments provides the scheme and loads a dynamic form----------------------------------
     public function load($n=""){
         if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -80,6 +84,7 @@ class Get_table extends MY_Controller {
 
         $this->load->view('dashboard/footer');
     }
+    //AJAX function for draft data filter for the user currently entering data--------------------------------------------------------
     function submit_draft($n){
         $this->load->model('Crud_model');
         $mon=$this->input->post('modmonth');
@@ -90,6 +95,8 @@ class Get_table extends MY_Controller {
             return $this->Crud_model->draft_data_fetch($n."_draft");
         }
     }
+
+    //AJAX function to perform data entry---------------------------------------------------------------------------------------------
     function submit($n){
         $this->load->driver('cache',array('adapter' => 'file'));
         $this->load->model('Crud_model');

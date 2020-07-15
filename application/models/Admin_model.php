@@ -1,5 +1,9 @@
 <?php
+//All Login, User details, caching , captcha, password, update user details functionalities----------------------------------------------
+
+
 class Admin_model extends CI_Model {
+    //stores a user cache naming convention like <Active_status><login_id> for each and every user--------------------------------------
     public function store_cache($uname){
         //$this->db->cache_on();
         //from login table
@@ -57,6 +61,7 @@ class Admin_model extends CI_Model {
         }
     }
 
+    //stores dashboard data cache for faster loading-------------------------------------------------------------------------------------
     public function dashboard_cache(){
         $dept = $this->session->userdata('dept');
         $query = $this->db->get_where('mpr_master_scheme_dept',array('dept_id_fk'=>$dept))->result_array();
@@ -92,6 +97,7 @@ class Admin_model extends CI_Model {
         }
     }
 
+    //stores profile data cache -----------------------------------------------------------------------------------------------------
     public function store_profile($uname){
         //$this->db->cache_on();
         $query = $this->db->get_where('mpr_semitrans_profile',array('username'=>$uname));
@@ -121,7 +127,7 @@ class Admin_model extends CI_Model {
         return ($a['order'] > $b['order']) ? 1 : -1;
     }
 
-
+    //stores user type cache naming convention <User_type><user_type_id>------------------------------------------------------------------
     public function user_type_cache($var){
         //from login table
         $user_type=$this->db->get_where('mpr_semitrans_user_type',array('user_type_id_pk'=>$var))->row()->active_status;
@@ -167,34 +173,42 @@ class Admin_model extends CI_Model {
         $this->db->cache_off();
     }
 
+    //checks whether user is logging in for the first time-------------------------------------------------------------------------
     public function check_first_user(){
         $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->cache->get('Active_status'.$this->session->userdata('loginid'))['login_id_pk']));
         $row=$query->row();
         return $row->check_if_first_user;
     }
     
+    //checks the user details trying to logging in-----------------------------------------------------------------------------------
     public function check_user($n){
         return $this->db->get_where('mpr_semitrans_login',array('username'=>$n))->row();
     }
 
+    //updates the password for change password and forget password---------------------------------------------------------------------
     public function update_login($user,$password){
         $this->db->where('username',$user);
         $this->db->update('mpr_semitrans_login',array('password'=>$password));
     }
+    //updates the user editing profile for the first time status in the database-------------------------------------------------------
     public function update_first_profile(){
         $this->db->where('user_id_pk',$this->cache->get('Active_status'.$this->session->userdata('loginid'))['login_id_pk']);
         $this->db->update('mpr_semitrans_check_first_user',array('check_profile_updated_once' => 0 ));
     }
+    //updates the user logging in for the first time status in the database------------------------------------------------------------
     public function update_first_pass($username){
         $row=$this->db->get_where('mpr_semitrans_login',array('username'=>$username))->row();
         $this->db->where('user_id_pk',$row->login_id_pk);
         $this->db->update('mpr_semitrans_check_first_user',array('check_if_first_user' => 0 ));
     }
+    
+    //inserts new meeting in the database----------------------------------------------------------------------------------------------
     public function meeting_schedule($data){
         //$this->db->where('meeting_id_pk', 1);
 		$this->db->insert('mpr_trans_meeting_schedule', $data);
     }
 
+    //loads latest meeting data constantly in the notification bell--------------------------------------------------------------------
     public function previous_meeting_schedule(){
         //$query = $this->db->get_where('mpr_trans_meeting_schedule',array('meeting_id_pk'=>1));
         //$row=$query->row();
@@ -202,6 +216,7 @@ class Admin_model extends CI_Model {
         return $last_row;
     }
 
+    //function to generate captcha and reconfigurable----------------------------------------------------------------------------------
     public function _generateCaptcha(){
         $vals = array(
             //'word'          => rand(1000, 9999),
@@ -229,6 +244,7 @@ class Admin_model extends CI_Model {
         return create_captcha($vals);
     }
 
+    //captcha string characters which is reconfigurable-------------------------------------------------------------------------------
     public function getName($x,$y) {
         $length = rand($x,$y);
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -241,11 +257,13 @@ class Admin_model extends CI_Model {
         return $randomString;
     }
 
+    //checks the password of an user trying to log in---------------------------------------------------------------------------------
     public function findpass($n){
         $query=$this->db->get_where("mpr_semitrans_login",array('username'=>$n));
         return $query->row();
     }
 
+    //creates a notification cache for every user naming convention <Noti><login_id> for storing counts and realtime prompts----------
     public function noti_cache($id){
         $mydesig=$this->session->userdata('desig'); //fetching user desig_id_fk
         $myloc=$this->session->userdata('location_code');

@@ -1,8 +1,11 @@
 <?php
+//Mainly deals with the Dashboard, Profile , Edit profile and password change when user is logged in.----------------------------------
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class summary extends MY_Controller {
 
+	//Loads the dashboard 
 	public function index()
 	{	
 		if($this->session->userdata('logged_in')=="")
@@ -580,6 +583,7 @@ class summary extends MY_Controller {
 		
 	}
 	
+	//loads the profile of the logged in user
 	public function profile(){
 		if($this->session->userdata('logged_in')==""){
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -611,6 +615,7 @@ class summary extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 
+	//loads the edit profile page for the logged in user
 	public function edit_profile(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -643,6 +648,7 @@ class summary extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 
+	//AJAX function for edit profile form submit
 	public function edit(){
 		$this->load->model('profile_model');
 		$this->load->model('Crud_model');
@@ -716,6 +722,7 @@ class summary extends MY_Controller {
 
 	}
 
+	//loads and performs Password change when logged in
 	public function password_change_within(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");

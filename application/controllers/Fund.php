@@ -1,6 +1,8 @@
 <?php
+//Fund allocation location-wise----------------------------------------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Fund extends MY_Controller {
+    //loads the fund allocation form along with already allocated data table------------------------------------------------------------
     public function index(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -29,6 +31,7 @@ class Fund extends MY_Controller {
         $this->load->view('fund',$data);
         $this->load->view('dashboard/footer');
     }
+    //AJAX function to perform fund allocation-----------------------------------------------------------------------------------------
     public function fund_submit(){
         $this->load->model('Sup_admin');
         $this->load->model('Crud_model');
@@ -82,6 +85,8 @@ class Fund extends MY_Controller {
             echo json_encode($ab);
         }
     }
+
+    //loads the already allocated funds and show in datatable------------------------------------------------------------------------
     function fetchdata()  //get all records from database  
 	{
 	    $result;

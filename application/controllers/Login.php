@@ -1,7 +1,12 @@
 <?php
+//Performs all Login related controller works along with captcha, forget password, 
+//password change, password change for the first time--------------------------------------------------------------------------------
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Login extends MY_Controller {    
+class Login extends MY_Controller {   
+    
+    //loads the login page with a function generated captcha------------------------------------------------------------------------ 
     public function index(){
         //to create the captcha folder automatically
         $path = './captcha';
@@ -14,7 +19,8 @@ class Login extends MY_Controller {
         $this->session->set_userdata('salt',hash('sha256',microtime()));
         $this->load->view('login', $captcha);
     }
-    //Performs Login and if successful redirects to scheme picker page
+
+    //Performs Login and if successful redirects to scheme picker page--------------------------------------------------------------
 	public function login_MPR(){
         $this->db->cache_off();
         $this->form_validation->set_rules('captcha', "Captcha", 'required');
@@ -82,7 +88,8 @@ class Login extends MY_Controller {
             echo validation_errors();  
         }
     }
-    //to logout and destroy the session and redirects back to login page
+
+    //to logout and destroy the session and redirects back to login page----------------------------------------------------------------
     public function logout(){
         if($this->session->userdata('logged_in')=="")
             header("Location: http://localhost/NIC/index.php/Login");
@@ -102,6 +109,7 @@ class Login extends MY_Controller {
         }
     }
 
+    //loads 'link send to email' page for forget password-------------------------------------------------------------------------------
     public function forget()
 	{
         $this->load->model('Admin_model');
@@ -124,6 +132,8 @@ class Login extends MY_Controller {
                 echo "*http://localhost/nic/index.php/Login";
         }
     }
+
+    //loads password change page from the hashed link sent to email in forget password------------------------------------------------------
     public function password_change(){
         $this->load->model('Admin_model');
         $var = array('value'=>1);
@@ -152,6 +162,7 @@ class Login extends MY_Controller {
         }
     }
 
+    //Loads the one time password change page for the users logging in for the first time---------------------------------------------------
     public function password_change_first_user(){
         $this->load->model('Admin_model');
         $var = array('value'=>2);
@@ -175,6 +186,7 @@ class Login extends MY_Controller {
         }
     }
 
+    //AJAX function to check whether a user providing username for login exists or not---------------------------------------------------
     public function username_check($str)
     {
         $this->load->model('Admin_model');

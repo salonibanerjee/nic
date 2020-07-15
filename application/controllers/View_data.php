@@ -1,11 +1,15 @@
 <?php
+//performs data view for each and every scheme based on the scheme selected by user-----------------------------------------------
+//schemes are loaded by their privileges and others will be discarded-------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class View_data extends MY_Controller {
+    //invalid link-------------------------------------------------------------------------------------------------------------------
     public function index(){
         show_404();
     }
 
+    //loads dynamically the data for schemes as selected from sidebar tree...the parameter takes the scheme name-----------------------
     public function load($n=""){
         if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");

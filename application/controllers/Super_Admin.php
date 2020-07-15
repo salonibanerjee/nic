@@ -1,7 +1,13 @@
 <?php
+//The whole Super Admin module runs through this script.It includes New User registration, user on/off, user privilege on/off,
+//user type on/off, pages on/off, dba financial year set, scheme records, audit log view for SYSTEM Administrator-----------------------
+
+//Some Super Admin sidebar functions also runs by this script like Meeting Schedule and Notification set.------------------------------
+
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Super_Admin extends MY_Controller {
+	//loads the Super Admin dashboard----------------------------------------------------------------------------------------------------
     public function index(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -31,7 +37,8 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('super_admin_view',$data);
 		$this->load->view('dashboard/footer');
     }
-    
+	
+	//loads the meeting schedule page------------------------------------------------------------------------------------------------------
     public function meeting_schedule(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -59,6 +66,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 	
+	//AJAX function to perform scheduling a new meeting------------------------------------------------------------------------------------
 	public function schedule(){
 		$this->load->model('Sup_admin');
 		$this->load->model('Crud_model');
@@ -96,7 +104,8 @@ class Super_Admin extends MY_Controller {
 		$ab=array('csrf_token'=>$csrf_token,'res'=>1);
         echo json_encode($ab);
 	}
-    
+	
+	//loads the set notification page-----------------------------------------------------------------------------------------------------
     public function notification(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -131,7 +140,7 @@ class Super_Admin extends MY_Controller {
 		return true;
 	}
 	*/
-
+	//AJAX perform to set notification----------------------------------------------------------------------------------------------------
 	public function notify(){
 		$this->load->model('Sup_admin');
 		$this->load->model('Crud_model');
@@ -204,6 +213,7 @@ class Super_Admin extends MY_Controller {
 		}
 	}
 
+	//loads the dba financial year range page----------------------------------------------------------------------------------------------
 	public function dba_fyear_range(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -226,6 +236,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 
+	//AJAX function to set new dba Financial year range-------------------------------------------------------------------------------
 	public function dba_year(){
 		$this->load->model('Sup_admin');
 		$this->load->model('Crud_model');
@@ -254,7 +265,7 @@ class Super_Admin extends MY_Controller {
 	}
 
 
-    //Super Admin functionalities
+    //Super Admin dashboard functionalities
     //------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
     public function signup(){
