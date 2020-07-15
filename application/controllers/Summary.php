@@ -4,7 +4,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 /*
-DASHBOARD CONTROLER responsible for rendering the data on the dashboard view
+DASHBOARD CONTROLLER responsible for rendering the data on the dashboard view
 and backend transactions through dashboard model as per the MVC architecture.
 */
 

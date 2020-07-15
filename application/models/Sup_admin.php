@@ -1,4 +1,5 @@
 <?php
+//System Administrator module functionalities and some semitrans functionalities----------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Sup_admin extends CI_Model {
 

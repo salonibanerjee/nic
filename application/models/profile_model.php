@@ -1,19 +1,24 @@
 <?php
+//functionalitites related to profile details of an user and user specific domains and notifications-------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class profile_model extends CI_Model {
+	//uploads profile data to profile table---------------------------------------------------------------------------------------------
     public function upload($data){
         $this->db->insert('mpr_semitrans_profile',$data);
-    }
+	}
+	//updates existing user's profile data---------------------------------------------------------------------------------------------
     function update($uid,$data){
 		$this->db->where('username', $uid);
 		$this->db->update('mpr_semitrans_profile', $data);
-    }
+	}
+	//get a persons profile details------------------------------------------------------------------------------------------------------
     public function get_f($d){
         $query = $this->db->get_where('mpr_semitrans_profile', array('username' => $d));
         $row = $query->row();
         return $row;
-    }
+	}
+	//get server side attribute type-----------------------------------------------------------------------------------------------------
     function get_type($type){
         if($type=="bigint" || $type=='numeric'){
                 return 'numeric';
@@ -22,12 +27,14 @@ class profile_model extends CI_Model {
                 return 'alpha_dash';
         }
 	}
+	//get login details of an user-------------------------------------------------------------------------------------------------------
 	public function get_login_details($d){
         $query = $this->db->get_where('mpr_semitrans_login', array('username' => $d));
         $row = $query->row();
         return $row;
     }
 	
+	//get designation details of an user------------------------------------------------------------------------------------------------
     public function get_designation(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
 		$tables = $this->db->get('mpr_master_designation');
@@ -40,8 +47,8 @@ class profile_model extends CI_Model {
 		return $desi_name;
 		//return $data;
 	}
-//2 test codes for user specific notifications:
 
+//2 test codes for user specific notifications:
 	public function get_designation_id(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
 			return $data->desig_id_fk;//bigint
@@ -63,6 +70,7 @@ class profile_model extends CI_Model {
 		return $data->location_code;//character_varying
 	}
 
+	//get department details of an user---------------------------------------------------------------------------------------------
 	public function get_depart(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
 		$tables = $this->db->get('mpr_master_department');
@@ -74,6 +82,7 @@ class profile_model extends CI_Model {
         }
         return $dep_name;
 	}
+	//get office details of an user----------------------------------------------------------------------------------------------------
 	public function get_office(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
 		$tables = $this->db->get('mpr_master_office');
@@ -85,6 +94,7 @@ class profile_model extends CI_Model {
         }
         return $off_name;
 	}
+	//get designation detailsof an user------------------------------------------------------------------------------------------------
 	public function get_user_id(){
 		$tables = $this->db->get('mpr_master_designation');
 		$desi_name = array();
@@ -104,6 +114,7 @@ class profile_model extends CI_Model {
         return $desi_code;
 	}*/
 
+	//get the whole profile details------------------------------------------------------------------------------------------------------
     public function get_profile_info($username){
         $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->session->userdata('loginid')));
         $row=$query->row();
@@ -141,6 +152,7 @@ class profile_model extends CI_Model {
         return $da;
     }
 
+	//get the whole profile details------------------------------------------------------------------------------------------------------
     public function get_profile($username){
         $res=$this->get_f($username);
 		$da=array();
@@ -180,6 +192,7 @@ class profile_model extends CI_Model {
         return $da;
 	}
 	
+	//custom meeting notification show in bell's dropdown menu-------------------------------------------------------------------------
 	public function meeting_notification(){
 		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
 		$s_time = strtotime($last_row->start_time);
@@ -250,6 +263,7 @@ class profile_model extends CI_Model {
 		return $result;
 	}
 
+	//counts the number of schemes for a user-------------------------------------------------------------------------------------------
 	public function scheme_under(){
 		$this->load->driver('cache', array('adapter' => 'file'));
 		$var = $this->cache->get('Scheme_hier_'.$this->session->userdata('dept'));
