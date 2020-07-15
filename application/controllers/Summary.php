@@ -3,6 +3,11 @@
 
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+/*
+DASHBOARD CONTROLER responsible for rendering the data on the dashboard view
+and backend transactions through dashboard model as per the MVC architecture.
+*/
+
 class summary extends MY_Controller {
 
 	//Loads the dashboard 
@@ -20,8 +25,7 @@ class summary extends MY_Controller {
 		$u_type['noti1']=$this->profile_model->custom_notification();
 		$this->load->view('dashboard/navbar',$u_type);
 		
-		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
-		//print_r($this->cache->get('Active_status'.$this->session->userdata('loginid')))	;	
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));	
 		
 		$this->load->model('Dashboard_model');
 		$this->load->library('parser');
@@ -35,11 +39,13 @@ class summary extends MY_Controller {
 		$scheme_link = array();
 		$scheme_link_name = array();
 
+		// Populating scheme link
 		foreach($scheme_hier as $row){
 			array_push($scheme_link, $row['scheme_link']);
 			array_push($scheme_link_name, $row['scheme_name']);
 		}
 
+		// Dashboard CACHING implementation
 		if ( ! $foo = $this->cache->get('dashboard_cache_progress'.$this->session->userdata('loginid'))){
             $foo = $scheme_link;
             $this->cache->save('dashboard_cache_progress'.$this->session->userdata('loginid'), $foo, 3000);
@@ -59,13 +65,7 @@ class summary extends MY_Controller {
             $this->cache->save('dashboard_cache_bar2'.$this->session->userdata('loginid'), $foo, 3000);
         }
 
-		//print_r($scheme_hier['scheme_link']);
-
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
-
-		//$this->load->view('dashboard/container');
-		
-		//IMP: INFO BOX MOVED AFTER ALERT
 
 		//============================================================
 
@@ -75,19 +75,14 @@ class summary extends MY_Controller {
 			array_push($all_loc,$val);
 		}
 		
-
-		//================PROGRESS LIST===============================
-
-		//change here
+		// Dashboard progress view implementation
 		$loc_schcd = $this->session->userdata('location_code');
-
 		$scheme_name = $this->cache->get('dashboard_cache_progress'.$this->session->userdata('loginid'));
 
 		$progress_m = 0;
 		$progress_y = 0;
 		
 		$progress_location = $all_loc;
-		//$progress_location = array($loc_schcd);
 
 		if(isset($_POST['progress_submit'])){
 			if(!empty($_POST['progress_left_check_list'])){
@@ -96,10 +91,7 @@ class summary extends MY_Controller {
 					array_push($scheme_name,$selected);
 				}
 			}
-
-			//$this->cache->delete('dashboard_cache_progress');
 			$this->cache->save('dashboard_cache_progress'.$this->session->userdata('loginid'), $scheme_name);
-
 		}
 
 		$filter_progress =array(
@@ -117,19 +109,12 @@ class summary extends MY_Controller {
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
-		//print_r($progress_location);
 
-		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $filter_progress);
 		
 		$size_sch = sizeof($scheme_name);
 		$scheme_location = $this->Dashboard_model->get_loc($progress_location,sizeof($progress_location));
-		//$test = $this->Dashboard_model->get_progress($scheme_name,$size_sch,$loc_schcd,$progress_m,$progress_y);
-		//print_r($test);
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
-		//$data = $this->Dashboard_model->get_prog($scheme_name,$size_sch,$loc_schcd,$progress_m,$progress_y);
-		
-		//$work_progress = array();
 		
 		$alert_m = 0;
 		$alert_y = 0;
@@ -150,46 +135,40 @@ class summary extends MY_Controller {
 			array_push($data, $per);
 			array_push($schemename_alert,$tempschemename_alert[$j]);
 		}
-
 		
 		$work_progress = array();
-		// $j=0;
-		// while($j<sizeof($progress_location)){
-			//$data = $this->Dashboard_model->get_progress($scheme_name,$size_sch,$progress_location[$j],$progress_m,$progress_y);
-			//print_r($data);
-			$i=0;
-			while($i<sizeof($data))
+	
+		$i=0;
+		while($i<sizeof($data))
+		{
+			if($data[$i]=="false")
 			{
-				if($data[$i]=="false")
-				{
-					$i++;
-					continue;
-				}
-				else if($data[$i]>60)
-					$find='success';
-				else if($data[$i]<60 && $data[$i]>40)
-					$find='warning';
-				else
-					$find='danger';
-
-				$d = array(
-					'location' => $i+1,
-					'p_name' => $schemename_pro[$i],
-					'sign' => $find,
-					'progress' => $data[$i]
-					);
-				array_push($work_progress, $d);	
 				$i++;
+				continue;
 			}
-			
-			$temp_arr = array();
-			foreach($work_progress as $key => $row){
-				$temp_arr[$key] = $row['progress'];
-			}
-			array_multisort($temp_arr, SORT_DESC, $work_progress);
-			
-			// $j++;
-		// }
+			else if($data[$i]>60)
+				$find='success';
+			else if($data[$i]<60 && $data[$i]>40)
+				$find='warning';
+			else
+				$find='danger';
+
+			$d = array(
+				'location' => $i+1,
+				'p_name' => $schemename_pro[$i],
+				'sign' => $find,
+				'progress' => $data[$i]
+				);
+			array_push($work_progress, $d);	
+			$i++;
+		}
+		
+		$temp_arr = array();
+		foreach($work_progress as $key => $row){
+			$temp_arr[$key] = $row['progress'];
+		}
+		array_multisort($temp_arr, SORT_DESC, $work_progress);
+		
 		$progress_view = array('work_progress' => $work_progress);
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
@@ -200,13 +179,9 @@ class summary extends MY_Controller {
 		$data['noti']=$res;
 		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
-		//============================ PIE CHART =============================
-
+		// Dashboard pie chart implementation
 		$scheme_pie = $this->cache->get('dashboard_cache_pie'.$this->session->userdata('loginid'));
-
 		$pie_location = $loc_schcd;
-		// if($pie_location == "1911")
-		// 	$pie_location = "19111";
 
 		$pie_m = 0;
 		$pie_y = 0;
@@ -218,8 +193,6 @@ class summary extends MY_Controller {
 					array_push($scheme_pie,$selected);
 				}
 			}
-
-			//$this->cache->delete('dashboard_cache_pie');
 			$this->cache->save('dashboard_cache_pie'.$this->session->userdata('loginid'), $scheme_pie);
 		}
 
@@ -239,7 +212,6 @@ class summary extends MY_Controller {
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
 
-		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $filter_pie);
 
 		$n = count($scheme_pie);
@@ -247,7 +219,6 @@ class summary extends MY_Controller {
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
 		$scheme_ID=$this-> Dashboard_model ->schID($scheme_pie,sizeof($scheme_pie),$loc_schcdID);
 
-		//$tempdata = $this->Dashboard_model->get_prog($scheme_pie, $n, $pie_location, $pie_m, $pie_y);
 		$tempdata = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
 		$tempschemename_pie = $this->Dashboard_model->sch_name($scheme_pie,$n);
 		$data= array();
@@ -273,14 +244,9 @@ class summary extends MY_Controller {
 
 		$container['pie_chart'] = $this->load->view('dashboard/pie_chart', $pie_view ,TRUE);
 
-		//================BAR CHART 1===============================
-		
-		//Insert data for bar chart in an array format
+		// Dashboard Fund Utilised bar chart implementation
 		$scheme_bar1 = $this->cache->get('dashboard_cache_bar'.$this->session->userdata('loginid'));
-		//print_r($scheme_bar1);
 		$bar1_location = $loc_schcd;
-		// if($bar1_location == "1911")
-		// 	$bar1_location = "19111";
 
 		$bar1_m = 0;
 		$bar1_y = 0;
@@ -292,10 +258,7 @@ class summary extends MY_Controller {
 					array_push($scheme_bar1,$selected);
 				}
 			}
-
-			//$this->cache->delete('dashboard_cache_bar');
 			$this->cache->save('dashboard_cache_bar'.$this->session->userdata('loginid'), $scheme_bar1);
-
 		}
 
 		$bar1_filter_progress = array(
@@ -314,13 +277,11 @@ class summary extends MY_Controller {
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
 
-		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $bar1_filter_progress);
 
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
 		$scheme_ID=$this-> Dashboard_model ->schID($scheme_bar1,sizeof($scheme_bar1),$loc_schcdID);
 		
-		//$result = $this->Dashboard_model->get_data($scheme_bar1,sizeof($scheme_bar1),$bar1_location,$bar1_m,$bar1_y);
 		$result = $this->Dashboard_model->alert_data($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
 		$tempschemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
 
@@ -350,11 +311,7 @@ class summary extends MY_Controller {
 
 		$container['bar_chart1'] = $this->load->view('dashboard/bar_chart', $bar_chart1, TRUE);
 
-		//==============================================================
-
-
-		//============== BAR CHART 2=====================================
-
+		// Dashboard Area wise physical progress bar chart implementation
 		$scheme_pro = array_slice($this->cache->get('dashboard_cache_bar2'.$this->session->userdata('loginid')),0,5,true);
 		$location = array_slice($all_loc,0,5,true);
 
@@ -398,14 +355,11 @@ class summary extends MY_Controller {
 			'f_name_right' => $this->Dashboard_model->fullname_withloc('mpr_master_location_data','location_area')
 		);
 
-		//Initialising the filter
 		$this->load->view('dashboard/filter_view', $bar2_filter_progress);
 		
 		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
-		//We can choice here blocks with there particular sgfs
 		
 		$loc = $this->Dashboard_model->get_loc($location,sizeof($location));
-		//We can choice different schemes to show int the bar chart
 		
 		$size_sch = sizeof($scheme_pro);
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
@@ -423,16 +377,11 @@ class summary extends MY_Controller {
 		for($i=0;$i<$size_sch;$i++)
 		{
 			array_push($bar_chart2['data'],$matrix_data[$i]);
-			//array_push($bar_chart['data'],$progress);
 		}
 
 		$container['bar_chart2'] =  $this->load->view('dashboard/bar_chart', $bar_chart2, TRUE);
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
-
-		//====================== New Alert work =============================
-		//print($loc_schcd);
-		//fetching location id to work easyly
 
 		$threshold = 100;
 
@@ -443,20 +392,11 @@ class summary extends MY_Controller {
 		}
 
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
-		//print_r($loc_schcdID);
-		//this are few defalut scheme which already selected
 		$scheme_n = $scheme_link;
 		$tempsch = $this -> Dashboard_model -> sch_name($scheme_n,sizeof($scheme_n));
-		//print_r($tempschemename_alert);
 		$scheme_ID=$this-> Dashboard_model ->schID($scheme_n,sizeof($scheme_n),$loc_schcdID);
-		//print_r($scheme_ID);
-
-		//$tempresult_alert=$this-> Dashboard_model ->get_alert($loc_schcdID,$scheme_pro);
-
-
-		//Now forming a Matrix
+	
 		$aldata = $this->Dashboard_model->alert_filter($loc_schcdID,$scheme_ID,sizeof($scheme_ID));
-		//print_r($aldata);
 
 		$data1 = array();
 		$schemename_al=array();
@@ -482,12 +422,10 @@ class summary extends MY_Controller {
 			array_push($fits, $eachbar);
 		}
 		$table_data = array('data' => $fits );
-		//print_r($table_data);
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 
 
-		//====================================== ALERT VIEW =============================================
-
+		// Dashboard Scheme alert implementation
 		$alert_m = 0;
 		$alert_y = 0;
 
@@ -515,22 +453,7 @@ class summary extends MY_Controller {
 		}
 		$table_data = array('data' => $fits );
 
-		// $temp_arr = array();
-		// foreach($table_data as $key => $row){
-		// 	$temp_arr[$key] = $row['c5'];
-		// }
-		// array_multisort($temp_arr, SORT_DESC, $table_data);
-
-		//$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
-
-
-
-
-
-
-
-		//==================== INFO BOX =====================================
-
+		// Dashboard Info Box implementation
 		$max_scheme;
 		$min_scheme;
 		$best_scheme;
@@ -575,8 +498,7 @@ class summary extends MY_Controller {
 		
 		$container['info_box'] = $this->parser->parse('dashboard/info_box', $info_box, TRUE);
 
-		//======================================================================
-		//=========== PASSING ALL DATA TO CONTAINER ============================
+		//================== PASSING ALL DATA TO CONTAINER ===================
 
 		$this->load->view('dashboard/container',$container);
 		$this->load->view('dashboard/footer');
