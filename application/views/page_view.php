@@ -1,3 +1,5 @@
+<!--Page privilege view page for system admin-->
+<!---------------------------------------------------------------------------------------------------------------------------------------->
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">

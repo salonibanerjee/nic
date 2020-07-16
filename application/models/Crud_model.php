@@ -1,13 +1,17 @@
 <?php
+//related to all data entry functionalities and their storage, table creation etc.-----------------------------------------------------
 class Crud_model extends CI_Model {
+        //get all the scheme tables--------------------------------------------------------------------------------------------------
         function get_table($n){
                 $fields = $this->db->list_fields($n);
                 return $fields;
         }
+        //get all the attributes------------------------------------------------------------------------------------------------------
         function get_attri($n){
                 $fields = $this->db->field_data($n);
                 return $fields;
         }
+        //get the attributes data type in the database tables--------------------------------------------------------------------------
         function get_type($type){
                 if($type=="bigint" || $type=='numeric'){
                         return 'numeric';
@@ -16,19 +20,23 @@ class Crud_model extends CI_Model {
                         return 'alpha_dash';
                 }
         }
+        //ssave the entered data in those tables---------------------------------------------------------------------------------------
         function save_data($data,$n){
                 $this->db->insert($n,$data,TRUE);
         }
+        //updates data on the basis of location for same user--------------------------------------------------------------------------
         function update($r,$n){
                 //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r['session'],'location_code'=>$r['location_code'],'month'=>$r['month']));
                 $this->db->update($n,$r);
         }
+        //updates the scheme data location---------------------------------------------------------------------------------------------
         function update_location_code($r,$n){
                 //$this->db->where('session', $r['session']);
                 $this->db->where(array('location_code'=>$r['location_code']));
                 $this->db->update($n,$r);
         }
+        //check if table is empty------------------------------------------------------------------------------------------------------
         function isempty($a){
                 foreach($a as $key=>$val){
                         if($key !== 'session' && $val !== '')
@@ -36,7 +44,7 @@ class Crud_model extends CI_Model {
                 }
                 return true;
         }
-        
+        //check all tables wrt to scheme table master------------------------------------------------------------------------------------
         function list_table(){
                 $this->db->select('short_name');
                 $tables = $this->db->get('mpr_master_scheme_table');
@@ -46,7 +54,7 @@ class Crud_model extends CI_Model {
                 }
                 return $b;
         }
-
+        //get full names of the scheme tables---------------------------------------------------------------------------------------------
         function fullname(){
                 $this->db->select('name');
                 $tables = $this->db->get('mpr_master_scheme_table');
@@ -56,7 +64,7 @@ class Crud_model extends CI_Model {
                 }
                 return $b;
         }
-
+        //search a particular table on demand--------------------------------------------------------------------------------------------
 	function search_table($n){
                 $query = $this->db->get_where('mpr_master_scheme_table', array('short_name' => $n));
                 $row = $query->row();
@@ -67,6 +75,7 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
+        //search a particular tables attri to fetch their actual string values-----------------------------------------------------------
         function search_attri($n){
                 $query = $this->db->get_where('mpr_master_attri_table', array('attri_name' => $n));
                 $row = $query->row();
@@ -77,7 +86,7 @@ class Crud_model extends CI_Model {
                         return $n;
                 }
         }
-        //creating backup table & draft table
+        //creating backup table & draft table--------------------------------------------------------------------------------------------
         function backup_draft_table($n,$s){
                 $a = $n."_".$s;
                 if($this->db->table_exists($n."_".$s)){
@@ -90,7 +99,7 @@ class Crud_model extends CI_Model {
                         $this->dbforge->create_table($a);
                 }
         }
-        //setting fields for newly automated formed tables
+        //setting fields for newly automated formed tables--------------------------------------------------------------------------------
         function extract_field($x,$table_name){
                 $y=array();
                 foreach($x as $field){
@@ -146,7 +155,7 @@ class Crud_model extends CI_Model {
                 return $row->location_code;
         }
 
-        //custom form validation 
+        //custom form validation ------------------------------------------------------------------------------------------------
         //$n->tablename, $s-> session 
         public function unique_data_entry($n,$s,$k){
                 $var=$this->session->userdata('location_code');
@@ -158,13 +167,13 @@ class Crud_model extends CI_Model {
                         return FALSE;
                 }
         }
-
+        //draft data fetch from draft table foe current user-------------------------------------------------------------------------
         public function draft_data_fetch($table_name){
                 $var = $this->session->userdata('location_code');
                 $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
         }
-        //for tabular view
+        //for tabular view----------------------------------------------------------------------------------------------------------------
         public function data_fetch($table_name){
                 $var = $this->session->userdata('location_code');
                 $count=0;
@@ -176,6 +185,7 @@ class Crud_model extends CI_Model {
                         return 0;
                 }
         }
+        //filtering the data ----------------------------------------------------------------------------------------------------------
         public function filter_data($table_name,$sm,$em,$yr){
                 $location_code = $this->session->userdata('location_code');
                 $this->db->select('*');
@@ -193,6 +203,7 @@ class Crud_model extends CI_Model {
         }
         //tabluar data end
 
+        //
         function update_sub($r,$n){
                 //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r->session,'location_code'=>$r->location_code,'month'=>$r->month));
@@ -203,6 +214,7 @@ class Crud_model extends CI_Model {
                 $this->db->delete($n);
         }
 
+        //draft data filter----------------------------------------------------------------------------------------------------------
         public function draft_filter($table_name,$month,$year){
                 $var = $this->session->userdata('location_code');
                 $row = $this->db->select('*')->where(array('location_code'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
@@ -212,16 +224,19 @@ class Crud_model extends CI_Model {
                         return NULL;
         }
 
+        //dba financial year fetch for legacy data entry--------------------------------------------------------------------------
         public function dba_fyear_range(){
                 $row = $this->db->select('*')->order_by('dba_financial_range_table_id_pk')->limit(1)->get('mpr_semitrans_dba_financial_range')->row();
                 return $row;
         }
 
+        //dba fyear update------------------------------------------------------------------------------------------------------------
         public function dba_fyear_update($var){
                 $result = $this->db->where(array('dba_financial_range_table_id_pk'=>1))->update('mpr_semitrans_dba_financial_range',$var);
                 return $result;
         }
 
+        //check the current deo------------------------------------------------------------------------------------------------------
         public function deo($n){
                 return $this->db->select('username')->where('login_id_pk',$n)->get('mpr_semitrans_login')->row();
         }

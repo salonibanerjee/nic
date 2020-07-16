@@ -1,3 +1,6 @@
+<!--User privilege on/off panel for super admin view page-->
+<!---------------------------------------------------------------------------------------------------------------------------------------->
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">

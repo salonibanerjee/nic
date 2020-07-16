@@ -1,16 +1,20 @@
 <?php
-
+//base controller from where all the controllers are extended(Parent controller)
+//MAIN BASE CONTROLLER--------------------------------------------------------------------------------------------------------------
 ini_set('display_errors', 0);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
     var $node=1;
+    //Constructor
     public function __construct(){
         parent::__construct();
 		//sif($this->session->userdata('logged_in')==""){
           //  header("Location: http://localhost/NIC/index.php/Login"); 
         //}
-	}
+    }
+    //Check privilege checks the privilege of a page based on url and prevents entry to a particular page
+    //even if someone enters the url manually-------------------------------------------------------------------------------------------
     public function check_privilege($page_id = NULL){
         $this->load->driver('cache', array('adapter' => 'file'));
         $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
@@ -35,6 +39,7 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    //loads the sidebar on the basis of user-pages mapping---------------------------------------------------------------------
     public function sidebar_load($upid){
         $this->load->driver('cache', array('adapter' => 'file'));
         $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
@@ -51,6 +56,7 @@ class MY_Controller extends CI_Controller {
             return 0;
     }
 
+    //Updates caches when system administrator make some changes from his control panel---------------------------------------------
     public function cache_update(){
         $this->load->model('Admin_model');
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -72,6 +78,7 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    //deletes cache------------------------------------------------------------------------------------------------------------------
     public function del_cache(){
         $this->load->helper('file');
         $files = get_filenames('./application/cache/');
@@ -82,6 +89,7 @@ class MY_Controller extends CI_Controller {
         }
     }
 
+    //scheme privileges on the basis of dept-scheme mapping----------------------------------------------------------------------------
     public function scheme_privilege(){
         $this->load->driver('cache', array('adapter' => 'file'));
         $var = $this->cache->get('Scheme_hier_'.$this->session->userdata('dept'));
@@ -98,6 +106,8 @@ class MY_Controller extends CI_Controller {
             show_404();
         }
     }
+
+    //Gets relevant location---------------------------------------------------------------------------------------------------------
     public function getrelevantlocation()  
 	{
 	   $result;
@@ -121,6 +131,7 @@ class MY_Controller extends CI_Controller {
 	   echo json_encode($ans);
      }
           
+    //Realtime notifcation fetch function-----------------------------------------------------------------------------------------------
     public function fetch_notifs(){
 
         $this->load->driver('cache', array('adapter' => 'file'));
@@ -151,6 +162,7 @@ class MY_Controller extends CI_Controller {
 
     }
     
+    //Nodal officer realtime alert before a meeting-------------------------------------------------------------------------------------
     public function nodal_alert(){
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('NodalCheck_model');

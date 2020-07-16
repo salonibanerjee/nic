@@ -1,8 +1,10 @@
 <?php
+//NODAL CHECK PAGE---------------------------------------------------------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Nodal_check extends MY_Controller {
 
+	//loads the nodal check page for the nodal officers----------------------------------------------------------------------------------
 	public function index(){	
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");

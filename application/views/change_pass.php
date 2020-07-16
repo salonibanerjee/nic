@@ -1,5 +1,7 @@
 <!DOCTYPE html>
 <html>
+<!--Change password for both forget password as well as password change for the first time-->
+<!---------------------------------------------------------------------------------------------------------------------------------------->
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">

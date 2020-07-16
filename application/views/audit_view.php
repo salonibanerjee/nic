@@ -1,3 +1,6 @@
+<!--The audit log records for system administrator-->
+<!---------------------------------------------------------------------------------------------------------------------------------------->
+
 <div class="content-wrapper">
   <div class="content-header">
     <div class="container-fluid">
