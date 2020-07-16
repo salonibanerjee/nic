@@ -268,6 +268,8 @@ class Super_Admin extends MY_Controller {
     //Super Admin dashboard functionalities
     //------------------------------------------------------------------------------------------------------------------------------
     //-------------------------------------------------------------------------------------------------------------------------------
+	//loads the signup page 
+	//------------------------------------------------------------------------ 
     public function signup(){
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -297,6 +299,8 @@ class Super_Admin extends MY_Controller {
 
 		$this->load->view('dashboard/footer');
     }
+	//Performs to create a random password and take user details form signup page and also sent a mail to the user with this password 
+	//--------------------------------------------------------------
 	public function signupdo(){
 		$chars_min=8;
 		$chars_mix=10; 
@@ -364,6 +368,9 @@ class Super_Admin extends MY_Controller {
 		}
 		 echo json_encode($result);
     }
+	
+	//Fetch user type id ,deignation and user level for signup page 
+	//--------------------------------------------------------------
     function fetch_user_type()  //get all records from database  
 	{
 	   $result;
@@ -387,6 +394,9 @@ class Super_Admin extends MY_Controller {
 	   }
 	   echo json_encode($result);
 	 }
+	
+	//Fetch district name and location code for signup page 
+	//--------------------------------------------------------------
 	 function fetch_district()  //get all records from database  
 	{
 	   $result;
@@ -409,7 +419,9 @@ class Super_Admin extends MY_Controller {
 	   }
 	   echo json_encode($result);
 	 }
-	 
+	
+	 //Fetch location code and location area for signup page on the of user level and district location code
+	//--------------------------------------------------------------
 	 function location_data()  //get all records from database  
 	 {
 		$result;
@@ -438,6 +450,8 @@ class Super_Admin extends MY_Controller {
 		echo json_encode($result);
 	  }
 	
+	//Fetch office id and office name for signup page 
+	//--------------------------------------------------------------
 	function office()  //get all records from database  
 	{
 	   $result;
@@ -461,6 +475,9 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
+	
+	//Fetch department id and department name for signup page on the basis of selected office name
+	//--------------------------------------------------------------
 	function department()  //get all records from database  
 	{
 	   $result;
@@ -486,6 +503,9 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
+	
+	//Fetch designation id and designation name for signup page on the basis of selected department name
+	//--------------------------------------------------------------
 	function designation()  //get all records from database  
 	{
 	   $result;
@@ -511,6 +531,9 @@ class Super_Admin extends MY_Controller {
 	   	}
 	   echo json_encode($result);
      }
+	
+	//Load view user page with all user data
+	//--------------------------------------------------------------
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
@@ -544,6 +567,9 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('view_user',$data); 
 		$this->load->view('dashboard/footer');
   	}
+	
+	//Grant and revoke permission to a perticular user for login
+	//--------------------------------------------------------------
 	function inactive_login() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
@@ -570,9 +596,11 @@ class Super_Admin extends MY_Controller {
 						
 	 }
 		 echo json_encode($result);
-//	 redirect("/Admin/fetch_login");
+
 	}
-//	 
+
+	//Load view user privilege page
+	//--------------------------------------------------------------	 
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
@@ -606,6 +634,10 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('view_user_privilege',$data); 
 		$this->load->view('dashboard/footer');
   	}
+	
+	
+	//Grant and revoke a particular designation users permission for perticular page access  
+	//--------------------------------------------------------------
 	function inactive_user_privilege() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
@@ -635,6 +667,8 @@ class Super_Admin extends MY_Controller {
 	}
 	
 	
+	//Load view user type page with all user type table data
+	//--------------------------------------------------------------
 	function fetch_user_desig_type()  //get all records from database  
 	{      
 		//mandatory requirements for pages loading nav and sidebar
@@ -670,6 +704,9 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('view_user_type',$data); 
 		$this->load->view('dashboard/footer');
   	}
+	
+	//Grant and revoke permission to a whole user type for login
+	//--------------------------------------------------------------
 	function inactive_user_type() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
@@ -697,6 +734,9 @@ class Super_Admin extends MY_Controller {
 	 }
 		echo json_encode($result);
 	}
+	
+	//Load page view page with all page detalis
+	//--------------------------------------------------------------
 	function page_view()  //get all records from database  
 	{      
 		if($this->session->userdata('logged_in')=="")
@@ -731,6 +771,9 @@ class Super_Admin extends MY_Controller {
 		 $this->load->view('page_view',$data); 
 		 $this->load->view('dashboard/footer');
   	}
+	
+	//Grant and revoke permission to a whole page acces for everyone
+	//--------------------------------------------------------------
 	function inactive_page_view() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
@@ -758,7 +801,7 @@ class Super_Admin extends MY_Controller {
 	 }
 		echo json_encode($result);
 	}	   
-//---------------------------------------------------------------------------------------------------------
+//Scheme Records show page---------------------------------------------------------------------------------------------------------
 function seek_record(){
 	if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
@@ -889,6 +932,7 @@ function seek_record(){
 			}
 		$this->load->view('dashboard/footer');
 	}
+	//audit log recordds view-------------------------------------------------------------------------------------------------------------
 	function audit_log()
 	{
 		if($this->session->userdata('logged_in')=="")

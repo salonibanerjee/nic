@@ -44,27 +44,38 @@ class Sup_admin extends CI_Model {
 
 	//---------------------------------------------------------------------------------------------------------------------------------
 	//---------------------------------------------------------------------------------------------------------------------------------
+	//add user detalis 
 	public function add_login($data){
 		if($this->db->insert("mpr_semitrans_login",$data))
         	return true;
 	}
+	
+	//fetch the userid of the new adding user  
 	public function find_id($data){
         $query=$this->db->get_where("mpr_semitrans_login",$data);
         return $query->row();
     }
+	
+	//check if any username already exist
 	public function exist_user($data){
         $query=$this->db->get_where("mpr_semitrans_login",$data);
         return $query;
 	}
+	
+	//add new user details 
 	public function add_check_first_user($data2){
 		if($this->db->insert("mpr_semitrans_check_first_user",$data2))
         	return true;
 	}
+	
+	//fetch loginid of a particular user
 	public function Login_id_pk($dat)
 	{
 	 $query=$this->db->get_where("mpr_semitrans_login",$dat);
 		return $query;
 	}
+	
+	//update active status of a particular designation
 	public function update_user($data,$id)
 	{
 	  $this->db->set($data);
@@ -72,12 +83,15 @@ class Sup_admin extends CI_Model {
 	  $this->db->update("mpr_semitrans_login",$data);
 		return true;
 	}
+	
+	//fetch user privilege id of a particular 
 	public function user_priv_id_pk($dat)
 	{
 	 $query=$this->db->get_where("mpr_semitrans_user_privilege",$dat);
 		return $query;
 	}
 	
+	//update active status of a particular user privilege id 
 	public function update_user_privilege($data,$id)
 	{
 	  $this->db->set($data);
@@ -85,11 +99,15 @@ class Sup_admin extends CI_Model {
 	  $this->db->update("mpr_semitrans_user_privilege",$data);
 		return true;
 	}
+	
+	//fetch user type id
 	public function user_type_id_pk($dat)
 	{
 	 $query=$this->db->get_where("mpr_semitrans_user_type",$dat);
 		return $query;
 	}
+	
+	//update active status of a particular user type 
 	public function update_user_type($data,$id)
 	{
 	  $this->db->set($data);
@@ -97,11 +115,15 @@ class Sup_admin extends CI_Model {
 	  $this->db->update("mpr_semitrans_user_type",$data);
 		return true;
 	}
+	
+	//fetch all user type 
 	public function fetch_user_type()
 	{
 		$query=$this->db->get_where("mpr_semitrans_user_type");
 		return $query;
 	}
+	
+	//fetch all district name with location code 
 	public function fetch_district()
 	{   $SQL="SELECT location_code,district_name
 	FROM mpr_master_district INNER JOIN mpr_master_location_data
@@ -109,11 +131,15 @@ class Sup_admin extends CI_Model {
 		$query=$this->db->query($SQL);
 		return $query;
 	}
+	
+	//fetch all office name 
 	public function office()
 	{
 		$query=$this->db->get_where("mpr_master_office");
 		return $query;
 	}
+	
+	//fetch location area on basis of user level and district location code
 	public function mapping($level,$district)
 	{ 
 		
@@ -127,27 +153,29 @@ class Sup_admin extends CI_Model {
 		$query = $this->db->query($SQL);
 		return $query;
 	 }
-		
-		
-	
+	//fetch location data for showing the real location istead of code-----------------------------------------------------------------
 	public function location_data()
 	{
 		$query=$this->db->select('*')->get("mpr_master_location_data")->result_array();
 		return $query;
 	}
+	//fetch real scheme name for corressponding table names---------------------------------------------------------------------------
 	public function search_table(){
 		$query=$this->db->select('*')->get("mpr_master_scheme_table")->result_array();
 		return $query;
 	}
+	//get location name---------------------------------------------------------------------------------------------------------------
 	public function location_name($n)
 	{
 		$query=$this->db->select('location_area')->get_where("mpr_master_location_data",array('location_id_pk'=>$n))->result_array();
 		return $query;
 	}
+	//fetch table names --------------------------------------------------------------------------------------------------------------
 	public function table_name($n){
 		$query=$this->db->select('name')->get_where("mpr_master_scheme_table",array("scheme_id_pk"=>$n))->result_array();
 		return $query;
 	}
+	//fetch the fund details from funds table-----------------------------------------------------------------------------------------
 	public function funds_table($data){
 		$row=$this->db->get_where('mpr_trans_fundalloc',array('scheme_id_fk'=>$data['scheme_id_fk'],'location_id_fk'=>$data['location_id_fk']))->row();
 		if($row){
@@ -159,21 +187,27 @@ class Sup_admin extends CI_Model {
 		}
 	}
 
+	//fetch fund details-------------------------------------------------------------------------------------------------------------
 	public function fetch_funds(){
 		$funds=$this->db->select('*')->get('mpr_trans_fundalloc')->result_array();
 		return $funds;
 	}
-
+    
+	//fetch department name on the basis of selected office name
 	public function department($dat)
 	{
 		$query=$this->db->get_where("mpr_master_department",$dat);
 		return $query;
 	}
+	
+	//fetch designation name on the basis of selected department name
 	public function designation($dat)
 	{
 		$query=$this->db->get_where("mpr_master_designation",$dat);
 		return $query;
 	}
+	
+	//fetch all user except the current user
 	public function fetch_login($check)
 	{   
 		$SQL="SELECT username, password, user_type_id_fk,login_id_pk,  mpr_semitrans_login.location_code,mpr_semitrans_login.active_status, mpr_semitrans_login.dept_id_fk, mpr_semitrans_login.office_id_fk, mpr_semitrans_login.desig_id_fk,desig, location_area,dept_name, office_name,desig_name
@@ -193,6 +227,8 @@ class Sup_admin extends CI_Model {
 	 $query = $this->db->query($SQL);
 	 return $query;
 	}
+	
+	//fetch user privilege table
 	public function fetch_user_privilege()
 	{ 
 		$SQL="SELECT user_priv_id_pk, privilege_id_fk, user_type_id_fk, 	mpr_semitrans_user_privilege.active_status, desig, page_name
@@ -211,21 +247,29 @@ class Sup_admin extends CI_Model {
 //     ->get();
 //		return $query;
 	}
+	
+	//fetch user type table
 	public function fetch_user_desig_type()
 	{
 		$query=$this->db->order_by('user_type_id_pk')->get_where("mpr_semitrans_user_type");
 		return $query;
 	}
+	
+	//fetch privilege table
 	public function page_view()
 	{
 		$query=$this->db->order_by('privilege_id_pk')->get_where("mpr_semitrans_privilege");
 		return $query;
 	}
+	
+	//fetch privilege id of a particular designation
 	public function privilege_id_pk($dat)
 	{
 	 $query=$this->db->get_where("mpr_semitrans_privilege",$dat);
 		return $query;
 	}
+	
+	//update active status of a particular privilege id 
 	public function update_page_view($data,$id)
 	{
 	  $this->db->set($data);
@@ -245,7 +289,7 @@ class Sup_admin extends CI_Model {
 	}
 
 
-	//seek record
+	//seek record---------------------------------------------------------------------------------------------------------------------
 	public function fetch_details($d){
         
         $query = $this->db->get_where('mpr_semitrans_login', array('username' => $d));
@@ -289,7 +333,7 @@ class Sup_admin extends CI_Model {
         $query=$this->db->select('*')->from('mpr_master_attri_table')->where('scheme_id_fk',$scheme_id)->get()->result_array();
         return $query;
 	}
-	//seek record end
+	//seek record end------------------------------------------------------------------------------------------------------------
 }
 	
 ?>
