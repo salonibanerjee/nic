@@ -145,6 +145,7 @@
   <section>
 </div>
 <script>
+//makes generic or editable fields enabled so that userr can edit them----------------------------------------------
 var input=document.getElementsByClassName('form-control');
 for(var i=0;i<input.length;i++){
   if(input[i].value=='GENERIC' || input[i].value=='EDITABLE'){
@@ -158,6 +159,7 @@ for(var i=0;i<input.length;i++){
       input[i].value="<?php echo $designation; ?>";
   }
 }
+//file(image) entry---------------------------------------------------------------------------------------------
 function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -178,6 +180,7 @@ function readURL(input) {
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
+//form submit for edit profile--------------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();

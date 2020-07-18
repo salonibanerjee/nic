@@ -98,6 +98,7 @@
 <script src="../../dist/js/adminlte.min.js"></script>
 
 <script type="text/javascript">
+//hashes the password in sha 256 encryption---------------------------------------------------------------------------------------
   function hashPassword(){
 		var enc2 = sha256(document.getElementById('pass0').value);
 		document.getElementById('pass0').value = enc2;
@@ -106,6 +107,7 @@
     enc2 = sha256(document.getElementById('pass2').value);
 		document.getElementById('pass2').value = enc2;
 	}
+  //password change form submit----------------------------------------------------------------------------------------------------
   $("form").on("submit", function (event){
     event.preventDefault();
     hashPassword();

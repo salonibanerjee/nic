@@ -114,6 +114,7 @@
 <script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
 <script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script type="text/javascript" >
+//form submit for funds allocation---------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();
@@ -147,6 +148,7 @@ $("#form").on("submit", function (event) {
     }
   });
 });
+//datatable load for funds-----------------------------------------------------------------------------------------------
 $(document).ready(function() {
   var table=$('#example1').DataTable( {
     ajax: {
@@ -167,7 +169,7 @@ $(document).ready(function() {
                     "info": true,
                     "autoWidth": false
 } );
-     
+//datatable clickable and auto value entry to form on click from datatable-----------------------------------------------   
 $('#example1 tbody').on('click', 'tr', function () {
         var data = table.row(this).data();
         console.log(data.scheme);

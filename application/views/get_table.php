@@ -249,7 +249,7 @@ for (i = 0; i < li.length; i++) {
   }
 }
 }
-
+//draft data filter-----------------------------------------------------------------------------------
 $("#draft").on("submit",function(e){
     var postData = $(this).serialize();
     var formURL = $(this).attr("action");
@@ -275,6 +275,8 @@ $("#draft").on("submit",function(e){
     //e.preventDefault(); //STOP default action
     //e.unbind(); //unbind. to stop multiple form submit.
 }); 
+
+//input data form submit-------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();

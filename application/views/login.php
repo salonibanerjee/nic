@@ -113,9 +113,11 @@
 			var enc2 = sha256(sha256(document.getElementById('pass').value)+document.getElementById('salt').value);
 			document.getElementById('pass').value = enc2;
 		}
+    //changes captcha
 function captchaChange(){
   $("#div123").load(location.href + " #div123");
 }
+//login form submit---------------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
   hashPassword();
@@ -142,7 +144,7 @@ $("form").on("submit", function (event){
     }
   });
 });
-
+//makes password visible/invisible by eye button------------------------------------------------------------------
 $("body").on('click', '.toggle-password', function() {
   $(this).toggleClass("fa-eye fa-eye-slash");
   var input = $("#pass");

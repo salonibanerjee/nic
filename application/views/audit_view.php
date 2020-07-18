@@ -94,6 +94,7 @@
 </script>
 
 <script>
+//loads the audit logs table with data----------------------------------------------------------------------------------------------
 function myFunction() {
   var input, filter, table, tr, td,td2, i, txtValue,txtValue2,input2,filter2;
   input = document.getElementById("myInput");

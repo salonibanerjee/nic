@@ -105,6 +105,7 @@ function hashPassword(){
   enc2 = sha256(document.getElementById('pass2').value);
   document.getElementById('pass2').value = enc2;
 }
+//change password form submit---------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
   hashPassword();

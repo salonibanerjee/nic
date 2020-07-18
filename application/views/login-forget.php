@@ -79,6 +79,7 @@ function getSavedValue(v){
   }
   return localStorage.getItem(v);
 }
+//forget password form submit-------------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
   $.ajax({

@@ -98,6 +98,7 @@
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
+//meeting schedule form submit------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();

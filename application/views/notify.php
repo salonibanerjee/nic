@@ -338,6 +338,7 @@
 <script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
+//notification form submit---------------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
   event.preventDefault();
@@ -395,6 +396,7 @@ $("#form").on("submit", function (event) {
 </script>
 
 <script>
+//Radio button select makes different divisions to load in the form------------------------------------------------------------------
   $(document).ready(function () {
        $('#usertypelocr').click(function () {
           $("choose_desigloc").show();

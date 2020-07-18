@@ -134,6 +134,7 @@
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script type="text/javascript" >
 var csrf_token='';
+//form submit for dba financial year range set for legacy data entry limit-----------------------------------------------------------
 $("#form").on("submit", function (event) {
   event.preventDefault();
   if(csrf_token==''){
