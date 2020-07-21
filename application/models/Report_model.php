@@ -137,10 +137,19 @@ class Report_model extends CI_Model
 		}
 		
 	}
-
-
-
-
+	public function get_sub_division()
+	{
+		$this->db->select('subdiv_id_fk')->from('mpr_master_block');
+		$sub_div_id=$this->db->get()->result_array();
+		$sub_div_name=array();
+		foreach ($sub_div_id as $key ) 
+		{
+			$this->db->select('sub_div_name')->from('mpr_master_subdiv');
+			$this->db->where('sub_div_id_pk',$key['subdiv_id_fk']);
+			array_push($sub_div_name,$this->db->get()->row_array()['sub_div_name']);
+		}
+		return ($sub_div_name);
+	}
 	public function generate_table($temp,$ses,$mon,$n=0)
 	{
 
