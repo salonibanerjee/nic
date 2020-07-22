@@ -273,4 +273,10 @@ class profile_model extends CI_Model {
 		}
 		return $i;
 	}
+
+	public function save_issues($name,$email,$rating,$description){
+		$result = $this->db->insert('mpr_trans_issues',array('name'=>$name,'email'=>$email,'rating'=>$rating,'description'=>$description,
+									'login_id_fk'=>$this->session->userdata('loginid'),'timestamp'=>date('Y-m-d H:i:s')));
+		return $result;
+	}
 }

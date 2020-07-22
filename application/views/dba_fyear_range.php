@@ -1,20 +1,5 @@
 <!DOCTYPE html>
-<html>
-<!--DBA financial year form set for system admin view page-->
-<!---------------------------------------------------------------------------------------------------------------------------------------->
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>MPR | DBA YEAR RANGE</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-	<!--	Encryption-->
-	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/aes.js"></script>
-	<!--	C:\xampp\htdocs\nic1\js\JavaScript_MD5\js-->
-	<script type='text/javascript' src="<?php echo base_url();?>js/js-sha256-master/build/sha256.min.js"></script>
-	
-</head>
+
 <div class="content-wrapper">
   <!-- Content Header (Page header) -->
   <section class="content-header">
