@@ -72,7 +72,7 @@
         <a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
+        <a href="http://localhost/NIC/index.php/contact" class="nav-link">Contact</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
         <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
@@ -154,7 +154,7 @@
           <i class="fas fa-cog" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
-        <a href='#' class='dropdown-item'>
+        <a href='http://localhost/NIC/index.php/contact' class='dropdown-item'>
           <i class="fas fa-phone text-green "></i> Contact
         </a>
         <div class="dropdown-divider"></div>
