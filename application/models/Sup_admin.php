@@ -36,6 +36,10 @@ class Sup_admin extends CI_Model {
 	public function audit_count(){
 		return $this->db->get('mpr_trans_audit_log')->num_rows();
 	}
+	//counting feedback
+	public function feedback_count(){
+		return $this->db->get('mpr_trans_issues')->num_rows();
+	}
 
 
 
@@ -334,6 +338,11 @@ class Sup_admin extends CI_Model {
         return $query;
 	}
 	//seek record end------------------------------------------------------------------------------------------------------------
+
+	public function issues_fetch(){
+		$result=$this->db->select('*')->from('mpr_trans_issues')->order_by('issue_id_pk','desc')->get()->result_array();
+		return $result;
+	}
 }
 	
 ?>

@@ -146,7 +146,7 @@
             </div>
         </div>
 <!--------------------------------------- -->
-<div class="row">
+        <div class="row">
           <div class="col-lg-3 col-6">
             <!-- small box -->
             <div class="small-box bg-info">
@@ -161,6 +161,22 @@
               <a href="<?php echo base_url(); ?>index.php/Fund" class="small-box-footer">Update Funds<i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
+
+          <div class="col-lg-3 col-6">
+            <!-- small box -->
+            <div class="small-box" style="background:#FDB976;">
+              <div class="inner">
+                <h3><?php echo $feedback_count; ?></h3>
+
+                <p>Feedback Box</p>
+              </div>
+              <div class="icon">
+                <i class="fa fa-comments"></i>
+              </div>
+              <a href="<?php echo base_url(); ?>index.php/Super_Admin/issues" class="small-box-footer">Check<i class="fas fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+
         </div>
 
 

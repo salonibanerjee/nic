@@ -32,6 +32,7 @@ class Super_Admin extends MY_Controller {
         $data['active_privilege_count']= $this->Sup_admin->active_privilege_count();
 		$data['schemes_count']= $this->Sup_admin->schemes_count();
 		$data['audit_count']= $this->Sup_admin->audit_count();
+		$data['feedback_count']= $this->Sup_admin->feedback_count();
 		$data['year_range'] = $this->Crud_model->dba_fyear_range();
 		$data['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 		$this->load->view('super_admin_view',$data);
@@ -262,6 +263,30 @@ class Super_Admin extends MY_Controller {
 			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
             echo json_encode($ab);
 		}
+	}
+
+	public function issues(){
+		if($this->session->userdata('logged_in')==""){
+			header("Location: http://localhost/NIC/index.php/Login");
+			exit;
+		}
+		$this->cache_update();
+		$this->load->model('Crud_model');
+		//mandatory requirements for pages loading nav and sidebar
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$this->load->model('profile_model');
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+		$this->load->view('dashboard/navbar',$u_type);
+		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
+		$this->load->view('dashboard/sidebar',$da);
+		//mandatory requirements end
+		$this->load->model('Sup_admin');
+		$res['data']=$this->Sup_admin->issues_fetch();
+		//print_r($res);
+		$this->load->view('issues',$res);
 	}
 
 
