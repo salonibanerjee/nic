@@ -170,13 +170,12 @@ class Report extends MY_Controller
             $l=0;
             foreach ($loc_area as $k1)
             {
+                if($k1=="SADAR" || $k1=="ULUBERIA")
+                    continue;
                 $temp4=array();
                 array_push($temp4,$l+1);
                 array_push($temp4,array('data'=> $k1, 'colspan' => 2));
-                if($k1=="SADAR" || $k1=="ULUBERIA")
-                    array_push($temp4,$k1);
-                else
-                array_push($temp4,$sub_div[$l-2]);
+                array_push($temp4,$sub_div[$l]);
                 $w=0;
                 foreach ($scheme_table_name[$k] as $e) 
                 {
@@ -406,13 +405,12 @@ class Report extends MY_Controller
         //Data insertion....
         foreach ($loc_area as $key ) 
         {
+            if($key=="SADAR" || $key=="ULUBERIA")
+                    continue;
             $data1=array();
             array_push($data1,$h+1);
             array_push($data1,array('data'=>$key,'colspan'=>2));
-            if($key=="SADAR" || $key=="ULUBERIA")
-                    array_push($data1,$key);
-            else
-            array_push($data1,$sub_div[$h-2]);
+            array_push($data1,$sub_div[$h]);
 
             $su=0;
             $i=0;
