@@ -287,6 +287,7 @@ class Super_Admin extends MY_Controller {
 		$res['data']=$this->Sup_admin->issues_fetch();
 		//print_r($res);
 		$this->load->view('issues',$res);
+		$this->load->view('dashboard/footer');
 	}
 
 

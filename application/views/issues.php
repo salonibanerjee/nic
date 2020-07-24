@@ -18,7 +18,7 @@
   <section class="content">
     <div class="container-fluid">
         <div class="card card-solid">
-            <div class="card-body pb-0">
+            <div class="card-body pb-0" style="background:#B8B0A8;">
                 <div class="row d-flex align-items-stretch">
 
                     <?php foreach($data as $row){

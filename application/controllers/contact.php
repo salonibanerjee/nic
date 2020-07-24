@@ -19,7 +19,8 @@ class contact extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
-        $this->load->view('contact');
+		$this->load->view('contact');
+		$this->load->view('dashboard/footer');
     }
     public function send(){
 		$this->load->model('Sup_admin');
