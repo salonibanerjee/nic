@@ -29,11 +29,28 @@
                             <div class="card bg-light" id="<?php echo $row['issue_id_pk'];?>">
                                 <div class="card-header text-muted border-bottom-0">
                                     Feedback id: <?php echo $row['issue_id_pk'];?>
+                                    <button  onclick="document.getElementById('<?php echo $row['issue_id_pk'];?>').style.display='none'" class="btn btn-outline-danger float-right">
+                                        <span><b>✖</b></span>
+                                    </button>
                                 </div>
                             <div class="card-body pt-0">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <img src="http://localhost/NIC/css/dist/img/avatar04.png" alt="" class="profile-user-img img-responsive img-circle">
+                                    <?php $flag=true; foreach($profile_image as $pr){
+                                            if($pr['profile_id_pk']==$row['login_id_fk']){ 
+                                                if($pr['image']==NULL)
+                                                    echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
+                                                else{
+                                                    $image1=$pr['image'];
+                                                    echo "<img src='data: image/jpeg; base64, $image1' alt='' class='profile-user-img img-responsive img-circle'>";  
+                                                }
+                                                $flag=false; 
+                                                break;
+                                            }
+                                        } 
+                                        if($flag==true){
+                                            echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
+                                    }?>
                                 </div>
                                 <div class="col-md-12">
                                     <h4><b><?php echo $row['name'];?></b></h4>
@@ -49,9 +66,7 @@
                             </div>
                             <div class="card-footer">
                             <div class="text-right">
-                                <a  onclick="document.getElementById('<?php echo $row['issue_id_pk'];?>').style.display='none'" class="btn btn-sm bg-teal">
-                                <i class="fas fa-user-times"></i>
-                                </a>
+                                
                                 <button  id='copy<?php echo $row['issue_id_pk'];?>' class="btn btn-sm btn-primary" onclick="coopy('<?php echo $row['email'];?>','copy<?php echo $row['issue_id_pk'];?>');">
                                 <i class="fas fa-clipboard"></i> Copy UID to clipboard
                                 </button>

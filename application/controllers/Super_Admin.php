@@ -285,7 +285,8 @@ class Super_Admin extends MY_Controller {
 		//mandatory requirements end
 		$this->load->model('Sup_admin');
 		$res['data']=$this->Sup_admin->issues_fetch();
-		//print_r($res);
+		$res['profile_image']=$this->Sup_admin->profile_image();
+		//print_r($res['profile_image']);
 		$this->load->view('issues',$res);
 		$this->load->view('dashboard/footer');
 	}

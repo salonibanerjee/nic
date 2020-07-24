@@ -339,8 +339,14 @@ class Sup_admin extends CI_Model {
 	}
 	//seek record end------------------------------------------------------------------------------------------------------------
 
+	//issues fetch function
 	public function issues_fetch(){
 		$result=$this->db->select('*')->from('mpr_trans_issues')->order_by('issue_id_pk','desc')->get()->result_array();
+		return $result;
+	}
+	//profile image function
+	public function profile_image(){
+		$result=$this->db->select('profile_id_pk,image')->from('mpr_semitrans_profile')->get()->result_array();
 		return $result;
 	}
 }
