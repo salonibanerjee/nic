@@ -122,9 +122,13 @@ class Admin_model extends CI_Model {
         $this->db->cache_off();
     }
 
-    function sort($a, $b) {
-        if ($a['order'] == $b['order']) return 0;
-        return ($a['order'] > $b['order']) ? 1 : -1;
+    function array_sort_by_column(&$arr, $col, $dir = SORT_ASC) {
+        $sort_col = array();
+        foreach ($arr as $key=> $row) {
+            $sort_col[$key] = $row[$col];
+        }
+    
+        array_multisort($sort_col, $dir, $arr);
     }
 
     //stores user type cache naming convention <User_type><user_type_id>------------------------------------------------------------------
@@ -155,6 +159,7 @@ class Admin_model extends CI_Model {
                     }
                 }
             //}
+            $this->array_sort_by_column($a,"order");
             $result = array(
                 'user_type_id_pk'=>$var,
                // 'desig' => $row->desig,
