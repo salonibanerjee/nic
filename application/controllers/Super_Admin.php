@@ -925,7 +925,7 @@ function seek_record(){
 					$table =$scheme.'_backup';  
 					$fields = $this->db->list_fields($table);
 					$d = $this->Sup_admin->filter_data($username,$table,$smonth,$fmonth,$year,$nodal);
-					if($d == NULL){ ?>
+					if($d == NULL || $fields == NULL){ ?>
 						<script> alert("No record found")</script> <?php
 						
 						header("Location: http://localhost/NIC/index.php/Super_Admin/seek_record");
