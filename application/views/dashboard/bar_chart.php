@@ -38,7 +38,6 @@
                 echo "{";
                 echo  "label: '$bar[$i]',";
                 echo  "backgroundColor: '$color[$j]',";
-                //echo  "borderColor: 'rgba(60,141,188,0.8)',";
                 echo  "pointRadius: false,";
                 echo  "pointColor: '#3b8bba',";
                 echo  "pointStrokeColor: 'rgba(60,141,188,1)',";

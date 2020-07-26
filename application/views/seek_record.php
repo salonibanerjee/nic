@@ -102,7 +102,6 @@
                         </div>
             </div>
           <!-- /.card-body -->
-          <?php //echo validation_errors();?>
           <div class="card-footer">
             <button type="submit" name= "sub1" id="sub1" class="btn btn-primary" style="display: block; margin-left: auto;  margin-right: auto;">Show Details</button>
           </div>
@@ -231,7 +230,6 @@ function readURL(input) {
 <!-- page script -->
 <script>
   $(function () {
-    //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
       "lengthChange": true,

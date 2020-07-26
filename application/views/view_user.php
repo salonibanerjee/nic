@@ -148,7 +148,6 @@
 <!-- page script -->
 <script>
   $(function () {
-    //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
       "lengthChange": true,

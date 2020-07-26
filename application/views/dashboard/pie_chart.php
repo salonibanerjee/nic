@@ -22,7 +22,6 @@
         //- DONUT CHART -
         //-------------
         // Get context with jQuery - using jQuery's .get() method.
-        //var donutChartCanvas = $('#donutChart').get(0).getContext('2d')
         var pieData        = {
         labels: 
             <?php echo json_encode($name) ?>

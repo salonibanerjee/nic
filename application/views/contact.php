@@ -241,7 +241,6 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
-        //$('#example1').DataTable().ajax.reload();
         $("#form_sub").notify("Value accepted",{position:"right", className: 'success'});
         console.log("submit");
       }

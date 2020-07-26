@@ -154,7 +154,6 @@
 				$('#office').val("select");
 				$('#desig_name').val("select");
 				$('#field_name').html(result.message);
-				//alert(result);
 				console.log("result");
 			}   
 		});

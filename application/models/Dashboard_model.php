@@ -26,11 +26,8 @@ class Dashboard_model extends CI_Model{
             $i=0;
             while($i<$nblo)
             {
-                //print_r($this->db->select($b[$j]));
-                //echo $b[$j]."<br>";
                 $this->db->select($b[$j])->where('location_code',$block[$i])->order_by('id_pk','desc')->limit(1);
                 $table = $this->db->get($sch[$j])->row();
-                //print_r($table);
                 $count = 0;
                 $temp = $b[$j];
                 if($table){

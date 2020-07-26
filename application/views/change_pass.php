@@ -49,7 +49,6 @@
           <p></p>
         </div>
       <?php echo form_open('','method="POST" id="form"');?>
-      <!--<form method="POST" action="" id="form">-->
         <div class="input-group mb-3">
           <input name="pass0" id="pass0" type="password" class="form-control" placeholder="Old Password" >
           <div class="input-group-append">
@@ -129,7 +128,6 @@
           $('#errors').html(result.slice(0,pos));
         }else{
           $('#errors').html("");
-          //alert(result.slice(0,pos));
           window.location.href = result.slice(0,pos);
         }
       }

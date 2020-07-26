@@ -67,7 +67,6 @@
         <div class="card-body login-card-body">
           <p class="login-box-msg"><strong>ENTER FINANCIAL YEAR RANGE DETAILS</strong></p>
           <?php echo form_open('Super_Admin/dba_year','id="form"');?>
-          <!--<form method="POST" action="" id="form"> -->
             <div class="input-group mb-3">
             <select id='year' name="year" class="form-control">
                 <?php $year=intval(date('Y')); 
@@ -103,7 +102,6 @@
               </div>
               <!-- /.col -->
             </div>
-          <!--</form>-->
         </div>
         <!-- /.login-card-body -->
       </div>

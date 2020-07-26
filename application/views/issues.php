@@ -22,7 +22,6 @@
                 <div class="row d-flex align-items-stretch">
 
                     <?php foreach($data as $row){
-                        //echo $row->issue_id_pk;
                     ?>
 
                         <div class="col-12 col-sm-6 col-md-3 d-flex align-items-stretch">
@@ -89,7 +88,6 @@
 <script src="http://localhost/NIC/js/notify.js"></script>
 <script>
     function coopy(text,idd) {
-        //console.log(text);
         navigator.clipboard.writeText(text);
         $("#"+idd).notify("Copied to clipboard",{position:"right", className: 'success'});
     }

@@ -138,7 +138,6 @@ $("form").on("submit", function (event){
         $("#div123").load(location.href + " #div123");
         $('#errors').html(result);
       }else{
-        //alert("Logged in successfully");
         window.location.href = result;
       }
     }

@@ -126,12 +126,8 @@
       {
         
         $("radiobuttonsel").show();
-        //$("radiobuttonsel").attr(checked,false);
+        
         document.querySelector('input[name="radiosel"]').checked = false;
-
-        //$('#audience_desig').val('');
-        //$('#audience_loc').val('');
-
         
       }
 

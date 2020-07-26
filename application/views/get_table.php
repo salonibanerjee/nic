@@ -63,7 +63,6 @@
                                     }
                           echo    "</select>";
                           echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
-                          //echo  "<span class='select2 select2-container select2-container--default select2-container--below' dir='ltr' data-select2-id='2' style='width: 100%;'><span class='selection'><span class='select2-selection select2-selection--single' role='combobox' aria-haspopup='true' aria-expanded='false' tabindex='0' aria-disabled='false' aria-labelledby='select2-u66w-container'><span class='select2-selection__rendered' id='select2-u66w-container' role='textbox' aria-readonly='true' title='Enter Session'>Alabama</span><span class='select2-selection__arrow' role='presentation'><b role='presentation'></b></span></span></span><span class='dropdown-wrapper' aria-hidden='true'></span></span>";
                           echo "</div>";
                           $i++;
                       }
@@ -77,7 +76,6 @@
                         }
                         echo    "</select>";
                         echo "<p class='error invalid-feedback'><small>".form_error($row)."</small></p>";
-                        //echo  "<span class='select2 select2-container select2-container--default select2-container--below' dir='ltr' data-select2-id='2' style='width: 100%;'><span class='selection'><span class='select2-selection select2-selection--single' role='combobox' aria-haspopup='true' aria-expanded='false' tabindex='0' aria-disabled='false' aria-labelledby='select2-u66w-container'><span class='select2-selection__rendered' id='select2-u66w-container' role='textbox' aria-readonly='true' title='Enter Session'>Alabama</span><span class='select2-selection__arrow' role='presentation'><b role='presentation'></b></span></span></span><span class='dropdown-wrapper' aria-hidden='true'></span></span>";
                         echo "</div>";
                         $i++;
                     }
@@ -190,7 +188,6 @@
 <?php
   $attri1 = array('method' => 'POST', 'id' => 'draft'); 
   echo form_open("",$attri1);?>
-      <!--<form method="POST" id='draft' action="">-->
         <div class="modal-dialog modal-sm" >
           <div class="modal-content">
             <div class="modal-header">
@@ -221,8 +218,6 @@
           </div>
           <!-- /.modal-content -->
         </div>
-      <!--</form>-->
-      <?php //echo form_close('');?>
         <!-- /.modal-dialog -->
       </div>
 

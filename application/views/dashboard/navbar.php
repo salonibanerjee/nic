@@ -138,7 +138,6 @@
               echo "<a href='#' class='dropdown-item' data-toggle='modal' data-target='#modal-".$noti1[$i]['notification_id_pk']."'>";
               echo "<i class='fas fa-envelope text-blue '></i> ".$noti1[$i]['notification_head'];
               echo "<span class='float-right text-muted text-sm'>".$noti1[$i]['audience_id']."</span>";
-              //echo "<span class='float-right text-muted text-sm'></span>";
               echo "</a>";
               $i++;
             }
@@ -242,7 +241,6 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 				    if(result == "Found"){
               toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
               toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
-              //$("#noti").load(location.href+" #noti>*","");
 				    }
 				  }
 			  });
@@ -250,17 +248,13 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 }
 
 function send_nodal(){ //requests for new notifs every 10 seconds
-	  
-    //setInterval(function(){
       $.ajax({
         url: "<?php echo base_url();?>index.php/Summary/nodal_alert",
         success: function(result){
-            //console.log("Nodal");
             if(result=="found")
               toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
           }
       });
-    //},10000);
 }
 
 function start(){

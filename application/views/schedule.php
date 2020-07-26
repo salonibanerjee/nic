@@ -124,7 +124,6 @@ $("#form").on("submit", function (event) {
         console.log("error");
       }else{ 
         $('#errors').html("");
-        //$("form")[0].reset();
         $("#form").load(location.href+" #form>*","");
         //fetchType();
         $("#err").notify("Value accepted",{position:"left", className: 'success'});

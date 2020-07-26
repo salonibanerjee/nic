@@ -74,7 +74,6 @@
                                 continue;
                             }else if($key=='location_code'){
                               echo "<td>".$this->Crud_model->region_name($row1)."</td>";
-                              //$i++;
                             }else if($key == 'month'){
                                 echo "<td>".$month[$row1]."</td>";
                             }else{
@@ -107,7 +106,6 @@
   <?php
   $attri = array('method' => 'POST', 'id' => 'draft'); 
   echo form_open("",$attri);?>
-  <!--<form method="POST" id='draft' action="">-->
     <div class="modal-dialog modal-default" >
       <div class="modal-content">
         <div class="modal-header bg-blue">
@@ -168,7 +166,6 @@
 <!-- page script -->
 <script>
   $(function () {
-    //$("#myTable").DataTable();
     $('#example1').DataTable({
       "paging": true,
       "lengthChange": false,
