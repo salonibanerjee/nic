@@ -38,6 +38,7 @@
             $icon[17] = 'fa-calendar-check text-teal';
             $icon[18] = 'fa-bell text-yellow';
             $icon[20] = 'fa-power-off text-danger';
+            $icon[22] = 'fa-rupee-sign text-pink';
 
             $data=$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
             $var=$this->cache->get('User_type'.$data)['user_privilege'];
