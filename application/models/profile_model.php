@@ -170,7 +170,6 @@ class profile_model extends CI_Model {
 				'district' =>'',
 			);
 		}
-		
         return $da;
 	}
 	
