@@ -28,9 +28,9 @@
             <div class="card-body box-profile">
               <div class="text-center">
                 <?php if($image==""||$image==NULL){
-                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
+                  echo "<img id='zoom' name='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
                 }else{
-                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='data: image/jpeg; base64, $image' alt='User profile picture' style='width:150px; height:150px;'>";
+                  echo "<img id='zoom' name='zoom' class='profile-user-img img-fluid img-circle' src='data:image/jpeg;base64,$image' alt='User profile picture' style='width:150px; height:150px;'>";
                 }?>   
               </div>
 
@@ -84,16 +84,25 @@
   </section>
 </div>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>	
+	
 <script>
+$(document).on('mouseenter','#zoom', function (event) {
+  $(this).animate({width:'400px',height:'400px'});
+	$(this).css("opacity","1");
+  }).on('mouseleave','#zoom',  function(){
+    $(this).animate({width:'150px',height:'150px'});
+		$(this).css("opacity","1");
+  });
+/*
 	$(document).ready(function(){
-		$("#zoom").hover(function(){
+		$("#zoom").mouseenter(function(){
+      console.log(1);
 			$(this).animate({width:'400px',height:'400px'});
 			$(this).css("opacity","1");
 		}, function(){
 			$(this).animate({width:'150px',height:'150px'});
 			$(this).css("opacity","1");
 		});
-	});
+	});*/
 </script>
 

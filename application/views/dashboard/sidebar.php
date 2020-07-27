@@ -12,7 +12,7 @@
           <?php if($image==""||$image==NULL){
             echo "<img src='http://localhost/NIC/css/dist/img/avatar00.png' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
           }else{
-            echo "<img src='data: image/jpeg; base64, $image' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
+            echo "<img src='data:image/jpeg;base64,$image' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;" id="x" class="x">
