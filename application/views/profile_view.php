@@ -18,11 +18,30 @@
     </div><!-- /.container-fluid -->
   </section>
 
+
+  <?php  //to change '@' to [at] & '.' to [dot] 
+        $temp="";
+        $t="";
+        for($i=0; $i<strlen($email); $i++){
+          if($email[$i]== "@"){
+            $t = "[at]";
+            $temp= $temp.$t;
+          }
+          else if($email[$i]== "."){
+            $t = "[dot]";
+            $temp=$temp.$t;
+          }
+          else{
+            $t = $email[$i];
+            $temp = $temp.$t;
+          }
+        }
+        $email= $temp;
+        ?>
+
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
-     
-
           <!-- Profile Image -->
           <div class="card card-primary card-outline mx-auto" style="max-width: 700px">
             <div class="card-body box-profile">

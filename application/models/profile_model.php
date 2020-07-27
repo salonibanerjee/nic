@@ -140,6 +140,7 @@ class profile_model extends CI_Model {
         $res=$this->get_f($username);
 		$da=array();
         if($res){
+
 			$da = array(
 				'f_name' => $res->f_name,
 				'm_name' => $res->m_name,
@@ -169,19 +170,7 @@ class profile_model extends CI_Model {
 				'district' =>'',
 			);
 		}
-		$temp="";
-		foreach(da['email'] as $key){
-			if($key == '@'){
-				$temp = $temp.'[at]';
-			}
-			else if($key == '.'){
-				$temp = $temp.'[dot]';
-			}
-			else{
-				$temp = $temp.$key;
-			}
-		}
-		da['email'] = $temp;
+		
         return $da;
 	}
 	
