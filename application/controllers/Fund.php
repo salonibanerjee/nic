@@ -19,12 +19,7 @@ class Fund extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
         $this->load->model('Sup_admin');
         $resloc=$this->Sup_admin->location_data();
-        //print_r($resloc);
-        //echo("<br>");
-        //echo("<br>");
-        //echo("<br>");
         $resscheme=$this->Sup_admin->search_table();
-        //print_r($resscheme);
         $data["loc"]=$resloc;
         $data["scheme"]=$resscheme;
         $data['funds']=$this->Sup_admin->fetch_funds();

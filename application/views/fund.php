@@ -63,7 +63,6 @@
               </div>
             </div>
           <!-- /.card-body -->
-          <?php //echo validation_errors();?>
           <div class="card-footer">
           <div id="errors" style="color:red;"></div>
                 <div id='err' style="max-width:80px">

@@ -38,35 +38,7 @@ class Nodal_check extends MY_Controller {
 			$result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
 			$result_main['draft_name'] = $this->NodalCheck_model->draft_name($result_main['fetch_draft']);
 			$result_main['count_check'] = $this->NodalCheck_model->check($result_main['fetch_draft']);
-			//print_r($result['fetch_draft']);
-			//print_r($result['draft_name']);
-			//print_r($regsult['count_check']);
-
 			
-
-			/*$n = "KCC";
-			$this->Crud_model->backup_draft_table($n,'backup');
-			$this->Crud_model->backup_draft_table($n,'draft');
-			$this->Crud_model->audit_upload($this->session->userdata('uid'),
-												current_url(),
-												'Backup & draft create- '.$n,
-												'Custom Message here');*/
-			//$result['name'] =$this->Crud_model->search_table($n);
-			//$result['data_table']=$this->Crud_model->list_table();
-			//$result['s_name_table']=$this->Crud_model->fullname();
-			//$result['username'] = $this->session->userdata('uid');
-			//$result['profile'] = $da;
-			//if($da['flag']==0){
-			//	$da['flag']=1;
-			//	$da['data_table']=$result['data_table'];
-			//	$da['s_name_table']=$result['s_name_table'];
-			//}
-			//$result['region']=$this->Crud_model->region_name($this->session->userdata('gp_id'));
-			//$flag=0;
-
-			// str_replace('_draft', '', $row)
-
-			//$result_main = array();
 			$i = 0;
 			foreach($result_main['fetch_draft'] as $row){
 				$n1 = str_replace('_draft', '', $row);								
@@ -93,7 +65,6 @@ class Nodal_check extends MY_Controller {
 			}
 
 			$result_main['uff'] = $result_1;
-			//print_r($result_main['uff']);
 
 			$this->load->view('nodalCheck_view',$result_main);
 
@@ -151,10 +122,6 @@ class Nodal_check extends MY_Controller {
             }
 
 		}
-
-		//$this->load->model('NodalCheck_model');
-        //$this->load->model('profile_model');
-        
 
 		$this->load->view('dashboard/footer');
 	}

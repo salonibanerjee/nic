@@ -9,7 +9,6 @@ class Admin_model extends CI_Model {
         //from login table
         $query = $this->db->get_where('mpr_semitrans_login',array('username'=>$uname,'active_status'=>1));
         $row = $query->row();
-        //$noti = $this->db->get_where('mpr_trans_notification',array('active_status'=>1))->num_rows();
         if($row){
             //user_privilege stores array for multiple tuples
             $result = array(
@@ -22,7 +21,6 @@ class Admin_model extends CI_Model {
                 'user_type_id_fk'=> $row->user_type_id_fk,
                 'login_id_pk'=> $row->login_id_pk,
                 'active_status'=> $row->active_status,
-                //'noti_count'=>$noti
             );
         }else{
             //to remove the null object error when access denied
@@ -99,7 +97,6 @@ class Admin_model extends CI_Model {
 
     //stores profile data cache -----------------------------------------------------------------------------------------------------
     public function store_profile($uname){
-        //$this->db->cache_on();
         $query = $this->db->get_where('mpr_semitrans_profile',array('username'=>$uname));
         $row = $query->row();
         if($row){
@@ -158,11 +155,9 @@ class Admin_model extends CI_Model {
                             );
                     }
                 }
-            //}
             $this->array_sort_by_column($a,"order");
             $result = array(
                 'user_type_id_pk'=>$var,
-               // 'desig' => $row->desig,
                 'active_status'=> $user_type,
                 'user_privilege'=>$a
             );
@@ -173,8 +168,6 @@ class Admin_model extends CI_Model {
                 $foo = $result;
                 $this->cache->save('User_type'.$var, $foo, 3000);
             }
-            //$u += 1;
-        //}
         $this->db->cache_off();
     }
 
@@ -209,14 +202,11 @@ class Admin_model extends CI_Model {
     
     //inserts new meeting in the database----------------------------------------------------------------------------------------------
     public function meeting_schedule($data){
-        //$this->db->where('meeting_id_pk', 1);
 		$this->db->insert('mpr_trans_meeting_schedule', $data);
     }
 
     //loads latest meeting data constantly in the notification bell--------------------------------------------------------------------
     public function previous_meeting_schedule(){
-        //$query = $this->db->get_where('mpr_trans_meeting_schedule',array('meeting_id_pk'=>1));
-        //$row=$query->row();
         $last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
         return $last_row;
     }
@@ -224,7 +214,6 @@ class Admin_model extends CI_Model {
     //function to generate captcha and reconfigurable----------------------------------------------------------------------------------
     public function _generateCaptcha(){
         $vals = array(
-            //'word'          => rand(1000, 9999),
             'word'          => $this->getName(5,8),
             'img_path'      => './captcha/',
             'img_url'       => 'http://localhost/NIC/captcha/',

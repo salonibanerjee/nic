@@ -30,7 +30,6 @@
           <div class="card-body">
             <?php
               echo form_open_multipart('Summary/edit','id="form" method="post"');
-              //$this->load->model('profile_model');
             ?>
             <div class="box-body box-profile">
               <?php

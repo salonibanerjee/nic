@@ -57,8 +57,6 @@ class View_data extends MY_Controller {
             $result['year_range'] = $this->Crud_model->dba_fyear_range();
             //new added for table show
             $result['main_data'] = $this->Crud_model->data_fetch($n);
-            //$this->form_validation->set_rules('modmonthst', 'Starting Month', 'required');
-            //$this->form_validation->set_rules('modmonthend', 'Ending Month', 'required|greater_than_equal_to[modmonthst]');
             if (isset($_POST['filter_sub'])){
                     $s_month = $this->input->post('modmonthst');
                     $e_month = $this->input->post('modmonthend');

@@ -26,13 +26,11 @@ class Crud_model extends CI_Model {
         }
         //updates data on the basis of location for same user--------------------------------------------------------------------------
         function update($r,$n){
-                //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r['session'],'location_code'=>$r['location_code'],'month'=>$r['month']));
                 $this->db->update($n,$r);
         }
         //updates the scheme data location---------------------------------------------------------------------------------------------
         function update_location_code($r,$n){
-                //$this->db->where('session', $r['session']);
                 $this->db->where(array('location_code'=>$r['location_code']));
                 $this->db->update($n,$r);
         }
@@ -90,7 +88,8 @@ class Crud_model extends CI_Model {
         function backup_draft_table($n,$s){
                 $a = $n."_".$s;
                 if($this->db->table_exists($n."_".$s)){
-                }else{
+                }
+                else{
                         $this->load->dbforge();
                         $fields = $this->db->field_data($n);
                         $field = $this->extract_field($fields,$a);
@@ -135,7 +134,6 @@ class Crud_model extends CI_Model {
         public function region_name($n){
                 $query = $this->db->get_where('mpr_master_location_data',array('location_code'=>$n));
                 $row = $query->row();
-                //print_r($row);
                 return $row->location_area;
         }
         public function audit_upload($user,$section,$action,$request){
@@ -155,8 +153,7 @@ class Crud_model extends CI_Model {
                 return $row->location_code;
         }
 
-        //custom form validation ------------------------------------------------------------------------------------------------
-        //$n->tablename, $s-> session 
+        //custom form validation ------------------------------------------------------------------------------------------------ 
         public function unique_data_entry($n,$s,$k){
                 $var=$this->session->userdata('location_code');
                 $query = $this->db->get_where($n, array('session' => $s,'location_code' => $var, 'month' => $k));
@@ -205,7 +202,6 @@ class Crud_model extends CI_Model {
 
         //
         function update_sub($r,$n){
-                //$this->db->where('session', $r['session']);
                 $this->db->where(array('session'=>$r->session,'location_code'=>$r->location_code,'month'=>$r->month));
                 $this->db->update($n,$r);
         }

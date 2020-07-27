@@ -258,7 +258,6 @@ class Report extends MY_Controller
                array_push($temp3['total'], $y2);
             }
             $k++;
-            //echo $this->Report_model->generate_table($temp3,$ses,$month_name);
             //Each page's table of report is generated and store the html object of the table in an array.
 
     		array_push($scheme_header,$this->Report_model->generate_table($temp3,$ses,$month_name));
@@ -497,7 +496,6 @@ class Report extends MY_Controller
         {
             array_push($temp['total'],$key);
         }
-        //echo $this->Report_model->generate_table($temp,$ses,$month_name,1);
        $this->Report_model->export_csv($this->Report_model->generate_table($temp,$ses,$month_name,1));
     }
 

@@ -47,7 +47,7 @@
                         foreach($fetch_draft as $row){
                             if($count_check[$i] == 0){
                                 echo "<tr>";
-                                //echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
+                                
                                 echo    "<td style='font-size:17px;'>".$draft_name[$i]."</td>";
                                 echo     "<td><span class='badge badge-success' style='font-size:17px;'>Checked</span></td>";
                                 echo     "<td>";
@@ -56,7 +56,7 @@
                                 echo "</tr>";
                             } else {
                                 echo "<tr>";
-                                //echo     "<td><a href='pages/examples/invoice.html'>".str_replace('_draft', '', $row)."</a></td>";
+                                
                                 echo     "<td style='font-size:17px;'>".$draft_name[$i]."</td>";
                                 echo     "<td><span class='badge badge-warning' style='font-size:17px;'>Pending</span></td>";
                                 echo     "<td>";
@@ -86,7 +86,7 @@
 $i1=0;
 foreach($fetch_draft as $sh_name){
     $temp = str_replace('_draft', '', $sh_name);
-    //echo $temp;
+    
 echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
     <div class='modal-dialog'>
 
@@ -98,7 +98,6 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
         </div>";
   $attri = array('method' => 'POST', 'id' => 'form','role'=>'form'); 
   echo form_open("",$attri);
-        //<form role='form' method='post' id='form'>
         echo"
             <div class='modal-body'>
             <div class='card'>
@@ -120,7 +119,6 @@ echo "<div id='".$temp."_modal' class='modal fade' role='dialog'>
                         $i=0; 
                         $j=0;
                         foreach($uff[$temp]['data'] as $row){
-                            //echo $draft_data->$row;
                             $s_name = $uff[$temp]['s_name'];
                             if($row == 'id_pk' || $row == 'login_id_fk' || $row == 'inserted_at' ||$row=='ip' || $row=='location_code' || $row=='nodal_check'){
                                 $i++;

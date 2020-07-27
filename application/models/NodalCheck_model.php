@@ -8,7 +8,6 @@ class NodalCheck_model extends CI_Model{
                 $draft_table[]=$row['scheme_link'].'_draft';
             }
         }
-        //print_r($draft_table);
         return $draft_table;
     }
 
@@ -18,7 +17,6 @@ class NodalCheck_model extends CI_Model{
         foreach($tables as $row){
             $query = $this->db->get_where('mpr_master_scheme_table', array('short_name' => str_replace('_draft', '', $row)));
             $row1 = $query->row();
-            //print_r($row1);
             array_push($table_name, $row1->name);
         }
         
@@ -40,7 +38,6 @@ class NodalCheck_model extends CI_Model{
         $query = $this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
         if($query!=NULL){
             $time = $query->start_time;
-            //$time = strtotime($start_time);
             $start_time = strtotime($time);
             $end_time= strtotime('+6 hours',strtotime($query->end_time));
             $current_time = strtotime('+6 hours', now());
@@ -54,13 +51,6 @@ class NodalCheck_model extends CI_Model{
             return false;
 
     }
-
-    /*
-    str_replace('_draft', '', $row)
-    str_replace($search, '', $subject)
-    echo $this->db->count_all('my_table');
-    */
-
     
 }
 ?>

@@ -566,7 +566,6 @@ class summary extends MY_Controller {
 		$desi=$this->profile_model->get_designation();
 		$dep=$this->profile_model->get_depart();
 		$off=$this->profile_model->get_office();
-		//print_r($user);
 		$dat['desi']=$desi;
 		$dat['dep']=$dep;
 		$dat['off']=$off;
@@ -614,7 +613,6 @@ class summary extends MY_Controller {
 			$mid = $this->input->post('mid');
 			$last = $this->input->post('last');
 			$mobile = $this->input->post('mob');
-			//$email = $this->input->post('email');
 			$dist = $this->input->post('dist');
 			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
 			$res=$this->profile_model->get_f($this->session->userdata('uid'));
@@ -635,11 +633,9 @@ class summary extends MY_Controller {
 
 			if($res){
 				$this->profile_model->update($this->session->userdata('uid'),$data);
-				//header("location: http://localhost/NIC/index.php/Summary/profile");
 			}else{
 				$this->profile_model->upload($data);
 				$this->Admin_model->update_first_profile();
-				//header("location: http://localhost/NIC/index.php/Summary/profile");
 			}
 			$this->db->trans_complete();
 

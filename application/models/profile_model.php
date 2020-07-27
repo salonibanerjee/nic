@@ -45,7 +45,6 @@ class profile_model extends CI_Model {
 			}
         }
 		return $desi_name;
-		//return $data;
 	}
 
 //2 test codes for user specific notifications:
@@ -60,13 +59,6 @@ class profile_model extends CI_Model {
 
 	public function get_location_code(){
 		$data = $this->get_login_details($this->session->userdata('uid'));
-		/*$tables = $this->db->get('mpr_master_location_data');
-		$loc_code ;
-        foreach($tables->result() as $loca){
-			if($loca->location_code == $data->location_code){
-				$loc_code= $loca->location_code;
-			}
-        }*/
 		return $data->location_code;//character_varying
 	}
 
@@ -105,21 +97,12 @@ class profile_model extends CI_Model {
 	}
 	
 	
-	/*public function get_desi_code(){
-		$tables = $this->db->get('designation_master');
-		$desi_code = array();
-        foreach($tables->result() as $desigs){
-            $desi_code[] = $desigs->Designation_code;
-        }
-        return $desi_code;
-	}*/
 
 	//get the whole profile details------------------------------------------------------------------------------------------------------
     public function get_profile_info($username){
         $query= $this->db->get_where('mpr_semitrans_check_first_user',array('user_id_pk' => $this->session->userdata('loginid')));
         $row=$query->row();
 		$res=$this->get_f($username);
-		//$r = $this->get_designation($username);
 		if($res){
 			$da = array(
 				'f_name' => $res->f_name,
@@ -156,9 +139,7 @@ class profile_model extends CI_Model {
     public function get_profile($username){
         $res=$this->get_f($username);
 		$da=array();
-		//$r = $this->get_designation($username);
         if($res){
-			//$des_code=$this->profile_model->get_desi_code();
 			$da = array(
 				'f_name' => $res->f_name,
 				'm_name' => $res->m_name,
@@ -170,7 +151,6 @@ class profile_model extends CI_Model {
 				'designation' =>$res->desig,
 				'department' =>$res->dept,
 				'office' =>$res->office,
-				//'desi_code' =>$
 				'district' =>$res->district,
 			);
 		}
@@ -220,7 +200,6 @@ class profile_model extends CI_Model {
 	}
 
 	public function getrelevantloc($desig){		//gets respective location for selected designation from database  
-		//$desig=(int)$desig;
 		if($desig == -1){
 			$q="SELECT * FROM public.mpr_master_location_data ORDER BY location_area ASC";
 			$result=$this->db->query($q);

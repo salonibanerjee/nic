@@ -244,12 +244,6 @@ class Sup_admin extends CI_Model {
 		ORDER BY user_priv_id_pk ASC";
 	  $query = $this->db->query($SQL);
       return $query;
-//		$query=$this->db->select('user_priv_id_pk, privilege_id_fk, user_type_id_fk, mpr_semitrans_user_privilege.active_status, desig, page_name')
-//     ->from('mpr_semitrans_user_privilege')
-//     ->join('mpr_semitrans_user_type', 'mpr_semitrans_user_privilege.user_type_id_fk = mpr_semitrans_user_type.user_type_id_pk ', 'INNER')
-//     ->join('mpr_semitrans_privilege ', 'mpr_semitrans_user_privilege.privilege_id_fk= t3.id', 'INNER')
-//     ->get();
-//		return $query;
 	}
 	
 	//fetch user type table

@@ -657,7 +657,6 @@ class Super_Admin extends MY_Controller {
 							'Visited User Privilage Active page',
 							'Custom message here');
 		$this->db->trans_complete();
-		  //print_r($data);
 		$this->load->view('view_user_privilege',$data); 
 		$this->load->view('dashboard/footer');
   	}
@@ -672,9 +671,7 @@ class Super_Admin extends MY_Controller {
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_priv_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_priv_id_pk($dat);
-	 //$query=$this->db->get_where("mpr_semitrans_user_privilege",array("user_priv_id_pk"=>$id));
 	 $da['records']=$query->result();
-	// $this->load->view('update',$data);
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
@@ -717,7 +714,6 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Sup_admin');
 	   	$query=$this->Sup_admin->fetch_user_desig_type();
 		$data['records']=$query->result();
-		//print_r($data);
 
 		$this->load->model('Crud_model');
 		$this->db->trans_off();
@@ -741,9 +737,7 @@ class Super_Admin extends MY_Controller {
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_type_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_type_id_pk($dat);
-//	 $query=$this->db->get_where("mpr_semitrans_user_type",array("user_type_id_pk"=>$id));
 	 $da['records']=$query->result();
-	// $this->load->view('update',$data);
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
@@ -808,9 +802,7 @@ class Super_Admin extends MY_Controller {
 	 $id=$this->uri->segment('3');
 	 $dat=array("privilege_id_pk"=>$id);
 	 $query=$this->Sup_admin->privilege_id_pk($dat);
-//	 $query=$this->db->get_where("mpr_semitrans_user_type",array("user_type_id_pk"=>$id));
 	 $da['records']=$query->result();
-	// $this->load->view('update',$data);
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
@@ -911,7 +903,6 @@ function seek_record(){
 
 		$this->load->view('seek_record',$dam);
 	}else{
-			//if ($da['check'] == 'false'){
 				$dam['check'] = "false";
 				$schme = $this->Sup_admin->get_scheme();
 				$dam['fields'] = "";
@@ -934,11 +925,10 @@ function seek_record(){
 					$table =$scheme.'_backup';  
 					$fields = $this->db->list_fields($table);
 					$d = $this->Sup_admin->filter_data($username,$table,$smonth,$fmonth,$year,$nodal);
-					if($d == NULL){ ?>
+					if($d == NULL || $fields == NULL){ ?>
 						<script> alert("No record found")</script> <?php
 						
 						header("Location: http://localhost/NIC/index.php/Super_Admin/seek_record");
-						//$this->load->view('seek_record',$da);
 						exit();
 					}else{
 						if($d != 0){
