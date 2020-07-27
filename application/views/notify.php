@@ -259,6 +259,7 @@
                     
                     <option value="-1">Everywhere</option>
                 </select>
+
               </div>
             </div>
           </choose_loc>
@@ -285,7 +286,7 @@
                     } ?>
                     <option value="-1">Everyone</option>
                 </select>
-
+                    
               </div>
             </div>
 
@@ -397,7 +398,7 @@ $("#form").on("submit", function (event) {
        $('#usertypelocr').click(function () {
           $("choose_desigloc").show();
           $("choose_desig_only").hide();
-
+          $("#audience_desig_only").val(-1);
        });
   });
 
@@ -405,6 +406,8 @@ $("#form").on("submit", function (event) {
        $('#designat').click(function () {
           $("choose_desigloc").hide();
           $("choose_desig_only").show();
+          $("#audience_loc").val(-1);
+          $("#audience_desig").val(-1);
        });
   });
 </script>
