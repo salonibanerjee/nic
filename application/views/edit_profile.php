@@ -40,7 +40,7 @@
                   echo "<img id ='blah' src='data:image/jpeg;base64,$image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
               ?>
-              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-plus"></label> 
+              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-upload"></label> 
               <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fas fa-trash"></label></input>
               <h3 class="profile-username text-center"><b><?php echo $f_name." ".$m_name." ".$l_name;?></b></h3>
               <div class="form-group">
