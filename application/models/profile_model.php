@@ -169,19 +169,6 @@ class profile_model extends CI_Model {
 				'district' =>'',
 			);
 		}
-		$temp="";
-		foreach(da['email'] as $key){
-			if($key == '@'){
-				$temp = $temp.'[at]';
-			}
-			else if($key == '.'){
-				$temp = $temp.'[dot]';
-			}
-			else{
-				$temp = $temp.$key;
-			}
-		}
-		da['email'] = $temp;
         return $da;
 	}
 	
