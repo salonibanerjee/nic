@@ -48,7 +48,7 @@
                                     <span class="fas fa-envelope fa-4x circle-icon" ></span>
                                     <br></br>
                                     <h2><b>Email us</b></h2>
-                                    <h5><i>abc@gmail.com</i></h5>
+                                    <h5><a href="mailto:abc@gmail.com"><i>abc@gmail.com</i></a></h5>
                                     
                                     <h5><b><u>Necessary Instruction</u></b><h5>
                                     <h6><i>Please mention MPR-Issues in the subject of your email for easier identification</i></h6>
@@ -61,7 +61,7 @@
                                     <span class="fas fa-phone fa-4x circle-icon" ></span>
                                     <br></br>
                                     <h2><b>Call us</b></h2>
-                                    <h5><i>+91-9876543210</i></h5>
+                                    <h5><a href="tel:+919876543210"><i>+91-9876543210</i></a></h5>
                                     
                                     <h5><b><u>Necessary Instruction</u></b><h5>
                                     <h6><i>Available on all working days from 10am to 5pm.Saturday and Sunday are holidays.</i></h6>
@@ -74,7 +74,7 @@
                                     <span class="fas fa-map-marker fa-4x circle-icon" ></span>
                                     <br></br>
                                     <h2><b>Location</b></h2>
-                                    <h5><i>123, Rishi Bankim, Chandra Rd, Shree Market, Howrah Maidan, Howrah, West Bengal 711101</i></h5>
+                                    <h5><a href="http://maps.google.com/?q=123, Rishi Bankim, Chandra Rd, Shree Market, Howrah Maidan, Howrah, West Bengal 711101" target="_blank"><i>123, Rishi Bankim, Chandra Rd, Shree Market, Howrah Maidan, Howrah, West Bengal 711101</i></a></h5>
                                     
                                     <h5><b><u>Necessary Instruction</u></b><h5>
                                     <h6><i>Available on all working days from 10am to 5pm.Saturday and Sunday are holidays.</i></h6>

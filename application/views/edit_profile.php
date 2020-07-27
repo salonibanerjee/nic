@@ -37,26 +37,11 @@
                   echo "<img id='blah' src='http://localhost/NIC/css/dist/img/avatar00.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
                 else{
-                  echo "<img id ='blah' src='data: image/jpeg; base64, $image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
+                  echo "<img id ='blah' src='data:image/jpeg;base64,$image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
               ?>
-              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file">CHOOSE IMAGE ⮭</label> 
-              <style>
-                .inputfile {
-                  width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
-                }
-                .inputfile + label {
-                    display: block; margin-left: auto;  margin-right: auto; width: 175px; background:#3E72D6; border-radius: 25px;
-                    font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
-                }
-                .inputfile:focus + label,
-                .inputfile + label:hover {
-                    background-color: green;
-                }
-                .inputfile + label {
-                  cursor: pointer; /* "hand" cursor */
-                }
-              </style>
+              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-plus"></label> 
+              <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fas fa-trash"></label></input>
               <h3 class="profile-username text-center"><b><?php echo $f_name." ".$m_name." ".$l_name;?></b></h3>
               <div class="form-group">
                 <label for="username">Username</label>
@@ -143,7 +128,9 @@
   </div>
   <section>
 </div>
-<script>
+<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="http://localhost/NIC/js/notify.js"></script>
+<script type="text/javascript" >
 //makes generic or editable fields enabled so that userr can edit them----------------------------------------------
 var input=document.getElementsByClassName('form-control');
 for(var i=0;i<input.length;i++){
@@ -159,26 +146,34 @@ for(var i=0;i<input.length;i++){
   }
 }
 //file(image) entry---------------------------------------------------------------------------------------------
-function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        }
+var x=1;
+if($('#blah').attr('src')=="http://localhost/NIC/css/dist/img/avatar00.png")
+  x="";
+function toDataURL(url, callback) {
+  var xhr = new XMLHttpRequest();
+  xhr.onload = function() {
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      $('#blah').attr('src', reader.result);
+      callback(reader.result);
     }
-    
-    $("#file").change(function(){
-        readURL(this);
-    });
-</script>
-
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
-<script type="text/javascript" >
+    reader.readAsDataURL(xhr.response);
+  };
+  xhr.open('GET', url);
+  xhr.responseType = 'blob';
+  xhr.send();
+}
+$("#file").change(function(){
+    toDataURL(URL.createObjectURL(this.files[0]), function(dataUrl) {
+  });
+  x=1;
+  $('#but1').val(0);
+});
+$("#but1").on("click",function(event){
+  $('#blah').attr('src','http://localhost/NIC/css/dist/img/avatar00.png');
+  $('#but1').val(1);
+  x="";
+});
 //form submit for edit profile--------------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
@@ -186,10 +181,19 @@ $("#form").on("submit", function (event) {
   if(csrf_token==''){
     csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
   }
+  var formData = new FormData(this);
+  formData.append('<?php echo $this->security->get_csrf_token_name(); ?>',csrf_token);
+  if(x=""){
+    formData.delete('file');
+  }
+  console.log(formData);
   $.ajax({
     url: $('#form').attr('action'),
     type: "POST",
-    data: $('#form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
+    data: formData,
+    contentType: false,
+    processData: false,
+    cache: false,
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
@@ -219,3 +223,35 @@ $("#form").on("submit", function (event) {
   });
 });
 </script>
+
+<style>
+.inputfile {
+  width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
+}
+.inputfile + label {
+  display: block; margin-left: auto;  margin-right: auto; width: 50px; background:#3E72D6; border-radius: 10px;
+  font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
+}
+.inputfile:focus + label,
+.inputfile + label:hover {
+  background-color: green;
+}
+.inputfile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+
+.delfile {
+  width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
+}
+.delfile + label {
+  display: block; margin-left: auto;  margin-right: auto; width: 50px; background:#3E72D6; border-radius: 10px;
+  font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
+}
+.delfile:focus + label,
+.delfile + label:hover {
+  background-color: red;
+}
+.delfile + label {
+  cursor: pointer; /* "hand" cursor */
+}
+</style>
