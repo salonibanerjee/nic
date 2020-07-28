@@ -18,6 +18,7 @@ class Fund extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
         $this->load->model('Sup_admin');
+        $this->load->model('Crud_model');
         $resloc=$this->Sup_admin->location_data();
         $resscheme=$this->Sup_admin->search_table();
         $data["loc"]=$resloc;
