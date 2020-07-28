@@ -48,7 +48,7 @@
                                     <span class="fas fa-envelope fa-4x circle-icon" ></span>
                                     <br></br>
                                     <h2><b>Email us</b></h2>
-                                    <h5><a href="mailto:abc@gmail.com"><i>abc@gmail.com</i></a></h5>
+                                    <h5><a href="mailto:abc@gmail.com"><i>abc[at]gmail[dot]com</i></a></h5>
                                     
                                     <h5><b><u>Necessary Instruction</u></b><h5>
                                     <h6><i>Please mention MPR-Issues in the subject of your email for easier identification</i></h6>

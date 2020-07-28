@@ -4,6 +4,28 @@
       <img src="<?php echo base_url();?>logo/wb_logo.png" alt="Logo" class="brand-image">
       <span class="brand-text font-weight-light"><b>MPR</b></span>
     </a>
+
+    <?php  //to change '@' to [at] & '.' to [dot] 
+        $temp="";
+        $t="";
+        for($i=0; $i<strlen($username); $i++){
+          if($username[$i]== "@"){
+            $t = "[at]";
+            $temp= $temp.$t;
+          }
+          else if($username[$i]== "."){
+            $t = "[dot]";
+            $temp=$temp.$t;
+          }
+          else{
+            $t = $username[$i];
+            $temp = $temp.$t;
+          }
+        }
+        $username= $temp;
+        ?>
+
+
     <!-- Sidebar -->
     <div class="sidebar"> 
       <!-- Sidebar Menu -->
