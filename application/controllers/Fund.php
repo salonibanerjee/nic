@@ -7,7 +7,7 @@ class Fund extends MY_Controller {
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->cache_update();
-        $this->check_privilege(1);
+        $this->check_privilege(22);
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');

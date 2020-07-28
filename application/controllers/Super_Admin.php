@@ -271,6 +271,7 @@ class Super_Admin extends MY_Controller {
 			exit;
 		}
 		$this->cache_update();
+		$this->check_privilege(23);
 		$this->load->model('Crud_model');
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
