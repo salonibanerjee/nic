@@ -42,10 +42,10 @@
               ?>
               <div class="row">
                 <div class="col-md-6">
-                  <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-upload"></label> 
+                  <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fa fa-upload"></span></label> 
                 </div>
                 <div class="col-md-6">
-                  <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fas fa-trash"></label></input>
+                  <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fa fa-trash-alt"></span></label></input>
                 </div>
               </div>
               
