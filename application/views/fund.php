@@ -113,6 +113,7 @@
 <script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
 <script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script type="text/javascript" >
+var row_selected="";
 //form submit for funds allocation---------------------------------------------------------------------------------
 var csrf_token='';
 $("#form").on("submit", function (event) {
@@ -170,26 +171,37 @@ $(document).ready(function() {
 } );
 //datatable clickable and auto value entry to form on click from datatable-----------------------------------------------   
 $('#example1 tbody').on('click', 'tr', function () {
+        //console.log(table.row(this).color);
         var data = table.row(this).data();
         console.log(data.scheme);
-        var objSelect1 = document.getElementById("loc");
-        for (var i = 0; i < objSelect1.options.length; i++) {
-          if (objSelect1.options[i].text== data.location) {
-            objSelect1.options[i].selected = true;
+        
+        if(row_selected!=this){
+            $(row_selected).css("background-color","")
+            $(this).css("background-color","powderblue");
+            row_selected=this;
+            var objSelect1 = document.getElementById("loc");
+            for (var i = 0; i < objSelect1.options.length; i++) {
+              if (objSelect1.options[i].text== data.location) {
+                objSelect1.options[i].selected = true;
+            }
+            }
+            var objSelect1 = document.getElementById("scheme");
+            for (var i = 0; i < objSelect1.options.length; i++) {
+              if (objSelect1.options[i].text== data.scheme) {
+                objSelect1.options[i].selected = true;
+            }
+            }
+            var objSelect1 = document.getElementById("funa");
+            objSelect1.value=data.funds_allocated;
+            var objSelect1 = document.getElementById("funu");
+            objSelect1.value=data.funds_utilised;
+            var objSelect1 = document.getElementById("thsd");
+            objSelect1.value=data.threshold.slice(0,2);
+        }else{
+            $(this).css("background-color","");
+            row_selected="";
+            $("#form")[0].reset();
         }
-        }
-        var objSelect1 = document.getElementById("scheme");
-        for (var i = 0; i < objSelect1.options.length; i++) {
-          if (objSelect1.options[i].text== data.scheme) {
-            objSelect1.options[i].selected = true;
-        }
-        }
-        var objSelect1 = document.getElementById("funa");
-        objSelect1.value=data.funds_allocated;
-        var objSelect1 = document.getElementById("funu");
-        objSelect1.value=data.funds_utilised;
-        var objSelect1 = document.getElementById("thsd");
-        objSelect1.value=data.threshold;
         return;
     });
 } );
