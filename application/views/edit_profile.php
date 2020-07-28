@@ -40,8 +40,15 @@
                   echo "<img id ='blah' src='data:image/jpeg;base64,$image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
               ?>
-              <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-upload"></label> 
-              <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fas fa-trash"></label></input>
+              <div class="row">
+                <div class="col-md-6">
+                  <input type="file" name="file" id ="file" class="inputfile"  accept="image/*" /> <label for="file"><span class="fas fa-upload"></label> 
+                </div>
+                <div class="col-md-6">
+                  <input name="but1" id="but1" class="delfile" ><label for="but1"><span class="fas fa-trash"></label></input>
+                </div>
+              </div>
+              
               <h3 class="profile-username text-center"><b><?php echo $f_name." ".$m_name." ".$l_name;?></b></h3>
               <div class="form-group">
                 <label for="username">Username</label>
@@ -229,7 +236,7 @@ $("#form").on("submit", function (event) {
   width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
 }
 .inputfile + label {
-  display: block; margin-left: auto;  margin-right: auto; width: 50px; background:#3E72D6; border-radius: 10px;
+  display: block; margin-left: auto;  margin-right: 0; width: 50px; background:#3E72D6; border-radius: 10px;
   font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
 }
 .inputfile:focus + label,
@@ -244,7 +251,7 @@ $("#form").on("submit", function (event) {
   width: 0.1px; height: 0.1px; opacity: 0; overflow: hidden; position: absolute; z-index: -1;
 }
 .delfile + label {
-  display: block; margin-left: auto;  margin-right: auto; width: 50px; background:#3E72D6; border-radius: 10px;
+  display: block; margin-left: 0;  margin-right: auto; width: 50px; background:#3E72D6; border-radius: 10px;
   font-size: 1.25em; color: white; padding-left:8px; padding-right:8px; text-align:center;
 }
 .delfile:focus + label,
