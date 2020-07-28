@@ -7,7 +7,7 @@ class Fund extends MY_Controller {
 		if($this->session->userdata('logged_in')=="")
 			header("Location: http://localhost/NIC/index.php/Login");
 		$this->cache_update();
-        $this->check_privilege(1);
+        $this->check_privilege(22);
         $this->load->driver('cache',array('adapter' => 'file'));
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$this->load->model('profile_model');
@@ -24,6 +24,14 @@ class Fund extends MY_Controller {
         $data["scheme"]=$resscheme;
         $data['funds']=$this->Sup_admin->fetch_funds();
         $this->load->view('fund',$data);
+        $this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Fund Page Visited',
+												'Custom');
+		$this->db->trans_complete();
         $this->load->view('dashboard/footer');
     }
     //AJAX function to perform fund allocation-----------------------------------------------------------------------------------------

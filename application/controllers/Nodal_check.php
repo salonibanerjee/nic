@@ -67,6 +67,14 @@ class Nodal_check extends MY_Controller {
 			$result_main['uff'] = $result_1;
 
 			$this->load->view('nodalCheck_view',$result_main);
+			$this->db->trans_off();
+        	$this->db->trans_strict(FALSE);
+        	$this->db->trans_start();
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Nodal Check Page Visited',
+												'Custom');
+			$this->db->trans_complete();
 
 			if($this->input->post('sub1')=="Accept"){
 

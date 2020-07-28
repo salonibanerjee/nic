@@ -7,6 +7,7 @@ class contact extends MY_Controller {
 			exit;
 		}
 		$this->cache_update();
+        $this->check_privilege(21);
 		$this->load->model('Crud_model');
 		//mandatory requirements for pages loading nav and sidebar
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -20,6 +21,14 @@ class contact extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
 		$this->load->view('contact');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Contact Page Visited',
+												'Custom');
+		$this->db->trans_complete();
 		$this->load->view('dashboard/footer');
     }
     public function send(){

@@ -112,16 +112,5 @@ $(document).on('mouseenter','#zoom', function (event) {
     $(this).animate({width:'150px',height:'150px'});
 		$(this).css("opacity","1");
   });
-/*
-	$(document).ready(function(){
-		$("#zoom").mouseenter(function(){
-      console.log(1);
-			$(this).animate({width:'400px',height:'400px'});
-			$(this).css("opacity","1");
-		}, function(){
-			$(this).animate({width:'150px',height:'150px'});
-			$(this).css("opacity","1");
-		});
-	});*/
 </script>
 
