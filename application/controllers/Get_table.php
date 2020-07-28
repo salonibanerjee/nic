@@ -79,6 +79,14 @@ class Get_table extends MY_Controller {
                 $result['s_name'][]=$this->Crud_model->search_attri($field->name);
             }
             $this->load->view('get_table',$result);
+            $this->db->trans_off();
+            $this->db->trans_strict(FALSE);
+            $this->db->trans_start();
+		    $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Input Data Page Visited of Scheme'.$n,
+												'Custom');
+		    $this->db->trans_complete();
         }
 
         $this->load->view('dashboard/footer');

@@ -24,6 +24,14 @@ class Fund extends MY_Controller {
         $data["scheme"]=$resscheme;
         $data['funds']=$this->Sup_admin->fetch_funds();
         $this->load->view('fund',$data);
+        $this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Fund Page Visited',
+												'Custom');
+		$this->db->trans_complete();
         $this->load->view('dashboard/footer');
     }
     //AJAX function to perform fund allocation-----------------------------------------------------------------------------------------

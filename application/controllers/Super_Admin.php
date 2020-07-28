@@ -36,6 +36,14 @@ class Super_Admin extends MY_Controller {
 		$data['year_range'] = $this->Crud_model->dba_fyear_range();
 		$data['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 		$this->load->view('super_admin_view',$data);
+		$this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Super Admin Page Visited',
+                                            'Custom Message here');
+        $this->db->trans_complete();
 		$this->load->view('dashboard/footer');
     }
 	
@@ -64,6 +72,14 @@ class Super_Admin extends MY_Controller {
                 'end_time'=> mdate('%Y-%M-%d %H:%i',strtotime('-2 hours', strtotime( $row->end_time ))),
 			);
 		$this->load->view('schedule',$data);
+		$this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Meeting Schedule Page visited',
+                                            'Custom Message here');
+        $this->db->trans_complete();
 		$this->load->view('dashboard/footer');
 	}
 	
@@ -123,6 +139,14 @@ class Super_Admin extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
         $this->load->view('dashboard/sidebar',$da);
 		$this->load->view('notify',$u_type);
+		$this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Notification Page visited',
+                                            'Custom Message here');
+        $this->db->trans_complete();
 		$this->load->view('dashboard/footer');
 	}
 
@@ -234,6 +258,14 @@ class Super_Admin extends MY_Controller {
 		$u_type['year_range'] = $this->Crud_model->dba_fyear_range();
 		$u_type['month']=array("NULL","January","February","March","April","May","June","July","August","September","October","November","December");
 		$this->load->view('dba_fyear_range',$u_type);
+		$this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'DBA FInancial Year Page visited',
+                                            'Custom Message here');
+        $this->db->trans_complete();
 		$this->load->view('dashboard/footer');
 	}
 
@@ -289,6 +321,14 @@ class Super_Admin extends MY_Controller {
 		$res['profile_image']=$this->Sup_admin->profile_image();
 		//print_r($res['profile_image']);
 		$this->load->view('issues',$res);
+		$this->db->trans_off();
+	    $this->db->trans_strict(FALSE);
+	    $this->db->trans_start();
+        $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Issues Page visited',
+                                            'Custom Message here');
+        $this->db->trans_complete();
 		$this->load->view('dashboard/footer');
 	}
 
@@ -352,6 +392,7 @@ class Super_Admin extends MY_Controller {
 		//echo $password;
 		$exist = 0;
 		$this->load->model('Sup_admin');
+		$this->load->model('Crud_model');
 		$uname=$this->input->post('email');
 		$data=array("username"=>$uname);
 	    $query=$this->Sup_admin->exist_user($data);
@@ -381,6 +422,10 @@ class Super_Admin extends MY_Controller {
 					$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
 					if($this->Sup_admin->add_check_first_user($data1)){
 						$result = array('message'=>"Data Added Successfully",'csrf_token'=>$csrf_token);
+        				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'New User Registered with username - '.$data['username'],
+                                            'Custom Message here');
 						
 					}else
 						$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
@@ -615,14 +660,18 @@ class Super_Admin extends MY_Controller {
      $this->db->trans_strict(FALSE);
      $this->db->trans_start();
 	 $res = $this->Sup_admin->update_user($data,$id);
-	 $this->db->trans_complete();
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Login Table Updated',
+                                            'Custom Message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
 						
 	 }
+	 $this->db->trans_complete();
 		 echo json_encode($result);
 
 	}
@@ -676,19 +725,25 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->load->model('Crud_model');
 	 $this->db->trans_off();
      $this->db->trans_strict(FALSE);
      $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_privilege($data,$id);
-	 $this->db->trans_complete();
+	 
 	 if($res){
-		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
+		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User Privilege table updated',
+							'Custom message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
 			
 	 }
 		echo json_encode($result);
+		$this->db->trans_complete();
 	}
 	
 	
@@ -742,18 +797,23 @@ class Super_Admin extends MY_Controller {
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
+	 $this->load->model('Crud_model');
 	 $this->db->trans_off();
      $this->db->trans_strict(FALSE);
      $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
-	 $this->db->trans_complete();
 	 if($res){
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User type table updated',
+							'Custom message here');
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
 			
 	 }
+	 $this->db->trans_complete();
 		echo json_encode($result);
 	}
 	
@@ -811,15 +871,19 @@ class Super_Admin extends MY_Controller {
 	 $this->db->trans_strict(FALSE);
 	 $this->db->trans_start();
 		$res = $this->Sup_admin->update_page_view($data,$id);
-	 $this->db->trans_complete();
 	 if($res){
 		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
+		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Pages privilege table updated',
+							  'Custom message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
 			
 	 }
 		echo json_encode($result);
+		$this->db->trans_complete();
 	}	   
 //Scheme Records show page---------------------------------------------------------------------------------------------------------
 function seek_record(){
@@ -901,8 +965,15 @@ function seek_record(){
 	);
 	$this->form_validation->set_rules($validate);
 	if ($this->form_validation->run() == FALSE){
-
 		$this->load->view('seek_record',$dam);
+		$this->db->trans_off();
+	 	$this->db->trans_strict(FALSE);
+		$this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Seek Records Page Visited',
+							  'Custom message here');
+		$this->db->trans_complete();
 	}else{
 				$dam['check'] = "false";
 				$schme = $this->Sup_admin->get_scheme();
@@ -969,6 +1040,7 @@ function seek_record(){
 		$this->load->view('dashboard/sidebar',$da);
 	// ends here
 		$this->load->model('Sup_Admin');
+		$this->load->model('Crud_model');
 		$data['audit']=$this->Sup_Admin->get_user_details();
 		$data['login_as']=array();
 		foreach ($data['audit'] as $key) 
@@ -976,6 +1048,14 @@ function seek_record(){
 			array_push($data['login_as'],$this->Sup_Admin->get_log_id($key['login_id_fk']));
 		}
 		$this->load->view('audit_view',$data);
+		$this->db->trans_off();
+	 	$this->db->trans_strict(FALSE);
+		$this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Audit Log Page Visited',
+							  'Custom message here');
+		$this->db->trans_complete();
 		$this->load->view('dashboard/footer');
 
 	}

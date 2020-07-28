@@ -21,6 +21,14 @@ class contact extends MY_Controller {
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
 		$this->load->view('contact');
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                                current_url(),
+                                                'Contact Page Visited',
+												'Custom');
+		$this->db->trans_complete();
 		$this->load->view('dashboard/footer');
     }
     public function send(){
