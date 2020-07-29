@@ -163,7 +163,7 @@
                             }else if($key=='location_code'){
                                 echo "<td>".$this->Crud_model->region_name($value)."</td>";
                             }else if($key == 'login_id_fk'){
-                              echo "<td>".$this->Crud_model->deo($value)->username."</td>";
+                              echo "<td>".str_replace('@','[at]',str_replace('.','[dot]',$this->Crud_model->deo($value)->username))."</td>";
                             }
                             else{
                                 echo "<td>".$value."</td>";

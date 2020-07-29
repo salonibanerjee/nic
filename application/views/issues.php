@@ -56,7 +56,7 @@
                                     <ul class="ml-4 mb-0 fa-ul text-muted">
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-star"></i></span><b>Rating: </b> <?php $i=0; while($i<5){if($i<$row['rating']){echo '⭐'; $i++;}else{echo '☆'; $i++;}} ?></li>
                                         <br>
-                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-envelope"></i></span><h6><b>Email:</b></h6><?php echo $row['email'];?></li>
+                                        <li class="small"><span class="fa-li"><i class="fas fa-lg fa-envelope"></i></span><h6><b>Email:</b></h6><?php echo str_replace('@','[at]',str_replace('.','[dot]',$row['email'])); ?></li>
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-comments"></i></span><h6><b>Issue Description:</b></h6><?php echo $row['description'];?></li>
                                     </ul>
                                 </div>

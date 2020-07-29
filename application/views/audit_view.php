@@ -52,7 +52,7 @@
               {
                   echo "<tr>";
                   echo "<td>".strval($i+1)."</td>";
-                  echo "<td>".$login_as[$i]."</td>";
+                  echo "<td>".str_replace('@','[at]',str_replace('.','[dot]',$login_as[$i]))."</td>";
                   echo "<td>".$key['section']."</td>";
                   echo "<td>".$key['action']."</td>";
                   echo "<td>".$key['request']."</td>";

@@ -19,26 +19,6 @@
   </section>
 
 
-  <?php  //to change '@' to [at] & '.' to [dot] 
-        $temp="";
-        $t="";
-        for($i=0; $i<strlen($email); $i++){
-          if($email[$i]== "@"){
-            $t = "[at]";
-            $temp= $temp.$t;
-          }
-          else if($email[$i]== "."){
-            $t = "[dot]";
-            $temp=$temp.$t;
-          }
-          else{
-            $t = $email[$i];
-            $temp = $temp.$t;
-          }
-        }
-        $email= $temp;
-        ?>
-
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
@@ -62,7 +42,7 @@
                   <b>Name </b> <a class="float-right"><?php echo $f_name." ".$m_name." ".$l_name;?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Username</b> <a class="float-right"><?php echo $username;?></a>
+                  <b>Username</b> <a class="float-right"><?php echo str_replace('@','[at]',str_replace('.','[dot]',$email)); ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Office</b> <a class="float-right"><?php echo $office; ?></a>
@@ -74,7 +54,7 @@
                   <b>Designation</b> <a class="float-right"><?php echo $designation; ?></a>
                 </li>
                 <li class="list-group-item">
-                  <b>Email</b> <a class="float-right"><?php echo $email; ?></a>
+                  <b>Email</b> <a class="float-right"><?php echo str_replace('@','[at]',str_replace('.','[dot]',$email)); ?></a>
                 </li>
                 <li class="list-group-item">
                   <b>Phone</b> <a class="float-right"><?php echo $mobile; ?></a>

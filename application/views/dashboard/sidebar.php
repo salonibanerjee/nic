@@ -5,26 +5,6 @@
       <span class="brand-text font-weight-light"><b>MPR</b></span>
     </a>
 
-    <?php  //to change '@' to [at] & '.' to [dot] 
-        $temp="";
-        $t="";
-        for($i=0; $i<strlen($username); $i++){
-          if($username[$i]== "@"){
-            $t = "[at]";
-            $temp= $temp.$t;
-          }
-          else if($username[$i]== "."){
-            $t = "[dot]";
-            $temp=$temp.$t;
-          }
-          else{
-            $t = $username[$i];
-            $temp = $temp.$t;
-          }
-        }
-        $username= $temp;
-        ?>
-
 
     <!-- Sidebar -->
     <div class="sidebar"> 
@@ -39,7 +19,7 @@
         </div>
         <div style="margin-left:10px; margin-top:-7px;" id="x" class="x">
           <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
-          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo $username ?></small></a>
+          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo str_replace('@','[at]',str_replace('.','[dot]',$username)); ?></small></a>
           <?php if($update_prof==1){
             echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
