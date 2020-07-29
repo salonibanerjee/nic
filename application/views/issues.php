@@ -60,7 +60,6 @@
                                         <li class="small"><span class="fa-li"><i class="fas fa-lg fa-comments"></i></span><h6><b>Issue Description:</b></h6><?php echo $row['description'];?></li>
                                     </ul>
                                 </div>
-                                <input type="hidden" id="uid<?php echo $row['issue_id_pk'];?>" value="<?php echo $row['email'];?>">
                             </div>
                             </div>
                             <div class="card-footer">

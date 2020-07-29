@@ -111,7 +111,7 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,-1);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
