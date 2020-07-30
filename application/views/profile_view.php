@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
             <li class="breadcrumb-item active">Profile</li>
           </ol>
         </div>
@@ -27,7 +27,7 @@
             <div class="card-body box-profile">
               <div class="text-center">
                 <?php if($image==""||$image==NULL){
-                  echo "<img id='zoom' name='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
+                  echo "<img id='zoom' name='zoom' class='profile-user-img img-fluid img-circle' src='".base_url()."css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
                 }else{
                   echo "<img id='zoom' name='zoom' class='profile-user-img img-fluid img-circle' src='data:image/jpeg;base64,$image' alt='User profile picture' style='width:150px; height:150px;'>";
                 }?>   
@@ -67,10 +67,10 @@
               
               <div class="row">
                 <div class="col-md-6">
-                <a href="http://localhost/NIC/index.php/Summary/edit_profile" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Edit Profile</b></a>
+                <a href="<?php echo base_url();?>index.php/Summary/edit_profile" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Edit Profile</b></a>
                 </div>
                 <div class="col-md-6">
-                <a href="http://localhost/NIC/index.php/Summary/password_change_within" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
+                <a href="<?php echo base_url();?>index.php/Summary/password_change_within" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
                 </div>
               </div>
               

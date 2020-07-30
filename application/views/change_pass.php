@@ -25,7 +25,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Summary/profile">Profile</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary/profile">Profile</a></li>
             <li class="breadcrumb-item active">Change Password</li>
           </ol>
         </div>
@@ -41,11 +41,11 @@
 
       <div class="text-center">
       <?php if($image==""||$image==NULL){
-                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
+                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='<?php echo base_url();?>css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
                 }else{
                   echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='data: image/jpeg; base64, $image' alt='User profile picture' style='width:150px; height:150px;'>";
                 }?> 
-          <img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/lock.png' alt='User profile picture' style='width:150px; height:150px;'>  
+          <img id='zoom' class='profile-user-img img-fluid img-circle' src='<?php echo base_url();?>css/dist/img/lock.png' alt='User profile picture' style='width:150px; height:150px;'>  
           <p></p>
         </div>
       <?php echo form_open('','method="POST" id="form"');?>

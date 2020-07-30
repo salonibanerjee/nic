@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Summary/profile">Profile</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary/profile">Profile</a></li>
             <li class="breadcrumb-item active">Edit Profile</li>
           </ol>
         </div>
@@ -34,7 +34,7 @@
             <div class="box-body box-profile">
               <?php
                 if($image==""||$image==NULL){
-                  echo "<img id='blah' src='http://localhost/NIC/css/dist/img/avatar00.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
+                  echo "<img id='blah' src='".base_url()."css/dist/img/avatar00.png' class='profile-user-img img-responsive img-circle' alt='User Image' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
                 }
                 else{
                   echo "<img id ='blah' src='data:image/jpeg;base64,$image' class='profile-user-img img-responsive img-circle'alt='User profile picture' style='display: block; margin-left: auto;  margin-right: auto; width:200px; height:200px; margin-bottom: 10px;'>";
@@ -135,8 +135,8 @@
   </div>
   <section>
 </div>
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
+<script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="<?php echo base_url();?>js/notify.js"></script>
 <script type="text/javascript" >
 //makes generic or editable fields enabled so that userr can edit them----------------------------------------------
 var input=document.getElementsByClassName('form-control');
@@ -154,7 +154,7 @@ for(var i=0;i<input.length;i++){
 }
 //file(image) entry---------------------------------------------------------------------------------------------
 var x=1;
-if($('#blah').attr('src')=="http://localhost/NIC/css/dist/img/avatar00.png")
+if($('#blah').attr('src')=="<?php echo base_url();?>css/dist/img/avatar00.png")
   x="";
 function toDataURL(url, callback) {
   var xhr = new XMLHttpRequest();
@@ -177,7 +177,7 @@ $("#file").change(function(){
   $('#but1').val(0);
 });
 $("#but1").on("click",function(event){
-  $('#blah').attr('src','http://localhost/NIC/css/dist/img/avatar00.png');
+  $('#blah').attr('src','<?php echo base_url();?>css/dist/img/avatar00.png');
   $('#but1').val(1);
   x="";
 });
@@ -223,7 +223,7 @@ $("#form").on("submit", function (event) {
         //$('#example1').DataTable().ajax.reload();
         //$("#submit").notify("Value accepted",{position:"left", className: 'success'});
         alert("Profile Updated Successfully");
-        window.location.assign("http://localhost/NIC/index.php/Summary/profile")
+        window.location.assign("<?php echo base_url();?>index.php/Summary/profile")
         console.log("submit");
       }
     }

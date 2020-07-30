@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Super_Admin">Super Admin</a></li>
             <li class="breadcrumb-item active">Add User</li>
           </ol>
         </div>
@@ -27,7 +27,7 @@
 
       <?php echo form_open('','id="form"');?>
         <div class="text-center">
-          <img id='zoom' class='profile-user-img img-fluid img-circle' src='http://localhost/NIC/css/dist/img/avatar002.png' alt='User profile picture' style='width:150px; height:150px;'>  
+          <img id='zoom' class='profile-user-img img-fluid img-circle' src='<?php echo base_url();?>css/dist/img/avatar002.png' alt='User profile picture' style='width:150px; height:150px;'>  
         </div>
 
         <div class="input-group mb-3">

@@ -8,7 +8,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
             <li class="breadcrumb-item active">Feedback Box</li>
           </ol>
         </div>
@@ -38,7 +38,7 @@
                                     <?php $flag=true; foreach($profile_image as $pr){
                                             if($pr['profile_id_pk']==$row['login_id_fk']){ 
                                                 if($pr['image']==NULL)
-                                                    echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
+                                                    echo "<img src='<?php echo base_url();?>css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
                                                 else{
                                                     $image1=$pr['image'];
                                                     echo "<img src='data: image/jpeg; base64, $image1' alt='' class='profile-user-img img-responsive img-circle'>";  
@@ -48,7 +48,7 @@
                                             }
                                         } 
                                         if($flag==true){
-                                            echo "<img src='http://localhost/NIC/css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
+                                            echo "<img src='<?php echo base_url();?>css/dist/img/avatar04.png' alt='' class='profile-user-img img-responsive img-circle'>";
                                     }?>
                                 </div>
                                 <div class="col-md-12">
@@ -83,8 +83,8 @@
     </div>
   </section>
 </div>
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
+<script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="<?php echo base_url();?>js/notify.js"></script>
 <script>
     function coopy(text,idd) {
         navigator.clipboard.writeText(text);

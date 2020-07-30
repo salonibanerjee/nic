@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Data Entry</li>
           </ol>
         </div>
@@ -44,7 +44,7 @@
           $attributes = array('id' => 'form');
           echo form_open('Get_table/submit/'.$n, $attributes); 
           ?>
-            <!--<form role='form' method="post" id='form' action="http://localhost/NIC/index.php/Get_table/submit/<?php //echo $n;?>">-->
+            <!--<form role='form' method="post" id='form' action="<?php echo base_url();?>index.php/Get_table/submit/<?php //echo $n;?>">-->
               <div class='card-body'>
                 <?php
                   $i=0;
@@ -133,7 +133,7 @@
                   <?php if($profile['image']!=NULL){?>
                     <img class="img-circle elevation-2" src="data: image/jpeg; base64, <?php echo $profile['image'];?>" style='width:70px; height:70px;' alt="User Avatar">
                   <?php }else{?>
-                    <img class="img-circle elevation-2" src="http://localhost/NIC/css/dist/img/avatar00.png" style='width:70px; height:70px;' alt="User Avatar">
+                    <img class="img-circle elevation-2" src="<?php echo base_url();?>css/dist/img/avatar00.png" style='width:70px; height:70px;' alt="User Avatar">
                   <?php }?>  
                 </div>
                 <!-- /.widget-user-image -->
@@ -221,8 +221,8 @@
         <!-- /.modal-dialog -->
       </div>
 
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
+<script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="<?php echo base_url();?>js/notify.js"></script>
 <script type="text/javascript" >
 
 function myFunction() {

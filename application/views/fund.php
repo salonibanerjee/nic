@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/Summary">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary">Home</a></li>
             <li class="breadcrumb-item active">Fund</li>
           </ol>
         </div>
@@ -108,10 +108,10 @@
           </div>
 </section>
 
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
-<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
-<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="<?php echo base_url();?>js/notify.js"></script>
+<script src="<?php echo base_url();?>css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="<?php echo base_url();?>css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
 <script type="text/javascript" >
 var row_selected="";
 //form submit for funds allocation---------------------------------------------------------------------------------

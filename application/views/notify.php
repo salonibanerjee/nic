@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Notification</li>
           </ol>
         </div>
@@ -332,8 +332,8 @@
 </div>
 <!-- /.login-box -->
 
-<script src="http://localhost/NIC/css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
-<script src="http://localhost/NIC/js/notify.js"></script>
+<script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<script src="<?php echo base_url();?>js/notify.js"></script>
 <script type="text/javascript" >
 //notification form submit---------------------------------------------------------------------------------------
 var csrf_token='';
@@ -374,8 +374,8 @@ $("#form").on("submit", function (event) {
 </script>
 
 <!-- DataTables -->
-<script src="http://localhost/NIC/css/plugins/datatables/jquery.dataTables.js"></script>
-<script src="http://localhost/NIC/css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
+<script src="<?php echo base_url();?>css/plugins/datatables/jquery.dataTables.js"></script>
+<script src="<?php echo base_url();?>css/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>   
 
 <!-- page script -->
 <script>

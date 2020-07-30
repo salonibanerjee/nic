@@ -57,7 +57,7 @@
         </div>
         <div id="div123">
         <p id="captcha-img"><?php echo $image; ?>
-        <img src="http://localhost/NIC/css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42" onclick="captchaChange();" style="cursor:pointer;">
+        <img src="<?php echo base_url();?>css/dist/img/refresh.gif" alt="Smiley face" height="42" width="42" onclick="captchaChange();" style="cursor:pointer;">
         <input type="hidden" id="salt" name="salt" value="<?php echo $_SESSION['salt']; ?>">
         </div>
           <div class="input-group mb-3">
