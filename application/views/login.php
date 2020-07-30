@@ -120,7 +120,7 @@ function captchaChange(){
 //login form submit---------------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
-  //hashPassword();
+  hashPassword();
   $.ajax({
     url: $('form').attr('action'),
     type: "POST",
