@@ -8,7 +8,7 @@
     $var1=current_url();
     $m=0;
     foreach($varx as $x){
-      $var2 = 'http://localhost/NIC/index.php/'.$x['link'];
+      $var2 = base_url().'index.php/'.$x['link'];
       if($var1 == $var2 ){
         echo "<title>".$x['page_name']."</title>";
       }else{
@@ -35,25 +35,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
   <!-- JQVMap -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/jqvmap/jqvmap.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- summernote -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/plugins/summernote/summernote-bs4.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
-  <link rel="stylesheet" href="http://localhost/NIC/css/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -69,13 +69,13 @@
         <a id="pie-btn" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
+        <a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/NIC/index.php/contact" class="nav-link">Contact</a>
+        <a href="<?php echo base_url();?>index.php/contact" class="nav-link">Contact</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="http://localhost/NIC/index.php/Login/logout" class="nav-link">Logout</a>
+        <a href="<?php echo base_url();?>index.php/Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
     
@@ -87,25 +87,16 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
+      <a class="nav-link" href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
         <i class="fas fa-home" style="font-size:27px;"></i>
       </a>
     </li>
 
-    <li class="nav-item dropdown" >
-        <a class="nav-link" data-toggle="dropdown" href="#">
+    <li class="nav-item" >
+        <a class="nav-link" href="<?php echo base_url();?>index.php/Summary/sitemap">
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
-        <div class="dropdown-menu dropdown-menu-right" style="max-height:800px; max-width:750px; padding:3px;">
-        <a href='<?php echo base_url();?>index.php/Summary/sitemap' class='dropdown-item'>
-        <label style="cursor:pointer;" onMouseOver="this.style.color='blue'" onMouseOut="this.style.color='black'">Click Here to Visit Sitemap</label>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a target="_blank" href="http://localhost/NIC/css/dist/img/site.png" class='dropdown-item table-responsive'>
-          <img id='zoom' src="http://localhost/NIC/css/dist/img/site.png" alt="Smiley face" height="250" width="250">
-        </a><div class='thumb' attribute='onclick'>
-        </div>
-      </li>
+    </li>
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
@@ -153,11 +144,11 @@
           <i class="fas fa-cog" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
-        <a href='http://localhost/NIC/index.php/contact' class='dropdown-item'>
+        <a href='<?php echo base_url();?>index.php/contact' class='dropdown-item'>
           <i class="fas fa-phone text-green "></i> Contact
         </a>
         <div class="dropdown-divider"></div>
-        <a href='http://localhost/NIC/index.php/Login/logout' class='dropdown-item'>
+        <a href='<?php echo base_url();?>index.php/Login/logout' class='dropdown-item'>
           <i class="fas fa-power-off text-danger "></i> Logout
         </a>
         </div>
@@ -193,20 +184,20 @@ foreach($noti1 as $row){
 }
 ?>  
 
-    <script src="http://localhost/NIC/css/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url();?>css/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
-    <script src="http://localhost/NIC/css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="<?php echo base_url();?>css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- date-range-picker -->
     <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     
     <!-- ChartJS -->
-    <script src="http://localhost/NIC/css/plugins/chart.js/Chart.min.js"></script>
+    <script src="<?php echo base_url();?>css/plugins/chart.js/Chart.min.js"></script>
     <!-- AdminLTE App -->
-    <script src="http://localhost/NIC/css/dist/js/adminlte.min.js"></script>
+    <script src="<?php echo base_url();?>css/dist/js/adminlte.min.js"></script>
     <!-- AdminLTE for demo purposes -->
-    <script src="http://localhost/NIC/css/dist/js/demo.js"></script>
+    <script src="<?php echo base_url();?>css/dist/js/demo.js"></script>
     <!-- page script -->
     
     <script>

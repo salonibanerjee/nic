@@ -40,7 +40,7 @@
                             <li><span><a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#page23" aria-expanded="false" aria-controls="page23"><i class="collapsed"><i class="fas fa-user"></i></i>
                                 <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>index.php/Summary/profile">Profile</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page23" aria-expanded="false" aria-controls="page23"><i class="fas fa-plus-circle"></i></a></a></span>
                                 <ul><div id="page23" class="collapse">
-                                    <li><span><i class="fas fa-user-edit"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/profile/edit_profile"> Edit Profile</a></span></li>
+                                    <li><span><i class="fas fa-user-edit"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/edit_profile"> Edit Profile</a></span></li>
                                     <li><span><i class="fa fa-key"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/profile/password_change_within"> Change Password</a></span></li></div>
                                 </ul>
                             </li>

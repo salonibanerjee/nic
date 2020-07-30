@@ -12,16 +12,16 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex" >
         <div class="image">
           <?php if($image==""||$image==NULL){
-            echo "<img src='http://localhost/NIC/css/dist/img/avatar00.png' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
+            echo "<img src='".base_url()."css/dist/img/avatar00.png' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
           }else{
             echo "<img src='data:image/jpeg;base64,$image' class='img-circle elevation-2' alt='User Image' style='width:35px; height:35px;'>";
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;" id="x" class="x">
-          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
-          <a href="http://localhost/NIC/index.php/Summary/profile" class="d-block"><small><?php echo str_replace('@','[at]',str_replace('.','[dot]',$username)); ?></small></a>
+          <a href="<?php echo base_url();?>index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
+          <a href="<?php echo base_url();?>index.php/Summary/profile" class="d-block"><small><?php echo str_replace('@','[at]',str_replace('.','[dot]',$username)); ?></small></a>
           <?php if($update_prof==1){
-            echo "<a href='http://localhost/NIC/index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
+            echo "<a href='<?php echo base_url();?>index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
           </div>
                   
@@ -49,31 +49,31 @@
             foreach($var as $x){
               if($x['view_sidebar']==1){
                 $var1=current_url();
-                $var2= 'http://localhost/NIC/index.php/'.$x['link'];
+                $var2= '<?php echo base_url();?>index.php/'.$x['link'];
                 echo "<li class='nav-item'>";
                 if($var1==$var2){
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                 }elseif(strpos($var1,'load')!=FALSE){
                   if(strpos($var1,'Get_table')!=FALSE){
                     if($x['privilege_id_fk']==5){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==6){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }elseif(strpos($var1,'View_data')!=FALSE){
                     if($x['privilege_id_fk']==6){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==5){
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }
                 }else
                   if($x['privilege_id_fk']==5 || $x['privilege_id_fk']== 6 ){
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }else
-                    echo "<a href='http://localhost/NIC/index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
         
                   echo "<i class='nav-icon fas ".$icon[$x['privilege_id_fk']]."'></i>";
                 echo "<p>";
