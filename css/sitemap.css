@@ -1,0 +1,75 @@
+.tree li {
+    list-style-type:none;
+    margin:0;
+    padding:10px 5px 0 5px;
+    position:relative;
+}
+.tree li::before, 
+.tree li::after {
+    content:'';
+    left:-20px;
+    position:absolute;
+    right:auto
+}
+.tree li::before {
+    border-left:1.5px solid #00561C;
+    bottom:50px;
+    height:100%;
+    top:0;
+    width:1px
+}
+.tree li::after {
+    border-top:1.5px solid #00561C;
+    height:20px;
+    top:25px;
+    width:25px
+}
+.tree li span {
+    -moz-border-radius:5px;
+    -webkit-border-radius:5px;
+    border:1px solid #0AD84D;
+    border-radius:3px;
+    display:inline-block;
+    padding:3px 8px;
+    text-decoration:none;
+    cursor:pointer;
+    background: #C7FFD9;
+}
+.tree>ul>li::before,
+.tree>ul>li::after {
+    border:0
+}
+.tree li:last-child::before {
+    height:27px
+}
+.tree li span:hover {
+    background: #68F383;
+    border:1px solid #94a0b4;
+    }
+
+[aria-expanded="false"] > .expanded,
+[aria-expanded="true"] > .collapsed {
+  display: none;
+}
+.und:hover{
+    text-decoration: underline;
+}
+
+.img-magnifier-glass {
+    position: absolute;
+    z-index: 3;
+    border: 1.5px solid #00561C;
+    border-radius: 10%;
+    cursor: none;
+    /*Set the size of the magnifier glass:*/
+    width: 300px;
+    height: 300px;
+    opacity:0;
+    pointer-events:none;
+  }
+  a:hover .img-magnifier-glass{
+    opacity:1;
+    pointer-events:initial;
+  }
+    
+    

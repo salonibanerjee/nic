@@ -97,8 +97,8 @@
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-right" style="max-height:800px; max-width:750px; padding:3px;">
-        <a href='#' class='dropdown-item'>
-        <label>Hover to enlarge</label>
+        <a href='<?php echo base_url();?>index.php/Summary/sitemap' class='dropdown-item'>
+        <label style="cursor:pointer;" onMouseOver="this.style.color='blue'" onMouseOut="this.style.color='black'">Click Here to Visit Sitemap</label>
         </a>
         <div class="dropdown-divider"></div>
         <a target="_blank" href="http://localhost/NIC/css/dist/img/site.png" class='dropdown-item table-responsive'>
