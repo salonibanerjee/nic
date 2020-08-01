@@ -49,7 +49,8 @@
             foreach($var as $x){
               if($x['view_sidebar']==1){
                 $var1=current_url();
-                $var2= '<?php echo base_url();?>'.$x['link'];
+                $var1=str_replace('index.php/','',$var1);
+                $var2= base_url().$x['link'];
                 echo "<li class='nav-item'>";
                 if($var1==$var2){
                     echo "<a href='".base_url()."".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
