@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Super Admin</li>
           </ol>
         </div>
@@ -33,7 +33,7 @@
               <div class="icon">
                 <i class="ion ion-person-add"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/signup" class="small-box-footer bg-orange">Create New User <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/signup" class="small-box-footer bg-orange">Create New User <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -48,7 +48,7 @@
               <div class="icon">
                 <i class="fa fa-user-times"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/fetch_login" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/fetch_login" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
             </div>
             </div>
 
@@ -63,7 +63,7 @@
               <div class="icon">
                 <i class="fa fa-users"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/fetch_user_desig_type" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/fetch_user_desig_type" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -78,7 +78,7 @@
               <div class="icon">
                 <i class="fa fa-user-secret"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/fetch_user_privilege" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/fetch_user_privilege" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
         </div>
@@ -96,7 +96,7 @@
               <div class="icon">
                 <i class="fa fa-file"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/page_view" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/page_view" class="small-box-footer">Turn ON/OFF <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -111,7 +111,7 @@
               <div class="icon">
                 <i class="fas fa-th-list"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/seek_record" class="small-box-footer bg-success">Show Record <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/seek_record" class="small-box-footer bg-success">Show Record <i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 
@@ -126,7 +126,7 @@
               <div class="icon">
                 <i class="fa  fa-history"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/audit_log" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/audit_log" class="small-box-footer">View Particular Audit Log <i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
 
@@ -141,7 +141,7 @@
               <div class="icon">
                 <i class="fa  fa-calendar"></i>
               </div>
-              <a href="<?php echo base_url();?>index.php/Super_Admin/dba_fyear_range" class="small-box-footer">Enter DBA financial year<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url();?>Super_Admin/dba_fyear_range" class="small-box-footer">Enter DBA financial year<i class="fas fa-arrow-circle-right"></i></a>
             </div><!--small box-->
             </div>
         </div>
@@ -159,7 +159,7 @@
               <div class="icon">
                 <i class="fa fa-comments"></i>
               </div>
-              <a href="<?php echo base_url(); ?>index.php/Super_Admin/issues" class="small-box-footer">Check<i class="fas fa-arrow-circle-right"></i></a>
+              <a href="<?php echo base_url(); ?>Super_Admin/issues" class="small-box-footer">Check<i class="fas fa-arrow-circle-right"></i></a>
             </div>
           </div>
 

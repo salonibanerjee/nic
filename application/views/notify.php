@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Notification</li>
           </ol>
         </div>
@@ -159,7 +159,7 @@
 		   }
 
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Summary/getrelevantlocation",
+            url: "<?php echo base_url();?>Summary/getrelevantlocation",
 			      data:{
 				            "<?php echo $this->security->get_csrf_token_name();?>": csrf_token,
                     audience_desig:audience_desig

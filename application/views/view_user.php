@@ -9,7 +9,7 @@
         </div>
 		<div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Super_Admin">Super Admin</a></li>
             <li class="breadcrumb-item active">User Details</li>
           </ol>
         </div>
@@ -113,7 +113,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
 		$.ajax({
-			url: "<?php echo base_url();?>index.php/Super_Admin/inactive_login",
+			url: "<?php echo base_url();?>Super_Admin/inactive_login",
 			type: "POST",
 			data:{ "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
 				id:id,state:state},
@@ -129,11 +129,11 @@
 					csrf_token = result.csrf_token;
 				}
 				if(result == 'done'){
-					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_login");
-					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_login";
+					console.log("<?php echo base_url();?>Super_Admin/fetch_login");
+					window.location="<?php echo base_url();?>Super_Admin/fetch_login";
 				}else{
-					console.log("<?php echo base_url();?>index.php/Super_Admin/fetch_login");
-					window.location="<?php echo base_url();?>index.php/Super_Admin/fetch_login";
+					console.log("<?php echo base_url();?>Super_Admin/fetch_login");
+					window.location="<?php echo base_url();?>Super_Admin/fetch_login";
 			
 				}
 			}   

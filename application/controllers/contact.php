@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class contact extends MY_Controller {
     public function index(){
         if($this->session->userdata('logged_in')==""){
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 			exit;
 		}
 		$this->cache_update();

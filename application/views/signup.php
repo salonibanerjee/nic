@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Super_Admin">Super Admin</a></li>
             <li class="breadcrumb-item active">Add User</li>
           </ol>
         </div>
@@ -132,7 +132,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
 		$.ajax({
-			url: "<?php echo base_url();?>index.php/Super_Admin/signupdo",
+			url: "<?php echo base_url();?>Super_Admin/signupdo",
 			type: "POST",
 			data:{  "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
 				email:email,district:district,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
@@ -165,7 +165,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/fetch_user_type",
+            url: "<?php echo base_url();?>Super_Admin/fetch_user_type",
 			data:{
 				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
 			},
@@ -201,7 +201,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/fetch_district",
+            url: "<?php echo base_url();?>Super_Admin/fetch_district",
 			data:{
 				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
 			},
@@ -238,7 +238,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/office",
+            url: "<?php echo base_url();?>Super_Admin/office",
 			data:{
 				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
 			},
@@ -277,7 +277,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/department",
+            url: "<?php echo base_url();?>Super_Admin/department",
             type: "POST",
 			data:
 			{
@@ -321,7 +321,7 @@
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/designation",
+            url: "<?php echo base_url();?>Super_Admin/designation",
             type: "POST",
 			data:
 			{
@@ -365,7 +365,7 @@
 		   console.log("csrf_token: "+csrf_token);
 		
         $.ajax({
-            url: "<?php echo base_url();?>index.php/Super_Admin/location_data",
+            url: "<?php echo base_url();?>Super_Admin/location_data",
             type: "POST",
 			data:
 			{

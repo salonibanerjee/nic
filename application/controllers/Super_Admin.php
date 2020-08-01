@@ -10,7 +10,7 @@ class Super_Admin extends MY_Controller {
 	//loads the Super Admin dashboard----------------------------------------------------------------------------------------------------
     public function index(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(8);
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -50,7 +50,7 @@ class Super_Admin extends MY_Controller {
 	//loads the meeting schedule page------------------------------------------------------------------------------------------------------
     public function meeting_schedule(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->load->model('Crud_model');
 		$this->check_privilege(17);
@@ -125,7 +125,7 @@ class Super_Admin extends MY_Controller {
 	//loads the set notification page-----------------------------------------------------------------------------------------------------
     public function notification(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->load->model('Crud_model');
 		$this->check_privilege(18);
@@ -241,7 +241,7 @@ class Super_Admin extends MY_Controller {
 	//loads the dba financial year range page----------------------------------------------------------------------------------------------
 	public function dba_fyear_range(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(15);
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -299,7 +299,7 @@ class Super_Admin extends MY_Controller {
 
 	public function issues(){
 		if($this->session->userdata('logged_in')==""){
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 			exit;
 		}
 		$this->cache_update();
@@ -340,7 +340,7 @@ class Super_Admin extends MY_Controller {
 	//------------------------------------------------------------------------ 
     public function signup(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		//mandatory requirements for pages loading nav and sidebar
 		$this->cache_update();
 		$this->check_privilege(9);
@@ -610,7 +610,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_login(){  //get all records from database    
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(10);
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -681,7 +681,7 @@ class Super_Admin extends MY_Controller {
 	function fetch_user_privilege(){  //get all records from database  
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(12);
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -753,7 +753,7 @@ class Super_Admin extends MY_Controller {
 	{      
 		//mandatory requirements for pages loading nav and sidebar
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(11);
 		$this->load->driver('cache',array('adapter' => 'file'));
@@ -822,7 +822,7 @@ class Super_Admin extends MY_Controller {
 	function page_view()  //get all records from database  
 	{      
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(13);
 		//mandatory requirements for pages loading nav and sidebar
@@ -888,7 +888,7 @@ class Super_Admin extends MY_Controller {
 //Scheme Records show page---------------------------------------------------------------------------------------------------------
 function seek_record(){
 	if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(16);
 		//mandatory requirements for pages loading nav and sidebar
@@ -1000,7 +1000,7 @@ function seek_record(){
 					if($d == NULL || $fields == NULL){ ?>
 						<script> alert("No record found")</script> <?php
 						
-						header("Location: http://localhost/NIC/index.php/Super_Admin/seek_record");
+						header("Location: ".$this->config->base_url()."Super_Admin/seek_record");
 						exit();
 					}else{
 						if($d != 0){
@@ -1025,7 +1025,7 @@ function seek_record(){
 	function audit_log()
 	{
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 			$this->cache_update();
 			$this->check_privilege(14);
 		//mandatory

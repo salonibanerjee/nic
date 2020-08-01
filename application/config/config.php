@@ -525,4 +525,4 @@ $config['protocol'] = 'smtp';
 $config['smtp_host'] = 'smtp.gmail.com';
 $config['smtp_port'] = '587';
 $config['smtp_user']= 'saloniextra1@gmail.com';
-$config['smtp_pass']= 'saloni@123@0';
+$config['smtp_pass']= 'saloni@123@00';

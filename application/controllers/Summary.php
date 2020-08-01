@@ -14,7 +14,7 @@ class summary extends MY_Controller {
 	public function index()
 	{	
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(1);
 		$this->load->model('profile_model');
@@ -513,7 +513,7 @@ class summary extends MY_Controller {
 	//loads the profile of the logged in user
 	public function profile(){
 		if($this->session->userdata('logged_in')==""){
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 			exit;
 		}
 		$this->cache_update();
@@ -545,7 +545,7 @@ class summary extends MY_Controller {
 	//loads the edit profile page for the logged in user
 	public function edit_profile(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->load->model('Crud_model');
 		$this->cache_update();
 		$this->check_privilege(4);
@@ -655,7 +655,7 @@ class summary extends MY_Controller {
 	//loads and performs Password change when logged in
 	public function password_change_within(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->load->model('Crud_model');
 		$this->check_privilege(3);
@@ -697,7 +697,7 @@ class summary extends MY_Controller {
                                             'Password Updated Successfully',
 											$this->session->userdata('uid'));
 				$this->db->trans_complete();
-				echo "http://localhost/nic/index.php/Summary/profile";
+				echo $this->config->base_url()."Summary/profile";
             }else{
 				echo "<p>Old Password is wrong.</p>\n";
             }
@@ -706,7 +706,7 @@ class summary extends MY_Controller {
 
 	public function sitemap(){
 		if($this->session->userdata('logged_in')==""){
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 			exit;
 		}
 		$this->cache_update();

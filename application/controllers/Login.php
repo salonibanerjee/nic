@@ -71,9 +71,9 @@ class Login extends MY_Controller {
                             //user_type_cache
                         unset($_SESSION['salt']);
                         if($this->Admin_model->check_first_user()==1){
-                            echo "http://localhost/NIC/index.php/Login/password_change_first_user";
+                            echo $this->config->base_url()."Login/password_change_first_user";
                         }else
-                            echo $this->config->base_url()."index.php/".$this->cache->get('User_type'.$var)['user_privilege'][0]['link'];
+                            echo $this->config->base_url()."".$this->cache->get('User_type'.$var)['user_privilege'][0]['link'];
                     }else{
                         echo "<p>Access Denied</p>";
                     }
@@ -92,7 +92,7 @@ class Login extends MY_Controller {
     //to logout and destroy the session and redirects back to login page----------------------------------------------------------------
     public function logout(){
         if($this->session->userdata('logged_in')=="")
-            header("Location: http://localhost/NIC/index.php/Login");
+            header("Location: ".$this->config->base_url()."Login");
         else{
             $this->load->model('Crud_model');
             $this->db->trans_off();
@@ -105,7 +105,7 @@ class Login extends MY_Controller {
             $this->db->trans_complete();
             $this->session->set_userdata('logged_in', FALSE);
             $this->session->sess_destroy();
-            redirect(base_url()."index.php/Login");
+            redirect(base_url()."Login");
         }
     }
 
@@ -127,9 +127,9 @@ class Login extends MY_Controller {
             $headers = "From: MPR Portal";
             $xy=mail($email, $subject, $body, $headers);
             if($xy)
-                echo "http://localhost/nic/index.php/Login";
+                echo $this->config->base_url()."Login";
             else
-                echo "*http://localhost/nic/index.php/Login";
+                echo $this->config->base_url()."Login";
         }
     }
 
@@ -155,9 +155,9 @@ class Login extends MY_Controller {
                 $this->db->trans_start();
                 $this->Admin_model->update_login($user,$password);
                 $this->db->trans_complete();
-                echo "http://localhost/nic/index.php/Login";
+                echo $this->config->base_url()."Login";
             }else{
-                echo "*http://localhost/nic/index.php/Login";
+                echo $this->config->base_url()."Login";
             }
         }
     }
@@ -182,7 +182,7 @@ class Login extends MY_Controller {
             $this->Admin_model->update_login($user,$password);
             $this->Admin_model->update_first_pass($user);
             $this->db->trans_complete();
-            echo "http://localhost/nic/index.php/Login";
+            echo $this->config->base_url()."Login";
         }
     }
 

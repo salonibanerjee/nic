@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Summary">Home</a></li>
             <li class="breadcrumb-item active">Fund</li>
           </ol>
         </div>
@@ -152,7 +152,7 @@ $("#form").on("submit", function (event) {
 $(document).ready(function() {
   var table=$('#example1').DataTable( {
     ajax: {
-        url: "<?php echo base_url();?>index.php/Fund/fetchdata",
+        url: "<?php echo base_url();?>Fund/fetchdata",
         dataSrc: 'data'
     },
     columns: [

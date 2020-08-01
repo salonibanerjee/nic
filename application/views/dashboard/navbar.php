@@ -8,7 +8,7 @@
     $var1=current_url();
     $m=0;
     foreach($varx as $x){
-      $var2 = base_url().'index.php/'.$x['link'];
+      $var2 = base_url().''.$x['link'];
       if($var1 == $var2 ){
         echo "<title>".$x['page_name']."</title>";
       }else{
@@ -69,13 +69,13 @@
         <a id="pie-btn" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
+        <a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/contact" class="nav-link">Contact</a>
+        <a href="<?php echo base_url();?>contact" class="nav-link">Contact</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/Login/logout" class="nav-link">Logout</a>
+        <a href="<?php echo base_url();?>Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
     
@@ -87,13 +87,13 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
+      <a class="nav-link" href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
         <i class="fas fa-home" style="font-size:27px;"></i>
       </a>
     </li>
 
     <li class="nav-item" >
-        <a class="nav-link" href="<?php echo base_url();?>index.php/Summary/sitemap">
+        <a class="nav-link" href="<?php echo base_url();?>Summary/sitemap">
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
     </li>
@@ -144,11 +144,11 @@
           <i class="fas fa-cog" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
-        <a href='<?php echo base_url();?>index.php/contact' class='dropdown-item'>
+        <a href='<?php echo base_url();?>contact' class='dropdown-item'>
           <i class="fas fa-phone text-green "></i> Contact
         </a>
         <div class="dropdown-divider"></div>
-        <a href='<?php echo base_url();?>index.php/Login/logout' class='dropdown-item'>
+        <a href='<?php echo base_url();?>Login/logout' class='dropdown-item'>
           <i class="fas fa-power-off text-danger "></i> Logout
         </a>
         </div>
@@ -227,7 +227,7 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 	  
 	    setInterval(function(){
 			  $.ajax({
-				  url: "<?php echo base_url();?>index.php/Summary/fetch_notifs",
+				  url: "<?php echo base_url();?>Summary/fetch_notifs",
           success: function(result){
 				    if(result == "Found"){
               toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
@@ -240,7 +240,7 @@ function sendRequest(){ //requests for new notifs every 10 seconds
 
 function send_nodal(){ //requests for new notifs every 10 seconds
       $.ajax({
-        url: "<?php echo base_url();?>index.php/Summary/nodal_alert",
+        url: "<?php echo base_url();?>Summary/nodal_alert",
         success: function(result){
             if(result=="found")
               toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
