@@ -260,7 +260,7 @@ function relo(a){
       data:b,
       success:function(data, textStatus, jqXHR) 
         {
-          console.log("submit");
+          console.log("submit2");
             data1=JSON.parse(data);
             if(data1){
               for (x in data1) {
@@ -326,7 +326,7 @@ $("#form").on("submit", function (event) {
         $("#draft")[0].reset();
         relo(1);
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
-        console.log("submit");
+        console.log("submit1");
       }
     }
   });

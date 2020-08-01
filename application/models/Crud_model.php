@@ -167,6 +167,11 @@ class Crud_model extends CI_Model {
         //draft data fetch from draft table foe current user-------------------------------------------------------------------------
         public function draft_data_fetch($table_name){
                 $var = $this->session->userdata('location_code');
+                $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                return $last_row;
+        }
+        public function draft_data_fetch2($table_name){
+                $var = $this->session->userdata('location_code');
                 $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row_array();
                 return $last_row;
         }

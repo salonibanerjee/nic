@@ -100,7 +100,7 @@ class Get_table extends MY_Controller {
             $ab=$this->Crud_model->draft_filter($n."_draft",$mon,$yr);
             echo json_encode($ab);
         }else{
-            $ab=$this->Crud_model->draft_data_fetch($n."_draft");
+            $ab=$this->Crud_model->draft_data_fetch2($n."_draft");
             echo json_encode($ab);
         }
     }
