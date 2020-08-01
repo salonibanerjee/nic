@@ -249,7 +249,7 @@ for (i = 0; i < li.length; i++) {
 function relo(a){
   //console.log($("#modmonth").val());
   var b=$("#draft").serialize();
-  if(a==1){
+  if(a){
     b=0;
   }
   //console.log($("#draft").serialize());
