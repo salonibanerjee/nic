@@ -248,15 +248,16 @@ for (i = 0; i < li.length; i++) {
 }
 function relo(a){
   //console.log($("#modmonth").val());
+  var b=$("#draft").serialize();
   if(a==1){
-    $("#modmonth").val(0);
+    b=0;
   }
   //console.log($("#draft").serialize());
   $.ajax(
     {
       url:$("#draft").attr("action"),
       type:"POST",
-      data:$("#draft").serialize(),
+      data:b,
       success:function(data, textStatus, jqXHR) 
         {
           console.log("submit");
