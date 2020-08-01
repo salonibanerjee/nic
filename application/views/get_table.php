@@ -151,19 +151,11 @@
                           }else{
                               echo "<li class='nav-item'>";
                               echo "<a  class='nav-link'>";
-                              if(isset($draft_data->$row)){
-                                  if($s_name[$i]=="month")
-                                      echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."1>".$month[$draft_data->$row]."</div>"."</span>";
-                                  else
-                                      echo "$s_name[$i]"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."1>".$draft_data->$row."</div>"."</span>";
-                              }
-                              else{
                                 if($s_name[$i]=="month"){
-                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."1>"."NULL"."</div>"."</span>";
+                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."_data>"."NULL"."</div>"."</span>";
                                 }else{
-                                  echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."1>"."NULL"."</div>"."</span>";
+                                  echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."_data>"."NULL"."</div>"."</span>";
                                 }
-                              }
                               echo "</a>";
                               echo "</li>";
                           }
@@ -280,16 +272,16 @@ function relo(a){
               for (x in data1) {
                 if (x!="id_pk" && x!="inserted_at" && x!="ip" && x!="location_code" && x!="login_id_fk" && x!="nodal_check"){
                   if(x=="month")
-                    $("#month1").html(data2[data1[x]]);
+                    $("#month_data").html(data2[data1[x]]);
                   else
-                    $("#"+x+"1").html(data1[x]);
+                    $("#"+x+"_data").html(data1[x]);
                 }
               }
             }else{
-              $("div[id$='1']").html("NULL");
+              $("div[id$='_data']").html("NULL");
               if(a==0){
-                $("#month1").html(data2[$("#modmonth").val()])
-                $("#session1").html($("#modyear").val())
+                $("#month_data").html(data2[$("#modmonth").val()])
+                $("#session_data").html($("#modyear").val())
               }
             }
         },
