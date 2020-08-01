@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
             <li class="breadcrumb-item active">Profile</li>
           </ol>
         </div>
@@ -67,10 +67,10 @@
               
               <div class="row">
                 <div class="col-md-6">
-                <a href="<?php echo base_url();?>index.php/Summary/edit_profile" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Edit Profile</b></a>
+                <a href="<?php echo base_url();?>Summary/edit_profile" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Edit Profile</b></a>
                 </div>
                 <div class="col-md-6">
-                <a href="<?php echo base_url();?>index.php/Summary/password_change_within" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
+                <a href="<?php echo base_url();?>Summary/password_change_within" class="btn btn-block btn-outline-primary mx-auto" style="max-width: 400px"><b>Change Password</b></a>
                 </div>
               </div>
               

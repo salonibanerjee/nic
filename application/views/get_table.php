@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Data Entry</li>
           </ol>
         </div>
@@ -197,21 +197,35 @@
               </button>
             </div>
             <div class="modal-body">
-            <label for='modmonth' form="draft">Month<label>
-            <select id='modmonth' name="modmonth" class="form-control select2 select2-hidden-accessible">
-            <option value='1' selected>January</option>
-            <?php for($x=2;$x<=12;$x++){
-                          echo "<option value='".$x."'>".$month[$x]."</option>";
-                        }?>
-            </select><br>
-            <label for='modyear' form="draft">Year<label>
-            <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
-            <?php $year=intval(date('Y')); 
-            echo "<option value='".$year."' selected>".$year."</option>";
-            for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
-                          echo "<option value='".$x."'>".$x."</option>";
-                        }?>
-            </select>
+            <div class="row">
+              <div class="col-md-3">
+                  <label style="padding-top:5px;">Month:</label>
+              </div>
+              <div class="col-md-9">
+                <select id='modmonth' name="modmonth" class="form-control">
+                <option value='1' selected>January</option>
+                <?php for($x=2;$x<=12;$x++){
+                              echo "<option value='".$x."'>".$month[$x]."</option>";
+                            }?>
+                </select>
+              </div>
+            
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-3">
+                  <label style="padding-top:5px;">Year:</label>
+              </div>
+              <div class="col-md-9">
+                <select id='modyear' name="modyear" class="form-control">
+                <?php $year=intval(date('Y')); 
+                echo "<option value='".$year."' selected>".$year."</option>";
+                for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
+                              echo "<option value='".$x."'>".$x."</option>";
+                            }?>
+                </select>
+                </div>
+            </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="submit" id="draft_sub" name="draft_sub" class="btn btn-primary" form="draft">Apply</button>

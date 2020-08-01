@@ -12,7 +12,7 @@ class View_data extends MY_Controller {
     //loads dynamically the data for schemes as selected from sidebar tree...the parameter takes the scheme name-----------------------
     public function load($n=""){
         if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
         $this->cache_update();
         $this->check_privilege(6);
         $this->scheme_privilege();
@@ -35,7 +35,7 @@ class View_data extends MY_Controller {
             ?>
                      <script type=text/javascript>
                         alert("Meeting running");
-                        window.location.href = "http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>";
+                        window.location.href = "<?php echo $this->config->base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>";
                     </script>
             <?php
         }else{

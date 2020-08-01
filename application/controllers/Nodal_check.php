@@ -7,7 +7,7 @@ class Nodal_check extends MY_Controller {
 	//loads the nodal check page for the nodal officers----------------------------------------------------------------------------------
 	public function index(){	
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
 		$this->check_privilege(7);
         $this->load->driver('cache',array('adapter' => 'file'));
@@ -30,7 +30,7 @@ class Nodal_check extends MY_Controller {
             ?>
                      <script type=text/javascript>
                         alert("Meeting running");
-                        window.location.href = "http://localhost/NIC/index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>";
+                        window.location.href = "<?php echo $this->config->base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>";
                     </script>
             <?php
 		
@@ -102,7 +102,7 @@ class Nodal_check extends MY_Controller {
                 ?>
                         <script type=text/javascript>
                             alert("Value accepted");
-                            window.location.href = "http://localhost/NIC/index.php/Nodal_check";
+                            window.location.href = "<?php echo $this->config->base_url();?>Nodal_check";
                         </script>
                 <?php
             }
@@ -124,7 +124,7 @@ class Nodal_check extends MY_Controller {
 				?>
                         <script type=text/javascript>
                             alert("Value rejected");
-                            window.location.href = "http://localhost/NIC/index.php/Nodal_check";
+                            window.location.href = "<?php echo $this->config->base_url();?>Nodal_check";
                         </script>
                 <?php
             }

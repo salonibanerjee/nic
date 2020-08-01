@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary/profile">Profile</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Summary/profile">Profile</a></li>
             <li class="breadcrumb-item active">Edit Profile</li>
           </ol>
         </div>
@@ -223,7 +223,7 @@ $("#form").on("submit", function (event) {
         //$('#example1').DataTable().ajax.reload();
         //$("#submit").notify("Value accepted",{position:"left", className: 'success'});
         alert("Profile Updated Successfully");
-        window.location.assign("<?php echo base_url();?>index.php/Summary/profile")
+        window.location.assign("<?php echo base_url();?>Summary/profile")
         console.log("submit");
       }
     }
