@@ -97,9 +97,11 @@ class Get_table extends MY_Controller {
         $mon=$this->input->post('modmonth');
         $yr = $this->input->post('modyear');
         if(isset($mon) && isset($yr)){
-            return $this->Crud_model->draft_filter($n."_draft",$mon,$yr);
+            $ab=$this->Crud_model->draft_filter($n."_draft",$mon,$yr);
+            echo json_encode($ab);
         }else{
-            return $this->Crud_model->draft_data_fetch($n."_draft");
+            $ab=$this->Crud_model->draft_data_fetch($n."_draft");
+            echo json_encode($ab);
         }
     }
 
