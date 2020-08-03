@@ -112,7 +112,8 @@
 			$('#field_name').html("");
 			var email = $('#email').val();
 			var district = $('#district').val();
-			var user_type = $('#desig').val();
+      //var user_type = $('#desig').val();
+      var user_type = $('#desig').val().split('_')[0];
 			var region_code = $('#region_code').val();
 			var dept = $('#dept').val();
 			var office = $('#office').val();

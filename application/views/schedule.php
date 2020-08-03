@@ -43,6 +43,16 @@
               </div>
             </div>
           </div>
+          <div class="row justify-content-center">
+            <div class="info-box" style="background: #FFD8D8; cursor:pointer;" onmouseover="this.style.background='#FF8989'"
+              onmouseout="this.style.background='#FFD8D8'" onclick="deletem()">
+                <span class="info-box-icon bg-danger"><i class="fas fa-trash-alt"></i></span>
+
+                  <div class="info-box-content my-auto">
+                    <span class="info-box-text"><strong>Cancel Previous Meeting</strong></span>
+                  </div>
+                </div>
+          </div>
         </div>
         <div class="row">
           <div class="col-md-12">
@@ -132,4 +142,15 @@ $("#form").on("submit", function (event) {
     }
   });
 });
+
+function deletem(){
+      $.ajax({
+        url: "<?php echo base_url();?>Super_Admin/meeting_cancel",
+        success: function(result){
+            if(result=="cancelled")
+              $("#err").notify("Meeting Cancelled",{position:"left", className: 'success'});
+              $("#form").load(location.href+" #form>*","");
+          }
+      });
+}
 </script>

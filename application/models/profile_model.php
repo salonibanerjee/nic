@@ -175,7 +175,7 @@ class profile_model extends CI_Model {
 	
 	//custom meeting notification show in bell's dropdown menu-------------------------------------------------------------------------
 	public function meeting_notification(){
-		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
+		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get_where('mpr_trans_meeting_schedule',array('active_status'=>1))->row();
 		$s_time = strtotime($last_row->start_time);
 		$e_time = strtotime($last_row->end_time);
 		$now = strtotime(mdate('%Y-%m-%d %H:%i', now()));

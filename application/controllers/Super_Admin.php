@@ -104,7 +104,8 @@ class Super_Admin extends MY_Controller {
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
 			$data=array(
 				'start_time'=> $start_time,
-				'end_time'=> $end_time
+				'end_time'=> $end_time,
+				'active_status'=>1
 			);
 			$this->db->trans_off();
             $this->db->trans_strict(FALSE);
@@ -120,6 +121,32 @@ class Super_Admin extends MY_Controller {
 
 		$ab=array('csrf_token'=>$csrf_token,'res'=>1);
         echo json_encode($ab);
+	}
+
+	public function meeting_cancel(){
+		$this->load->model('Crud_model');
+		$this->load->model('Admin_model');
+		$this->load->model('profile_model');
+		$row = $this->Admin_model->previous_meeting_schedule();
+		$this->db->trans_off();
+        $this->db->trans_strict(FALSE);
+        $this->db->trans_start();
+		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
+			echo "cancelled";
+			$target_audience="NMEET01";
+			$audience_desig=-1;
+			$audience_loc=-1;
+			$noti_head="Cancelled Meeting";
+			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,-1);
+			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Meeting Cancelled',
+											$row->start_time.' - '.$row->end_time);
+		}else{
+			echo "Not cancelled";
+		}
+		$this->db->trans_complete();
 	}
 	
 	//loads the set notification page-----------------------------------------------------------------------------------------------------
