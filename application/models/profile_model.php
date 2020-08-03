@@ -212,6 +212,23 @@ class profile_model extends CI_Model {
         return $result;
 	}
 
+
+//---------------------------------------------------------------------------------------
+
+	public function getfetchdesig(){		//gets user type from database  
+			$q="SELECT * FROM public.mpr_semitrans_user_type ORDER BY desig ASC";
+			$result=$this->db->query($q);
+        return $result;
+	}
+
+	public function getfetchdesigonly(){		//gets designation from database  
+			$q="SELECT * FROM public.mpr_master_designation ORDER BY desig_name ASC";
+			$result=$this->db->query($q);
+        return $result;
+	}
+
+//---------------------------------------------------------------------------------------
+
 	public function custom_notification(){
 		
 		$mydesigid=$this->session->userdata('desig');

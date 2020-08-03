@@ -132,6 +132,49 @@ class MY_Controller extends CI_Controller {
      }
           
     //Realtime notifcation fetch function-----------------------------------------------------------------------------------------------
+    public function getfetchdesig()  
+	{
+	    $result;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->getfetchdesig(); 
+	    //if($query->num_rows()>0){
+		   $data;
+           $i = 0;
+	   	  foreach($query->result_array() as $r){
+                 $code=$r['user_type_id_pk'];
+                 $name=$r['desig'];
+			  $data[$i] = array('code'=>$code,'name'=>$name);
+			  $i = $i+1;
+		  }
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+	   /*}else{
+           $ans = array('status'=>0,'message'=>'no data found');
+	   }*/
+	   echo json_encode($ans);
+     }    
+
+     //----------------------------------------------------------
+     public function getfetchdesigonly()  
+     {
+        $result;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->getfetchdesigonly(); 
+        //if($query->num_rows()>0){
+            $data;
+            $i = 0;
+              foreach($query->result_array() as $r){
+                  $code=$r['desig_id_pk'];
+                  $name=$r['desig_name'];
+               $data[$i] = array('code'=>$code,'name'=>$name);
+               $i = $i+1;
+           }
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+        /*}else{
+            $ans = array('status'=>0,'message'=>'no data found');
+        }*/
+        echo json_encode($ans);
+      }    
+    //Realtime notifcation fetch function-----------------------------------------------------------------------------------------------
     public function fetch_notifs(){
 
         $this->load->driver('cache', array('adapter' => 'file'));

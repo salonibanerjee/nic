@@ -80,7 +80,13 @@
     <div class="col-md-4">
       <div class="card card-primary card-outline mx-auto" >
         <div class="card-body login-card-body">
-          <p class="login-box-msg"><strong>ENTER NOTIFICATION DETAILS</strong></p>
+        <p class="login-box-msg">
+        <strong>
+          <heading_noti>
+            CUSTOM NOTIFICATIONS
+          </heading_noti>
+          </strong>
+          </p>
           <?php echo form_open('Super_Admin/notify','id="form"');?>
           <!--<form method="POST" action="" id="form"> -->
             <div class="input-group mb-3">
@@ -100,7 +106,8 @@
 
     function openingstatus(){
       $("radiobuttonsel").show();
-
+      fetchDesig();
+      fetchDesigonly();
       $('#audience_desig').val('');
       $('#audience_loc').val('');
       $('#audience_desig_only').val('');
@@ -135,6 +142,10 @@
             $("Hide_desig_loc").text(($("Hide_desig_loc").text() == 'Click here to Broadcast to All') ? 'Click here for Custom notification' : 'Click here to Broadcast to All').fadeIn();
         })
 
+        $("heading_noti").fadeOut(function () {
+            $("heading_noti").text(($("Hide_desig_loc").text() == 'Click here to Broadcast to All') ? 'CUSTOM NOTIFICATION':'BROADCAST NOTIFICATION').fadeIn();
+        })
+
     })
 
     $("Refresh_page_after_submit").click(function () {//after submit js refresh
@@ -150,14 +161,12 @@
 
 
     function fetchType() {
-		
       var audience_desig=$('#audience_desig').val()
       console.log("fetchType"+audience_desig);
 		  $("#audience_loc").empty();
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
-
         $.ajax({
             url: "<?php echo base_url();?>Summary/getrelevantlocation",
 			      data:{
@@ -191,11 +200,88 @@
         });
 	  }
 
+    function fetchDesig() {
+      $("#audience_desig").empty();
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
+
+       $.ajax({
+            url: "<?php echo base_url();?>Summary/getfetchdesig",
+			      data:{
+				            "<?php echo $this->security->get_csrf_token_name();?>": csrf_token
+			      },
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			      },
+            success: function (result){
+				    console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+				    if(result.csrf_token){
+				    	csrf_token = result.csrf_token;
+			  	  }
+                if (status == 1) {
+					          var type_item = "<option value=" + "" + "  selected>" + "Select a User Type" + "</option>";
+                        $("#audience_desig").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
+                        $("#audience_desig").append(type_item);
+                    });
+                    var type_item = "<option value=" + "-1" + ">" + "Everyone" + "</option>";
+                        $("#audience_desig").append(type_item);
+
+               }
+            }
+        });
+    }
+
+    function fetchDesigonly() {
+      $("#audience_desig_only").empty();
+		   if(csrf_token==""){
+			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		   }
+
+       $.ajax({
+            url: "<?php echo base_url();?>Summary/getfetchdesigonly",
+			      data:{
+				            "<?php echo $this->security->get_csrf_token_name();?>": csrf_token
+			      },
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			      },
+            success: function (result){
+				    console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+				    if(result.csrf_token){
+				    	csrf_token = result.csrf_token;
+			  	  }
+                if (status == 1) {
+					          var type_item = "<option value=" + "" + "  selected>" + "Select a User Type" + "</option>";
+                        $("#audience_desig_only").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
+                        $("#audience_desig_only").append(type_item);
+                    });
+                    var type_item = "<option value=" + "-1" + ">" + "Everyone" + "</option>";
+                        $("#audience_desig_only").append(type_item);
+
+                }
+            }
+        });
+    }
+
     $("#audience_desig").change(function () {     //userType on change
         var val = $(this).val();
         if(val == ""){
           $("choose_loc").hide();
           $('#audience_loc').val('');
+          //fetchDesig();
         }
         else if(val != ""){
           $('#audience_loc').val('');
@@ -234,13 +320,7 @@
                 <select name="audience_desig" id="audience_desig" class="form-control">      
                   <option value="" selected>Select User Type:</option>
                   
-                  <?php
-                    $q="SELECT * FROM public.mpr_semitrans_user_type WHERE user_type_id_pk IN (SELECT DISTINCT user_type_id_fk FROM public.mpr_semitrans_login)ORDER BY desig ASC";
-                    $resdes=$this->db->query($q);
-                    //pg_fetch_assoc()
-                    foreach($resdes->result_array() as $desig){ 
-                      echo "<option value='".$desig['user_type_id_pk']."'>".$desig['desig']."</option>";
-                    } ?>
+                  
                     <option value="-1">Everyone</option>
                 </select>
 
@@ -276,14 +356,7 @@
               <label>Target Designation</label>      
                 <select name="audience_desig_only" id="audience_desig_only" class="form-control">      
                   <option value="" selected>Select Designation:</option>
-                  
-                  <?php
-                    $q="SELECT * FROM public.mpr_master_designation WHERE desig_id_pk IN (SELECT DISTINCT desig_id_fk FROM public.mpr_semitrans_login)ORDER BY desig_name ASC";
-                    $resdes=$this->db->query($q);
-                    //pg_fetch_assoc()
-                    foreach($resdes->result_array() as $desig){ 
-                      echo "<option value='".$desig['desig_id_pk']."'>".$desig['desig_name']."</option>";
-                    } ?>
+                 
                     <option value="-1">Everyone</option>
                 </select>
                     
@@ -303,15 +376,7 @@
                 </div>
               </div>
             </div>
-            <!--
-            <div class="input-group mb-3">
-              <input name="audience_id" id="audience_id" type="text"  class="form-control" placeholder="Notification code" >
-              <div class="input-group-append">
-                <div class="input-group-text">
-                  <span class="fas fa-envelope"></span>
-                </div>
-              </div>
-            </div>-->
+            
             <div id="errors" style="color:red;"></div>
             <div class="row">
               <div class="col-12">
@@ -399,6 +464,7 @@ $("#form").on("submit", function (event) {
           $("choose_desigloc").show();
           $("choose_desig_only").hide();
           $("#audience_desig_only").val(-1);
+          //fetchDesig();
        });
   });
 
