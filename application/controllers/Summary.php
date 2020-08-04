@@ -63,6 +63,10 @@ class summary extends MY_Controller {
 		if ( ! $foo = $this->cache->get('dashboard_cache_bar2'.$this->session->userdata('loginid'))){
             $foo = $scheme_link;
             $this->cache->save('dashboard_cache_bar2'.$this->session->userdata('loginid'), $foo, 3000);
+		}
+		if ( ! $foo = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))){
+            $foo = array($scheme_link[0], $scheme_link[5], 1, '2020');
+            $this->cache->save('dashboard_cache_comparison'.$this->session->userdata('loginid'), $foo, 3000);
         }
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
@@ -429,6 +433,79 @@ class summary extends MY_Controller {
 		$table_data = array('data' => $fits );
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 
+		//Dashboard Scheme Comparison implementation ---------------------------------------------
+
+		$comp_m = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2];
+		$comp_y = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3];
+
+		$comp_scheme1 = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[0];
+		$comp_scheme2 = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[1];
+
+		if(isset($_POST['comp_submit'])){
+			$comp_scheme1 = $_POST['scheme1'];
+			$comp_scheme2 = $_POST['scheme2'];
+			$comp_m = $_POST['month'];
+			$comp_y = $_POST['year'];
+
+			$this->cache->save('dashboard_cache_comparison'.$this->session->userdata('loginid'), array($comp_scheme1, $comp_scheme2, $comp_m, $comp_y));
+		}
+
+		$loc_schcdID = $this-> Dashboard_model -> getlocID($loc_schcd);
+		$first_scheme=array($comp_scheme1, $comp_scheme2);
+		$scheme_ID=$this-> Dashboard_model ->schID($first_scheme,sizeof($first_scheme),$loc_schcdID);
+
+		$tempresult_prog = $this -> Dashboard_model -> get_alertdata($first_scheme,sizeof($first_scheme),$loc_schcd,$comp_m,$comp_y);
+		$tempschemename = $this -> Dashboard_model -> sch_name($first_scheme,sizeof($first_scheme));
+		$data = array();
+		$schemename=array();
+
+		for($i=0,$j=0;$i<2*sizeof($first_scheme);$i+=2,$j++){
+			if($tempresult_prog[$i]!=0)
+				$per=(int)($tempresult_prog[$i+1]/$tempresult_prog[$i]*100);
+			else
+				$per=0;
+			array_push($data, $per);
+			array_push($schemename,$tempschemename[$j]);
+		}
+	
+		$i=0;
+		$j=0;
+		$comp_name = array();
+		$comp_target = array();
+		$comp_progress = array();
+		$comp_per = array();
+		$comp_sign = array();
+
+		while($i<sizeof($first_scheme))
+		{
+			$find = 'success';
+			if($data[$i]>60)
+				$find='success';
+			else if($data[$i]<60 && $data[$i]>40)
+				$find='warning';
+			else if($data[$i]<=40)
+				$find='danger';
+			array_push($comp_name, $schemename[$i]);
+			array_push($comp_progress, $tempresult_prog[$j+1]);
+			array_push($comp_target, $tempresult_prog[$j]);
+			array_push($comp_per, $data[$i]);
+			array_push($comp_sign,$find);
+				
+			$i++;
+			$j+=2;
+		}
+	
+		$comparison = array(
+			'name' => $comp_name,
+			'target' => $comp_target,
+			'progress' => $comp_progress,
+			'percentage' => $comp_per,
+			'sign' => $comp_sign,
+			'scheme_link' => $scheme_link,
+			'scheme_name' => $scheme_link_name
+		);
+
+		$container['comparison_table'] = $this->load->view('dashboard/comparison_table', $comparison, TRUE);
 
 		// Dashboard Scheme alert implementation
 		$alert_m = 0;
