@@ -2,7 +2,7 @@
   <div class="col">
     <div class="card">
       <div class="card-header bg-light">
-        <h3 class="card-title">Comparison on Schemes</h3>
+        <h3 class="card-title">Comparison on Schemes (<?php $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); echo $month[$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] - 1]."/".$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3]; ?>)</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
           <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#comparison_filter" style="color: black"><i class="fas fa-edit"></i></button>
