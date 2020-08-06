@@ -276,4 +276,13 @@ class profile_model extends CI_Model {
 									'login_id_fk'=>$this->session->userdata('loginid'),'timestamp'=>date('Y-m-d H:i:s')));
 		return $result;
 	}
+
+	public function fetchnotifortable() {//for ajax call to populate table on notify view
+		$mydesig_only=$this->session->userdata('desig');//41
+		$myloc=$this->session->userdata('location_code');//'19111'
+		$mydesig=$this->session->userdata('user_type');	//9
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='".$myloc."') OR (audience_desig_only=".$mydesig_only." AND audience_desig=-1 AND audience_loc='-1'))";
+		$result = $this->db->query($q);
+		return $result;
+	}
 }

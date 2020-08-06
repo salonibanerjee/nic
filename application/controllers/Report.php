@@ -5,6 +5,7 @@ class Report extends MY_Controller
 {
     public function index()
     {
+
     }
 
     //pdfreport is for creating pdf of mpr report.
@@ -17,13 +18,11 @@ class Report extends MY_Controller
         $ses=$mydate['year'];
         $month_name=$mydate['month'];
 
-
-        $sub_div=$this->Report_model->get_sub_division();
+        $loc=$this->session->userdata('location_code');
 
     	$data1=$this->Report_model->get_scheme();
     	$colspan=$this->Report_model->get_colspan();
-    	$location_data=$this->Report_model->get_loc_detail();
-        $attri_detail=$this->Report_model->get_attri();
+    	$location_data=$this->Report_model->get_loc_detail(substr($loc,0,3));
     	$scheme_name=array();
     	$scheme_table_name=array();
         $scheme_year_type=array();
@@ -134,7 +133,7 @@ class Report extends MY_Controller
                     $r++;
                     foreach ($data as $field ) 
                     {
-                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date'||$field=='designation_of_officers')
                         continue;
                         else
                         {
@@ -168,14 +167,20 @@ class Report extends MY_Controller
             for($j=0;$j<$h1;$j++)
             array_push($sum,0);
             $l=0;
+            $l1=0;
             foreach ($loc_area as $k1)
             {
-                if($k1=="SADAR" || $k1=="ULUBERIA")
+                if(strlen($loc_schcd[$l])<=5)
+                {
+                    $l++;
                     continue;
+                }
                 $temp4=array();
-                array_push($temp4,$l+1);
+                array_push($temp4,$l1+1);
                 array_push($temp4,array('data'=> $k1, 'colspan' => 2));
-                array_push($temp4,$sub_div[$l]);
+                //array_push($temp4,$sub_div[$l1]);
+                array_push($temp4,$this->Report_model->get_sub_division($k1));
+                $l1++;
                 $w=0;
                 foreach ($scheme_table_name[$k] as $e) 
                 {
@@ -187,7 +192,7 @@ class Report extends MY_Controller
                         $m=1;
                     foreach ($data as $field ) 
                     {
-                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date'||$field=='designation_of_officers')
                         continue;
                         else
                         {
@@ -242,9 +247,9 @@ class Report extends MY_Controller
                 }
                 for($j=0;$j<$h1;$j++)
                 {
-                    if(($k==0 && ($j==3)) || ($k==1 && ($j==3 || $j==3 || $j==7 || $j==8)) || ($k==4 && ($j==5 || $j==6)) || ($k==5 && ($j==13 || $j==14)) || ($k==6 && ($j==1 || $j==2)))
+                    if(($k==0 && $j==2) || ($k==1 && ($j==2 || $j==7 || $j==6)) || ($k==4 && ($j==5 || $j==4)) || ($k==5 && ($j==13 || $j==12)) || ($k==6 && ($j==1 || $j==0)))
                     {
-                        $sum[$j]=$sum[$j]+($temp4[$j+3]/17);
+                        $sum[$j]=$sum[$j]+($temp4[$j+3]/16);
                     }
                     else
                         $sum[$j]=$sum[$j]+$temp4[$j+3];
@@ -262,9 +267,19 @@ class Report extends MY_Controller
 
     		array_push($scheme_header,$this->Report_model->generate_table($temp3,$ses,$month_name));
     	}
-       $this->Report_model->generate_pdf($scheme_header);
+        $meet_id=$this->Report_model->get_meeting_id();
+       $str=$this->Report_model->generate_pdf($scheme_header);
+       file_put_contents('Meating_id_'.$meet_id.'.pdf', $str);
+       $this->Report_model->update_report_to_db($meet_id,$str);
+       echo "<a href='".$this->config->base_url()."Meating_id_".$meet_id.".pdf' target='_blank'>done</a>";
         
     }
+
+
+
+
+
+
 
     //Excel report generation function.
     public function excelreport()
@@ -274,13 +289,14 @@ class Report extends MY_Controller
         $month=date('m', strtotime($mydate['month']));
         $ses=$mydate['year'];
         $month_name=$mydate['month'];
+        $loc=$this->session->userdata('location_code');
 
-        $sub_div=$this->Report_model->get_sub_division();
+        //$sub_div=$this->Report_model->get_sub_division();
         $data1=$this->Report_model->get_scheme();
         $colspan=$this->Report_model->get_colspan();
-        $location_data=$this->Report_model->get_loc_detail();
-        $attri_detail=$this->Report_model->get_attri();
-        
+        $location_data=$this->Report_model->get_loc_detail(substr($loc,0,4));
+        //$attri_detail=$this->Report_model->get_attri();
+        print_r($location_data);
         $loc_area=array();//location name
         $loc_schcd=array(); // location code
         foreach ($location_data as $key ) 
@@ -342,7 +358,7 @@ class Report extends MY_Controller
                 $data=$this->db->list_fields($scheme_table_name[$k]);
                 foreach ($data as $field ) 
                 {
-                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' ||$field=='designation_of_officers')
                     continue;
                     else
                     {
@@ -364,7 +380,7 @@ class Report extends MY_Controller
                 $data=$this->db->list_fields($scheme_table_name[$k]);
                     foreach ($data as $field ) 
                     {
-                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='designation_of_officers' )
                     continue;
                     else
                     {
@@ -399,17 +415,20 @@ class Report extends MY_Controller
             array_push($tem,0);
         }
         $h=0;
-
-
+        $h2=0;
         //Data insertion....
         foreach ($loc_area as $key ) 
         {
-            if($key=="SADAR" || $key=="ULUBERIA")
-                    continue;
+            if(strlen($loc_schcd[$h])<=5)
+            {
+                $h++;
+                continue;
+            }
             $data1=array();
-            array_push($data1,$h+1);
+            array_push($data1,$h2+1);
             array_push($data1,array('data'=>$key,'colspan'=>2));
-            array_push($data1,$sub_div[$h]);
+            array_push($data1,$this->Report_model->get_sub_division($key));
+            
 
             $su=0;
             $i=0;
@@ -424,7 +443,7 @@ class Report extends MY_Controller
                     $m=1;
                 foreach ($data as $field ) 
                 {
-                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' ||$field=='designation_of_officers' || $field=='projects_name')
                     continue;
                     else
                     {
@@ -480,13 +499,13 @@ class Report extends MY_Controller
             //data insertion finished...
 
             //Average calculation....
-            $tk=array(4,10,11,14,15,42,43,56,57,58,59);
-            for($j=2;$j<$h1+2;$j++)
+            $tk=array(5,11,12,15,16,43,44,57,58,60,59);
+            for($j=3;$j<$h1+3;$j++)
             {
                 if(in_array($j, $tk))
-                $tem[$j-2]=$tem[$j-2]+$data1[$j]/17;
+                $tem[$j-3]=$tem[$j-3]+$data1[$j]/16;
                 else
-                $tem[$j-2]=$tem[$j-2]+$data1[$j];
+                $tem[$j-3]=$tem[$j-3]+$data1[$j];
             }
             array_push($temp['data'], $data1);
             //Average calculation finished.
@@ -496,7 +515,10 @@ class Report extends MY_Controller
         {
             array_push($temp['total'],$key);
         }
+        //print_r($temp);
+        //echo $this->Report_model->generate_table($temp,$ses,$month_name,1);
        $this->Report_model->export_csv($this->Report_model->generate_table($temp,$ses,$month_name,1));
     }
+
 
 }

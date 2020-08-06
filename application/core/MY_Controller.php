@@ -187,8 +187,9 @@ class MY_Controller extends CI_Controller {
         $mydesig=$this->profile_model->get_usertype_id();   //fetching usertype_id_fk
         $myloc=$this->profile_model->get_location_code();//fetching user's location_code
        //UPDATED QUERY
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=$mydesig_only OR audience_desig_only=-1) OR (audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))";
-        $result = $this->db->query($q);
+       $q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='".$myloc."') OR (audience_desig_only=".$mydesig_only." AND audience_desig=-1 AND audience_loc='-1'))";
+	    
+       $result = $this->db->query($q);
         	
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
             $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
@@ -227,6 +228,25 @@ class MY_Controller extends CI_Controller {
                 $this->node=0;
             }
         }
+    }
+
+    //notitable
+    public function getfetchnotitable()
+    {
+        $result;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->fetchnotifortable(); 
+        $data;
+            $i = 0;
+              foreach($query->result_array() as $r){
+                  $id=$r['audience_id'];
+                  $head=$r['notification_head'];
+                  $textt=$r['notification_text'];
+               $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
+               $i = $i+1;
+           }
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+        echo json_encode($ans);
     }
 
 }

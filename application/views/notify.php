@@ -33,28 +33,15 @@
                   </div>
                   <!-- /.card-header -->
                   <div class="card-body" id="refresh">
-                    <table id="example1" class="table table-bordered table-striped table-hover equal-width">
-                      <thead class="bg-warning">
+                    <table id="notitable" class="table table-bordered table-striped table-hover equal-width">
+                      <!--<thead class="bg-warning">
                       <tr>
                         <th>ID</th>
                         <th>Title</th>
                         <th>Notification Body</th>
                       </tr>
-                      </thead>
-                      <tbody>
-                      <?php
-                          
-                          $i=1;
-                          foreach($noti1 as $row){
-                            echo "<tr>";
-                            echo "<td>".$row['audience_id']."</td>";
-                            echo "<td>".$row['notification_head']."</td>";
-                            echo "<td>".$row['notification_text']."</td>";
-                            echo "</tr>";
-                            $i++;
-                          }
-                      ?>
-                      </tbody>
+                      </thead>-->
+                      
                       <tfoot>
                       <tr>
                         <!-- nothing for footer now -->
@@ -103,6 +90,7 @@
 <script>
   $(document).ready(function () {
     openingstatus();
+    tablefetch();
 
     function openingstatus(){
       $("radiobuttonsel").show();
@@ -114,6 +102,45 @@
 
       $("choose_desigloc").hide();
       $("choose_desig_only").hide();
+    }
+
+    function tablefetch() {
+      $("#notitable").empty();
+		  if(csrf_token==""){
+			  csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
+		  }
+      $.ajax({
+            url: "<?php echo base_url();?>Summary/getfetchnotitable",
+			      data:{
+				            "<?php echo $this->security->get_csrf_token_name();?>": csrf_token
+			      },
+            type: "POST",
+            dataType: 'json',
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log("error::" + textStatus, errorThrown);
+			      },
+            success: function (result){
+				    console.log(result);
+                var type_arr = result.data;
+                var status = result.status;
+				    if(result.csrf_token){
+				    	csrf_token = result.csrf_token;
+            }
+                if (status == 1) {
+					          var type_item = "<thead class="+"bg-warning"+"><tr><th>ID</th><th>Title</th><th>Notification Body</th></tr></thread><tbody>";
+                        $("#notitable").append(type_item);
+                    $.each(type_arr, function (idx, val) {
+                        var type_item = "<tr><td>"+ val['ncode']+"</td><td>"+val['nhead']+"</td><td>"+val['ntext']+"</td></tr>";
+                        $("#notitable").append(type_item);
+                    });
+                    var type_item = "</tbody>";
+                        $("#notitable").append(type_item);
+
+               }
+            }
+        });
+      //},5000);
+
     }
 
     $("Hide_desig_loc").click(function () {//Toggle bar
@@ -149,14 +176,14 @@
     })
 
     $("Refresh_page_after_submit").click(function () {//after submit js refresh
-
+      //tablefetch();
       if($("Hide_desig_loc").text() == 'Click here for Custom notification')
       {
         $('#audience_desig').val('-1');
         $('#audience_loc').val('-1');
-        $("choose_desigloc").hide();
-      }
-      
+        $('#audience_desig_only').val('-1');
+        $("choose_desigloc").hide();   
+      }      
     })
 
 
@@ -186,7 +213,7 @@
 				    	csrf_token = result.csrf_token;
 			  	  }
                 if (status == 1) {
-					          var type_item = "<option value=" + "" + "  selected>" + "Select a Location" + "</option>";
+					          var type_item = "<option value=''  selected>" + "Select a Location" + "</option>";
                         $("#audience_loc").append(type_item);
                     $.each(type_arr, function (idx, val) {
                         var type_item = "<option value=" + val['code'] + ">" + val['area'] + "</option>";
@@ -224,7 +251,7 @@
 				    	csrf_token = result.csrf_token;
 			  	  }
                 if (status == 1) {
-					          var type_item = "<option value=" + "" + "  selected>" + "Select a User Type" + "</option>";
+					          var type_item = "<option value=''  selected>" + "Select a User Type" + "</option>";
                         $("#audience_desig").append(type_item);
                     $.each(type_arr, function (idx, val) {
                         var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
@@ -262,7 +289,7 @@
 				    	csrf_token = result.csrf_token;
 			  	  }
                 if (status == 1) {
-					          var type_item = "<option value=" + "" + "  selected>" + "Select a User Type" + "</option>";
+					          var type_item = "<option value='' selected>" + "Select a User Type" + "</option>";
                         $("#audience_desig_only").append(type_item);
                     $.each(type_arr, function (idx, val) {
                         var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
@@ -281,7 +308,6 @@
         if(val == ""){
           $("choose_loc").hide();
           $('#audience_loc').val('');
-          //fetchDesig();
         }
         else if(val != ""){
           $('#audience_loc').val('');
@@ -428,8 +454,11 @@ $("#form").on("submit", function (event) {
       }else{ 
         $('#errors').html("");
         $("form")[0].reset();
-        $("#refresh").load(location.href+" #refresh>*","");
-        //$('#example1').DataTable().ajax.reload();
+        //$("#refresh").load($(this).attr("#notitable"));
+        location. reload();
+        //$("#refresh").load(location.href+" #refresh>*","");
+        //$("#notitable").load(location.href+" #notitable>*","");
+        //$('#notitable').DataTable().ajax.reload();
         $("#err").notify("Value accepted",{position:"left", className: 'success'});
         console.log("submit");
       }
@@ -446,7 +475,7 @@ $("#form").on("submit", function (event) {
 <script>
   $(function () {
     //$("#myTable").DataTable();
-    $('#example1').DataTable({
+    $('#notitable').DataTable({
       "paging": true,
       "lengthChange": false,
       "searching": false,
@@ -464,7 +493,6 @@ $("#form").on("submit", function (event) {
           $("choose_desigloc").show();
           $("choose_desig_only").hide();
           $("#audience_desig_only").val(-1);
-          //fetchDesig();
        });
   });
 
