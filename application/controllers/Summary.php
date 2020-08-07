@@ -130,9 +130,10 @@ class summary extends MY_Controller {
 			if($tempresult_alert[$i]=="false")
 				continue;
 			if($tempresult_alert[$i]!=0)
-				$per=(int)($tempresult_alert[$i+1]/$tempresult_alert[$i]*100);
+				$per=(int)(($tempresult_alert[$i+1]/$tempresult_alert[$i])*100);
 			else
 				$per=0;
+
 			array_push($result_alert,$tempresult_alert[$i],$tempresult_alert[$i+1]);
 			array_push($data, $per);
 			array_push($schemename_alert,$tempschemename_alert[$j]);
@@ -143,12 +144,7 @@ class summary extends MY_Controller {
 		$i=0;
 		while($i<sizeof($data))
 		{
-			if($data[$i]=="false")
-			{
-				$i++;
-				continue;
-			}
-			else if($data[$i]>60)
+			if($data[$i]>60)
 				$find='success';
 			else if($data[$i]<60 && $data[$i]>40)
 				$find='warning';
@@ -157,7 +153,7 @@ class summary extends MY_Controller {
 
 			$d = array(
 				'location' => $i+1,
-				'p_name' => $schemename_pro[$i],
+				'p_name' => $schemename_alert[$i],
 				'sign' => $find,
 				'progress' => $data[$i]
 				);
