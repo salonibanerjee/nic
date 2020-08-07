@@ -116,9 +116,11 @@ class summary extends MY_Controller {
 		$this->load->view('dashboard/filter_view', $filter_progress);
 		
 		//Populating data for Progress View
+
 		$size_sch = sizeof($scheme_name);
-		$scheme_location = $this->Dashboard_model->get_loc($progress_location,sizeof($progress_location));
+		//Scheme actual names
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
+		//progress data
 		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,0,0);
 		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_name,sizeof($scheme_name));
 		$data = array();
@@ -357,11 +359,13 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $bar2_filter_progress);
 		
-		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
-		
+		//Location Code
 		$loc = $this->Dashboard_model->get_loc($location,sizeof($location));
 		
+		//number of scheme selected by user
 		$size_sch = sizeof($scheme_pro);
+
+		//Actual schemename
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
 
 		//Matrix data for Physical progress view

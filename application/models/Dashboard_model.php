@@ -2,6 +2,12 @@
 class Dashboard_model extends CI_Model{
 
     //Matrix data for Physical progress view bar chart
+    /*
+        block -> Locations selected by users
+        sch -> Scheme tables name
+        nblo -> sizeof(block)
+        nsch -> sizeof(sch)
+    */
     function matrix($block,$sch,$nblo,$nsch){
         $i=0;
         $this->db->select('attri_progress,sch_tab_name');
@@ -17,6 +23,11 @@ class Dashboard_model extends CI_Model{
                 }
             }
         }
+        /*
+            b array consist of "progress attribute" of each scheme
+            Example: 
+            scheme = "mpr_scheme_kcc" & progress atribute = "no_of_agricultural_families_covered_by_kcc" 
+        */
 
         $j=0;
         $result=array();
@@ -44,10 +55,22 @@ class Dashboard_model extends CI_Model{
             array_push($result, $d);
             $j++;
         }
+        /*
+            result array formation
+                        sch1        sch2        sch3
+            loc1        pl1s1       pl1s2       pl1s3
+            loc2        pl2s1       pl2s2       pl2s3
+            loc3        pl3s1       pl3s2       pl3s3
+        */
         return $result;
     }
 
     //Alert filter data with there respective filters
+    /*
+        loc -> location of login user (code)
+        sch -> short names of schemes
+        n -> sizof(sch)
+    */
     function alert_filter($loc,$sch,$n){
         $i=0;
         $result=array();
@@ -58,6 +81,7 @@ class Dashboard_model extends CI_Model{
                 $fundallocated=$table->funds_allocated;
                 $fundutillised=$table->funds_utilised;
                 $thre=$table->threshold;
+                //handling divided by zero condition
                 if($fundallocated==0){
                     array_push($result, 'false');
                     array_push($result, 'false');
@@ -81,6 +105,12 @@ class Dashboard_model extends CI_Model{
                 $i++;
             }
         }
+        /*
+            Filtered data according to there schemes thresholds
+            result array formation
+            [sch1 allocated,sch1 utillised,sch2 allocated,sch2 utillised,...]
+            and if we can't find any data we push "false" keyword to filter the data in summary
+        */
         return $result;
     }
 
@@ -103,6 +133,12 @@ class Dashboard_model extends CI_Model{
                 } 
             }
         }
+        /*
+            [HOWRAH,BAGNAN-I,DOMJUR]
+            [1911,1911205,1911103]
+            b array formation 
+            b = [1,6,9]
+        */
         return $b; 
     }
 
@@ -134,6 +170,10 @@ class Dashboard_model extends CI_Model{
                 }
             }
         }
+        /*
+            b array formation
+            [sch1 target,sch1 progress,sch2 target,sch2 progress,...]
+        */
         $j = 0;
         $x = 0;
         $d = array();
@@ -174,8 +214,12 @@ class Dashboard_model extends CI_Model{
                 array_push($d, "false", "false");
             $j=$j+2;
             $x=$x+1;
-
         }
+        /*
+            array d formation
+            d = [sch1 progress,sch1 target,sch2 progress,sch2 target]
+            if data we can't find then we push "false" keyword to filter those data in summary controller 
+        */
         return $d;
     }
 
@@ -210,6 +254,11 @@ class Dashboard_model extends CI_Model{
                 $i++;
             }
         }
+        /*
+            result array formation
+            result = [sch1 allocated,sch1 target,sch2 allocated,sch2 target,...]
+            if we can't find the scheme we push "false" keyword and filter those data in summary controller
+        */
         return $result;
     }
 
@@ -232,6 +281,10 @@ class Dashboard_model extends CI_Model{
                 } 
             }
         }
+        /*
+            b array formation
+            b = [Anandadhara,Kanyashree]
+        */
         return $b; 
     }
 
