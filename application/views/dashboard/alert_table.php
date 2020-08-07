@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <div class="card-header bg-danger">
+      <div class="card-header" style="background-color: #ffb442;">
         <h3 class="card-title">Alerts on Schemes</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
@@ -28,8 +28,8 @@
               <td>{c3}</td>
               <td>{c4}</td>
               <td>
-                <div class="progress progress-xs">
-                  <div class="progress-bar bg-danger" style="width: {c5}%"></div>
+                <div class="progress progress-xs mt-2">
+                  <div class="progress-bar bg-darger" style="width: {c5}%"></div>
                 </div>
               </td>
               <td><span class="badge bg-danger">{c5}%</span></td>

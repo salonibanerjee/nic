@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col">
     <div class="card">
-      <div class="card-header bg-light">
+      <div class="card-header" style="background-color: #80bbff;">
         <h3 class="card-title">Comparison on Schemes (<?php $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); echo $month[$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] - 1]."/".$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3]; ?>)</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
@@ -33,8 +33,8 @@
                   echo "<td>NA</td>";
                 else
                   echo "<td>".$progress[$i]."</td>";
-                echo "<td><div class='progress progress-xs'><div class='progress-bar bg-".$sign[$i]."' style='width: ".$percentage[$i]."%; background-color: black'></div></div></td>";
-                echo "<td>".$percentage[$i]."</td>";
+                echo "<td><div class='progress progress-xs mt-2'><div class='progress-bar bg-".$sign[$i]."' style='width: ".$percentage[$i]."%; background-color: black'></div></div></td>";
+                echo "<td><span class='badge bg-".$sign[$i]."'>".$percentage[$i]."%</span></td>";
                 echo "</tr>";
                 $i++;
               }
