@@ -122,6 +122,7 @@ class summary extends MY_Controller {
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
 		//progress data
 		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,0,0);
+
 		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_name,sizeof($scheme_name));
 		$data = array();
 		$schemename_alert=array();
@@ -170,8 +171,13 @@ class summary extends MY_Controller {
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
-		//-------------------------------------------------------------------------
+		//------------------------------------------------------------------------
+		// $loc_details=$this->Dashboard_model->get_loc_detail($loc_schcd);
+		// print_r($loc_details);
+		// $data1=$this->Dashboard_model->get_scheme();
+		// print_r($data1);
 
+		//-------------------------------------------------------------------------
 		$gp=$this->session->userdata('location_code');
         $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
         $res = $this->db->query($q)->result();

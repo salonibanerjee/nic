@@ -65,6 +65,8 @@ class Dashboard_model extends CI_Model{
         return $result;
     }
 
+    
+
     //Alert filter data with there respective filters
     /*
         loc -> location of login user (code)
@@ -149,6 +151,16 @@ class Dashboard_model extends CI_Model{
         return $table->location_id_pk;
     }
 
+    function get_schemetype($sch){
+        $d=array();
+        foreach($sch as $scheme){
+            $this->db->select('financial_year_id_fk')->where(array('short_name'=>$scheme));
+            $table = $this->db->get('mpr_master_scheme_table')->row();
+            array_push($d,$table->financial_year_id_fk);
+        }
+        return $d;
+    }
+
     
     //geting progress data
     function get_alertdata($n, $num,$loc,$m,$y)
@@ -158,10 +170,14 @@ class Dashboard_model extends CI_Model{
         $b = array();
         $i=0;
         $x=0;
+        $scheme_type=array();
         while($x<$num){
             foreach($table->result() as $row){
                 if($row->sch_tab_name==$n[$x]) 
                 {     
+                    $this->db->select('financial_year_id_fk')->where(array('short_name'=>$n[$x]));
+                    $temptable = $this->db->get('mpr_master_scheme_table')->row();
+                    array_push($scheme_type,$temptable->financial_year_id_fk);
                     $b[$i] = $row->attr_target;
                     $b[$i+1] = $row->attri_progress;
                     $i=$i+2;
@@ -181,12 +197,32 @@ class Dashboard_model extends CI_Model{
     
         while($j<(2*$num))
         {
-            if($m != 0){
-                $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
-                $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
-            } else {
-                $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
-                $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            // if($m != 0){
+            //     $this->db->select($b[$j])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            //     $this->db->select($b[$j+1])->where(array('month'=>$m,'session'=>$y))->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            // } else {
+            //     $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            //     $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
+            // }
+            if($scheme_type[$x]==1||$scheme_type[$x]==4){
+                $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+            }
+            else if($scheme_type[$x]==2){
+                if($m>=1 && $m<=3)
+                {
+                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                }
+                else
+                {
+                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                }
+            }
+            else if($scheme_type[$x]==3){
+                $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
             }
 
             $table2 = $this->db->get($n[$x])->result();

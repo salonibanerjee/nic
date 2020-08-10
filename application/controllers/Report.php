@@ -20,7 +20,7 @@ class Report extends MY_Controller
 
         $loc=$this->session->userdata('location_code');
 
-    	$data1=$this->Report_model->get_scheme();
+        $data1=$this->Report_model->get_scheme();
     	$colspan=$this->Report_model->get_colspan();
     	$location_data=$this->Report_model->get_loc_detail(substr($loc,0,3));
     	$scheme_name=array();
