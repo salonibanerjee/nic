@@ -8,21 +8,26 @@ class Dashboard_model extends CI_Model{
         nblo -> sizeof(block)
         nsch -> sizeof(sch)
     */
-    function matrix($block,$sch,$nblo,$nsch){
+    function matrix($block,$sch,$nblo,$nsch,$month,$ses){
         $i=0;
         $this->db->select('attri_progress,sch_tab_name');
         $table = $this->db->get('mpr_master_dashboard_info');
         $b = array();
+        $scheme_type=array();
         while($i<$nsch){
             foreach($table->result() as $row){    
                 if($row->sch_tab_name==$sch[$i]) 
                 {   
+                    $this->db->select('financial_year_id_fk')->where(array('short_name'=>$sch[$i]));
+                    $temptable = $this->db->get('mpr_master_scheme_table')->row();
+                    array_push($scheme_type,$temptable->financial_year_id_fk);
                     $b[$i] = $row->attri_progress;
                     $i++;
                     break;
                 }
             }
         }
+        //return $scheme_type;
         /*
             b array consist of "progress attribute" of each scheme
             Example: 
@@ -37,7 +42,24 @@ class Dashboard_model extends CI_Model{
             $i=0;
             while($i<$nblo)
             {
-                $this->db->select($b[$j])->where('location_code',$block[$i])->order_by('id_pk','desc')->limit(1);
+                //this lines of code is similar to get_data function int Report_model.php
+                if($scheme_type[$j]==1||$scheme_type[$j]==4){
+                    $this->db->select($b[$j])->where('location_code',$block[$i])->order_by('id_pk','desc')->limit(1);
+                }
+                else if($scheme_type[$j]==2){
+                    if($month>=1&&$month<=3){
+                        $array=array('location_code'=>$block[$i],'session'=>strval($ses));
+                        $this->db->select($b[$j])->where($array)->order_by('id_pk','desc')->limit(1);
+                    }
+                    else{
+                        $array=array('location_code'=>$block[$i],'session'=>strval($ses));
+                        $this->db->select($b[$j])->where($array)->order_by('id_pk','desc')->limit(1);
+                    }
+                }
+                else if($scheme_type[$j]==3){
+                    $array=array('location_code'=>$block[$i],'session'=>strval($ses));
+                    $this->db->select($b[$j])->where($array)->order_by('id_pk','desc')->limit(1);
+                }
                 $table = $this->db->get($sch[$j])->row();
                 $count = 0;
                 $temp = $b[$j];
@@ -204,6 +226,7 @@ class Dashboard_model extends CI_Model{
             //     $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
             //     $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month',"desc")->order_by('session',"desc");
             // }
+            // This lines of code is similar to report get_data functions
             if($scheme_type[$x]==1||$scheme_type[$x]==4){
                 $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
                 $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");

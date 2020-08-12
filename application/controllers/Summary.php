@@ -121,7 +121,11 @@ class summary extends MY_Controller {
 		//Scheme actual names
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
 		//progress data
-		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,0,0);
+
+		$mydate=getdate();
+        $month=date('m', strtotime($mydate['month']));
+
+		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$month,0);
 
 		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_name,sizeof($scheme_name));
 		$data = array();
@@ -371,7 +375,10 @@ class summary extends MY_Controller {
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
 
 		//Matrix data for Physical progress view
-		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro));
+		$mydate=getdate();
+		$month=date('m', strtotime($mydate['month']));
+		$ses=$mydate['year'];
+		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro),$month,$ses);
 
 		$bar_chart2 = array(
 			'id' => 'bar2',
