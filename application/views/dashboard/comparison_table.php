@@ -2,7 +2,7 @@
   <div class="col">
     <div class="card">
       <div class="card-header" style="background-color: #80bbff;">
-        <h3 class="card-title">Comparison on Schemes (<?php $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'); echo $month[$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] - 1]."/".$this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3]; ?>)</h3>
+        <h3 class="card-title">Comparison on Schemes</h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
           <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#comparison_filter" style="color: black"><i class="fas fa-edit"></i></button>
@@ -50,71 +50,174 @@
 
 <!-- Modal -->
 <div id="comparison_filter" class="modal fade" role="dialog">
-  <div class="modal-dialog modal-sm modal-dialog-centered">
+  <div class="modal-dialog modal modal-dialog-centered">
       <!-- Modal content-->
       <div class="modal-content">
       <?php echo form_open('','role="form" method="POST" id="form"');?>
       <!--<form role='form' method="post" id='form'>-->
-            <div class="modal-body">   
-                <div class="form-group">
-                    <label>Select First Scheme</label>
-                    <select class='form-control' name='scheme1'>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-sm-6">
+                  <label>Select First Scheme</label>
+                  <select class='form-control' name='s1'>
                     <?php 
-                        $i = 0;
-                        foreach ($scheme_name as $name) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[0] == $scheme_link[$i])
-                            echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
-                          else
-                            echo "<option value=".$scheme_link[$i].">".$name."</option>";
-                          $i++;
-                        }
+                      $i = 0;
+                      foreach ($scheme_name as $name) {
+                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[0] == $scheme_link[$i])
+                          echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
+                        else
+                          echo "<option value=".$scheme_link[$i].">".$name."</option>";
+                        $i++;
+                      }
                     ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Select Second Scheme</label>
-                    <select class='form-control' name='scheme2'>
-                    <?php 
-                        $i = 0;
-                        foreach ($scheme_name as $name) {
-                            if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[1] == $scheme_link[$i])
-                              echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
-                            else
-                              echo "<option value=".$scheme_link[$i].">".$name."</option>";
-                            $i++;
-                        }
-                    ?>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label>Select Month</label>
-                    <select class='form-control' name='month'>
+                  </select>
+                  <div class="input-group">
+                    <select class='form-control' name='m1'>
                     <?php 
                         $i = 1;
                         $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
                         foreach ($month as $m) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] == "".$i."")
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[4] == "".$i."")
                             echo "<option value=".$i++." selected>".$m."</option>";
                           else
                             echo "<option value=".$i++.">".$m."</option>";
                         }
                     ?>
                     </select>
-                </div>
-                <div class="form-group">
-                    <label>Select Year</label>
-                    <select class='form-control' name='year'>
-                    <?php 
+                    <select class='form-control' name='y1'>
+                      <?php 
                         $year = array("2019", "2020");
                         foreach ($year as $y) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3] == $y)
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[8] == $y)
                             echo "<option value=".$y." selected>".$y."</option>";
                           else
                             echo "<option value=".$y.">".$y."</option>";
                         }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Select Second Scheme</label>
+                  <select class='form-control' name='s2'>
+                    <?php 
+                      $i = 0;
+                      foreach ($scheme_name as $name) {
+                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[1] == $scheme_link[$i])
+                          echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
+                        else
+                          echo "<option value=".$scheme_link[$i].">".$name."</option>";
+                        $i++;
+                      }
+                    ?>
+                  </select>
+                  <div class="input-group">
+                    <select class='form-control' name='m2'>
+                    <?php 
+                        $i = 1;
+                        $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+                        foreach ($month as $m) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[5] == "".$i."")
+                            echo "<option value=".$i++." selected>".$m."</option>";
+                          else
+                            echo "<option value=".$i++.">".$m."</option>";
+                        }
                     ?>
                     </select>
+                    <select class='form-control' name='y2'>
+                      <?php 
+                        $year = array("2019", "2020");
+                        foreach ($year as $y) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[9] == $y)
+                            echo "<option value=".$y." selected>".$y."</option>";
+                          else
+                            echo "<option value=".$y.">".$y."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
                 </div>
+                <div class="col-sm-6">
+                  <label>Select Third Scheme</label>
+                  <select class='form-control' name='s3'>
+                    <?php 
+                      $i = 0;
+                      foreach ($scheme_name as $name) {
+                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] == $scheme_link[$i])
+                          echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
+                        else
+                          echo "<option value=".$scheme_link[$i].">".$name."</option>";
+                        $i++;
+                      }
+                    ?>
+                  </select>
+                  <div class="input-group">
+                    <select class='form-control' name='m3'>
+                    <?php 
+                        $i = 1;
+                        $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+                        foreach ($month as $m) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[6] == "".$i."")
+                            echo "<option value=".$i++." selected>".$m."</option>";
+                          else
+                            echo "<option value=".$i++.">".$m."</option>";
+                        }
+                    ?>
+                    </select>
+                    <select class='form-control' name='y3'>
+                      <?php 
+                        $year = array("2019", "2020");
+                        foreach ($year as $y) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[10] == $y)
+                            echo "<option value=".$y." selected>".$y."</option>";
+                          else
+                            echo "<option value=".$y.">".$y."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-sm-6">
+                  <label>Select Fourth Scheme</label>
+                  <select class='form-control' name='s4'>
+                    <?php 
+                      $i = 0;
+                      foreach ($scheme_name as $name) {
+                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3] == $scheme_link[$i])
+                          echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
+                        else
+                          echo "<option value=".$scheme_link[$i].">".$name."</option>";
+                        $i++;
+                      }
+                    ?>
+                  </select>
+                  <div class="input-group">
+                    <select class='form-control' name='m4'>
+                    <?php 
+                        $i = 1;
+                        $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
+                        foreach ($month as $m) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[7] == "".$i."")
+                            echo "<option value=".$i++." selected>".$m."</option>";
+                          else
+                            echo "<option value=".$i++.">".$m."</option>";
+                        }
+                    ?>
+                    </select>
+                    <select class='form-control' name='y4'>
+                      <?php 
+                        $year = array("2019", "2020");
+                        foreach ($year as $y) {
+                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[11] == $y)
+                            echo "<option value=".$y." selected>".$y."</option>";
+                          else
+                            echo "<option value=".$y.">".$y."</option>";
+                        }
+                      ?>
+                    </select>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="modal-footer">
                 <button type="submit" name="comp_submit" id="comp_submit" class="btn btn-block btn-outline-success btn-sm">Apply Filter</button>
