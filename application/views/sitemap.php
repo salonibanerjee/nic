@@ -11,7 +11,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">Home</a></li>
             <li class="breadcrumb-item active">Sitemap</li>
           </ol>
         </div>
@@ -35,38 +35,38 @@
                         <div id="Web" class="collapse show">
                         <ul>
                         <li><span><a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#page1" aria-expanded="false" aria-controls="page1"><i class="collapsed"><i class="fas fa-tv"></i></i>
-                        <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>index.php/Summary">Dashboard</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page1" aria-expanded="false" aria-controls="page1"><i class="fas fa-plus-circle"></i></a></a></span>
+                        <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>Summary">Dashboard</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page1" aria-expanded="false" aria-controls="page1"><i class="fas fa-plus-circle"></i></a></a></span>
                         <ul><div id="page1" class="collapse">
                             <li><span><a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#page23" aria-expanded="false" aria-controls="page23"><i class="collapsed"><i class="fas fa-user"></i></i>
-                                <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>index.php/Summary/profile">Profile</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page23" aria-expanded="false" aria-controls="page23"><i class="fas fa-plus-circle"></i></a></a></span>
+                                <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>Summary/profile">Profile</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page23" aria-expanded="false" aria-controls="page23"><i class="fas fa-plus-circle"></i></a></a></span>
                                 <ul><div id="page23" class="collapse">
-                                    <li><span><i class="fas fa-user-edit"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/edit_profile"> Edit Profile</a></span></li>
-                                    <li><span><i class="fa fa-key"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/profile/password_change_within"> Change Password</a></span></li></div>
+                                    <li><span><i class="fas fa-user-edit"></i><a class="und" href="<?php echo base_url();?>Summary/edit_profile"> Edit Profile</a></span></li>
+                                    <li><span><i class="fa fa-key"></i><a class="und" href="<?php echo base_url();?>Summary/profile/password_change_within"> Change Password</a></span></li></div>
                                 </ul>
                             </li>
-                            <li><span><i class="fas fa-edit"></i><a class="und" href="<?php echo base_url();?>index.php/Get_table/load/<?php echo $scheme_hier[0]['scheme_link']; ?>"> Input Data</a></span></li>
-                            <li><span><i class="fas fa-list-alt"></i><a class="und" href="<?php echo base_url();?>index.php/View_data/load/<?php echo $scheme_hier[0]['scheme_link']; ?>"> View Data</a></span></li>
-                            <li><span><i class="fas fa-check"></i><a class="und" href="<?php echo base_url();?>index.php/Nodal_check"> Nodal Check</a></span></li>
+                            <li><span><i class="fas fa-edit"></i><a class="und" href="<?php echo base_url();?>Get_table/load/<?php echo $scheme_hier[0]['scheme_link']; ?>"> Input Data</a></span></li>
+                            <li><span><i class="fas fa-list-alt"></i><a class="und" href="<?php echo base_url();?>View_data/load/<?php echo $scheme_hier[0]['scheme_link']; ?>"> View Data</a></span></li>
+                            <li><span><i class="fas fa-check"></i><a class="und" href="<?php echo base_url();?>Nodal_check"> Nodal Check</a></span></li>
                             <li><span><a style="color:#000; text-decoration:none;" data-toggle="collapse" href="#page22" aria-expanded="false" aria-controls="page22"><i class="collapsed"><i class="fas fa-user-secret"></i></i>
-                                <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>index.php/Super_Admin">Super Admin</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page22" aria-expanded="false" aria-controls="page22"><i class="fas fa-plus-circle"></i></a></a></span>
+                                <i class="expanded"><i class="far fa-folder-open"></i></i> <a class="und" href="<?php echo base_url();?>Super_Admin">Super Admin</a>&nbsp;&nbsp;<a data-toggle="collapse" class="mx-auto" href="#page22" aria-expanded="false" aria-controls="page22"><i class="fas fa-plus-circle"></i></a></a></span>
                                 <ul><div id="page22" class="collapse">
-                                    <li><span><i class="ion ion-person-add"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/signup"> User Registration</a></span></li>
-                                    <li><span><i class="fa fa-user-times"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/fetch_login"> Active Users</a></span></li>
-                                    <li><span><i class="fa fa-users"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/fetch_user_desig_type"> Active User Type</a></span></li>
-                                    <li><span><i class="fa fa-user-secret"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/fetch_user_privilege"> Active User Privileges</a></span></li>
-                                    <li><span><i class="far fa-file"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/page_view"> Active Pages</a></span></li>
-                                    <li><span><i class="fas fa-th-list"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/seek_record"> Seek Record</a></span></li>
-                                    <li><span><i class="fa  fa-history"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/audit_log"> Audit Logs</a></span></li>
-                                    <li><span><i class="fa  fa-calendar"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/dba_fyear_range"> DBA Financial Year Range</a></span></li>
-                                    <li><span><i class="fa fa-comments"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/issues"> Feedback Box</a></span></li>
+                                    <li><span><i class="ion ion-person-add"></i><a class="und" href="<?php echo base_url();?>Super_Admin/signup"> User Registration</a></span></li>
+                                    <li><span><i class="fa fa-user-times"></i><a class="und" href="<?php echo base_url();?>Super_Admin/fetch_login"> Active Users</a></span></li>
+                                    <li><span><i class="fa fa-users"></i><a class="und" href="<?php echo base_url();?>Super_Admin/fetch_user_desig_type"> Active User Type</a></span></li>
+                                    <li><span><i class="fa fa-user-secret"></i><a class="und" href="<?php echo base_url();?>Super_Admin/fetch_user_privilege"> Active User Privileges</a></span></li>
+                                    <li><span><i class="far fa-file"></i><a class="und" href="<?php echo base_url();?>Super_Admin/page_view"> Active Pages</a></span></li>
+                                    <li><span><i class="fas fa-th-list"></i><a class="und" href="<?php echo base_url();?>Super_Admin/seek_record"> Seek Record</a></span></li>
+                                    <li><span><i class="fa  fa-history"></i><a class="und" href="<?php echo base_url();?>Super_Admin/audit_log"> Audit Logs</a></span></li>
+                                    <li><span><i class="fa  fa-calendar"></i><a class="und" href="<?php echo base_url();?>Super_Admin/dba_fyear_range"> DBA Financial Year Range</a></span></li>
+                                    <li><span><i class="fa fa-comments"></i><a class="und" href="<?php echo base_url();?>Super_Admin/issues"> Feedback Box</a></span></li>
                                     </div>
                                 </ul>
                             </li>
-                            <li><span><i class="fas fa-calendar-check"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/meeting_schedule"> Meeting Schedule</a></span></li>
-                            <li><span><i class="fas fa-bell"></i><a class="und" href="<?php echo base_url();?>index.php/Super_Admin/notification"> Notification</a></span></li>
-                            <li><span><i class="fas fa-rupee-sign"></i><a class="und" href="<?php echo base_url();?>index.php/fund"> Funds Allocation</a></span></li>
-                            <li><span><i class="fas fa-sitemap"></i><a class="und" href="<?php echo base_url();?>index.php/Summary/sitemap"> Sitemap</a></span></li>
-                            <li><span><i class="fas fa-phone"></i><a class="und" href="<?php echo base_url();?>index.php/contact"> Contact Us</a></span></li>
+                            <li><span><i class="fas fa-calendar-check"></i><a class="und" href="<?php echo base_url();?>Super_Admin/meeting_schedule"> Meeting Schedule</a></span></li>
+                            <li><span><i class="fas fa-bell"></i><a class="und" href="<?php echo base_url();?>Super_Admin/notification"> Notification</a></span></li>
+                            <li><span><i class="fas fa-rupee-sign"></i><a class="und" href="<?php echo base_url();?>fund"> Funds Allocation</a></span></li>
+                            <li><span><i class="fas fa-sitemap"></i><a class="und" href="<?php echo base_url();?>Summary/sitemap"> Sitemap</a></span></li>
+                            <li><span><i class="fas fa-phone"></i><a class="und" href="<?php echo base_url();?>contact"> Contact Us</a></span></li>
                             <li><span><i class="fas fa-power-off"></i> Logout</span></li>
                         </div>
                         </ul>

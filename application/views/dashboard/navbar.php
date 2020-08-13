@@ -8,7 +8,7 @@
     $var1=current_url();
     $m=0;
     foreach($varx as $x){
-      $var2 = base_url().'index.php/'.$x['link'];
+      $var2 = base_url().''.$x['link'];
       if($var1 == $var2 ){
         echo "<title>".$x['page_name']."</title>";
       }else{
@@ -49,7 +49,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
@@ -70,13 +70,13 @@
         <a id="pie-btn" class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
+        <a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>" class="nav-link">Home</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/contact" class="nav-link">Contact</a>
+        <a href="<?php echo base_url();?>contact" class="nav-link">Contact</a>
       </li>
       <li class="nav-item d-none d-sm-inline-block">
-        <a href="<?php echo base_url();?>index.php/Login/logout" class="nav-link">Logout</a>
+        <a href="<?php echo base_url();?>Login/logout" class="nav-link">Logout</a>
       </li>
     </ul>
     
@@ -88,16 +88,17 @@
     </li>
 
     <li class="nav-item">
-      <a class="nav-link" href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
+      <a class="nav-link" href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>">
         <i class="fas fa-home" style="font-size:27px;"></i>
       </a>
     </li>
 
     <li class="nav-item" >
-        <a class="nav-link" href="<?php echo base_url();?>index.php/Summary/sitemap">
+        <a class="nav-link" href="<?php echo base_url();?>Summary/sitemap">
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
     </li>
+    <div id="refresh1">
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
@@ -139,17 +140,18 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      </div>
 
       <li class="nav-item dropdown" >
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="fas fa-cog" style="font-size:27px;"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right " >
-        <a href='<?php echo base_url();?>index.php/contact' class='dropdown-item'>
+        <a href='<?php echo base_url();?>contact' class='dropdown-item'>
           <i class="fas fa-phone text-green "></i> Contact
         </a>
         <div class="dropdown-divider"></div>
-        <a href='<?php echo base_url();?>index.php/Login/logout' class='dropdown-item'>
+        <a href='<?php echo base_url();?>Login/logout' class='dropdown-item'>
           <i class="fas fa-power-off text-danger "></i> Logout
         </a>
         </div>
@@ -189,9 +191,9 @@ foreach($noti1 as $row){
     <!-- Bootstrap 4 -->
     <script src="<?php echo base_url();?>css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- date-range-picker -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     
     <!-- ChartJS -->
     <script src="<?php echo base_url();?>css/plugins/chart.js/Chart.min.js"></script>
@@ -215,38 +217,45 @@ foreach($noti1 as $row){
 
 <!--for realtime notifs fetching-->
 <!-- for toastr-->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="<?php echo base_url();?>cdn/cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
+<script src="<?php echo base_url();?>cdn/cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- for sweetalerts-->
-<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
+<script src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
 
 
 <script type='text/javascript'>
-function sendRequest(){ //requests for new notifs every 10 seconds
+function sendRequest(){ //requests for new notifs every 2 seconds
 	  
-	    setInterval(function(){
+	    setInterval(function(){        
 			  $.ajax({
-				  url: "<?php echo base_url();?>index.php/Summary/fetch_notifs",
+          url: "<?php echo base_url();?>Summary/fetch_notifs",
+          type: 'post',
           success: function(result){
 				    if(result == "Found"){
-              toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
-              toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
+              toastr.remove() //without animation
+              //toastr.clear() //with animation
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}              
+              toastr.warning('New Notification');
 				    }
 				  }
 			  });
-		  },5000);
+        $("#refresh1").load(location.href+" #refresh1>*","");
+		  },2000);
 }
 
 function send_nodal(){ //requests for new notifs every 10 seconds
+  setInterval(function(){
       $.ajax({
-        url: "<?php echo base_url();?>index.php/Summary/nodal_alert",
+        url: "<?php echo base_url();?>Summary/nodal_alert",
+        type: 'post',
         success: function(result){
             if(result=="found")
               toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
           }
       });
+    },10000);
 }
 
 function start(){

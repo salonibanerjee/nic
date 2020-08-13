@@ -5,7 +5,7 @@ class Fund extends MY_Controller {
     //loads the fund allocation form along with already allocated data table------------------------------------------------------------
     public function index(){
 		if($this->session->userdata('logged_in')=="")
-			header("Location: http://localhost/NIC/index.php/Login");
+			header("Location: ".$this->config->base_url()."Login");
 		$this->cache_update();
         $this->check_privilege(22);
         $this->load->driver('cache',array('adapter' => 'file'));

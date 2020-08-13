@@ -207,8 +207,13 @@ class Admin_model extends CI_Model {
 
     //loads latest meeting data constantly in the notification bell--------------------------------------------------------------------
     public function previous_meeting_schedule(){
-        $last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get('mpr_trans_meeting_schedule')->row();
+        $last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get_where('mpr_trans_meeting_schedule',array('active_status'=>1))->row();
         return $last_row;
+    }
+
+    public function cancel_meeting($mid){
+        $query=$this->db->where('meeting_id_pk',$mid)->update('mpr_trans_meeting_schedule',array('active_status'=>0));
+        return $query;
     }
 
     //function to generate captcha and reconfigurable----------------------------------------------------------------------------------

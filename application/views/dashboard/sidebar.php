@@ -18,10 +18,10 @@
           }?>
         </div>
         <div style="margin-left:10px; margin-top:-7px;" id="x" class="x">
-          <a href="<?php echo base_url();?>index.php/Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
-          <a href="<?php echo base_url();?>index.php/Summary/profile" class="d-block"><small><?php echo str_replace('@','[at]',str_replace('.','[dot]',$username)); ?></small></a>
+          <a href="<?php echo base_url();?>Summary/profile" class="d-block"><strong><?php echo $f_name." ".$m_name." ".$l_name?></strong></a>
+          <a href="<?php echo base_url();?>Summary/profile" class="d-block"><small><?php echo str_replace('@','[at]',str_replace('.','[dot]',$username)); ?></small></a>
           <?php if($update_prof==1){
-            echo "<a href='<?php echo base_url();?>index.php/Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
+            echo "<a href='<?php echo base_url();?>Summary/edit_profile' style='color:#E57777;'><i class='fa fa-circle text-danger fa-xs ' style='margin-right:3px;'></i><small><strong>COMPLETE YOUR PROFILE</strong></small></a>";
           }?>
           </div>
                   
@@ -49,31 +49,32 @@
             foreach($var as $x){
               if($x['view_sidebar']==1){
                 $var1=current_url();
-                $var2= '<?php echo base_url();?>index.php/'.$x['link'];
+                $var1=str_replace('index.php/','',$var1);
+                $var2= base_url().$x['link'];
                 echo "<li class='nav-item'>";
                 if($var1==$var2){
-                    echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."".$x['link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                 }elseif(strpos($var1,'load')!=FALSE){
                   if(strpos($var1,'Get_table')!=FALSE){
                     if($x['privilege_id_fk']==5){
-                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==6){
-                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }elseif(strpos($var1,'View_data')!=FALSE){
                     if($x['privilege_id_fk']==6){
-                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link bg-black' style='border-bottom: 0.4px solid gray;'>";
                     }elseif($x['privilege_id_fk']==5){
-                      echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                     }else
-                      echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                      echo "<a href='".base_url()."".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }
                 }else
                   if($x['privilege_id_fk']==5 || $x['privilege_id_fk']== 6 ){
-                    echo "<a href='".base_url()."index.php/".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."".$x['link']."/".$scheme_hier[0]['scheme_link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
                   }else
-                    echo "<a href='".base_url()."index.php/".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
+                    echo "<a href='".base_url()."".$x['link']."' class='nav-link' style='border-bottom: 0.4px solid gray;'>";
         
                   echo "<i class='nav-icon fas ".$icon[$x['privilege_id_fk']]."'></i>";
                 echo "<p>";

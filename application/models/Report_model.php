@@ -20,6 +20,19 @@ class Report_model extends CI_Model
 		$this->db->select('desig_name')->from('mpr_master_designation')->where('desig_id_pk',$n);
 		return $this->db->get()->result_array()[0]['desig_name'];
 	}
+	public function get_meeting_id()
+	{
+		$this->db->select_max('meeting_id_pk')->from('mpr_trans_meeting_schedule');
+		return $this->db->get()->result_array()[0]['meeting_id_pk'];
+	}
+	public function update_report_to_db($meet_id,$str)
+	{
+		
+		$es = pg_escape_string($str);
+		echo $es;
+		$temp=array('meeting_id_fk'=>$meet_id,'report_data'=>$es,'report_generated_at'=>date('Y-m-d H:i:s'));
+		$this->db->insert('mpr_trans_report',$temp);
+	}
 	public function get_colspan()
 	{
 		$this->db->select('count(scheme_id_fk)');
@@ -29,19 +42,21 @@ class Report_model extends CI_Model
 		$this->db->order_by('scheme_id_fk');
 		return $this->db->get()->result_array();
 	}
-	public function get_loc_detail()
+	public function get_loc_detail($loc)
 	{
 		$this->db->select('location_area,location_code');
 		$this->db->from('mpr_master_location_data');
-		$this->db->where('location_id_pk !=',1);
+		$this->db->like('location_code',$loc,'after');
+		$this->db->order_by('location_code');
 		return $this->db->get()->result_array();
 	}
 	public function get_attri()
 	{
+		
 		$this->db->select('attri_name,actual_name');
 		$this->db->from('mpr_master_attri_table');
-		$this->db->where('scheme_id_fk !=',0);
-		$this->db->order_by('attri_id_pk');
+		$this->db->where($temp);
+		$this->db->order_by('scheme_id_fk !=',0);
 		$query=$this->db->get()->result_array();
 		$temp['a_n']=array();
 		$temp['n']=array();
@@ -65,6 +80,8 @@ class Report_model extends CI_Model
 		$a= $this->db->get()->result_array();
 		return $a[0]['actual_name'];
 	}
+
+	//ses -> year
 
 	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type)
 	{
@@ -137,18 +154,16 @@ class Report_model extends CI_Model
 		}
 		
 	}
-	public function get_sub_division()
+	public function get_sub_division($loc_area)
 	{
-		$this->db->select('subdiv_id_fk')->from('mpr_master_block');
-		$sub_div_id=$this->db->get()->result_array();
-		$sub_div_name=array();
-		foreach ($sub_div_id as $key ) 
-		{
-			$this->db->select('sub_div_name')->from('mpr_master_subdiv');
-			$this->db->where('sub_div_id_pk',$key['subdiv_id_fk']);
-			array_push($sub_div_name,$this->db->get()->row_array()['sub_div_name']);
-		}
-		return ($sub_div_name);
+		$this->db->select('subdiv_id_fk')->from('mpr_master_block')->where('block_name',$loc_area);
+		$sub_div_id=$this->db->get()->result_array()[0]['subdiv_id_fk'];
+		//print_r($sub_div_id);
+		$this->db->select('sub_div_name')->from('mpr_master_subdiv');
+		$this->db->where('sub_div_id_pk',$sub_div_id);
+		//print_r($this->db->get()->result_array()[0]['sub_div_name']);
+		return $this->db->get()->result_array()[0]['sub_div_name'];
+		
 	}
 	public function generate_table($temp,$ses,$mon,$n=0)
 	{
@@ -203,7 +218,7 @@ class Report_model extends CI_Model
 			$pdf->writeHTML($html, true, false, true, false, '');
 			$pdf->lastPage();
 		}
-		$pdf->Output(md5(time()).'.pdf', 'D');
+		return $pdf->Output(md5(time()).'.pdf', 'S');
 	}
 	public function export_csv($temp)
 	{ 

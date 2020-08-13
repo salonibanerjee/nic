@@ -9,7 +9,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/<?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['link']?>"><?php echo $this->cache->get('User_type'.$var)['user_privilege'][0]['page_name']?></a></li>
             <li class="breadcrumb-item active">Data Entry</li>
           </ol>
         </div>
@@ -151,19 +151,11 @@
                           }else{
                               echo "<li class='nav-item'>";
                               echo "<a  class='nav-link'>";
-                              if(isset($draft_data->$row)){
-                                  if($s_name[$i]=="month")
-                                      echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$month[$draft_data->$row]."</span>";
-                                  else
-                                      echo "$s_name[$i]"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>".$draft_data->$row."</span>";
-                              }
-                              else{
                                 if($s_name[$i]=="month"){
-                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                  echo "Month"." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."_data>"."NULL"."</div>"."</span>";
                                 }else{
-                                  echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."NULL"."</span>";
+                                  echo $s_name[$i]." <span class='float-right badge bg-primary' style='width:70px; height:20px;'>"."<div id=".$row."_data>"."NULL"."</div>"."</span>";
                                 }
-                              }
                               echo "</a>";
                               echo "</li>";
                           }
@@ -187,7 +179,7 @@
 <div class="modal fade" id="modal-sm">
 <?php
   $attri1 = array('method' => 'POST', 'id' => 'draft'); 
-  echo form_open("",$attri1);?>
+  echo form_open('Get_table/submit_draft/'.$n,$attri1);?>
         <div class="modal-dialog modal-sm" >
           <div class="modal-content">
             <div class="modal-header">
@@ -197,20 +189,35 @@
               </button>
             </div>
             <div class="modal-body">
-            <select id='modmonth' name="modmonth" class="form-control select2 select2-hidden-accessible">
-            <option value='1' selected>January</option>
-            <?php for($x=2;$x<=12;$x++){
-                          echo "<option value='".$x."'>".$month[$x]."</option>";
-                        }?>
-            </select>
-
-            <select id='modyear' name="modyear" class="form-control select2 select2-hidden-accessible">
-            <?php $year=intval(date('Y')); 
-            echo "<option value='".$year."' selected>".$year."</option>";
-            for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
-                          echo "<option value='".$x."'>".$x."</option>";
-                        }?>
-            </select>
+            <div class="row">
+              <div class="col-md-3">
+                  <label style="padding-top:5px;">Month:</label>
+              </div>
+              <div class="col-md-9">
+                <select id='modmonth' name="modmonth" class="form-control">
+                <option value='1' selected>January</option>
+                <?php for($x=2;$x<=12;$x++){
+                              echo "<option value='".$x."'>".$month[$x]."</option>";
+                            }?>
+                </select>
+              </div>
+            
+            </div>
+            <br>
+            <div class="row">
+              <div class="col-md-3">
+                  <label style="padding-top:5px;">Year:</label>
+              </div>
+              <div class="col-md-9">
+                <select id='modyear' name="modyear" class="form-control">
+                <?php $year=intval(date('Y')); 
+                echo "<option value='".$year."' selected>".$year."</option>";
+                for($x=$year-1;$x>=$year_range->financial_year_range;$x--){
+                              echo "<option value='".$x."'>".$x."</option>";
+                            }?>
+                </select>
+                </div>
+            </div>
             </div>
             <div class="modal-footer justify-content-between">
               <button type="submit" id="draft_sub" name="draft_sub" class="btn btn-primary" form="draft">Apply</button>
@@ -224,7 +231,8 @@
 <script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="<?php echo base_url();?>js/notify.js"></script>
 <script type="text/javascript" >
-
+relo(1);
+var data2=["NULL","January","February","March","April","May","June","July","August","September","October","November","December"];
 function myFunction() {
 // Declare variables
 var input, filter, ul, li, a, i, txtValue;
@@ -244,31 +252,54 @@ for (i = 0; i < li.length; i++) {
   }
 }
 }
-//draft data filter-----------------------------------------------------------------------------------
-$("#draft").on("submit",function(e){
-    var postData = $(this).serialize();
-    var formURL = $(this).attr("action");
-    console.log(postData);
-    $.ajax(
+function relo(a){
+  //console.log($("#modmonth").val());
+  var b=$("#draft").serialize();
+  if(a){
+    b=0;
+  }
+  //console.log($("#draft").serialize());
+  $.ajax(
     {
-        url : formURL,
-        type: "POST",
-        data : postData,
-        success:function(data, textStatus, jqXHR) 
+      url:$("#draft").attr("action"),
+      type:"POST",
+      data:b,
+      success:function(data, textStatus, jqXHR) 
         {
-            document.getElementById("hi").click();
-            $("#div123").load(location.href + " #div123");
-            console.log(data);
-            //data: return data from server
+          console.log("submit2");
+            data1=JSON.parse(data);
+            if(data1){
+              for (x in data1) {
+                if (x!="id_pk" && x!="inserted_at" && x!="ip" && x!="location_code" && x!="login_id_fk" && x!="nodal_check"){
+                  if(x=="month")
+                    $("#month_data").html(data2[data1[x]]);
+                  else
+                    $("#"+x+"_data").html(data1[x]);
+                }
+              }
+            }else{
+              $("div[id$='_data']").html("NULL");
+              if(a==0){
+                $("#month_data").html(data2[$("#modmonth").val()])
+                $("#session_data").html($("#modyear").val())
+              }
+            }
         },
         error: function(jqXHR, textStatus, errorThrown) 
         {
             console.log("Form cannot be submitted...");
             //if fails      
         }
-    });
-    //e.preventDefault(); //STOP default action
-    //e.unbind(); //unbind. to stop multiple form submit.
+    }
+  )
+}
+//draft data filter-----------------------------------------------------------------------------------
+$("#draft").on("submit",function(e){
+    var postData = $(this).serialize();
+    var formURL = $(this).attr("action");
+    document.getElementById("hi").click();
+    relo(0);
+    e.preventDefault();
 }); 
 
 //input data form submit-------------------------------------------------------------------------------
@@ -297,10 +328,11 @@ $("#form").on("submit", function (event) {
         console.log("error");
       }else{ 
         $('#errors').html("");
-        $("form")[0].reset();
-        $("#div123").load(location.href + " #div123");
+        $("#form")[0].reset();
+        $("#draft")[0].reset();
+        relo(1);
         $("#err").notify("Value accepted",{position:"right", className: 'success'});
-        console.log("submit");
+        console.log("submit1");
       }
     }
   });

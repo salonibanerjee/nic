@@ -1,3 +1,4 @@
+<!-- Modular Dashboard Implemetation as Bootstrap rows & columns -->
 
     <div class="content-wrapper">
         <div class="content-header">
@@ -58,6 +59,15 @@
                 <div class="row">
                     <div class="col-md-12">
                         <?php echo $bar_chart2; ?>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo $comparison_table; ?>
                     </div>
                 </div>
             </div>

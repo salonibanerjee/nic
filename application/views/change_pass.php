@@ -25,7 +25,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Summary/profile">Profile</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Summary/profile">Profile</a></li>
             <li class="breadcrumb-item active">Change Password</li>
           </ol>
         </div>

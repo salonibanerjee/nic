@@ -10,7 +10,7 @@
         </div>
         <div class="col-sm-6">
           <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="<?php echo base_url();?>index.php/Super_Admin">Super Admin</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo base_url();?>Super_Admin">Super Admin</a></li>
             <li class="breadcrumb-item active">Financial year range</li>
           </ol>
         </div>

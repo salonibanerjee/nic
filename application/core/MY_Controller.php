@@ -9,9 +9,14 @@ class MY_Controller extends CI_Controller {
     //Constructor
     public function __construct(){
         parent::__construct();
-		//sif($this->session->userdata('logged_in')==""){
-          //  header("Location: http://localhost/NIC/index.php/Login"); 
-        //}
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+	    $this->output->set_header("Pragma: no-cache");
+	    $this->output->set_header("X-Frame-Options: SAMEORIGIN");
+	    $this->output->set_header("X-Content-Type-Options: nosniff");
+	    $this->output->set_header("X-XSS-Protection: 1; mode=block");
+        $this->output->set_header("Referrer-Policy: same-origin");
+        //to be modified
+		//$this->output->set_header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' http://www.wbtetsd.gov.in/ data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.facebook.com; object-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' 'unsafe-inline' 'unsafe-eval' https://wbkanyashree.gov.in; font-src 'self' 'unsafe-inline' 'unsafe-eval';");    
     }
     //Check privilege checks the privilege of a page based on url and prevents entry to a particular page
     //even if someone enters the url manually-------------------------------------------------------------------------------------------
@@ -110,11 +115,11 @@ class MY_Controller extends CI_Controller {
     //Gets relevant location---------------------------------------------------------------------------------------------------------
     public function getrelevantlocation()  
 	{
-	   $result;
+	   $query;
        $this->load->model('profile_model');
-       $desig=$this->input->post('audience_desig');
+       $ut=$this->input->post('audience_ut');
        //to get respective location for selected designation from DB
-	   $query=$this->profile_model->getrelevantloc($desig); 
+	   $query=$this->profile_model->getrelevantloc($ut); 
 	   if($query->num_rows()>0){
 		   $data;
            $i = 0;
@@ -131,35 +136,63 @@ class MY_Controller extends CI_Controller {
 	   echo json_encode($ans);
      }
           
+    //----------------------------------------------------------------------------------------------
+    public function getfetchdesig()  
+	{
+	    $result;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->getfetchdesig();
+		   $data;
+           $i = 0;
+	   	  foreach($query->result_array() as $r){
+                 $code=$r['user_type_id_pk'];
+                 $name=$r['desig'];
+			  $data[$i] = array('code'=>$code,'name'=>$name);
+			  $i = $i+1;
+		  }
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+	   echo json_encode($ans);
+     }    
+     //----------------------------------------------------------
+     public function getfetchdesigonly()  
+     {
+        $result;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->getfetchdesigonly(); 
+        //if($query->num_rows()>0){
+            $data;
+            $i = 0;
+              foreach($query->result_array() as $r){
+                  $code=$r['desig_id_pk'];
+                  $name=$r['desig_name'];
+               $data[$i] = array('code'=>$code,'name'=>$name);
+               $i = $i+1;
+           }
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+        /*}else{
+            $ans = array('status'=>0,'message'=>'no data found');
+        }*/
+        echo json_encode($ans);
+      }    
     //Realtime notifcation fetch function-----------------------------------------------------------------------------------------------
     public function fetch_notifs(){
 
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('Admin_model');
-
         $this->load->model('profile_model');
-        
-        $mydesig_only=$this->profile_model->get_designation_id(); //fetching user desig_id_fk
-
-        $mydesig=$this->profile_model->get_usertype_id();   //fetching usertype_id_fk
-        $myloc=$this->profile_model->get_location_code();//fetching user's location_code
-       //UPDATED QUERY
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=$mydesig_only OR audience_desig_only=-1) OR (audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))";
-        $result = $this->db->query($q);
-        	
+        $result=$this->profile_model->count_new_notifications();    
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
             $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
         }else{
             $prev_noti=0;
         }
-		if($result->num_rows() > $prev_noti){
+		if($result > $prev_noti){
             unlink('./application/cache/Noti'.$this->session->userdata('loginid'));
             $this->Admin_model->noti_cache($this->session->userdata('loginid'));
 			echo "Found";
 		}else{
             echo "Not Found";
         }
-
     }
     
     //Nodal officer realtime alert before a meeting-------------------------------------------------------------------------------------
@@ -184,6 +217,25 @@ class MY_Controller extends CI_Controller {
                 $this->node=0;
             }
         }
+    }
+
+    //notitable
+    public function getfetchnotitable()
+    {
+        $query;
+        $this->load->model('profile_model');
+        $query=$this->profile_model->fetchnotifortable();         
+        $data;
+            $i = 0;
+              foreach($query->result_array() as $r){
+                  $id=$r['audience_id'];
+                  $head=$r['notification_head'];
+                  $textt=$r['notification_text'];
+               $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
+               $i = $i+1;
+           }
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+        echo json_encode($ans);
     }
 
 }

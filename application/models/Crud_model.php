@@ -170,6 +170,11 @@ class Crud_model extends CI_Model {
                 $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
                 return $last_row;
         }
+        public function draft_data_fetch2($table_name){
+                $var = $this->session->userdata('location_code');
+                $last_row=$this->db->select('*')->where('location_code',$var)->order_by('id_pk','DESC')->limit(1)->get($table_name)->row_array();
+                return $last_row;
+        }
         //for tabular view----------------------------------------------------------------------------------------------------------------
         public function data_fetch($table_name){
                 $var = $this->session->userdata('location_code');
@@ -213,7 +218,7 @@ class Crud_model extends CI_Model {
         //draft data filter----------------------------------------------------------------------------------------------------------
         public function draft_filter($table_name,$month,$year){
                 $var = $this->session->userdata('location_code');
-                $row = $this->db->select('*')->where(array('location_code'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row();
+                $row = $this->db->select('*')->where(array('location_code'=>$var,'month'=>$month,'session'=>$year))->order_by('id_pk','DESC')->limit(1)->get($table_name)->row_array();
                 if($row)
                         return $row;
                 else
