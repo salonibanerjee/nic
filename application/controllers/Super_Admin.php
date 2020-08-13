@@ -97,8 +97,9 @@ class Super_Admin extends MY_Controller {
 			$noti_head="New Meeting";
 			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
 			$target_audience="NMEET00";
-			$audience_desig=-1;
-			$audience_loc=-1;
+			$audience_ut=0;
+			$audience_loc=0;
+			$audience_desig_only=0;
             //2hours relaxation on the provided time
             $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
@@ -112,7 +113,7 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,-1);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
@@ -134,11 +135,12 @@ class Super_Admin extends MY_Controller {
 		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
 			echo "cancelled";
 			$target_audience="NMEET01";
-			$audience_desig=-1;
-			$audience_loc=-1;
+			$audience_ut=0;
+			$audience_loc=0;
+			$audience_desig_only=0;
 			$noti_head="Cancelled Meeting";
 			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,-1);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Cancelled',
@@ -177,7 +179,7 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/footer');
 	}
 
-	/*
+	
 	public function everywhere_everyone($listloc, $audiencedesig){
 		$listdesig=$this->input->post($audiencedesig);
 
@@ -186,12 +188,12 @@ class Super_Admin extends MY_Controller {
 			return false;
 		}
 		else if($listdesig=='-1' && $listloc!='-1'){
-			$this->form_validation->set_message('everywhere_everyone','Please select only 1 Designation');
+			$this->form_validation->set_message('everywhere_everyone','Please select only 1 User Type or use Broadcast');
 			return false;
 		}
 		return true;
 	}
-	*/
+	
 	//AJAX perform to set notification----------------------------------------------------------------------------------------------------
 	public function notify(){
 		$this->load->model('Sup_admin');
@@ -201,14 +203,9 @@ class Super_Admin extends MY_Controller {
 		$csrf_token=$this->security->get_csrf_hash();
 
 		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
-		/*$this->form_validation->set_rules('audience_desig', 'Audience designation', 'required');
-		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required');
-		$this->form_validation->set_rules('audience_desig_only', 'Audience designation', 'required');
-		*/
-		$this->form_validation->set_rules('audience_desig', 'Target User Type', 'required');
-		$this->form_validation->set_rules('audience_loc', 'Target location', 'required');
+		$this->form_validation->set_rules('audience_ut', 'Target User Type', 'required');
 		$this->form_validation->set_rules('audience_desig_only', 'Target designation', 'required');
-       
+		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_ut]'); 
 		$this->form_validation->set_rules('noti_text', 'Notification text', 'required');
 		
 		if ($this->form_validation->run() == FALSE)
@@ -219,47 +216,49 @@ class Super_Admin extends MY_Controller {
 		else
 		{
             $noti_head = $this->input->post('noti_head');
-			$audience_desig=$this->input->post('audience_desig');//----should be int
+			$audience_ut=$this->input->post('audience_ut');//----should be int
 			$audience_loc=$this->input->post('audience_loc');//string
 			$audience_desig_only=$this->input->post('audience_desig_only');
 			$noti_text= $this->input->post('noti_text');
+			$radioselect= $this->input->post('radiosel');
+			if($audience_ut==-1 && $audience_loc=='-1' && $audience_desig_only==-1){//broadcast #####################################################################################################
+				$radiosel=2;
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+				$audience_desig_only=$this->session->userdata('desig');
+			}
+			else if($radioselect == "usertypelocr"){//ut+loc
+				$radiosel=0;
+				$audience_desig_only=$this->session->userdata('desig');
+			}
+			else if($radioselect == "designat"){//desig_only
+				$radiosel=1;
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+			}
 
 			$this->db->trans_off();
             $this->db->trans_strict(FALSE);
 			$this->db->trans_start();
 
-			if($audience_desig==-1 && $audience_loc=='-1' && $audience_desig_only==-1){//broadcast
+			if($radiosel==2){//broadcast
 				$target_audience="N-BROADCAST";
 			}
-
-			else if($audience_desig_only!=-1){//designation only
+			else if($radiosel==1){//designation only
 				$target_audience="ND-".$audience_desig_only;
 			}
-
-			else{//usertype+loc
-
-				if($audience_desig!=-1 && $audience_loc!='-1'){
-					$target_audience="N-UT".$audience_desig."-L-".$audience_loc;
-				}
-				else if($audience_desig!=-1 && $audience_loc=='-1'){
-					$target_audience="N-UT-".$audience_desig."-L-ALL";
-				}
-				else if($audience_desig==-1 && $audience_loc!='-1'){
-					$target_audience="N-UT-ALL-L-".$audience_loc;
-				}
-				else if($audience_desig==-1 && $audience_loc=='-1'){
-					$target_audience="N-UT-ALL-L-ALL";
-				}
+			else if($radiosel==0){
+				$target_audience="N-UT".$audience_ut."-L-".$audience_loc;
 			}
+
 			
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,$audience_desig_only);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
 			
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Notification Inserted - '.$noti_head,
 											'Custom Message here');
 			$this->db->trans_complete();
-
 			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
             echo json_encode($ab);
 		}

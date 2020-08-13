@@ -180,12 +180,8 @@ class summary extends MY_Controller {
 		// print_r($loc_details);
 		// $data1=$this->Dashboard_model->get_scheme();
 		// print_r($data1);
-
 		//-------------------------------------------------------------------------
-		$gp=$this->session->userdata('location_code');
-        $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
-        $res = $this->db->query($q)->result();
-		$data['noti']=$res;
+		$data['noti']=$this->profile_model->custom_notification();
 		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
 		//Dashboard Pie Chart Implementation --------------------------------------------------------------------
