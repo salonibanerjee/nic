@@ -115,11 +115,11 @@ class MY_Controller extends CI_Controller {
     //Gets relevant location---------------------------------------------------------------------------------------------------------
     public function getrelevantlocation()  
 	{
-	   $result;
+	   $query;
        $this->load->model('profile_model');
-       $desig=$this->input->post('audience_desig');
+       $ut=$this->input->post('audience_ut');
        //to get respective location for selected designation from DB
-	   $query=$this->profile_model->getrelevantloc($desig); 
+	   $query=$this->profile_model->getrelevantloc($ut); 
 	   if($query->num_rows()>0){
 		   $data;
            $i = 0;
@@ -136,13 +136,12 @@ class MY_Controller extends CI_Controller {
 	   echo json_encode($ans);
      }
           
-    //Realtime notifcation fetch function-----------------------------------------------------------------------------------------------
+    //----------------------------------------------------------------------------------------------
     public function getfetchdesig()  
 	{
 	    $result;
         $this->load->model('profile_model');
-        $query=$this->profile_model->getfetchdesig(); 
-	    //if($query->num_rows()>0){
+        $query=$this->profile_model->getfetchdesig();
 		   $data;
            $i = 0;
 	   	  foreach($query->result_array() as $r){
@@ -152,12 +151,8 @@ class MY_Controller extends CI_Controller {
 			  $i = $i+1;
 		  }
 		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
-	   /*}else{
-           $ans = array('status'=>0,'message'=>'no data found');
-	   }*/
 	   echo json_encode($ans);
      }    
-
      //----------------------------------------------------------
      public function getfetchdesigonly()  
      {
@@ -184,31 +179,20 @@ class MY_Controller extends CI_Controller {
 
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('Admin_model');
-
         $this->load->model('profile_model');
-        
-        $mydesig_only=$this->profile_model->get_designation_id(); //fetching user desig_id_fk
-
-        $mydesig=$this->profile_model->get_usertype_id();   //fetching usertype_id_fk
-        $myloc=$this->profile_model->get_location_code();//fetching user's location_code
-       //UPDATED QUERY
-       $q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='".$myloc."') OR (audience_desig_only=".$mydesig_only." AND audience_desig=-1 AND audience_loc='-1'))";
-	    
-       $result = $this->db->query($q);
-        	
+        $result=$this->profile_model->count_new_notifications();    
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
             $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
         }else{
             $prev_noti=0;
         }
-		if($result->num_rows() > $prev_noti){
+		if($result > $prev_noti){
             unlink('./application/cache/Noti'.$this->session->userdata('loginid'));
             $this->Admin_model->noti_cache($this->session->userdata('loginid'));
 			echo "Found";
 		}else{
             echo "Not Found";
         }
-
     }
     
     //Nodal officer realtime alert before a meeting-------------------------------------------------------------------------------------
@@ -238,9 +222,9 @@ class MY_Controller extends CI_Controller {
     //notitable
     public function getfetchnotitable()
     {
-        $result;
+        $query;
         $this->load->model('profile_model');
-        $query=$this->profile_model->fetchnotifortable(); 
+        $query=$this->profile_model->fetchnotifortable();         
         $data;
             $i = 0;
               foreach($query->result_array() as $r){
