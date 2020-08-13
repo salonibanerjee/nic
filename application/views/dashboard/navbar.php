@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html > 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -54,6 +54,7 @@
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
+  <link rel="stylesheet" href="<?php echo base_url();?>css/dark_mode.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
