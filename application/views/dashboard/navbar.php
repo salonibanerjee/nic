@@ -54,7 +54,6 @@
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="<?php echo base_url();?>css/dark_mode.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -234,7 +233,7 @@ function sendRequest(){ //requests for new notifs every 2 seconds
           type: 'post',
           success: function(result){
 				    if(result == "Found"){
-              toastr.remove() //without animation
+              //toastr.remove() //without animation
               //toastr.clear() //with animation
               toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}              
               toastr.warning('New Notification');
@@ -260,7 +259,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
 
 function start(){
     //sendRequest();
-    //send_nodal();
+    send_nodal();
 }
 
 </script>
