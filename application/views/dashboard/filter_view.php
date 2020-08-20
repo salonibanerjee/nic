@@ -1,6 +1,5 @@
 <html>
     <body>
-
         <!-- Modal -->
         <div id="<?php echo $filter_id?>" class="modal fade" role="dialog">
         <div class="modal-dialog modal-dialog-centered">
@@ -8,15 +7,16 @@
             <!-- Modal content-->
             <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Filter View</h4>
+                <h5 class="modal-title">Filter</h5>
             </div>
             <?php echo form_open('','role="form" method="POST" id="form"');?>
                 <div class="modal-body">
                     <div class="row">
                         <?php 
                         if($left) {
-                        echo "<div class='col-md-6'>";
+                        echo "<div class='col-md-"; if($right) echo "6"; else echo "12"; echo "'>";
                         echo    "<div class='form-group'>";
+                            echo "<label class='mb-1'>SELECT SCHEME </label>";
                                     $i=0;
                                     $flag = false;
                                     foreach($c_left_name as $temp) {
@@ -38,11 +38,12 @@
                         echo    "</div>";
                         echo "</div>";
                         }
+
                         if($right){
                         echo "<div class='col-md-6'>";
                         echo "<div class='row'>";
                         echo    "<div class='form-group'>";
-                                
+                        echo "<label class='mb-1'>SELECT LOCATION </label>";
                             $i=0;
                             $flag = false;
                             foreach($c_name_right as $temp) {

@@ -125,7 +125,7 @@ class summary extends MY_Controller {
 		$mydate=getdate();
         $month=date('m', strtotime($mydate['month']));
 
-		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$month,0,0);
+		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$month,"2020",0);
 
 		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_name,sizeof($scheme_name));
 		$data = array();

@@ -97,9 +97,9 @@ class Super_Admin extends MY_Controller {
 			$noti_head="New Meeting";
 			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
 			$target_audience="NMEET00";
-			$audience_ut=0;
-			$audience_loc=0;
-			$audience_desig_only=0;
+			$audience_ut=9;
+			$audience_loc='1911';
+			$audience_desig_only=41;
             //2hours relaxation on the provided time
             $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
@@ -113,7 +113,7 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
@@ -135,12 +135,12 @@ class Super_Admin extends MY_Controller {
 		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
 			echo "cancelled";
 			$target_audience="NMEET01";
-			$audience_ut=0;
-			$audience_loc=0;
-			$audience_desig_only=0;
+			$audience_ut=9;
+			$audience_loc='1911';
+			$audience_desig_only=41;
 			$noti_head="Cancelled Meeting";
 			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Cancelled',
@@ -428,6 +428,7 @@ class Super_Admin extends MY_Controller {
 				$exist = 1;
 			}
 		}
+		$csrf_token=$this->security->get_csrf_hash();
 		if($exist == 1){
 			$result = array('message'=>"This user already exist",'csrf_token'=>$csrf_token);
 		}else{
@@ -441,25 +442,26 @@ class Super_Admin extends MY_Controller {
 			$subject = "One Time Password For Login";
 		    $body = "Greetings,\n\n\tTo login in MPR portal your password is:\n\t".$password."\n\nThank you!\nHave a nice day.";
             $headers = "From: MPR Portal";
-            if($xy=mail($uname, $subject, $body, $headers)){
-				if($this->Sup_admin->add_login($data)){
-					$res=$this->Sup_admin->find_id($data);
-					$id =$res->login_id_pk;
-					$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
-					if($this->Sup_admin->add_check_first_user($data1)){
-						$result = array('message'=>"Data Added Successfully",'csrf_token'=>$csrf_token);
-        				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+             if($xy=mail($uname, $subject, $body, $headers)){
+			    if($this->Sup_admin->add_login($data)){
+				$res=$this->Sup_admin->find_id($data);
+				$id =$res->login_id_pk;
+				$data1=array("user_id_pk"=>$id,"check_if_first_user"=>1,"check_profile_updated_once"=>1);
+				if($this->Sup_admin->add_check_first_user($data1)){
+				$result = array('message'=>"Data Added Successfully",'csrf_token'=>$csrf_token);
+        		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
-                                            'New User Registered with username - '.$data['username'],
-                                            'Custom Message here');
-						
-					}else
-						$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+                                           'New User Registered with username - '.$data['username'],
+                                           'Custom Message here');
 						
 				}else
-					$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+			 			$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
 						
-			}else{
+				}else
+			 		$result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+						
+			 }
+			else{
 				 $result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
 						
 			}
@@ -473,6 +475,8 @@ class Super_Admin extends MY_Controller {
     function fetch_user_type()  //get all records from database  
 	{
 	   $result;
+	   $csrf_token=$this->security->get_csrf_hash();
+	   $csrf_token=$this->security->get_csrf_hash();
 	   $this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->fetch_user_type();
 		  $res=$query->result();
@@ -486,9 +490,9 @@ class Super_Admin extends MY_Controller {
 			  $data[$i] = array('code'=>$code,'type'=>$type,'level'=>$level);
 			  $i = $i+1;
 		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   }else{
-		   $result = array('status'=>0,'message'=>'no data found');
+		   $result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 
 	   }
 	   echo json_encode($result);
@@ -499,6 +503,7 @@ class Super_Admin extends MY_Controller {
 	 function fetch_district()  //get all records from database  
 	{
 	   $result;
+	   $csrf_token=$this->security->get_csrf_hash();
 	   $this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->fetch_district();
 		  $res=$query->result();
@@ -511,9 +516,9 @@ class Super_Admin extends MY_Controller {
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
 		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   }else{
-		   $result = array('status'=>0,'message'=>'no data found');
+		   $result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 
 	   }
 	   echo json_encode($result);
@@ -524,7 +529,8 @@ class Super_Admin extends MY_Controller {
 	 function location_data()  //get all records from database  
 	 {
 		$result;
-			$this->load->model('Sup_admin');
+		   $csrf_token=$this->security->get_csrf_hash();
+		   $this->load->model('Sup_admin');
 		   $level=$this->input->post('level');
 		   $district=$this->input->post('district');
 		   //$dat=array("user_type_id_fk"=>$desig);
@@ -540,10 +546,10 @@ class Super_Admin extends MY_Controller {
 			   $data[$i] = array('code'=>$code,'type'=>$type);
 			   $i = $i+1;
 		   }
-			$result = array('status'=>1,'message'=>'data found','data'=>$data);
+			$result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 			}
 		 else{
-			$result = array('status'=>0,'message'=>'no data found');
+			$result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
  
 			}
 		echo json_encode($result);
@@ -554,6 +560,7 @@ class Super_Admin extends MY_Controller {
 	function office()  //get all records from database  
 	{
 	   $result;
+	   $csrf_token=$this->security->get_csrf_hash();
 	   $this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->office(); 
 	   $res=$query->result();
@@ -566,10 +573,10 @@ class Super_Admin extends MY_Controller {
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
 		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   	}
 		else{
-		   $result = array('status'=>0,'message'=>'no data found');
+		   $result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 
 	   	}
 	   echo json_encode($result);
@@ -580,6 +587,7 @@ class Super_Admin extends MY_Controller {
 	function department()  //get all records from database  
 	{
 	   $result;
+		  $csrf_token=$this->security->get_csrf_hash();
 		  $this->load->model('Sup_admin');
 		  $office=$this->input->post('office');
 	      $dat=array("office_id_fk"=>$office);
@@ -594,10 +602,10 @@ class Super_Admin extends MY_Controller {
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
 		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   	}
 		else{
-		   $result = array('status'=>0,'message'=>'no data found');
+		   $result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 
 	   	}
 	   echo json_encode($result);
@@ -608,6 +616,7 @@ class Super_Admin extends MY_Controller {
 	function designation()  //get all records from database  
 	{
 	   $result;
+		$csrf_token=$this->security->get_csrf_hash();
 		$this->load->model('Sup_admin');
 		$dept=$this->input->post('dept');
 	    $dat=array("dept_id_fk"=>$dept);
@@ -622,10 +631,10 @@ class Super_Admin extends MY_Controller {
 			  $data[$i] = array('code'=>$code,'type'=>$type);
 			  $i = $i+1;
 		  }
-		   $result = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $result = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token,'csrf_token'=>$csrf_token);
 	   	}
 		else{
-		   $result = array('status'=>0,'message'=>'no data found');
+		   $result = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 
 	   	}
 	   echo json_encode($result);
@@ -688,10 +697,10 @@ class Super_Admin extends MY_Controller {
 	 $res = $this->Sup_admin->update_user($data,$id);
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-                                            current_url(),
-                                            'Login Table Updated',
-                                            'Custom Message here');
+		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+        //                                     current_url(),
+        //                                     'Login Table Updated',
+        //                                     'Custom Message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
@@ -759,11 +768,11 @@ class Super_Admin extends MY_Controller {
 	 
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-							current_url(),
-							'User Privilege table updated',
-							'Custom message here');
-		 $this->del_cache();
+		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+		// 					current_url(),
+		// 					'User Privilege table updated',
+		// 					'Custom message here');
+		     $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
 			
@@ -829,10 +838,10 @@ class Super_Admin extends MY_Controller {
      $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 if($res){
-		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
-							current_url(),
-							'User type table updated',
-							'Custom message here');
+		// $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+		// 					current_url(),
+		// 					'User type table updated',
+		// 					'Custom message here');
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
@@ -899,10 +908,10 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_page_view($data,$id);
 	 if($res){
 		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-							  current_url(),
-							  'Pages privilege table updated',
-							  'Custom message here');
+		//   $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+		// 					  current_url(),
+		// 					  'Pages privilege table updated',
+		// 					  'Custom message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);

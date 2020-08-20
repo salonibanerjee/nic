@@ -49,12 +49,11 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="<?php echo base_url();?>css/dark_mode.css">
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -191,9 +190,9 @@ foreach($noti1 as $row){
     <!-- Bootstrap 4 -->
     <script src="<?php echo base_url();?>css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- date-range-picker -->
-    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
     
     <!-- ChartJS -->
     <script src="<?php echo base_url();?>css/plugins/chart.js/Chart.min.js"></script>
@@ -217,12 +216,12 @@ foreach($noti1 as $row){
 
 <!--for realtime notifs fetching-->
 <!-- for toastr-->
-<link href="<?php echo base_url();?>cdn/cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
-<script src="<?php echo base_url();?>cdn/cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- for sweetalerts-->
-<link href="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
-<script src="<?php echo base_url();?>cdn/cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
 
 
 <script type='text/javascript'>
@@ -234,7 +233,7 @@ function sendRequest(){ //requests for new notifs every 2 seconds
           type: 'post',
           success: function(result){
 				    if(result == "Found"){
-              toastr.remove() //without animation
+              //toastr.remove() //without animation
               //toastr.clear() //with animation
               toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}              
               toastr.warning('New Notification');
@@ -259,7 +258,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
 }
 
 function start(){
-    sendRequest();
+    //sendRequest();
     send_nodal();
 }
 

@@ -221,30 +221,30 @@ class Dashboard_model extends CI_Model{
         {
             if($flag==0){
                 if($scheme_type[$x]==1||$scheme_type[$x]==4){
-                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
-                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
+                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
                 }
                 else if($scheme_type[$x]==2){
                     if($m>=1 && $m<=3)
                     {
-                        $this->db->select($b[$j])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
-                        $this->db->select($b[$j+1])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
+                        $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
+                        $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
                     }
                     else
                     {
-                        $this->db->select($b[$j])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
-                        $this->db->select($b[$j+1])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
+                        $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
+                        $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
                     }
                 }
                 else if($scheme_type[$x]==3){
-                    $this->db->select($b[$j])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
-                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->like('session',$y)->order_by('month','DESC');
+                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
+                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('id_pk','ASC');
                 }
             }
             else{
                 if($scheme_type[$x]==1||$scheme_type[$x]==4){
-                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
-                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('session',"desc");
+                    $this->db->select($b[$j])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('id_pk',"desc");
+                    $this->db->select($b[$j+1])->like('location_code',$loc,'after')->order_by('month','DESC')->order_by('id_pk',"desc");
                 }
                 else if($scheme_type[$x]==2){
                     if($m[$x]>=1 && $m[$x]<=3)
@@ -263,8 +263,10 @@ class Dashboard_model extends CI_Model{
                     $this->db->select($b[$j+1])->like('location_code',$loc,'after')->like('session',$y[$x])->order_by('id_pk','DESC');
                 } 
             }
-            if($flag==0)
+            if($flag==0){
                 $table2 = $this->db->get($n[$x])->result();
+                //return $table2;
+            }
             else{
                 $this->db->where('month',$m[$x]);
                 $table2=$this->db->get($n[$x])->result();
@@ -285,8 +287,8 @@ class Dashboard_model extends CI_Model{
                     array_push($testing,$atritar);
                 }
                 for($i=0;$i<sizeof($testing);$i+=2){
-                    $temp1+=$testing[$i];
-                    $temp2+=$testing[$i+1];
+                    $temp1=$testing[$i];
+                    $temp2=$testing[$i+1];
                 }
                 array_push($d, $temp1,$temp2);
             }
