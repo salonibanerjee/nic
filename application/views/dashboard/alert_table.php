@@ -7,9 +7,11 @@
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
           <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#alert_filter" style="color: black"><i class="fas fa-edit"></i></button>
       </div>
+      </div>
       <!-- /.card-header -->
       <div class="card-body p-0">
-        <table class="table table-condensed">
+        <div class="table-responsive">
+        <table class="table">
           <thead>
             <tr>
               <th style="width: 10px">SL.</th>
@@ -37,6 +39,7 @@
           {/data}
           </tbody>
         </table>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>
@@ -48,15 +51,21 @@
   <div class="modal-dialog modal-sm modal-dialog-centered">
       <!-- Modal content-->
       <div class="modal-content">
-      <?php echo form_open('','role="form" method="POST" id="form"');?>
-      <!--<form role='form' method="post" id='form'>-->
+          <div class="modal-header">
+            <h5 class="modal-title">Filter</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <?php echo form_open('','role="form" method="POST" id="form"');?>
+          <!--<form role='form' method="post" id='form'>-->
           <div class="modal-body">
-              <div class="row">
-                <div class="form-group">
-                  <label class='mb-1'>Enter a threshold value </label>
-                  <input type="number" class="form-control" name="alert_input" id="alert_input" placeholder="Enter Threshold">
-                </div>
+            <div class="row">
+              <div class="form-group">
+                <label class='mb-1'>Enter a threshold value </label>
+                <input type="number" class="form-control" name="alert_input" id="alert_input" placeholder="Enter Threshold">
               </div>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="submit" name="alert_submit" id="alert_submit" class="btn btn-block btn-outline-success btn-sm">Apply Filter</button>

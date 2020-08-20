@@ -27,6 +27,11 @@
   <div class="modal-dialog modal-lg modal-dialog-centered">
     <!-- Modal content-->
     <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
       <div class="modal-body">
           <canvas id="<?php echo $id; ?>_canvas_expand" style="min-height:230px;"></canvas>
       </div>

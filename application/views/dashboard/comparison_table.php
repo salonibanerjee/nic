@@ -7,9 +7,11 @@
           <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i></button>
           <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#comparison_filter" style="color: black"><i class="fas fa-edit"></i></button>
       </div>
+      </div>
       <!-- /.card-header -->
       <div class="card-body p-0">
-        <table class="table table-condensed">
+        <div class="table-responsive">
+        <table class="table ">
           <thead>
             <tr>
               <th>Scheme Name</th>
@@ -42,6 +44,7 @@
             
           </tbody>
         </table>
+        </div>
       </div>
       <!-- /.card-body -->
     </div>
@@ -53,6 +56,12 @@
   <div class="modal-dialog modal modal-dialog-centered">
       <!-- Modal content-->
       <div class="modal-content">
+      <div class="modal-header">
+            <h5 class="modal-title">Filter</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
       <?php echo form_open('','role="form" method="POST" id="form"');?>
       <!--<form role='form' method="post" id='form'>-->
             <div class="modal-body">
@@ -60,10 +69,10 @@
                 <div class="col-sm-6">
                   <label>Select First Scheme</label>
                   <select class='form-control' name='s1'>
-                    <?php 
+                    <?php
                       $i = 0;
                       foreach ($scheme_name as $name) {
-                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[0] == $scheme_link[$i])
+                        if($comp_array[0] == $scheme_link[$i])
                           echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
                         else
                           echo "<option value=".$scheme_link[$i].">".$name."</option>";
@@ -77,7 +86,7 @@
                         $i = 1;
                         $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
                         foreach ($month as $m) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[4] == "".$i."")
+                          if($comp_array[4] == "".$i."")
                             echo "<option value=".$i++." selected>".$m."</option>";
                           else
                             echo "<option value=".$i++.">".$m."</option>";
@@ -88,7 +97,7 @@
                       <?php 
                         $year = array("2019", "2020");
                         foreach ($year as $y) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[8] == $y)
+                          if($comp_array[8] == $y)
                             echo "<option value=".$y." selected>".$y."</option>";
                           else
                             echo "<option value=".$y.">".$y."</option>";
@@ -103,7 +112,7 @@
                     <?php 
                       $i = 0;
                       foreach ($scheme_name as $name) {
-                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[1] == $scheme_link[$i])
+                        if($comp_array[1] == $scheme_link[$i])
                           echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
                         else
                           echo "<option value=".$scheme_link[$i].">".$name."</option>";
@@ -117,7 +126,7 @@
                         $i = 1;
                         $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
                         foreach ($month as $m) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[5] == "".$i."")
+                          if($comp_array[5] == "".$i."")
                             echo "<option value=".$i++." selected>".$m."</option>";
                           else
                             echo "<option value=".$i++.">".$m."</option>";
@@ -128,7 +137,7 @@
                       <?php 
                         $year = array("2019", "2020");
                         foreach ($year as $y) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[9] == $y)
+                          if($comp_array[9] == $y)
                             echo "<option value=".$y." selected>".$y."</option>";
                           else
                             echo "<option value=".$y.">".$y."</option>";
@@ -143,7 +152,7 @@
                     <?php 
                       $i = 0;
                       foreach ($scheme_name as $name) {
-                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2] == $scheme_link[$i])
+                        if($comp_array[2] == $scheme_link[$i])
                           echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
                         else
                           echo "<option value=".$scheme_link[$i].">".$name."</option>";
@@ -157,7 +166,7 @@
                         $i = 1;
                         $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
                         foreach ($month as $m) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[6] == "".$i."")
+                          if($comp_array[6] == "".$i."")
                             echo "<option value=".$i++." selected>".$m."</option>";
                           else
                             echo "<option value=".$i++.">".$m."</option>";
@@ -168,7 +177,7 @@
                       <?php 
                         $year = array("2019", "2020");
                         foreach ($year as $y) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[10] == $y)
+                          if($comp_array[10] == $y)
                             echo "<option value=".$y." selected>".$y."</option>";
                           else
                             echo "<option value=".$y.">".$y."</option>";
@@ -183,7 +192,7 @@
                     <?php 
                       $i = 0;
                       foreach ($scheme_name as $name) {
-                        if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3] == $scheme_link[$i])
+                        if($comp_array[3] == $scheme_link[$i])
                           echo "<option value=".$scheme_link[$i]." selected>".$name."</option>";
                         else
                           echo "<option value=".$scheme_link[$i].">".$name."</option>";
@@ -197,7 +206,7 @@
                         $i = 1;
                         $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
                         foreach ($month as $m) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[7] == "".$i."")
+                          if($comp_array[7] == "".$i."")
                             echo "<option value=".$i++." selected>".$m."</option>";
                           else
                             echo "<option value=".$i++.">".$m."</option>";
@@ -208,7 +217,7 @@
                       <?php 
                         $year = array("2019", "2020");
                         foreach ($year as $y) {
-                          if($this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[11] == $y)
+                          if($comp_array[11] == $y)
                             echo "<option value=".$y." selected>".$y."</option>";
                           else
                             echo "<option value=".$y.">".$y."</option>";
