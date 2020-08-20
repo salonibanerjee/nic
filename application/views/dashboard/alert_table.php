@@ -29,7 +29,7 @@
               <td>{c4}</td>
               <td>
                 <div class="progress progress-xs mt-2">
-                  <div class="progress-bar bg-darger" style="width: {c5}%"></div>
+                  <div class="progress-bar bg-danger" style="width: {c5}%"></div>
                 </div>
               </td>
               <td><span class="badge bg-danger">{c5}%</span></td>
@@ -53,6 +53,7 @@
           <div class="modal-body">
               <div class="row">
                 <div class="form-group">
+                  <label class='mb-1'>Enter a threshold value </label>
                   <input type="number" class="form-control" name="alert_input" id="alert_input" placeholder="Enter Threshold">
                 </div>
               </div>

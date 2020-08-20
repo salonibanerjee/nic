@@ -30,13 +30,11 @@
                 <div class="row">
                     <div class="col-md-8">
                         <?php echo $progress_view ?>
+                        <?php echo $generate_btn ?>
                     </div>
                     <div class="col-md-4">
                         <div class="row" >
                             <?php echo $noti_view  ?>
-                        </div>
-                        <div class="row">
-                            <?php echo $generate_btn ?>
                         </div>
                     </div>
                 </div>

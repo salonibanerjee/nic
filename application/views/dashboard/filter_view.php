@@ -17,6 +17,7 @@
                         if($left) {
                         echo "<div class='col-md-6'>";
                         echo    "<div class='form-group'>";
+                            echo "<label class='mb-1'>SELECT SCHEME </label>";
                                     $i=0;
                                     $flag = false;
                                     foreach($c_left_name as $temp) {
@@ -42,7 +43,7 @@
                         echo "<div class='col-md-6'>";
                         echo "<div class='row'>";
                         echo    "<div class='form-group'>";
-                                
+                        echo "<label class='mb-1'>SELECT LOCATION </label>";
                             $i=0;
                             $flag = false;
                             foreach($c_name_right as $temp) {
