@@ -36,12 +36,11 @@
   
   <!-- Font Awesome -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- JQVMap -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
@@ -49,7 +48,7 @@
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
-  <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+  <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>js/daterangepicker-master/daterangepicker.css"/>
   <!-- summernote -->
   <link rel="stylesheet" href="<?php echo base_url();?>css/plugins/summernote/summernote-bs4.css">
   <!-- Theme style -->
@@ -189,10 +188,10 @@ foreach($noti1 as $row){
     <script src="<?php echo base_url();?>css/plugins/jquery/jquery.min.js"></script>
     <!-- Bootstrap 4 -->
     <script src="<?php echo base_url();?>css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <!-- date-range-picker -->
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <!-- date-range-picker 
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>-->
+    <script type="text/javascript" src="<?php echo base_url();?>js/daterangepicker-master/moment.min.js"></script>
+    <script type="text/javascript" src="<?php echo base_url();?>js/daterangepicker-master/daterangepicker.js"></script>
     
     <!-- ChartJS -->
     <script src="<?php echo base_url();?>css/plugins/chart.js/Chart.min.js"></script>
@@ -216,12 +215,8 @@ foreach($noti1 as $row){
 
 <!--for realtime notifs fetching-->
 <!-- for toastr-->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-
-<!-- for sweetalerts-->
-<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="<?php echo base_url();?>js/CodeSeven-toastr-50092cc/build/toastr.css" rel="stylesheet" type="text/css"/>  
+<script src="<?php echo base_url();?>js/CodeSeven-toastr-50092cc/toastr.js"></script>
 
 
 <script type='text/javascript'>
@@ -258,7 +253,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
 }
 
 function start(){
-    //sendRequest();
+    sendRequest();
     send_nodal();
 }
 

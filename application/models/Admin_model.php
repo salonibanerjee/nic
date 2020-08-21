@@ -267,8 +267,8 @@ class Admin_model extends CI_Model {
         $mydesig=$this->session->userdata('desig'); //fetching user desig_id_fk
         $myloc=$this->session->userdata('location_code');
         $mydesig_only=$this->session->userdata('desig');
-        $q = $this->db->query("SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=$mydesig_only OR audience_desig_only=-1) OR (audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))");
-        $noti=$q->num_rows();
+        $q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc'))";
+        $noti=$this->db->query($q)->num_rows();
         $result=array('noti_count'=>$noti);
         $this->load->driver('cache', array('adapter' => 'file'));
 
