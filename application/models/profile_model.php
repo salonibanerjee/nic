@@ -114,7 +114,7 @@ class profile_model extends CI_Model {
 				'username' =>$this->session->userdata('uid'),
 				'designation' =>$res->desig,
 				'district' =>$res->district,
-				'department' =>$res->department,
+				'department' =>$res->dept,
 				'office' =>$res->office,
                 'first_user'=>$row->check_if_first_user,
 				'update_prof'=>$row->check_profile_updated_once,
