@@ -180,13 +180,13 @@ class MY_Controller extends CI_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('Admin_model');
         $this->load->model('profile_model');
-        $result=$this->profile_model->count_new_notifications();    
+        $result=$this->profile_model->custom_notifications();    
         if($this->cache->get('Noti'.$this->session->userdata('loginid'))){
             $prev_noti=$this->cache->get('Noti'.$this->session->userdata('loginid'))['noti_count'];
         }else{
             $prev_noti=0;
         }
-		if($result > $prev_noti){
+		if($result->num_rows() > $prev_noti){
             unlink('./application/cache/Noti'.$this->session->userdata('loginid'));
             $this->Admin_model->noti_cache($this->session->userdata('loginid'));
 			echo "Found";
