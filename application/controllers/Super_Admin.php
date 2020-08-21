@@ -97,9 +97,10 @@ class Super_Admin extends MY_Controller {
 			$noti_head="New Meeting";
 			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
 			$target_audience="NMEET00";
-			$audience_ut=9;
-			$audience_loc='1911';
-			$audience_desig_only=41;
+				$radiosel=2;//broadcast
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+				$audience_desig_only=$this->session->userdata('desig');
             //2hours relaxation on the provided time
             $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
@@ -113,7 +114,7 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
@@ -135,12 +136,13 @@ class Super_Admin extends MY_Controller {
 		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
 			echo "cancelled";
 			$target_audience="NMEET01";
-			$audience_ut=9;
-			$audience_loc='1911';
-			$audience_desig_only=41;
+				$radiosel=2;//broadcast
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+				$audience_desig_only=$this->session->userdata('desig');
 			$noti_head="Cancelled Meeting";
 			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Cancelled',
@@ -242,13 +244,13 @@ class Super_Admin extends MY_Controller {
 			$this->db->trans_start();
 
 			if($radiosel==2){//broadcast
-				$target_audience="N-BROADCAST";
+				$target_audience="NBROADCAST";
 			}
 			else if($radiosel==1){//designation only
-				$target_audience="ND-".$audience_desig_only;
+				$target_audience="ND".$audience_desig_only;
 			}
 			else if($radiosel==0){
-				$target_audience="N-UT".$audience_ut."-L-".$audience_loc;
+				$target_audience="NUT".$audience_ut."L".$audience_loc;
 			}
 
 			
