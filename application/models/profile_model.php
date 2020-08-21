@@ -195,68 +195,46 @@ class profile_model extends CI_Model {
 		return $noti;
 	}
 
-	public function custom_notification1(){
-		$query = $this->db->select('*')->order_by('notification_id_pk','DESC')->get_where('mpr_trans_notification', array('active_status'=>1))->result_array();
-		return $query;
-	}
-
-	public function getrelevantloc($desig){		//gets respective location for selected designation from database  
-		if($desig == -1){
+	public function getrelevantloc($ut){		//gets respective location for selected ut from database 			
+		if($ut==-1){
 			$q="SELECT * FROM public.mpr_master_location_data ORDER BY location_area ASC";
-			$result=$this->db->query($q);
 		}
 		else{
-		$q="SELECT * FROM public.mpr_master_location_data WHERE location_code IN(SELECT location_code FROM public.mpr_semitrans_login WHERE user_type_id_fk=$desig) ORDER BY location_area ASC";
-		$result=$this->db->query($q);
+			$q="SELECT * FROM public.mpr_master_location_data WHERE location_code IN(SELECT location_code FROM public.mpr_semitrans_login WHERE user_type_id_fk=$ut) ORDER BY location_area ASC";
 		}
+		$result=$this->db->query($q);		
         return $result;
 	}
-
 
 //---------------------------------------------------------------------------------------
-
-	public function getfetchdesig(){		//gets user type from database  
-			$q="SELECT * FROM public.mpr_semitrans_user_type ORDER BY desig ASC";
-			$result=$this->db->query($q);
-        return $result;
+	public function getfetchdesig(){		//gets user type from database
+		$q="SELECT * FROM public.mpr_semitrans_user_type WHERE user_type_id_pk IN(SELECT user_type_id_fk FROM public.mpr_semitrans_login WHERE active_status=1) ORDER BY desig ASC";
+		$result=$this->db->query($q);
+		return $result;
 	}
 
-	public function getfetchdesigonly(){		//gets designation from database  
-			$q="SELECT * FROM public.mpr_master_designation ORDER BY desig_name ASC";
-			$result=$this->db->query($q);
-        return $result;
+	public function getfetchdesigonly(){		//gets designation from database
+		$q="SELECT * FROM public.mpr_master_designation WHERE desig_id_pk IN(SELECT desig_id_fk FROM public.mpr_semitrans_login WHERE active_status=1) ORDER BY desig_name ASC";
+		$result=$this->db->query($q);
+		return $result;
 	}
-
 //---------------------------------------------------------------------------------------
 
 	public function custom_notification(){
 		
-		$mydesigid=$this->session->userdata('desig');
-		$myloccode=$this->session->userdata('location_code');
-		$myusertype=$this->session->userdata('user_type');
-
-		$query = $this->db->select('*')->from('mpr_trans_notification')
-		->where('active_status',1)
-			->group_start()
-				->where(array('audience_desig'=>$myusertype,'audience_loc'=>$myloccode,'audience_desig_only'=>$mydesigid))
-				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>$myloccode,'audience_desig_only'=>-1))
-				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>'-1','audience_desig_only'=>$mydesigid))
-				->or_where(array('audience_desig'=>$myusertype,'audience_loc'=>'-1','audience_desig_only'=>-1))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode,'audience_desig_only'=>$mydesigid))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>$myloccode,'audience_desig_only'=>-1))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1','audience_desig_only'=>$mydesigid))
-				->or_where(array('audience_desig'=>-1,'audience_loc'=>'-1','audience_desig_only'=>-1))
-			->group_end()
-		->order_by('notification_id_pk','DESC')
-		->get()
-		->result_array();
-			return $query;
+		$mydesig_only=$this->session->userdata('desig');//41
+		$myloc=$this->session->userdata('location_code');//'19111'
+		$mydesig=$this->session->userdata('user_type');	//9
+		//$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=-1 AND audience_ut=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig_only=-1 AND audience_ut=-1 AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_ut=".$mydesig." AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_ut=-1 AND audience_loc='".$myloc."') OR (audience_desig_only=".$mydesig_only." AND audience_ut=-1 AND audience_loc='-1')) ORDER BY notification_id_pk DESC";
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc')) ORDER BY notification_id_pk DESC";
+		$result = $this->db->query($q)->result_array();
+		return $result;
 	}
 
-	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_desig,$audience_loc,$audience_desig_only)
+	public function savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel)
 	{
 		$result = $this->db->insert('mpr_trans_notification',array('audience_id'=>$target_audience,'notification_text'=>$noti_text,'notification_head'=>$noti_head,
-									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s'), 'audience_desig'=>$audience_desig, 'audience_loc'=>$audience_loc, 'audience_desig_only'=>$audience_desig_only));
+									'active_status'=>1,'timestamp'=>date('Y-m-d H:i:s'), 'audience_ut'=>$audience_ut, 'audience_loc'=>$audience_loc, 'audience_desig_only'=>$audience_desig_only,'radiosel'=>$radiosel));
 		return $result;
 	}
 
@@ -278,11 +256,20 @@ class profile_model extends CI_Model {
 	}
 
 	public function fetchnotifortable() {//for ajax call to populate table on notify view
-		$mydesig_only=$this->session->userdata('desig');//41
-		$myloc=$this->session->userdata('location_code');//'19111'
-		$mydesig=$this->session->userdata('user_type');	//9
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig_only=-1 AND audience_desig=-1 AND audience_loc='".$myloc."') OR (audience_desig_only=".$mydesig_only." AND audience_desig=-1 AND audience_loc='-1'))";
+		$mydesig_only=$this->session->userdata('desig');
+		$myloc=$this->session->userdata('location_code');
+		$mydesig=$this->session->userdata('user_type');	
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc')) ORDER BY notification_id_pk DESC";
 		$result = $this->db->query($q);
+		return $result;
+	}
+
+	public function count_new_notifications(){//for ajax call to populate table on notify view
+		$mydesig_only=$this->session->userdata('desig');
+		$myloc=$this->session->userdata('location_code');
+		$mydesig=$this->session->userdata('user_type');	
+		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc'))";
+		$result = $this->db->query($q)->num_rows();
 		return $result;
 	}
 }

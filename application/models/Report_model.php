@@ -81,6 +81,8 @@ class Report_model extends CI_Model
 		return $a[0]['actual_name'];
 	}
 
+	//ses -> year
+
 	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type)
 	{
 		if($temp_tab=="mpr_scheme_awcc")

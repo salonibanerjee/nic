@@ -19,6 +19,7 @@ class summary extends MY_Controller {
 		$this->check_privilege(1);
 		$this->load->model('profile_model');
 		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->helper('cookie');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
@@ -39,35 +40,15 @@ class summary extends MY_Controller {
 		$scheme_link = array();
 		$scheme_link_name = array();
 
-		// Populating scheme link
+		// Populating scheme link -----------------------------
 		foreach($scheme_hier as $row){
 			array_push($scheme_link, $row['scheme_link']);
 			array_push($scheme_link_name, $row['scheme_name']);
 		}
 
-		// Dashboard CACHING implementation
-		if ( ! $foo = $this->cache->get('dashboard_cache_progress'.$this->session->userdata('loginid'))){
-            $foo = $scheme_link;
-            $this->cache->save('dashboard_cache_progress'.$this->session->userdata('loginid'), $foo, 3000);
-		}
-		
-		if ( ! $foo = $this->cache->get('dashboard_cache_pie'.$this->session->userdata('loginid'))){
-            $foo = $scheme_link;
-            $this->cache->save('dashboard_cache_pie'.$this->session->userdata('loginid'), $foo, 3000);
-		}
-		
-		if ( ! $foo = $this->cache->get('dashboard_cache_bar'.$this->session->userdata('loginid'))){
-            $foo = $scheme_link;
-            $this->cache->save('dashboard_cache_bar'.$this->session->userdata('loginid'), $foo, 3000);
-		}
-		if ( ! $foo = $this->cache->get('dashboard_cache_bar2'.$this->session->userdata('loginid'))){
-            $foo = $scheme_link;
-            $this->cache->save('dashboard_cache_bar2'.$this->session->userdata('loginid'), $foo, 3000);
-		}
-		if ( ! $foo = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))){
-            $foo = array($scheme_link[0], $scheme_link[5], 1, '2020');
-            $this->cache->save('dashboard_cache_comparison'.$this->session->userdata('loginid'), $foo, 3000);
-        }
+		// Dashboard COOKIE Implementation ---------------------------------------------------
+
+		$expiry = time() + 60*60*24*30;
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
@@ -79,15 +60,14 @@ class summary extends MY_Controller {
 			array_push($all_loc,$val);
 		}
 		
-		// Dashboard progress view implementation
+		//Dashboard Progress View Implementation -------------------------------
 		$loc_schcd = $this->session->userdata('location_code');
-		$scheme_name = $this->cache->get('dashboard_cache_progress'.$this->session->userdata('loginid'));
+		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("progress") != null)
+			$scheme_name = explode(",", get_cookie("progress"));
+		else
+			$scheme_name = $scheme_link;
 
-		$progress_m = 0;
-		$progress_y = 0;
-		
-		$progress_location = $all_loc;
-
+		//Handling Progress filter form submission 
 		if(isset($_POST['progress_submit'])){
 			if(!empty($_POST['progress_left_check_list'])){
 				$scheme_name = array();
@@ -95,9 +75,12 @@ class summary extends MY_Controller {
 					array_push($scheme_name,$selected);
 				}
 			}
-			$this->cache->save('dashboard_cache_progress'.$this->session->userdata('loginid'), $scheme_name);
+
+			$temp_cookie = implode(",",$scheme_name);
+			setcookie("progress", $temp_cookie, $expiry);
 		}
 
+		//Rendering progress filter
 		$filter_progress =array(
 			'filter_id' => 'progress',
 			'selected_left' => $scheme_name,
@@ -116,16 +99,19 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $filter_progress);
 		
-		//==============Populating data for Progress view=================
-		$size_sch = sizeof($scheme_name);
-		$scheme_location = $this->Dashboard_model->get_loc($progress_location,sizeof($progress_location));
-		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
-		
-		$alert_m = 0;
-		$alert_y = 0;
+		//Populating data for Progress View
 
-		$tempresult_alert = $this -> Dashboard_model -> get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$alert_m,$alert_y);
-		$tempschemename_alert = $this -> Dashboard_model -> sch_name($scheme_name,sizeof($scheme_name));
+		$size_sch = sizeof($scheme_name);
+		//Scheme actual names
+		$schemename_pro = $this->Dashboard_model->sch_name($scheme_name,$size_sch);
+		//progress data
+
+		$mydate=getdate();
+        $month=date('m', strtotime($mydate['month']));
+
+		$tempresult_alert = $this->Dashboard_model->get_alertdata($scheme_name,sizeof($scheme_name),$loc_schcd,$month,"2020",0);
+
+		$tempschemename_alert = $this->Dashboard_model->sch_name($scheme_name,sizeof($scheme_name));
 		$data = array();
 		$schemename_alert=array();
 		$result_alert=array();
@@ -133,9 +119,10 @@ class summary extends MY_Controller {
 			if($tempresult_alert[$i]=="false")
 				continue;
 			if($tempresult_alert[$i]!=0)
-				$per=(int)($tempresult_alert[$i+1]/$tempresult_alert[$i]*100);
+				$per=(int)(($tempresult_alert[$i+1]/$tempresult_alert[$i])*100);
 			else
 				$per=0;
+
 			array_push($result_alert,$tempresult_alert[$i],$tempresult_alert[$i+1]);
 			array_push($data, $per);
 			array_push($schemename_alert,$tempschemename_alert[$j]);
@@ -146,12 +133,7 @@ class summary extends MY_Controller {
 		$i=0;
 		while($i<sizeof($data))
 		{
-			if($data[$i]=="false")
-			{
-				$i++;
-				continue;
-			}
-			else if($data[$i]>60)
+			if($data[$i]>60)
 				$find='success';
 			else if($data[$i]<60 && $data[$i]>40)
 				$find='warning';
@@ -160,7 +142,7 @@ class summary extends MY_Controller {
 
 			$d = array(
 				'location' => $i+1,
-				'p_name' => $schemename_pro[$i],
+				'p_name' => $schemename_alert[$i],
 				'sign' => $find,
 				'progress' => $data[$i]
 				);
@@ -173,25 +155,27 @@ class summary extends MY_Controller {
 			$temp_arr[$key] = $row['progress'];
 		}
 		array_multisort($temp_arr, SORT_DESC, $work_progress);
-		
 		$progress_view = array('work_progress' => $work_progress);
-		//===========================================================
 
 		$container['progress_view'] = $this->parser->parse('dashboard/progress_view', $progress_view,TRUE);
 
-		$gp=$this->session->userdata('location_code');
-        $q="SELECT notification_text FROM mpr_trans_notification WHERE audience_id = '$gp' ORDER BY notification_id_pk DESC LIMIT 10";
-        $res = $this->db->query($q)->result();
-		$data['noti']=$res;
+		//------------------------------------------------------------------------
+		// $loc_details=$this->Dashboard_model->get_loc_detail($loc_schcd);
+		// print_r($loc_details);
+		// $data1=$this->Dashboard_model->get_scheme();
+		// print_r($data1);
+		//-------------------------------------------------------------------------
+		$data['noti']=$this->profile_model->custom_notification();
 		$container['noti_view'] = $this->load->view('dashboard/noti_view', $data ,TRUE);
 
-		// Dashboard pie chart implementation
-		$scheme_pie = $this->cache->get('dashboard_cache_pie'.$this->session->userdata('loginid'));
-		$pie_location = $loc_schcd;
-
-		$pie_m = 0;
-		$pie_y = 0;
+		//Dashboard Pie Chart Implementation --------------------------------------------------------------------
 		
+		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("pie") != null)
+			$scheme_pie = explode(",", get_cookie("pie"));
+		else
+			$scheme_pie = $scheme_link;
+
+		//Handling Pie Chart filter form submission 
 		if(isset($_POST['pie_submit'])){
 			if(!empty($_POST['pie_left_check_list'])){
 				$scheme_pie = array();
@@ -199,9 +183,11 @@ class summary extends MY_Controller {
 					array_push($scheme_pie,$selected);
 				}
 			}
-			$this->cache->save('dashboard_cache_pie'.$this->session->userdata('loginid'), $scheme_pie);
+			$temp_cookie = implode(",",$scheme_pie);
+			setcookie("pie", $temp_cookie, $expiry);
 		}
 
+		//Render filter for Pie Chart
 		$filter_pie =array(
 			'filter_id' => 'pie',
 			'selected_left' => $scheme_pie,
@@ -220,7 +206,7 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $filter_pie);
 
-		//pie chart data populate
+		//Pie Chart data populate
 		$n = count($scheme_pie);
 
 		$loc_schcdID=$this-> Dashboard_model -> getlocID($loc_schcd);
@@ -251,13 +237,14 @@ class summary extends MY_Controller {
 
 		$container['pie_chart'] = $this->load->view('dashboard/pie_chart', $pie_view ,TRUE);
 
-		// Dashboard Fund Utilised bar chart implementation
-		$scheme_bar1 = $this->cache->get('dashboard_cache_bar'.$this->session->userdata('loginid'));
-		$bar1_location = $loc_schcd;
-
-		$bar1_m = 0;
-		$bar1_y = 0;
+		//Dashboard Fund Utilised Bar Chart Implementation ---------------------------------------------------------
 		
+		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("bar1") != null)
+			$scheme_bar1 = explode(",", get_cookie("bar1"));
+		else
+			$scheme_bar1 = $scheme_link;
+
+		//Handling Fund Utilised Bar Chart filter submission
 		if(isset($_POST['bar1_submit'])){
 			if(!empty($_POST['bar1_left_check_list'])){
 				$scheme_bar1 = array();
@@ -265,9 +252,12 @@ class summary extends MY_Controller {
 					array_push($scheme_bar1,$selected);
 				}
 			}
-			$this->cache->save('dashboard_cache_bar'.$this->session->userdata('loginid'), $scheme_bar1);
+			
+			$temp_cookie = implode(",",$scheme_bar1);
+			setcookie("bar1", $temp_cookie, $expiry);
 		}
 
+		//Render Fund Utilised Bar Chart filter
 		$bar1_filter_progress = array(
 			'filter_id' => 'bar1',
 			'selected_left' => $scheme_bar1,
@@ -305,6 +295,7 @@ class summary extends MY_Controller {
 			array_push($schemename_bar, $tempschemename_bar[$j]);
 		}
 
+		//Rendering Bar Chart data
 		$bar_chart1 = array(
 			'id' => 'bar1',
 			'title' => 'Fund Utilised',
@@ -319,13 +310,17 @@ class summary extends MY_Controller {
 
 		$container['bar_chart1'] = $this->load->view('dashboard/bar_chart', $bar_chart1, TRUE);
 
-		// Dashboard Area wise physical progress bar chart implementation
-		$scheme_pro = array_slice($this->cache->get('dashboard_cache_bar2'.$this->session->userdata('loginid')),0,5,true);
+		//Dashboard Area Wise Physical Progress Bar Chart Implementation ----------------------------------------------
 		$location = array_slice($all_loc,0,5,true);
-
+		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("bar2") != null)
+			$scheme_pro = explode(",", get_cookie("bar2"));
+		else
+			$scheme_pro = array_slice($scheme_link,0,5,true);
+			
 		$bar2_m = 0;
 		$bar2_y = 0;
 
+		//Handling Area Wise Physical Progress Bar Chart filter submission
 		if(isset($_POST['bar2_submit'])){
 			if(!empty($_POST['bar2_left_check_list'])){
 				$scheme_pro = array();
@@ -334,7 +329,8 @@ class summary extends MY_Controller {
 				}
 			}
 
-			$this->cache->save('dashboard_cache_bar2'.$this->session->userdata('loginid'), $scheme_pro);
+			$temp_cookie = implode(",",$scheme_pro);
+			setcookie("bar2", $temp_cookie, $expiry);
 
 			if(!empty($_POST['bar2_right_check_list'])){
 				$location = array();
@@ -343,20 +339,17 @@ class summary extends MY_Controller {
 				}
 			}
 
-			$bar2_m = $_POST['bar2_month'];
-			$bar2_y = $_POST['bar2_year'];
 		}
 
+		//Rendering Area Wise Physical Progress Bar Chart filter
 		$bar2_filter_progress =array(
 			'filter_id' => 'bar2',
 			'selected_left' => $scheme_pro,
 			'selected_right' => $location,
-			'm' => $bar2_m,
-			'y' => $bar2_y,
 			'left' => true,
 			'right' => true,
 			'type' => 0,
-			'session' =>true,
+			'session' =>false,
 			'c_left_name' => $scheme_link,
 			'f_left_name' => $scheme_link_name,
 			'c_name_right' => $this->Dashboard_model->list_table_withloc('mpr_master_location_data','location_code'),
@@ -365,19 +358,24 @@ class summary extends MY_Controller {
 
 		$this->load->view('dashboard/filter_view', $bar2_filter_progress);
 		
-		$schemename_bar = $this->Dashboard_model->sch_name($scheme_bar1,sizeof($scheme_bar1));
-		
+		//Location Code
 		$loc = $this->Dashboard_model->get_loc($location,sizeof($location));
 		
+		//number of scheme selected by user
 		$size_sch = sizeof($scheme_pro);
+
+		//Actual schemename
 		$schemename_pro = $this->Dashboard_model->sch_name($scheme_pro,$size_sch);
 
 		//Matrix data for Physical progress view
-		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro));
+		$mydate=getdate();
+		$month=date('m', strtotime($mydate['month']));
+		$ses=$mydate['year'];
+		$matrix_data = $this->Dashboard_model->matrix($location,$scheme_pro,sizeof($location),sizeof($scheme_pro),$month,$ses);
 
 		$bar_chart2 = array(
 			'id' => 'bar2',
-			'title' => 'Area Wise Physical Progress',
+			'title' => 'Area Wise Progress',
 			'block' => $loc,
 			'no_bar' => $size_sch,
 			'bar' => $schemename_pro,
@@ -392,6 +390,7 @@ class summary extends MY_Controller {
 
 		$container['line_chart'] = $this->load->view('dashboard/line_chart', null, TRUE);
 
+		//Dashboard Scheme Alert Implementation -----------------------------------------------------
 		$threshold = 100;
 
 		if(isset($_POST['alert_submit'])){
@@ -434,27 +433,54 @@ class summary extends MY_Controller {
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 
 		//Dashboard Scheme Comparison implementation ---------------------------------------------
+		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("comp") != null)
+			$comp_array = explode(",", get_cookie("comp"));
+		else
+			$comp_array = array($scheme_link[0], $scheme_link[1], "NONE", "NONE", 1, 1, 1, 1, "2020","2020","2020","2020");
 
-		$comp_m = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[2];
-		$comp_y = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[3];
-
-		$comp_scheme1 = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[0];
-		$comp_scheme2 = $this->cache->get('dashboard_cache_comparison'.$this->session->userdata('loginid'))[1];
+		$first_scheme_temp = array_slice($comp_array,0,4,false);
+		$comp_m_temp = array_slice($comp_array,4,4,false);
+		$comp_y_temp = array_slice($comp_array,8,4,false);
 
 		if(isset($_POST['comp_submit'])){
-			$comp_scheme1 = $_POST['scheme1'];
-			$comp_scheme2 = $_POST['scheme2'];
-			$comp_m = $_POST['month'];
-			$comp_y = $_POST['year'];
+			$first_scheme_temp = array();
+			array_push($first_scheme_temp, $_POST['s1']);
+			array_push($first_scheme_temp, $_POST['s2']);
+			array_push($first_scheme_temp, $_POST['s3']);
+			array_push($first_scheme_temp, $_POST['s4']);
 
-			$this->cache->save('dashboard_cache_comparison'.$this->session->userdata('loginid'), array($comp_scheme1, $comp_scheme2, $comp_m, $comp_y));
+			$comp_m_temp = array();
+			array_push($comp_m_temp,$_POST['m1']);
+			array_push($comp_m_temp,$_POST['m2']);
+			array_push($comp_m_temp,$_POST['m3']);
+			array_push($comp_m_temp,$_POST['m4']);
+			
+			$comp_y_temp = array();
+			array_push($comp_y_temp,$_POST['y1']);
+			array_push($comp_y_temp,$_POST['y2']);
+			array_push($comp_y_temp,$_POST['y3']);
+			array_push($comp_y_temp,$_POST['y4']);
+
+			$comp_array = array_merge($first_scheme_temp, $comp_m_temp, $comp_y_temp);
+
+			$temp_cookie = implode(",", $comp_array);
+			setcookie("comp", $temp_cookie, $expiry);
 		}
 
 		$loc_schcdID = $this-> Dashboard_model -> getlocID($loc_schcd);
-		$first_scheme=array($comp_scheme1, $comp_scheme2);
+		$first_scheme=array();
+		$comp_m=array();
+		$comp_y=array();
+		for($i=0;$i<sizeof($first_scheme_temp);$i++){
+			if(strcmp("NONE",$first_scheme_temp[$i])!=0){
+				array_push($first_scheme,$first_scheme_temp[$i]);
+				array_push($comp_m,$comp_m_temp[$i]);
+				array_push($comp_y,$comp_y_temp[$i]);
+			}
+		}
+		
 		$scheme_ID=$this-> Dashboard_model ->schID($first_scheme,sizeof($first_scheme),$loc_schcdID);
-
-		$tempresult_prog = $this -> Dashboard_model -> get_alertdata($first_scheme,sizeof($first_scheme),$loc_schcd,$comp_m,$comp_y);
+		$tempresult_prog = $this -> Dashboard_model -> get_alertdata($first_scheme,sizeof($first_scheme),$loc_schcd,$comp_m,$comp_y,1);
 		$tempschemename = $this -> Dashboard_model -> sch_name($first_scheme,sizeof($first_scheme));
 		$data = array();
 		$schemename=array();
@@ -494,6 +520,10 @@ class summary extends MY_Controller {
 			$i++;
 			$j+=2;
 		}
+		$scheme_link_comp=$scheme_link;
+		array_push($scheme_link_comp,"NONE");
+		$scheme_link_name_comp=$scheme_link_name;
+		array_push($scheme_link_name_comp,"NONE");
 	
 		$comparison = array(
 			'name' => $comp_name,
@@ -501,17 +531,15 @@ class summary extends MY_Controller {
 			'progress' => $comp_progress,
 			'percentage' => $comp_per,
 			'sign' => $comp_sign,
-			'scheme_link' => $scheme_link,
-			'scheme_name' => $scheme_link_name
+			'comp_array' => $comp_array,
+			'scheme_link' => $scheme_link_comp,
+			'scheme_name' => $scheme_link_name_comp
 		);
 
 		$container['comparison_table'] = $this->load->view('dashboard/comparison_table', $comparison, TRUE);
 
-		// Dashboard Scheme alert implementation
-		$alert_m = 0;
-		$alert_y = 0;
-
-		$tempresult_alert = $this -> Dashboard_model -> get_alertdata($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,$alert_m,$alert_y);
+		//Dashboard Info Box Implementation ---------------------------------------------
+		$tempresult_alert = $this -> Dashboard_model -> get_alertdata($scheme_bar1,sizeof($scheme_bar1),$loc_schcd,0,0,0);
 		$tempschemename_alert = $this -> Dashboard_model -> sch_name($scheme_bar1,sizeof($scheme_bar1));
 		$data = array();
 		$schemename_alert=array();
@@ -535,7 +563,6 @@ class summary extends MY_Controller {
 		}
 		$table_data = array('data' => $fits );
 
-		// Dashboard Info Box implementation
 		$max_scheme;
 		$min_scheme;
 		$best_scheme;

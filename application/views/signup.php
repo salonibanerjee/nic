@@ -47,7 +47,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-            <select name ="desig" id="desig" class="form-control" onchange="locationData();"  ></select>
+            <select name ="desig" id="desig" class="form-control"></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user-plus"></span>
@@ -63,7 +63,7 @@
           </div>
         </div>
 		<div class="input-group mb-3">
-            <select id="office"  name="office" class="form-control" onchange="department();" ></select>
+            <select id="office"  name="office" class="form-control" ></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas  fa-university"></span>
@@ -71,7 +71,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-            <select id="dept"  name="dept" class="form-control" onchange="designation();"  ></select>
+            <select id="dept"  name="dept" class="form-control"></select>
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-building"></span>
@@ -91,7 +91,7 @@
         <font color="red"><div id="field_name"></div></font><br>
         <div class="row">
           <div class="col-12">
-            <button type="button" value="Submit" class="btn btn-primary btn-block" onclick="hashPassword();">Add</button>
+            <button type="button" id="submit" value="Submit" class="btn btn-primary btn-block">Add</button>
           </div>
           <!-- /.col -->
         </div>
@@ -103,12 +103,31 @@
 </div>
 
 <script type="text/javascript">
+
+// $(function () {
+//   $(document).on('click','#email', function () {
+//     $.ajax({
+//       type: "method",
+//       url: "url",
+//       data: "data",
+//       dataType: "dataType",
+//       success: function (response) {
+        
+//       }
+//     });
+// });
+// });
+
+
+
 		
 		var csrf_token="";
-		district();  
-		fetchType();
-	    office();
-		function hashPassword(){
+	  district();  
+		
+
+		//function hashPassword(){
+    $(function () {
+    $(document).on('click','#submit', function () {
 			$('#field_name').html("");
 			var email = $('#email').val();
 			var district = $('#district').val();
@@ -125,8 +144,10 @@
 				$('#field_name').html("Please fill all fields*");
 			}
 		
-		}
-		
+		//}
+  });
+  });
+
 	function signupdo(email,district,user_type,region_code,dept,office,desig_name){
 		console.log("card data:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 		  if(csrf_token==""){
@@ -137,7 +158,7 @@
 			type: "POST",
 			data:{  "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
 				email:email,district:district,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
-		    dataType: 'json',
+      dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
 				console.log(textStatus, errorThrown);
 			},
@@ -146,20 +167,22 @@
 				if(result.csrf_token){
 					csrf_token = result.csrf_token;
 				} 
+	
 				$('#email').val("");
 				$('#district').val("select");
-				$('#pass').val("");
-				$('#desig').val("select");
-				$('#region_code').val("select");
-				$('#dept').val("select");
-				$('#office').val("select");
-				$('#desig_name').val("select");
+				$('#desig').val("");
+				$('#region_code').val("");
+				$('#dept').val("");
+				$('#office').val("");
+		    $('#desig_name').val("");
 				$('#field_name').html(result.message);
 				console.log("result");
 			}   
 		});
 	}
-	   function fetchType() {
+	  // function fetchType() {
+    $(function () {
+    $(document).on('change','#district', function () {
 		 console.log("fetchType");
 		$("#desig").empty();
 		   if(csrf_token==""){
@@ -170,7 +193,7 @@
 			data:{
 				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
 			},
-            type: "POST",
+            type: "GET",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -194,8 +217,11 @@
                 }
             }
         });
-	  }
-	function district() {
+	  	//}
+  });
+  });
+	
+    function district() {
 		 console.log("district");
 		$("#desig").empty();
 		   if(csrf_token==""){
@@ -203,16 +229,14 @@
 		   }
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/fetch_district",
-			data:{
-				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token 
-			},
+		      	data:{"<?php echo $this->security->get_csrf_token_name();?>": csrf_token },
             type: "POST",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				console.log(result);
+				 console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
@@ -230,8 +254,10 @@
                 }
             }
         });
-	  }
-	  function office() {
+    }
+	  //function office() {
+    $(function () {
+    $(document).on('change','#region_code', function () {
 		 console.log("office");
         $("#office").empty();
 		 
@@ -268,8 +294,12 @@
                 }
             }
         });
-	  }
-	function department() {
+	  	//}
+  });
+  });
+	// function department
+  $(function () {
+  $(document).on('change','#office', function () {
 		 var office = $('#office').val();
 		 console.log("department"+office);
         $("#dept").empty();
@@ -280,15 +310,11 @@
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/department",
             type: "POST",
-			data:
-			{
-				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
-				office:office
-			},
+			      data:$('#office').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token ,
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
-			},
+			      },
             success: function (result) {
 				console.log(result);
                 var type_arr = result.data;
@@ -310,10 +336,14 @@
                 }
             }
         });
-	  }
+	  // }
+  });
+  });
+
 	
-	function designation() {
-		
+	//function designation() {
+  $(function () {
+  $(document).on('change','#dept', function () {
 		var dept = $('#dept').val();
 		 console.log("designation"+dept);
         $("#desig_name").empty();
@@ -324,11 +354,7 @@
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/designation",
             type: "POST",
-			data:
-			{
-				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token, 
-				dept:dept
-			},
+		      	data:$('#dept').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token, 
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -352,9 +378,13 @@
                 }
             }
         });
-	  }
+	//}
+});
+});
 	
-	function locationData() {
+//function locationData
+  $(function () {
+  $(document).on('change','#desig', function () {
 		var district = $('#district').val();
 		var level = $('#desig').val().split('_')[1];//1_1
 		console.log("locationData: "+level);
@@ -368,11 +398,7 @@
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/location_data",
             type: "POST",
-			data:
-			{
-				 "<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
-				"level":level,"district":district
-			},
+			      data:$('#level').serialize()+$('#district').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token ,
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("error::" + textStatus, errorThrown);
@@ -396,47 +422,10 @@
                 }
             }
         });
-	  }
+	//}
+});
+});
 	
-//  function validatePassword()
-//  {
-//	var password = $('#pass').val();
-//    if(password != "") {
-//      if(password.length < 8) {
-//        notify("Error: Password must contain at least eight characters!");
-//        return false;
-//      }
-//      re = /[0-9]/;
-//      if(!re.test(password)) {
-//        notify("Error: password must contain at least one number (0-9)!");
-//        return;
-//      }
-//	  re = /[!@#$%^&*]/;
-//      if(!re.test(password)) {
-//        notify("Error: password must contain at least one characters (!@#$%^&*)!");
-//        return;
-//      }
-//      re = /[a-z]/;
-//      if(!re.test(password)) {
-//        notify("Error: password must contain at least one lowercase letter (a-z)!");
-//        return;
-//      }
-//      re = /[A-Z]/;
-//      if(!re.test(password)) {
-//        notify("Error: password must contain at least one uppercase letter (A-Z)!");
-//        return;
-//      }
-//    } else {
-//      notify("Error: Please check that you've entered your password!");
-//      return;
-//    }
-//	notify("");
-//  }
-//	
-//	function notify(msg){
-//		$('#field_name1').html(msg);
-//	}
-
 </script>
 
 </body>

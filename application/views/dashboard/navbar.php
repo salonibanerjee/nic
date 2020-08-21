@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html > 
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -97,6 +97,7 @@
           <i class="fas fa-sitemap" style="font-size:27px;"></i>
         </a>
     </li>
+    <div id="refresh1">
     <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-bell" style="font-size:27px;"></i>
@@ -138,6 +139,7 @@
           <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
+      </div>
 
       <li class="nav-item dropdown" >
         <a class="nav-link" data-toggle="dropdown" href="#">
@@ -218,38 +220,45 @@ foreach($noti1 as $row){
 <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <!-- for sweetalerts-->
-<link href="//cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@sweetalert2/theme-dark@3/dark.css" rel="stylesheet">  
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9/dist/sweetalert2.min.js"></script>
 
 
 <script type='text/javascript'>
-function sendRequest(){ //requests for new notifs every 10 seconds
+function sendRequest(){ //requests for new notifs every 2 seconds
 	  
-	    setInterval(function(){
+	    setInterval(function(){        
 			  $.ajax({
-				  url: "<?php echo base_url();?>Summary/fetch_notifs",
+          url: "<?php echo base_url();?>Summary/fetch_notifs",
+          type: 'post',
           success: function(result){
 				    if(result == "Found"){
-              toastr.options={"timeOut":"500000","positionClass": "toast-top-center"}
-              toastr.warning('<a href="<?php echo current_url();?>"><button type="button" class="btn btn-primary float-right" onclick="toastr.clear()">Check</button></a>' , 'New Notification');
+              //toastr.remove() //without animation
+              //toastr.clear() //with animation
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}  
+              $("#refresh1").load(location.href+" #refresh1>*","");            
+              toastr.warning('New Notification');              
 				    }
 				  }
 			  });
-		  },5000);
+		  },2000);
 }
 
 function send_nodal(){ //requests for new notifs every 10 seconds
+  setInterval(function(){
       $.ajax({
         url: "<?php echo base_url();?>Summary/nodal_alert",
+        type: 'post',
         success: function(result){
             if(result=="found")
               toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
           }
       });
+    },10000);
 }
 
 function start(){
-    sendRequest();
+    //sendRequest();
     send_nodal();
 }
 

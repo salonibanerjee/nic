@@ -23,6 +23,7 @@ class Login extends MY_Controller {
     //Performs Login and if successful redirects to scheme picker page--------------------------------------------------------------
 	public function login_MPR(){
         $this->db->cache_off();
+        $this->load->helper('cookie');
         $this->form_validation->set_rules('captcha', "Captcha", 'required');
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
         $this->form_validation->set_rules('pass','Password','required');
@@ -54,6 +55,16 @@ class Login extends MY_Controller {
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
                     $this->Admin_model->dashboard_cache();
                     $this->Admin_model->scheme_hier_cache();
+                    $expire = time()+60*60*24*30;
+                    if(!isset($_COOKIE["User"]) || get_cookie("user") != $res->login_id_pk){
+                        setcookie("user", $res->login_id_pk, $expire, "/");
+                        setcookie("progress", "", $expire, "/");
+                        setcookie("bar1", "", $expire, "/");
+                        setcookie("bar2", "", $expire, "/");
+                        setcookie("pie", "", $expire, "/");
+                        setcookie("comp", "", $expire, "/");
+                    }
+
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
