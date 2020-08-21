@@ -234,12 +234,12 @@ function sendRequest(){ //requests for new notifs every 2 seconds
           success: function(result){
 				    if(result == "Found"){
               //toastr.remove() //without animation
-              //toastr.clear() //with animation
-              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}  
-              $("#refresh1").load(location.href+" #refresh1>*","");            
+              toastr.clear() //with animation
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}             
               toastr.warning('New Notification');              
+              $("#refresh1").load(location.href+" #refresh1>*","");
 				    }
-				  }
+				  } 
 			  });
 		  },2000);
 }
