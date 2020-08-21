@@ -1,7 +1,7 @@
 <?php
 //base controller from where all the controllers are extended(Parent controller)
 //MAIN BASE CONTROLLER--------------------------------------------------------------------------------------------------------------
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
