@@ -232,14 +232,15 @@ function sendRequest(){ //requests for new notifs every 2 seconds
           url: "<?php echo base_url();?>Summary/fetch_notifs",
           type: 'post',
           success: function(result){
+            //console.log($result);
 				    if(result == "Found"){
               //toastr.remove() //without animation
               toastr.clear() //with animation
               toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}             
-              toastr.warning('New Notification');              
+              toastr.warning('New Notification');
               $("#refresh1").load(location.href+" #refresh1>*","");
 				    }
-				  } 
+				  }
 			  });
 		  },2000);
 }
@@ -258,7 +259,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
 }
 
 function start(){
-    //sendRequest();
+    sendRequest();
     send_nodal();
 }
 
