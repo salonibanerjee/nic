@@ -255,15 +255,6 @@ class profile_model extends CI_Model {
 		return $result;
 	}
 
-	public function fetchnotifortable() {//for ajax call to populate table on notify view
-		$mydesig_only=$this->session->userdata('desig');
-		$myloc=$this->session->userdata('location_code');
-		$mydesig=$this->session->userdata('user_type');	
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc')) ORDER BY notification_id_pk DESC";
-		$result = $this->db->query($q);
-		return $result;
-	}
-
 	public function count_new_notifications(){//for ajax call to populate table on notify view
 		$mydesig_only=$this->session->userdata('desig');
 		$myloc=$this->session->userdata('location_code');

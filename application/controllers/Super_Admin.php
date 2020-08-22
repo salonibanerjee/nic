@@ -204,11 +204,11 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('profile_model');
 		$csrf_token=$this->security->get_csrf_hash();
 
-		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
+		$this->form_validation->set_rules('noti_head', 'Notification Title', 'required');
 		$this->form_validation->set_rules('audience_ut', 'Target User Type', 'required');
-		$this->form_validation->set_rules('audience_desig_only', 'Target designation', 'required');
-		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_ut]'); 
-		$this->form_validation->set_rules('noti_text', 'Notification text', 'required');
+		$this->form_validation->set_rules('audience_loc', 'Target Location', 'required|callback_everywhere_everyone[audience_ut]'); 
+		$this->form_validation->set_rules('audience_desig_only', 'Target Designation', 'required');
+		$this->form_validation->set_rules('noti_text', 'Notification Text', 'required');
 		
 		if ($this->form_validation->run() == FALSE)
         {

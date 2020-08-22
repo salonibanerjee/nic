@@ -223,25 +223,73 @@ class MY_Controller extends CI_Controller {
         }
     }
 
-    /*
-    public function getfetchnotitable()
-    {
-        $query;
-        $csrf_token=$this->security->get_csrf_hash();
-        $this->load->model('profile_model');
-        $query=$this->profile_model->fetchnotifortable();         
-        $data;
-            $i = 0;
-              foreach($query->result_array() as $r){
-                  $id=$r['audience_id']."-".$r['notification_id_pk'];
-                  $head=$r['notification_head'];
-                  $textt=$r['notification_text'];
-               $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
-               $i = $i+1;
-           }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
-        echo json_encode($ans);
-    }*/
+
+// Commented out on purpose: 2 SMS Sending functions, require Api intervention
+
+
+ /*   public function send($mobile_no = NULL,$message = NULL) {	
+		$mbl_no = $mobile_no;
+		$purpose_code=1;
+		$mob='91'.trim($mbl_no);
+		$tst=$message;
+		$uid="utkarshwb.sms";
+		//$pass="Gs%234Hw2D8";
+		$pass="Uk@Br4$6E";
+		//$pass="Yk!Br4%246p";
+		$send="UTKARS"; // 6 characters long SENDERID
+		$dest=urlencode($mob);
+		$msg=urlencode($tst);
+		$url="https://smsgw.sms.gov.in/failsafe/HttpLink?";
+		$data = "username=$uid&pin=$pass&message=$msg&mnumber=$dest&signature=$send";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_REFERER, base_url());   //base_url eg:"https://www.pbssd.gov.in/index.php"
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_POST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
+		curl_setopt($ch, CURLOPT_CAINFO,'/etc/pki/tls/certs/ca-bundle.crt');
+		$curl_output =curl_exec($ch);
+		if ($err = curl_error($ch)) {
+			return $err;
+        } else {
+			return TRUE;
+		}
+		
+	}
+	
+	
+	public function sendotp($mobile_no = NULL,$message = NULL){
+		$mbl_no = $mobile_no;
+		$purpose_code=1;
+		$mob='91'.trim($mbl_no);
+		$tst=$message;
+		$uid="utkarshwb.otp";
+		$pass="Yk!Br4%246p";
+		$send="UTKARS"; // 6 characters long SENDERID
+		$dest=urlencode($mob);
+		$msg=urlencode($tst);
+		$url="https://smsgw.sms.gov.in/failsafe/HttpLink?";
+		$data = "username=$uid&pin=$pass&message=$msg&mnumber=$dest&signature=$send";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_REFERER, base_url());   //base_url eg:"https://www.pbssd.gov.in/index.php"
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_POST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
+		curl_setopt($ch, CURLOPT_CAINFO,'/etc/pki/tls/certs/ca-bundle.crt');
+		$curl_output =curl_exec($ch);
+		if ($err = curl_error($ch)) {
+			return $err;
+        } else {
+			return TRUE;
+		}
+    }
+    */
 
 }
-    

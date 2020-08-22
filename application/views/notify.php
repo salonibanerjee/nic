@@ -160,7 +160,7 @@
 
     function fetchType() {
       var audience_ut=$('#audience_ut').val()
-      console.log("fetchType"+audience_ut);
+      //console.log("fetchType"+audience_ut);
 		  $("#audience_loc").empty();
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
@@ -221,7 +221,7 @@
 				    	csrf_token = result.csrf_token;
 			  	  }
                 if (status == 1) {
-					          var type_item = "<option value=''  selected>" + "Select a User Type" + "</option>";
+					          var type_item = "<option value=''  selected>" + "Select User Type" + "</option>";
                         $("#audience_ut").append(type_item);
                     $.each(type_arr, function (idx, val) {
                         var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
@@ -259,7 +259,7 @@
 				    	csrf_token = result.csrf_token;
 			  	  }
                 if (status == 1) {
-					          var type_item = "<option value='' selected>" + "Select a User Type" + "</option>";
+					          var type_item = "<option value='' selected>" + "Select Designation" + "</option>";
                         $("#audience_desig_only").append(type_item);
                     $.each(type_arr, function (idx, val) {
                         var type_item = "<option value=" + val['code'] + ">" + val['name'] + "</option>";
@@ -326,7 +326,7 @@
                 <label>Target Location</label>
 
                 <select name="audience_loc" id="audience_loc" class="form-control"> 
-                  <option value="" selected>Select a location</option>
+                  <option value="" selected>Select Location</option>
                   
                     
                     <option value="-1">Everywhere</option>
@@ -453,6 +453,7 @@ $("#form").on("submit", function (event) {
   $(document).ready(function () {
        $('#usertypelocr').click(function () {
           $("choose_desigloc").show();
+          $("choose_loc").hide();
           $("choose_desig_only").hide();
           $("#audience_loc").val('');
           $("#audience_ut").val('');
