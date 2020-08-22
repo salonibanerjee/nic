@@ -709,10 +709,14 @@ class summary extends MY_Controller {
 			$last = $this->input->post('last');
 			$mobile = $this->input->post('mob');
 			$dist = $this->input->post('dist');
-			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			$res=$this->profile_model->get_f($this->session->userdata('uid'));
+			if($_FILES['file']['tmp_name']==""){
+				$image=$res->image;
+			}else{
+				$image=base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			}
 			if($this->input->post('but1')=='1')
 					$image = NULL;
-			$res=$this->profile_model->get_f($this->session->userdata('uid'));
 			if($image == NULL){
 				if($this->input->post('but1')=='1')
 					$image = NULL;
