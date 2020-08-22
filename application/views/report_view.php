@@ -6,7 +6,8 @@
 					Generate Report
 				</div>
 				<div class="card-body">
-					<form method="post" action="<?php echo base_url();?>Report/past_report" id="form">
+					<?php echo form_open('Report/past_report','role="form" method="POST" id="form"');?>
+					<!-- <form method="post" action="<?php //echo base_url();?>" id="form"> -->
 						<div class="form-group">
 							<div class="row">
 								<div class="col-md-6">
