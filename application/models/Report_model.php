@@ -25,12 +25,9 @@ class Report_model extends CI_Model
 		$this->db->select_max('meeting_id_pk')->from('mpr_trans_meeting_schedule');
 		return $this->db->get()->result_array()[0]['meeting_id_pk'];
 	}
-	public function update_report_to_db($meet_id,$str)
+	public function update_report_to_db($meet_id,$str,$type,$mon,$year)
 	{
-		
-		$es = pg_escape_string($str);
-		echo $es;
-		$temp=array('meeting_id_fk'=>$meet_id,'report_data'=>$es,'report_generated_at'=>date('Y-m-d H:i:s'));
+		$temp=array('meeting_id_fk'=>$meet_id,'report_data'=>$str,'report_generated_month'=>strval($mon),'report_generated_year'=>strval($year),'report_type'=>$type);
 		$this->db->insert('mpr_trans_report',$temp);
 	}
 	public function get_colspan()
@@ -80,8 +77,6 @@ class Report_model extends CI_Model
 		$a= $this->db->get()->result_array();
 		return $a[0]['actual_name'];
 	}
-
-	//ses -> year
 
 	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type)
 	{
@@ -158,17 +153,15 @@ class Report_model extends CI_Model
 	{
 		$this->db->select('subdiv_id_fk')->from('mpr_master_block')->where('block_name',$loc_area);
 		$sub_div_id=$this->db->get()->result_array()[0]['subdiv_id_fk'];
-		//print_r($sub_div_id);
 		$this->db->select('sub_div_name')->from('mpr_master_subdiv');
 		$this->db->where('sub_div_id_pk',$sub_div_id);
-		//print_r($this->db->get()->result_array()[0]['sub_div_name']);
 		return $this->db->get()->result_array()[0]['sub_div_name'];
 		
 	}
 	public function generate_table($temp,$ses,$mon,$n=0)
 	{
 
-		$template = array('table_open' => '<table border="0.1" cellpadding="" cellspacing="" style="text-align:center">');
+		$template = array('table_open' => '<table border="1" cellpadding="1" cellspacing="1" style="text-align:center">');
 		$this->table->set_template($template);
 		if($n==0)
 			$this->table->set_caption('<br>Financial Years - '.$ses.'/'.($ses-1).'<br>'.'Reporting Month - '.$mon.', '.$ses.'<br>'.'Name of the District:- HOWRAH <br>');
@@ -189,7 +182,18 @@ class Report_model extends CI_Model
 		$this->table->add_row($temp['total']);
 		return $this->table->generate();
 	}
-	public function generate_pdf($temp) 
+	public function get_past_report($mon,$year,$type)
+	{
+		$temp=array('report_type' => $type,'report_generated_month'=>$mon,'report_generated_year'=>$year);
+		//$query = $this->db->get_where('mpr_trans_report',$temp);
+        //$row = $query->row();
+        $this->db->select('report_data')->from('mpr_trans_report')->where($temp);
+        $this->db->order_by('report_id_pk','DESC');
+        return $this->db->get()->row_array()['report_data'];
+        //return $row->report_data;
+	}
+
+	public function generate_pdf($temp,$type,$month,$ses) 
 	{
 		$this->load->library('Pdf');
 	
@@ -218,8 +222,14 @@ class Report_model extends CI_Model
 			$pdf->writeHTML($html, true, false, true, false, '');
 			$pdf->lastPage();
 		}
-		return $pdf->Output(md5(time()).'.pdf', 'S');
+		$var = $pdf->Output(md5(time()).'pdf','S');
+		header('aplication/pdf');
+		$meet_id=$this->get_meeting_id();
+        $this->update_report_to_db($meet_id,base64_encode($var),$type,$month,$ses);
+		$pdf->Output(md5(time()).'.pdf', 'D');
 	}
+
+
 	public function export_csv($temp)
 	{ 
 		$temporary_html_file = time() . '.html';
@@ -231,21 +241,23 @@ class Report_model extends CI_Model
 
 		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 
-		$filename = time() . '.xlsx';
+		$filename = 'Report'. '.xlsx';
 
 		$writer->save($filename);
+		
 
-		header('Content-Type: application/x-www-form-urlencoded');
+		header('Content-Type: application/x-www-form-urlencoded\text');
 
 		header('Content-Transfer-Encoding: Binary');
 
 		header("Content-disposition: attachment; filename=\"".$filename."\"");
 
 		readfile($filename);
-
+		
+		
 		unlink($temporary_html_file);
-
 		unlink($filename);
+
 
 		exit;
 	}

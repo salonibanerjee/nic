@@ -1,11 +1,25 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+
 class Report extends MY_Controller 
 {
     public function index()
     {
-
+        if($this->session->userdata('logged_in')=="")
+			header("Location: ".$this->config->base_url()."Login");
+		$this->cache_update();
+		$this->check_privilege(1);
+		$this->load->driver('cache',array('adapter' => 'file'));
+		$this->load->helper('cookie');
+		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
+		$noti = array('meeting'=>$this->profile_model->meeting_notification());
+		$u_type['notification'] = $noti;
+		$u_type['noti1']=$this->profile_model->custom_notification();
+        $this->load->view('dashboard/navbar',$u_type);
+        $da = $this->profile_model->get_profile_info($this->session->userdata('uid'));	
+        $this->load->view('dashboard/sidebar',$da);
+        $this->load->view('report_view');
     }
 
     //pdfreport is for creating pdf of mpr report.
@@ -20,7 +34,7 @@ class Report extends MY_Controller
 
         $loc=$this->session->userdata('location_code');
 
-        $data1=$this->Report_model->get_scheme();
+    	$data1=$this->Report_model->get_scheme();
     	$colspan=$this->Report_model->get_colspan();
     	$location_data=$this->Report_model->get_loc_detail(substr($loc,0,3));
     	$scheme_name=array();
@@ -104,7 +118,7 @@ class Report extends MY_Controller
                     $r++;
                     foreach ($data as $field ) 
                     {
-                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers' || $field=='projects_name')
+                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='completed_till_date'||$field=='designation_of_officers')
                         continue;
                         else
                         {
@@ -133,7 +147,7 @@ class Report extends MY_Controller
                     $r++;
                     foreach ($data as $field ) 
                     {
-                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date'||$field=='designation_of_officers')
+                        if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'|| $field=='date'||$field=='designation_of_officers')
                         continue;
                         else
                         {
@@ -267,12 +281,7 @@ class Report extends MY_Controller
 
     		array_push($scheme_header,$this->Report_model->generate_table($temp3,$ses,$month_name));
     	}
-        $meet_id=$this->Report_model->get_meeting_id();
-       $str=$this->Report_model->generate_pdf($scheme_header);
-       file_put_contents('Meating_id_'.$meet_id.'.pdf', $str);
-       $this->Report_model->update_report_to_db($meet_id,$str);
-       echo "<a href='".$this->config->base_url()."Meating_id_".$meet_id.".pdf' target='_blank'>done</a>";
-        
+       $this->Report_model->generate_pdf($scheme_header,0,$month,$ses);
     }
 
 
@@ -296,7 +305,6 @@ class Report extends MY_Controller
         $colspan=$this->Report_model->get_colspan();
         $location_data=$this->Report_model->get_loc_detail(substr($loc,0,4));
         //$attri_detail=$this->Report_model->get_attri();
-        print_r($location_data);
         $loc_area=array();//location name
         $loc_schcd=array(); // location code
         foreach ($location_data as $key ) 
@@ -443,7 +451,7 @@ class Report extends MY_Controller
                     $m=1;
                 foreach ($data as $field ) 
                 {
-                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' ||$field=='designation_of_officers' || $field=='projects_name')
+                    if($field=="id_pk" || $field=="login_id_fk" || $field=="inserted_at" || $field=="ip" || $field=='nodal_check' || $field=='session' || $field=='month' || $field=='location_code' || $field=='date_of_inception' || $field=='date_of_inspection' || $field=='till_date'||$field=='date' || $field=='designation_of_officers')
                     continue;
                     else
                     {
@@ -515,10 +523,33 @@ class Report extends MY_Controller
         {
             array_push($temp['total'],$key);
         }
-        //print_r($temp);
-        //echo $this->Report_model->generate_table($temp,$ses,$month_name,1);
-       $this->Report_model->export_csv($this->Report_model->generate_table($temp,$ses,$month_name,1));
+        $meet_id=$this->Report_model->get_meeting_id();
+        $excel_table=$this->Report_model->generate_table($temp,$ses,$month_name,1);
+        header('text/html');
+        $this->Report_model->update_report_to_db($meet_id,base64_encode($excel_table),1,$month,$ses);
+        $this->Report_model->export_csv($excel_table);
+
     }
+    public function past_report()
+    {
 
+        $this->load->model('Report_model');
+        $mon=$this->input->post('month');
+        $year=$this->input->post('year');
+        $type=$this->input->post('type');
+        $data=$this->Report_model->get_past_report($mon,$year,$type);
 
+        if($type==0)
+        {
+            $var=base64_decode($data);
+            file_put_contents('file.pdf', $var);
+            header("Location: ".$this->config->base_url()."file.pdf");
+        }
+        else if($type==1)
+        {
+            $var=base64_decode($data);
+            $this->Report_model->export_csv($var);
+
+        } 
+    }
 }

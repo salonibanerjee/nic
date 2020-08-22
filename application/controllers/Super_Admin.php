@@ -97,9 +97,10 @@ class Super_Admin extends MY_Controller {
 			$noti_head="New Meeting";
 			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
 			$target_audience="NMEET00";
-			$audience_ut=9;
-			$audience_loc='1911';
-			$audience_desig_only=41;
+				$radiosel=2;//broadcast
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+				$audience_desig_only=$this->session->userdata('desig');
             //2hours relaxation on the provided time
             $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
             $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
@@ -113,7 +114,7 @@ class Super_Admin extends MY_Controller {
             $this->db->trans_start();
 			$this->Admin_model->meeting_schedule($data);
 			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Schedule Updated',
@@ -135,12 +136,13 @@ class Super_Admin extends MY_Controller {
 		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
 			echo "cancelled";
 			$target_audience="NMEET01";
-			$audience_ut=9;
-			$audience_loc='1911';
-			$audience_desig_only=41;
+				$radiosel=2;//broadcast
+				$audience_ut=$this->session->userdata('user_type');	
+				$audience_loc=$this->session->userdata('location_code');
+				$audience_desig_only=$this->session->userdata('desig');
 			$noti_head="Cancelled Meeting";
 			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,2);
+			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
 			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
                                             current_url(),
                                             'Meeting Cancelled',
@@ -242,13 +244,13 @@ class Super_Admin extends MY_Controller {
 			$this->db->trans_start();
 
 			if($radiosel==2){//broadcast
-				$target_audience="N-BROADCAST";
+				$target_audience="NBROADCAST";
 			}
 			else if($radiosel==1){//designation only
-				$target_audience="ND-".$audience_desig_only;
+				$target_audience="ND".$audience_desig_only;
 			}
 			else if($radiosel==0){
-				$target_audience="N-UT".$audience_ut."-L-".$audience_loc;
+				$target_audience="NUT".$audience_ut."L".$audience_loc;
 			}
 
 			
@@ -476,7 +478,6 @@ class Super_Admin extends MY_Controller {
 	{
 	   $result;
 	   $csrf_token=$this->security->get_csrf_hash();
-	   $csrf_token=$this->security->get_csrf_hash();
 	   $this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->fetch_user_type();
 		  $res=$query->result();
@@ -680,14 +681,15 @@ class Super_Admin extends MY_Controller {
 	//--------------------------------------------------------------
 	function inactive_login() //load a form with data to be updated
  	{
+	 $this->load->model('Crud_model');
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
-	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
+
 	 $da['records']=$query->result();
-	// $this->load->view('update',$data);
+	
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
@@ -697,10 +699,10 @@ class Super_Admin extends MY_Controller {
 	 $res = $this->Sup_admin->update_user($data,$id);
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-        //                                     current_url(),
-        //                                     'Login Table Updated',
-        //                                     'Custom Message here');
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Login Table Updated',
+                                            'Custom Message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
@@ -751,8 +753,9 @@ class Super_Admin extends MY_Controller {
 	//--------------------------------------------------------------
 	function inactive_user_privilege() //load a form with data to be updated
  	{
+	 $this->load->model('Crud_model');
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_priv_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_priv_id_pk($dat);
@@ -768,10 +771,10 @@ class Super_Admin extends MY_Controller {
 	 
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					current_url(),
-		// 					'User Privilege table updated',
-		// 					'Custom message here');
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User Privilege table updated',
+							'Custom message here');
 		     $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
@@ -824,7 +827,8 @@ class Super_Admin extends MY_Controller {
 	function inactive_user_type() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $this->load->model('Crud_model');
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_type_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_type_id_pk($dat);
@@ -838,10 +842,10 @@ class Super_Admin extends MY_Controller {
      $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 if($res){
-		// $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					current_url(),
-		// 					'User type table updated',
-		// 					'Custom message here');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User type table updated',
+							'Custom message here');
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
@@ -894,6 +898,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_page_view() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+	 $this->load->model('Crud_model');
 		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("privilege_id_pk"=>$id);
@@ -908,10 +913,10 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_page_view($data,$id);
 	 if($res){
 		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//   $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					  current_url(),
-		// 					  'Pages privilege table updated',
-		// 					  'Custom message here');
+		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Pages privilege table updated',
+							  'Custom message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);

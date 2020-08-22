@@ -104,29 +104,12 @@
 
 <script type="text/javascript">
 
-// $(function () {
-//   $(document).on('click','#email', function () {
-//     $.ajax({
-//       type: "method",
-//       url: "url",
-//       data: "data",
-//       dataType: "dataType",
-//       success: function (response) {
-        
-//       }
-//     });
-// });
-// });
-
-
-
-		
 		var csrf_token="";
 	  district();  
 		
 
 		//function hashPassword(){
-    $(function () {
+      $(function () {
     $(document).on('click','#submit', function () {
 			$('#field_name').html("");
 			var email = $('#email').val();

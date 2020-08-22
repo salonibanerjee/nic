@@ -84,9 +84,6 @@ class summary extends MY_Controller {
 		$filter_progress =array(
 			'filter_id' => 'progress',
 			'selected_left' => $scheme_name,
-			'selected_right' => $progress_location,
-			'm' => $progress_m,
-			'y' => $progress_y,
 			'left' => true,
 			'right' => false,
 			'type' => 0,
@@ -191,9 +188,6 @@ class summary extends MY_Controller {
 		$filter_pie =array(
 			'filter_id' => 'pie',
 			'selected_left' => $scheme_pie,
-			'selected_right' => $pie_location,
-			'm' => $pie_m,
-			'y' => $pie_y,
 			'left' => true,
 			'right' => false,
 			'type' => 1,
@@ -261,9 +255,6 @@ class summary extends MY_Controller {
 		$bar1_filter_progress = array(
 			'filter_id' => 'bar1',
 			'selected_left' => $scheme_bar1,
-			'selected_right' => $bar1_location,
-			'm' => $bar1_m,
-			'y' => $bar1_y,
 			'left' => true,
 			'right' => false,
 			'type' => 1,
@@ -718,10 +709,14 @@ class summary extends MY_Controller {
 			$last = $this->input->post('last');
 			$mobile = $this->input->post('mob');
 			$dist = $this->input->post('dist');
-			$image = base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			$res=$this->profile_model->get_f($this->session->userdata('uid'));
+			if($_FILES['file']['tmp_name']==""){
+				$image=$res->image;
+			}else{
+				$image=base64_encode(file_get_contents($_FILES['file']['tmp_name']));
+			}
 			if($this->input->post('but1')=='1')
 					$image = NULL;
-			$res=$this->profile_model->get_f($this->session->userdata('uid'));
 			if($image == NULL){
 				if($this->input->post('but1')=='1')
 					$image = NULL;

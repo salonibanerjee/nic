@@ -94,8 +94,8 @@ class Get_table extends MY_Controller {
     //AJAX function for draft data filter for the user currently entering data--------------------------------------------------------
     function submit_draft($n){
         $this->load->model('Crud_model');
-        $mon=$this->input->post('modmonth');
-        $yr = $this->input->post('modyear');
+        $mon=$this->input->get('modmonth');
+        $yr = $this->input->get('modyear');
         if(isset($mon) && isset($yr)){
             $ab=$this->Crud_model->draft_filter($n."_draft",$mon,$yr);
             echo json_encode($ab);

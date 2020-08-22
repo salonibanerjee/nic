@@ -9,12 +9,13 @@ class MY_Controller extends CI_Controller {
     //Constructor
     public function __construct(){
         parent::__construct();
-        /*$this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
+        //$server_name
+        $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
 	    $this->output->set_header("Pragma: no-cache");
 	    $this->output->set_header("X-Frame-Options: SAMEORIGIN");
 	    $this->output->set_header("X-Content-Type-Options: nosniff");
 	    $this->output->set_header("X-XSS-Protection: 1; mode=block");
-        $this->output->set_header("Referrer-Policy: same-origin");*/
+        $this->output->set_header("Referrer-Policy: same-origin");
         //to be modified
 		//$this->output->set_header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' http://www.wbtetsd.gov.in/ data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.facebook.com; object-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' 'unsafe-inline' 'unsafe-eval' https://wbkanyashree.gov.in; font-src 'self' 'unsafe-inline' 'unsafe-eval';");    
     }
@@ -115,7 +116,8 @@ class MY_Controller extends CI_Controller {
     //Gets relevant location---------------------------------------------------------------------------------------------------------
     public function getrelevantlocation()  
 	{
-	   $query;
+       $query;
+       $csrf_token=$this->security->get_csrf_hash();
        $this->load->model('profile_model');
        $ut=$this->input->post('audience_ut');
        //to get respective location for selected designation from DB
@@ -129,9 +131,9 @@ class MY_Controller extends CI_Controller {
 			  $data[$i] = array('code'=>$code,'area'=>$area);
 			  $i = $i+1;
 		  }
-		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   }else{
-           $ans = array('status'=>0,'message'=>'no data found');
+           $ans = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 	   }
 	   echo json_encode($ans);
      }
@@ -139,7 +141,8 @@ class MY_Controller extends CI_Controller {
     //----------------------------------------------------------------------------------------------
     public function getfetchdesig()  
 	{
-	    $result;
+        $result;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->getfetchdesig();
 		   $data;
@@ -150,13 +153,14 @@ class MY_Controller extends CI_Controller {
 			  $data[$i] = array('code'=>$code,'name'=>$name);
 			  $i = $i+1;
 		  }
-		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   echo json_encode($ans);
      }    
      //----------------------------------------------------------
      public function getfetchdesigonly()  
      {
         $result;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->getfetchdesigonly(); 
         //if($query->num_rows()>0){
@@ -168,7 +172,7 @@ class MY_Controller extends CI_Controller {
                $data[$i] = array('code'=>$code,'name'=>$name);
                $i = $i+1;
            }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
         /*}else{
             $ans = array('status'=>0,'message'=>'no data found');
         }*/
@@ -223,6 +227,7 @@ class MY_Controller extends CI_Controller {
     public function getfetchnotitable()
     {
         $query;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->fetchnotifortable();         
         $data;
@@ -234,7 +239,7 @@ class MY_Controller extends CI_Controller {
                $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
                $i = $i+1;
            }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
         echo json_encode($ans);
     }
 

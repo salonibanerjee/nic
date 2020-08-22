@@ -219,7 +219,7 @@ class Admin_model extends CI_Model {
     //function to generate captcha and reconfigurable----------------------------------------------------------------------------------
     public function _generateCaptcha(){
         $vals = array(
-            'word'          => $this->getName(5,8),
+            'word'          => $this->getName(),
             'img_path'      => './captcha/',
             'img_url'       => 'http://localhost/NIC/captcha/',
             'font_path'     => './path/to/fonts/texb.ttf',
@@ -244,9 +244,9 @@ class Admin_model extends CI_Model {
     }
 
     //captcha string characters which is reconfigurable-------------------------------------------------------------------------------
-    public function getName($x,$y) {
-        $length = rand($x,$y);
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    public function getName() {
+        $length = 6;
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
     
         for ($i = 0; $i < $length; $i++) {
@@ -267,8 +267,8 @@ class Admin_model extends CI_Model {
         $mydesig=$this->session->userdata('desig'); //fetching user desig_id_fk
         $myloc=$this->session->userdata('location_code');
         $mydesig_only=$this->session->userdata('desig');
-        $q = $this->db->query("SELECT * FROM mpr_trans_notification WHERE active_status=1 AND ((audience_desig_only=$mydesig_only OR audience_desig_only=-1) OR (audience_desig=".$mydesig." AND audience_loc='".$myloc."') OR (audience_desig=-1 AND audience_loc='-1') OR (audience_desig=".$mydesig." AND audience_loc='-1') OR (audience_desig=-1 AND audience_loc='".$myloc."'))");
-        $noti=$q->num_rows();
+        $q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc'))";
+        $noti=$this->db->query($q)->num_rows();
         $result=array('noti_count'=>$noti);
         $this->load->driver('cache', array('adapter' => 'file'));
 

@@ -1,14 +1,13 @@
 <div class="card">
   <div class="card-header bg-lime">
     <h3 class="card-title">Scheme Wise Progress</h3>
-    
     <div class="card-tools">
-      <button type="button" class="btn btn-tool" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
+      <button type="button" class="btn btn-tool pt-0 pb-0" data-card-widget="collapse" style="color: black"><i class="fas fa-minus"></i>
       </button> 
-      <button type="button" class="btn btn-tool"  data-toggle="modal" data-target="#progress" style="color: black"><i class="fas fa-edit"></i></button>
+      <button type="button" class="btn btn-tool pt-0 pb-0"  data-toggle="modal" data-target="#progress" style="color: black"><i class="fas fa-edit"></i></button>
     </div>
   </div> 
-  <div class="card-body p-0" style="height: 223px; overflow-y: auto">
+  <div class="card-body p-0" style="height: 300px; overflow-y: auto">
     <table class="table">
       <thead>                  
         <tr>
