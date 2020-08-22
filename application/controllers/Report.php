@@ -11,7 +11,8 @@ class Report extends MY_Controller
 		$this->cache_update();
 		$this->check_privilege(1);
 		$this->load->driver('cache',array('adapter' => 'file'));
-		$this->load->helper('cookie');
+        $this->load->helper('cookie');
+        $this->load->model('profile_model');
 		$u_type = array('var'=>$this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk']);
 		$noti = array('meeting'=>$this->profile_model->meeting_notification());
 		$u_type['notification'] = $noti;
