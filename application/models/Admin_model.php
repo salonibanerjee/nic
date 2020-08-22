@@ -219,7 +219,7 @@ class Admin_model extends CI_Model {
     //function to generate captcha and reconfigurable----------------------------------------------------------------------------------
     public function _generateCaptcha(){
         $vals = array(
-            'word'          => $this->getName(5,8),
+            'word'          => $this->getName(),
             'img_path'      => './captcha/',
             'img_url'       => 'http://localhost/NIC/captcha/',
             'font_path'     => './path/to/fonts/texb.ttf',
@@ -244,9 +244,9 @@ class Admin_model extends CI_Model {
     }
 
     //captcha string characters which is reconfigurable-------------------------------------------------------------------------------
-    public function getName($x,$y) {
-        $length = rand($x,$y);
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    public function getName() {
+        $length = 6;
+        $characters = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $randomString = '';
     
         for ($i = 0; $i < $length; $i++) {
