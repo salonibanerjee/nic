@@ -116,7 +116,8 @@ class MY_Controller extends CI_Controller {
     //Gets relevant location---------------------------------------------------------------------------------------------------------
     public function getrelevantlocation()  
 	{
-	   $query;
+       $query;
+       $csrf_token=$this->security->get_csrf_hash();
        $this->load->model('profile_model');
        $ut=$this->input->post('audience_ut');
        //to get respective location for selected designation from DB
@@ -130,9 +131,9 @@ class MY_Controller extends CI_Controller {
 			  $data[$i] = array('code'=>$code,'area'=>$area);
 			  $i = $i+1;
 		  }
-		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   }else{
-           $ans = array('status'=>0,'message'=>'no data found');
+           $ans = array('status'=>0,'message'=>'no data found','csrf_token'=>$csrf_token);
 	   }
 	   echo json_encode($ans);
      }
@@ -140,7 +141,8 @@ class MY_Controller extends CI_Controller {
     //----------------------------------------------------------------------------------------------
     public function getfetchdesig()  
 	{
-	    $result;
+        $result;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->getfetchdesig();
 		   $data;
@@ -151,13 +153,14 @@ class MY_Controller extends CI_Controller {
 			  $data[$i] = array('code'=>$code,'name'=>$name);
 			  $i = $i+1;
 		  }
-		   $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+		   $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
 	   echo json_encode($ans);
      }    
      //----------------------------------------------------------
      public function getfetchdesigonly()  
      {
         $result;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->getfetchdesigonly(); 
         //if($query->num_rows()>0){
@@ -169,7 +172,7 @@ class MY_Controller extends CI_Controller {
                $data[$i] = array('code'=>$code,'name'=>$name);
                $i = $i+1;
            }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
         /*}else{
             $ans = array('status'=>0,'message'=>'no data found');
         }*/
@@ -224,6 +227,7 @@ class MY_Controller extends CI_Controller {
     public function getfetchnotitable()
     {
         $query;
+        $csrf_token=$this->security->get_csrf_hash();
         $this->load->model('profile_model');
         $query=$this->profile_model->fetchnotifortable();         
         $data;
@@ -235,7 +239,7 @@ class MY_Controller extends CI_Controller {
                $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
                $i = $i+1;
            }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data);
+            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
         echo json_encode($ans);
     }
 
