@@ -28,7 +28,7 @@
         <!-- form start -->
           <div class="card-body">
             <?php
-              echo form_open_multipart("");
+              echo form_open("");
             ?>
             <h3 class="profile-username text-center"><b><?php echo "Enter Record Details";?></b></h3>
               <div class="row">
@@ -191,37 +191,6 @@
           
   <section>
 </div>
-<script>
-function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            
-            reader.onload = function (e) {
-                $('#blah').attr('src', e.target.result);
-            }
-            
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
-    
-    $("#file").change(function(){
-        readURL(this);
-    });
-</script>
-<script type="text/javascript">
-        document.getElementById("file").value = getSavedValue("file");
-        function saveValue(e){
-            var id = e.id;  
-            var val = e.value;
-            localStorage.setItem(id, val);
-        }
-        function getSavedValue  (v){
-            if (!localStorage.getItem(v)) {
-                return val;
-            }
-            return localStorage.getItem(v);
-        }
-</script>
 
 <!-- DataTables -->
 <script src="<?php echo base_url();?>css/plugins/datatables/jquery.dataTables.js"></script>
