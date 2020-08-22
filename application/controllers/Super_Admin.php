@@ -478,7 +478,6 @@ class Super_Admin extends MY_Controller {
 	{
 	   $result;
 	   $csrf_token=$this->security->get_csrf_hash();
-	   $csrf_token=$this->security->get_csrf_hash();
 	   $this->load->model('Sup_admin');
 	   $query=$this->Sup_admin->fetch_user_type();
 		  $res=$query->result();
@@ -682,14 +681,15 @@ class Super_Admin extends MY_Controller {
 	//--------------------------------------------------------------
 	function inactive_login() //load a form with data to be updated
  	{
+	 $this->load->model('Crud_model');
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("login_id_pk"=>$id);
 	 $query=$this->Sup_admin->Login_id_pk($dat);
-	// $query=$this->db->get_where("mpr_semitrans_login",$dat);
+
 	 $da['records']=$query->result();
-	// $this->load->view('update',$data);
+	
 	 $data=array("active_status"=>$this->input->post('state'));
 	 $id=$this->input->post('id');
 	 $this->load->model('Sup_admin');
@@ -699,10 +699,10 @@ class Super_Admin extends MY_Controller {
 	 $res = $this->Sup_admin->update_user($data,$id);
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-        //                                     current_url(),
-        //                                     'Login Table Updated',
-        //                                     'Custom Message here');
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+                                            current_url(),
+                                            'Login Table Updated',
+                                            'Custom Message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
@@ -753,8 +753,9 @@ class Super_Admin extends MY_Controller {
 	//--------------------------------------------------------------
 	function inactive_user_privilege() //load a form with data to be updated
  	{
+	 $this->load->model('Crud_model');
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_priv_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_priv_id_pk($dat);
@@ -770,10 +771,10 @@ class Super_Admin extends MY_Controller {
 	 
 	 if($res){
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					current_url(),
-		// 					'User Privilege table updated',
-		// 					'Custom message here');
+		 $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User Privilege table updated',
+							'Custom message here');
 		     $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
@@ -826,7 +827,8 @@ class Super_Admin extends MY_Controller {
 	function inactive_user_type() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
-		$csrf_token=$this->security->get_csrf_hash();
+	 $this->load->model('Crud_model');
+	 $csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("user_type_id_pk"=>$id);
 	 $query=$this->Sup_admin->user_type_id_pk($dat);
@@ -840,10 +842,10 @@ class Super_Admin extends MY_Controller {
      $this->db->trans_start();
 		$res = $this->Sup_admin->update_user_type($data,$id);
 	 if($res){
-		// $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					current_url(),
-		// 					'User type table updated',
-		// 					'Custom message here');
+		$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							current_url(),
+							'User type table updated',
+							'Custom message here');
 		 $result = array('message'=>"done",'csrf_token'=>$csrf_token);
 		 $this->del_cache();
 	 }else{
@@ -896,6 +898,7 @@ class Super_Admin extends MY_Controller {
 	function inactive_page_view() //load a form with data to be updated
  	{
 	 $this->load->model('Sup_admin');
+	 $this->load->model('Crud_model');
 		$csrf_token=$this->security->get_csrf_hash();
 	 $id=$this->uri->segment('3');
 	 $dat=array("privilege_id_pk"=>$id);
@@ -910,10 +913,10 @@ class Super_Admin extends MY_Controller {
 		$res = $this->Sup_admin->update_page_view($data,$id);
 	 if($res){
 		  $result = array('message'=>"done",'csrf_token'=>$csrf_token);
-		//   $this->Crud_model->audit_upload($this->session->userdata('loginid'),
-		// 					  current_url(),
-		// 					  'Pages privilege table updated',
-		// 					  'Custom message here');
+		  $this->Crud_model->audit_upload($this->session->userdata('loginid'),
+							  current_url(),
+							  'Pages privilege table updated',
+							  'Custom message here');
 		 $this->del_cache();
 	 }else{
 		 $result = array('message'=>"failed",'csrf_token'=>$csrf_token);
