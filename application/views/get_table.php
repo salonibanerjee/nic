@@ -262,7 +262,7 @@ function relo(a){
   $.ajax(
     {
       url:$("#draft").attr("action"),
-      type:"POST",
+      //type:"POST",
       data:b,
       success:function(data, textStatus, jqXHR) 
         {

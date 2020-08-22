@@ -225,7 +225,7 @@ function sendRequest(){ //requests for new notifs every 2 seconds
 	    setInterval(function(){        
 			  $.ajax({
           url: "<?php echo base_url();?>Summary/fetch_notifs",
-          type: 'post',
+          //type: 'post',
           success: function(result){
             //console.log($result);
 				    if(result == "Found"){
@@ -244,7 +244,7 @@ function send_nodal(){ //requests for new notifs every 10 seconds
   setInterval(function(){
       $.ajax({
         url: "<?php echo base_url();?>Summary/nodal_alert",
-        type: 'post',
+        //type: 'post',
         success: function(result){
             if(result=="found")
               toastr.info("Please finish the remaining Nodal Checks before the next meeting.");
