@@ -223,7 +223,7 @@ class MY_Controller extends CI_Controller {
         }
     }
 
-    //notitable
+    /*
     public function getfetchnotitable()
     {
         $query;
@@ -233,7 +233,7 @@ class MY_Controller extends CI_Controller {
         $data;
             $i = 0;
               foreach($query->result_array() as $r){
-                  $id=$r['audience_id'];
+                  $id=$r['audience_id']."-".$r['notification_id_pk'];
                   $head=$r['notification_head'];
                   $textt=$r['notification_text'];
                $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
@@ -241,7 +241,7 @@ class MY_Controller extends CI_Controller {
            }
             $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
         echo json_encode($ans);
-    }
+    }*/
 
 }
     

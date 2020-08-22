@@ -47,7 +47,7 @@
                           $i=1;
                           foreach($noti1 as $row){
                             echo "<tr>";
-                            echo "<td>".$row['audience_id']."</td>";
+                            echo "<td>".$row['audience_id']."-".$row['notification_id_pk']."</td>";
                             echo "<td>".$row['notification_head']."</td>";
                             echo "<td>".$row['notification_text']."</td>";
                             echo "</tr>";
