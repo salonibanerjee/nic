@@ -46,7 +46,7 @@
           <img id='zoom' class='profile-user-img img-fluid img-circle' src='<?php echo base_url();?>css/dist/img/lock.png' alt='User profile picture' style='width:150px; height:150px;'>  
           <p></p>
         </div>
-      <?php echo form_open('','method="POST" id="form"');?>
+      <?php echo form_open('Summary/cp_submit','method="POST" id="form"');?>
         <div class="input-group mb-3">
           <input name="pass0" id="pass0" type="password" class="form-control" placeholder="Old Password" >
           <div class="input-group-append">
@@ -107,28 +107,35 @@
 		document.getElementById('pass2').value = enc2;
 	}
   //password change form submit----------------------------------------------------------------------------------------------------
+  var csrf_token='';
   $("form").on("submit", function (event){
     event.preventDefault();
     hashPassword();
+    if(csrf_token==''){
+      csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+    }
     $.ajax({
       url: $('form').attr('action'),
       type: "POST",
-      data: $('form').serialize(),
+      data: $('form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
       //dataType: 'html',
       error: function(){
 			  console.log("Form cannot be submitted...");
 		  },
       cache: false,
       success: function(result){
-        var pos=result.indexOf('<!DOCTYPE html>');
-        if(result[1]=='p'){
+        var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+        if(k.res==0){
           document.getElementById('pass0').value = "";
           document.getElementById('pass1').value = "";
           document.getElementById('pass2').value = "";
-          $('#errors').html(result.slice(0,pos));
+          $('#errors').html(k.data);
         }else{
           $('#errors').html("");
-          window.location.href = result.slice(0,pos);
+          window.location.href = k.data;
         }
       }
     });
@@ -140,33 +147,40 @@
     if(password != "") {
      if(password.length < 8) {
         notify("Error: Password must contain at least eight characters!");
+        document.getElementById("submit").disabled=true;
        return false;
       }
       re = /[0-9]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one number (0-9)!");
+        document.getElementById("submit").disabled=true;
         return;
       }
 	  re = /[!@#$%^&*]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one characters (!@#$%^&*)!");
+        document.getElementById("submit").disabled=true;
         return;
       }
       re = /[a-z]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one lowercase letter (a-z)!");
+        document.getElementById("submit").disabled=true;
         return;
       }
       re = /[A-Z]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one uppercase letter (A-Z)!");
+        document.getElementById("submit").disabled=true;
         return;
       }
     } else {
       notify("Error: Please check that you've entered your password!");
+      document.getElementById("submit").disabled=true;
       return;
     }
-	notify("");
+  notify("");
+  document.getElementById("submit").disabled=false;
   }
 	
 	function notify(msg){

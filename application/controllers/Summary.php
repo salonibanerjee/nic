@@ -771,15 +771,20 @@ class summary extends MY_Controller {
 		$da = $this->profile_model->get_profile_info($this->session->userdata('uid'));
 		$this->load->view('dashboard/sidebar',$da);
 		//mandatory requirements end
-        $this->load->model('Admin_model');
+        $this->load->view('change_pass');
+		$this->load->view('dashboard/footer');
+	}
+	public function cp_submit(){
+		$this->load->model('Admin_model');
+		$this->load->model('Crud_model');
+		$csrf_token=$this->security->get_csrf_hash();
         $this->form_validation->set_rules('pass0', 'Password', 'required');
         $this->form_validation->set_rules('pass1', 'Password', 'required');
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-			echo validation_errors();
-			$this->load->view('change_pass');
-			$this->load->view('dashboard/footer');
+			$ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>validation_errors());
+            echo json_encode($ab);
         }else{
             $user=$this->session->userdata('uid');
             $old_pass = $this->input->post('pass0');
@@ -796,9 +801,11 @@ class summary extends MY_Controller {
                                             'Password Updated Successfully',
 											$this->session->userdata('uid'));
 				$this->db->trans_complete();
-				echo $this->config->base_url()."Summary/profile";
+				$ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."Summary/profile");
+            	echo json_encode($ab);
             }else{
-				echo "<p>Old Password is wrong.</p>\n";
+				$ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>"<p>Old Password is wrong.</p>\n");
+            	echo json_encode($ab);
             }
         }
 	}
