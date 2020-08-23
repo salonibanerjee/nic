@@ -33,8 +33,10 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Email for Change Password</p>
-
-      <form  method="POST" method="post">
+      <?php
+          $attributes = array('id' => 'form');
+          echo form_open("Login/forget_submit", $attributes); 
+          ?>
         <div class="input-group mb-3">
           <input id="email" type="text" name="email" class="form-control" placeholder="Email" onkeyup='saveValue(this);'>
           <div class="input-group-append">
@@ -78,28 +80,35 @@ function getSavedValue(v){
   }
   return localStorage.getItem(v);
 }
+var csrf_token='';
 //forget password form submit-------------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
   $.ajax({
     url: $('form').attr('action'),
     type: "POST",
-    data: $('form').serialize(),
+    data: $('form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
 		},
     cache: false,
     success: function(result){
-      if(result[1]=='p'){
-        var pos=result.indexOf('<!DOCTYPE html>');
-        $('#errors').html(result.slice(0,pos));
+      var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+      if(k.res==0){
+        $('#errors').html(k.data);
       }else{
-        if(result[0]=='*'){
+        if(k.data[0]=='*'){
           alert("Email is not sent...");
-          window.location.href = result.slice(1);
+          window.location.href = k.data.slice(1);
         }else{
-          window.location.href = result;
+          window.location.href = k.data;
         }
       }
     }

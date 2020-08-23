@@ -37,8 +37,14 @@
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Change Password </p>
-
-      <form method="POST" method="post">
+      <?php
+          $attributes = array('id' => 'form');
+          if($value==1){
+            echo    form_open("Login/password_change_submit/".$this->uri->segment(3)."/".$this->uri->segment(4), $attributes);
+          }else{
+            echo    form_open("Login/password_change_first_user_submit", $attributes);
+          } 
+          ?>
         <div class="input-group mb-3">
           <input id="email" type="email" name="email" class="form-control" placeholder="Email" onkeyup='saveValue(this);'>
           <div class="input-group-append">
@@ -104,32 +110,39 @@ function hashPassword(){
   enc2 = sha256(document.getElementById('pass2').value);
   document.getElementById('pass2').value = enc2;
 }
+var csrf_token='';
 //change password form submit---------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
   hashPassword();
   $.ajax({
     url: $('form').attr('action'),
     type: "POST",
-    data: $('form').serialize(),
+    data: $('form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
 		},
     cache: false,
     success: function(result){
-      console.log(result);
-      if(result[1]=='p'){
-        var pos=result.indexOf('<!DOCTYPE html>');
+      var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+      //console.log(result);
+      if(k.res==0){
         document.getElementById('pass1').value = "";
         document.getElementById('pass2').value = "";
-        $('#errors').html(result.slice(0,pos));
+        $('#errors').html(k.data);
       }else{
-        if(result[0]=='*'){
+        if(k.data[0]=='*'){
           alert("Access Denied...");
-          window.location.href = result.slice(1);
+          window.location.href = k.data.slice(1);
         }else{
-          window.location.href = result;
+          window.location.href = k.data;
         }
       }
     }
