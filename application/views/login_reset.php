@@ -155,33 +155,40 @@ function validatePassword()
     if(password != "") {
      if(password.length < 8) {
         notify("Error: Password must contain at least eight characters!");
+        document.getElementById("sub2").disabled=true;
        return false;
       }
       re = /[0-9]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one number (0-9)!");
+        document.getElementById("sub2").disabled=true;
         return;
       }
 	  re = /[!@#$%^&*]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one characters (!@#$%^&*)!");
+        document.getElementById("sub2").disabled=true;
         return;
       }
       re = /[a-z]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one lowercase letter (a-z)!");
+        document.getElementById("sub2").disabled=true;
         return;
       }
       re = /[A-Z]/;
       if(!re.test(password)) {
         notify("Error: password must contain at least one uppercase letter (A-Z)!");
+        document.getElementById("sub2").disabled=true;
         return;
       }
     } else {
       notify("Error: Please check that you've entered your password!");
+      document.getElementById("sub2").disabled=true;
       return;
     }
-	notify("");
+  notify("");
+  document.getElementById("sub2").disabled=false;
   }
 	
 	function notify(msg){
