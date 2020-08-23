@@ -10,6 +10,7 @@ class MY_Controller extends CI_Controller {
     public function __construct(){
         parent::__construct();
         //$server_name
+        $_SERVER['SERVER_NAME'];
         $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
 	    $this->output->set_header("Pragma: no-cache");
 	    $this->output->set_header("X-Frame-Options: SAMEORIGIN");
@@ -18,6 +19,9 @@ class MY_Controller extends CI_Controller {
         $this->output->set_header("Referrer-Policy: same-origin");
         //to be modified
 		//$this->output->set_header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' http://www.wbtetsd.gov.in/ data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.facebook.com; object-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' 'unsafe-inline' 'unsafe-eval' https://wbkanyashree.gov.in; font-src 'self' 'unsafe-inline' 'unsafe-eval';");    
+        if(!strpos($this->config->base_url(),$_SERVER['SERVER_NAME'])){
+            show_404();
+        }
     }
     //Check privilege checks the privilege of a page based on url and prevents entry to a particular page
     //even if someone enters the url manually-------------------------------------------------------------------------------------------
