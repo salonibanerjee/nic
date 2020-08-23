@@ -39,7 +39,7 @@
 
       <div class="text-center">
       <?php if($image==""||$image==NULL){
-                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='<?php echo base_url();?>css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
+                  echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='".base_url()."css/dist/img/avatar00.png' alt='User profile picture' style='width:150px; height:150px;'>";
                 }else{
                   echo "<img id='zoom' class='profile-user-img img-fluid img-circle' src='data: image/jpeg; base64, $image' alt='User profile picture' style='width:150px; height:150px;'>";
                 }?> 
@@ -56,7 +56,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input name="pass1" id="pass1" type="password" class="form-control" placeholder="New Password" >
+          <input name="pass1" id="pass1" type="password" class="form-control" placeholder="New Password" onchange="validatePassword();">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -73,6 +73,7 @@
         </div>
         <div id="errors" style="color:red;"></div>
         <div class="row">
+          <div id="div1" class="col-12" style="color:orange;"></div>
           <div class="col-12">
             <button type="submit" id="submit" name="submit" value="Login" class="btn btn-primary btn-block" >Submit</button>
           </div>
@@ -132,6 +133,45 @@
       }
     });
   });
+
+  function validatePassword()
+  {
+	var password = $('#pass1').val();
+    if(password != "") {
+     if(password.length < 8) {
+        notify("Error: Password must contain at least eight characters!");
+       return false;
+      }
+      re = /[0-9]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one number (0-9)!");
+        return;
+      }
+	  re = /[!@#$%^&*]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one characters (!@#$%^&*)!");
+        return;
+      }
+      re = /[a-z]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one lowercase letter (a-z)!");
+        return;
+      }
+      re = /[A-Z]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one uppercase letter (A-Z)!");
+        return;
+      }
+    } else {
+      notify("Error: Please check that you've entered your password!");
+      return;
+    }
+	notify("");
+  }
+	
+	function notify(msg){
+		$('#div1').html(msg);
+	}
 </script>
 </body>
 </html>

@@ -168,7 +168,7 @@ class Login extends MY_Controller {
                 $this->db->trans_complete();
                 echo $this->config->base_url()."Login";
             }else{
-                echo $this->config->base_url()."Login";
+                echo '*'.$this->config->base_url()."Login";
             }
         }
     }
@@ -210,5 +210,31 @@ class Login extends MY_Controller {
             $this->form_validation->set_message('username_check', 'This username does not exist');
             return FALSE;
         }
+    }
+
+    public function valid_password($password)
+	{
+        $ret=TRUE;
+        $regex_lowercase = '/[a-z]/';
+        $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>§~]/';
+        $regex_uppercase = '/[A-Z]/';
+		$regex_number = '/[0-9]/';
+		if (!preg_match_all($regex_special, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must have at least one special character.');
+			$ret=FALSE;
+		}
+		else if (!preg_match_all($regex_lowercase, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must be at least one lowercase letter.');
+			$ret=FALSE;
+        }
+        else if (!preg_match_all($regex_uppercase, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must be at least one uppercase letter.');
+			$ret=FALSE;
+		}
+		else if (!preg_match_all($regex_number, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must have at least one number.');
+			$ret=FALSE;
+		}
+		return $ret;
     }
 }

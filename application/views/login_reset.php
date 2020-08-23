@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="input-group mb-3">
-          <input name="pass1" id="pass1" type="password" class="form-control" placeholder="New Password" >
+          <input name="pass1" id="pass1" type="password" class="form-control" placeholder="New Password" onchange="validatePassword();" >
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-lock"></span>
@@ -65,6 +65,7 @@
         </div>
         <div id="errors" style="color:red;"></div>
         <div class="row">
+          <div class="col-12" style="color:red;" id="div1"></div>
           <div class="col-12">
             <button type="submit" id="sub2" name="sub2" value="Login" class="btn btn-primary btn-block" >Submit</button>
           </div>
@@ -83,7 +84,6 @@
 <script src="<?php echo base_url();?>css/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="<?php echo base_url();?>css/dist/js/adminlte.min.js"></script>
-
 
 <script type="text/javascript">
 document.getElementById("email").value = getSavedValue("email");
@@ -118,6 +118,7 @@ $("form").on("submit", function (event){
 		},
     cache: false,
     success: function(result){
+      console.log(result);
       if(result[1]=='p'){
         var pos=result.indexOf('<!DOCTYPE html>');
         document.getElementById('pass1').value = "";
@@ -134,6 +135,45 @@ $("form").on("submit", function (event){
     }
   });
 });
+
+function validatePassword()
+  {
+	var password = $('#pass1').val();
+    if(password != "") {
+     if(password.length < 8) {
+        notify("Error: Password must contain at least eight characters!");
+       return false;
+      }
+      re = /[0-9]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one number (0-9)!");
+        return;
+      }
+	  re = /[!@#$%^&*]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one characters (!@#$%^&*)!");
+        return;
+      }
+      re = /[a-z]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one lowercase letter (a-z)!");
+        return;
+      }
+      re = /[A-Z]/;
+      if(!re.test(password)) {
+        notify("Error: password must contain at least one uppercase letter (A-Z)!");
+        return;
+      }
+    } else {
+      notify("Error: Please check that you've entered your password!");
+      return;
+    }
+	notify("");
+  }
+	
+	function notify(msg){
+		$('#div1').html(msg);
+	}
 </script>
 </body>
 </html>
