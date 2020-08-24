@@ -1,4 +1,12 @@
 <?php
+/**
+ * Landing Page
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh
+*/
 //Performs all Login related controller works along with captcha, forget password, 
 //password change, password change for the first time--------------------------------------------------------------------------------
 

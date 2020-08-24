@@ -1,4 +1,13 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Hriddhi Mondal,Dipak Gupta
+*/
+
 class Dashboard_model extends CI_Model{
 
     //Matrix data for Physical progress view bar chart

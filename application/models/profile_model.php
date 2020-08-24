@@ -1,4 +1,12 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Riddhinath Ganguly,Sayak Das,Nirvik Ranjan Das,Saloni Banerjee
+*/
 //functionalitites related to profile details of an user and user specific domains and notifications-------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 

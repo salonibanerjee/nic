@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das
+*/
 defined('BASEPATH') OR exit('No direct script access allowed');
 class contact extends MY_Controller {
     public function index(){

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Super Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Core Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Arijit Ray,Saloni Banerjee
+*/
 //base controller from where all the controllers are extended(Parent controller)
 //MAIN BASE CONTROLLER--------------------------------------------------------------------------------------------------------------
 ini_set('display_errors', 1);

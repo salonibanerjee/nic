@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das
+*/
 //Fund allocation location-wise----------------------------------------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Fund extends MY_Controller {

@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sachin Kumar Roy
+*/
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 

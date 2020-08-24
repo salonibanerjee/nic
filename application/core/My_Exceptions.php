@@ -1,4 +1,12 @@
 <?php
+/**
+ * Exception Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Core Controller
+ * @author		Riddhinath Ganguly,Sayak Das
+*/
 //overrriding exceptions to show custom error 404 page----------------------------------------------------------------------------------
 class MY_Exceptions extends CI_Exceptions {
 

@@ -1,4 +1,13 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Riddhinath Ganguly,Sayak Das,hriddhi Mondal,Saloni Banerjee
+*/
+
 //All Login, User details, caching , captcha, password, update user details functionalities----------------------------------------------
 
 

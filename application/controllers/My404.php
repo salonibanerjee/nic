@@ -1,4 +1,12 @@
 <?php
+/**
+ * Error 404
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das
+*/
 //custom Error 404 page ----------------------------------------------------------------------------------------------------------------------------
 class My404 extends CI_Controller
 {

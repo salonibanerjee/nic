@@ -1,4 +1,12 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Hriddhi Mondal
+*/
 class NodalCheck_model extends CI_Model{    
 
     function fetch_draft(){

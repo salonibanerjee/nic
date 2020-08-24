@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Hriddhi Mondal,Dipak Gupta, Nirvik Ranjan Das
+*/
 //Mainly deals with the Dashboard, Profile , Edit profile and password change when user is logged in.----------------------------------
 
 defined('BASEPATH') OR exit('No direct script access allowed');
