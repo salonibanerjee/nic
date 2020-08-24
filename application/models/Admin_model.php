@@ -277,4 +277,10 @@ class Admin_model extends CI_Model {
             $this->cache->save('Noti'.$this->session->userdata('loginid'), $foo, 3000);
         }
     }
+
+    //deletes notification active status
+    public function noti_status(){
+        $query=$this->db->query('CALL notification_status();');
+        return $query;
+    }
 }

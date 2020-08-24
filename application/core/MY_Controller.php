@@ -208,6 +208,7 @@ class MY_Controller extends CI_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('NodalCheck_model');
         $this->load->model('profile_model');
+        $this->load->model('Admin_model');
         $result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
         if($result_main['fetch_draft']!=NULL){
             $scheme_cnt = $this->NodalCheck_model->check($result_main['fetch_draft']);
@@ -225,6 +226,7 @@ class MY_Controller extends CI_Controller {
                 $this->node=0;
             }
         }
+        $this->Admin_model->noti_status();
     }
 
 
