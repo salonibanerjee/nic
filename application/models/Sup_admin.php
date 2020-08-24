@@ -1,4 +1,12 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Sayak Das,Monilekha Ghosh,Nirvik Ranjan Das
+*/
 //System Administrator module functionalities and some semitrans functionalities----------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 class Sup_admin extends CI_Model {

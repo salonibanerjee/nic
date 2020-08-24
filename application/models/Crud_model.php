@@ -1,4 +1,13 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package	CodeIgniter
+ * @category	Model
+ * @author	Riddhinath Ganguly,Sayak Das,Hriddhi Mondal
+*/
+
 //related to all data entry functionalities and their storage, table creation etc.-----------------------------------------------------
 class Crud_model extends CI_Model {
         //get all the scheme tables--------------------------------------------------------------------------------------------------

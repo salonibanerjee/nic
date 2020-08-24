@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das
+*/
 //performs data view for each and every scheme based on the scheme selected by user-----------------------------------------------
 //schemes are loaded by their privileges and others will be discarded-------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');

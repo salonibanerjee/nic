@@ -1,4 +1,12 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Riddhinath Ganguly,Sachin Kumar Roy
+*/
 if (!defined('BASEPATH')) exit('No direct script access allowed');
 include 'vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;

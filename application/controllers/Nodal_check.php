@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Hriddhi Mondal
+*/
 //NODAL CHECK PAGE---------------------------------------------------------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 

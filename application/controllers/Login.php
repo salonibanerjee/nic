@@ -1,4 +1,12 @@
 <?php
+/**
+ * Landing Page
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh
+*/
 //Performs all Login related controller works along with captcha, forget password, 
 //password change, password change for the first time--------------------------------------------------------------------------------
 
@@ -27,7 +35,7 @@ class Login extends MY_Controller {
         $this->form_validation->set_rules('captcha', "Captcha", 'required');
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
         $this->form_validation->set_rules('pass','Password','required');
-
+        $csrf_token=$this->security->get_csrf_hash();
         if ($this->form_validation->run() == true) {
             $userCaptcha = $this->input->post('captcha');
             if(strcmp(strtolower($userCaptcha), strtolower($this->session->userdata('captchaWord'))) == 0){
@@ -64,7 +72,6 @@ class Login extends MY_Controller {
                         setcookie("pie", "", $expire, "/");
                         setcookie("comp", "", $expire, "/");
                     }
-
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
@@ -82,21 +89,27 @@ class Login extends MY_Controller {
                             //user_type_cache
                         unset($_SESSION['salt']);
                         if($this->Admin_model->check_first_user()==1){
-                            echo $this->config->base_url()."Login/password_change_first_user";
+                            $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."Login/password_change_first_user");
+                            echo json_encode($ab);
                         }else
-                            echo $this->config->base_url()."".$this->cache->get('User_type'.$var)['user_privilege'][0]['link'];
+                            $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."".$this->cache->get('User_type'.$var)['user_privilege'][0]['link']);
+                            echo json_encode($ab);
                     }else{
-                        echo "<p>Access Denied</p>";
+                        $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>"<p>Access Denied</p>");
+                        echo json_encode($ab);
                     }
                 }
 			    else{
-                    echo "<p>Invalid Password</p>";
+                    $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>"<p>Invalid Password</p>");
+                    echo json_encode($ab);
 			    }
             }else{
-                echo "<p>Invalid Captcha</p>";
+                $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>"<p>Invalid Captcha</p>");
+                echo json_encode($ab);
             }
         }else{
-            echo validation_errors();  
+            $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>validation_errors());
+            echo json_encode($ab);  
         }
     }
 
@@ -123,12 +136,18 @@ class Login extends MY_Controller {
     //loads 'link send to email' page for forget password-------------------------------------------------------------------------------
     public function forget()
 	{
-        $this->load->model('Admin_model');
+        //$this->load->model('Admin_model');
+        $this->load->view('login-forget');
+    }
+    public function forget_submit()
+	{
+        //$this->load->model('Admin_model');
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
+        $csrf_token=$this->security->get_csrf_hash();
         if ($this->form_validation->run() == FALSE)
         {
-            echo validation_errors();
-            $this->load->view('login-forget');
+            $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>validation_errors());
+            echo json_encode($ab);
         }
         else
         {
@@ -137,24 +156,34 @@ class Login extends MY_Controller {
 		    $body = "Greetings,\nClick on the link below to change your password\n".base_url().index_page()."/Login/password_change/".hash('sha256',now())."/".hash('sha256',$email)."\nHave a nice day!";
             $headers = "From: MPR Portal";
             $xy=mail($email, $subject, $body, $headers);
-            if($xy)
-                echo $this->config->base_url()."Login";
-            else
-                echo $this->config->base_url()."Login";
+            if($xy){
+                $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."Login");
+                echo json_encode($ab);
+            }
+            else{
+                $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>"*".$this->config->base_url()."Login");
+                echo json_encode($ab);
+            }
         }
     }
 
+
     //loads password change page from the hashed link sent to email in forget password------------------------------------------------------
     public function password_change(){
-        $this->load->model('Admin_model');
+        //$this->load->model('Admin_model');
         $var = array('value'=>1);
+        $this->load->view('login_reset',$var);
+    }
+    public function password_change_submit(){
+        $this->load->model('Admin_model');
+        $csrf_token=$this->security->get_csrf_hash();
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email');
         $this->form_validation->set_rules('pass1', 'Password', 'required');
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            echo validation_errors();
-            $this->load->view('login_reset',$var);
+            $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>validation_errors());
+            echo json_encode($ab);
         }else{
             $enc = $this->uri->segment(4);
             $user=$this->input->post('email');
@@ -166,24 +195,31 @@ class Login extends MY_Controller {
                 $this->db->trans_start();
                 $this->Admin_model->update_login($user,$password);
                 $this->db->trans_complete();
-                echo $this->config->base_url()."Login";
+                $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."Login");
+                echo json_encode($ab);
             }else{
-                echo $this->config->base_url()."Login";
+                $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>"*".$this->config->base_url()."Login");
+                echo json_encode($ab);
             }
         }
     }
 
     //Loads the one time password change page for the users logging in for the first time---------------------------------------------------
     public function password_change_first_user(){
-        $this->load->model('Admin_model');
+        //$this->load->model('Admin_model');
         $var = array('value'=>2);
+        $this->load->view('login_reset',$var);
+    }
+    public function password_change_first_user_submit(){
+        $this->load->model('Admin_model');
+        $csrf_token=$this->security->get_csrf_hash();
         $this->form_validation->set_rules('email', 'Username', 'required|valid_email|callback_username_check');
         $this->form_validation->set_rules('pass1', 'Password', 'required');
         $this->form_validation->set_rules('pass2', 'Password Confirmation', 'required|matches[pass1]');
         if ($this->form_validation->run() == FALSE)
         {
-            echo validation_errors();
-            $this->load->view('login_reset',$var);
+            $ab=array('csrf_token'=>$csrf_token,'res'=>0,'data'=>validation_errors());
+            echo json_encode($ab);
         }else{
             $user=$this->input->post('email');
             $password=$this->input->post('pass1');
@@ -193,7 +229,8 @@ class Login extends MY_Controller {
             $this->Admin_model->update_login($user,$password);
             $this->Admin_model->update_first_pass($user);
             $this->db->trans_complete();
-            echo $this->config->base_url()."Login";
+            $ab=array('csrf_token'=>$csrf_token,'res'=>1,'data'=>$this->config->base_url()."Login");
+            echo json_encode($ab);
         }
     }
 
@@ -210,5 +247,31 @@ class Login extends MY_Controller {
             $this->form_validation->set_message('username_check', 'This username does not exist');
             return FALSE;
         }
+    }
+
+    public function valid_password($password)
+	{
+        $ret=TRUE;
+        $regex_lowercase = '/[a-z]/';
+        $regex_special = '/[!@#$%^&*()\-_=+{};:,<.>§~]/';
+        $regex_uppercase = '/[A-Z]/';
+		$regex_number = '/[0-9]/';
+		if (!preg_match_all($regex_special, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must have at least one special character.');
+			$ret=FALSE;
+		}
+		else if (!preg_match_all($regex_lowercase, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must be at least one lowercase letter.');
+			$ret=FALSE;
+        }
+        else if (!preg_match_all($regex_uppercase, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must be at least one uppercase letter.');
+			$ret=FALSE;
+		}
+		else if (!preg_match_all($regex_number, $password)){
+			$this->form_validation->set_message('valid_password', 'The {field} field must have at least one number.');
+			$ret=FALSE;
+		}
+		return $ret;
     }
 }

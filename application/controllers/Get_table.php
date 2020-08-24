@@ -1,4 +1,12 @@
 <?php
+/**
+ *Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Hriddhi Mondal
+*/
 //performs data entry on the basis of schemes selected by the data entry operator-------------------------------------------------
 //only those schemes will be loaded which the DEO has access to-------------------------------------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');

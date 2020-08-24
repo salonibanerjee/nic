@@ -1,4 +1,12 @@
 <?php
+/**
+ * Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh,Nirvik Ranjan Das,Sachin Kumar Roy,Hriddhi Mondal
+*/
 //The whole Super Admin module runs through this script.It includes New User registration, user on/off, user privilege on/off,
 //user type on/off, pages on/off, dba financial year set, scheme records, audit log view for SYSTEM Administrator-----------------------
 
@@ -204,11 +212,11 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('profile_model');
 		$csrf_token=$this->security->get_csrf_hash();
 
-		$this->form_validation->set_rules('noti_head', 'Notification head', 'required');
+		$this->form_validation->set_rules('noti_head', 'Notification Title', 'required');
 		$this->form_validation->set_rules('audience_ut', 'Target User Type', 'required');
-		$this->form_validation->set_rules('audience_desig_only', 'Target designation', 'required');
-		$this->form_validation->set_rules('audience_loc', 'Audience location', 'required|callback_everywhere_everyone[audience_ut]'); 
-		$this->form_validation->set_rules('noti_text', 'Notification text', 'required');
+		$this->form_validation->set_rules('audience_loc', 'Target Location', 'required|callback_everywhere_everyone[audience_ut]'); 
+		$this->form_validation->set_rules('audience_desig_only', 'Target Designation', 'required');
+		$this->form_validation->set_rules('noti_text', 'Notification Text', 'required');
 		
 		if ($this->form_validation->run() == FALSE)
         {

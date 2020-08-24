@@ -1,4 +1,12 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Riddhinath Ganguly,Sayak Das,Nirvik Ranjan Das,Saloni Banerjee
+*/
 //functionalitites related to profile details of an user and user specific domains and notifications-------------------------------------
 defined('BASEPATH') OR exit('No direct script access allowed');
 
@@ -252,15 +260,6 @@ class profile_model extends CI_Model {
 	public function save_issues($name,$email,$rating,$description){
 		$result = $this->db->insert('mpr_trans_issues',array('name'=>$name,'email'=>$email,'rating'=>$rating,'description'=>$description,
 									'login_id_fk'=>$this->session->userdata('loginid'),'timestamp'=>date('Y-m-d H:i:s')));
-		return $result;
-	}
-
-	public function fetchnotifortable() {//for ajax call to populate table on notify view
-		$mydesig_only=$this->session->userdata('desig');
-		$myloc=$this->session->userdata('location_code');
-		$mydesig=$this->session->userdata('user_type');	
-		$q = "SELECT * FROM mpr_trans_notification WHERE active_status=1 AND (radiosel=2 OR (radiosel=1 AND audience_desig_only=$mydesig_only) OR (radiosel=0 AND audience_ut=".$mydesig." AND audience_loc='$myloc')) ORDER BY notification_id_pk DESC";
-		$result = $this->db->query($q);
 		return $result;
 	}
 

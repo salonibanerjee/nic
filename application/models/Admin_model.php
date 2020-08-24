@@ -1,4 +1,13 @@
 <?php
+/**
+ * Model Child Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Model
+ * @author		Riddhinath Ganguly,Sayak Das,hriddhi Mondal,Saloni Banerjee
+*/
+
 //All Login, User details, caching , captcha, password, update user details functionalities----------------------------------------------
 
 
@@ -276,5 +285,11 @@ class Admin_model extends CI_Model {
             $foo = $result;
             $this->cache->save('Noti'.$this->session->userdata('loginid'), $foo, 3000);
         }
+    }
+
+    //deletes notification active status
+    public function noti_status(){
+        $query=$this->db->query('CALL notification_status();');
+        return $query;
     }
 }

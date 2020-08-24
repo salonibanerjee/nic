@@ -1,7 +1,15 @@
 <?php
+/**
+ * Super Class
+ *
+ *
+ * @package		CodeIgniter
+ * @category	Core Controller
+ * @author		Riddhinath Ganguly,Sayak Das,Arijit Ray,Saloni Banerjee
+*/
 //base controller from where all the controllers are extended(Parent controller)
 //MAIN BASE CONTROLLER--------------------------------------------------------------------------------------------------------------
-ini_set('display_errors', 0);
+ini_set('display_errors', 1);
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class MY_Controller extends CI_Controller {
@@ -10,6 +18,7 @@ class MY_Controller extends CI_Controller {
     public function __construct(){
         parent::__construct();
         //$server_name
+        $_SERVER['SERVER_NAME'];
         $this->output->set_header("Cache-Control: no-store, no-cache, must-revalidate, no-transform, max-age=0, post-check=0, pre-check=0");
 	    $this->output->set_header("Pragma: no-cache");
 	    $this->output->set_header("X-Frame-Options: SAMEORIGIN");
@@ -18,6 +27,9 @@ class MY_Controller extends CI_Controller {
         $this->output->set_header("Referrer-Policy: same-origin");
         //to be modified
 		//$this->output->set_header("Content-Security-Policy: default-src 'self' 'unsafe-inline' 'unsafe-eval'; img-src 'self' http://www.wbtetsd.gov.in/ data:; script-src 'self' 'unsafe-inline' 'unsafe-eval'; frame-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.youtube.com https://www.facebook.com; object-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; connect-src 'self' 'unsafe-inline' 'unsafe-eval' https://wbkanyashree.gov.in; font-src 'self' 'unsafe-inline' 'unsafe-eval';");    
+        if(!strpos($this->config->base_url(),$_SERVER['SERVER_NAME'])){
+            show_404();
+        }
     }
     //Check privilege checks the privilege of a page based on url and prevents entry to a particular page
     //even if someone enters the url manually-------------------------------------------------------------------------------------------
@@ -204,6 +216,7 @@ class MY_Controller extends CI_Controller {
         $this->load->driver('cache', array('adapter' => 'file'));
         $this->load->model('NodalCheck_model');
         $this->load->model('profile_model');
+        $this->load->model('Admin_model');
         $result_main['fetch_draft'] = $this->NodalCheck_model->fetch_draft();
         if($result_main['fetch_draft']!=NULL){
             $scheme_cnt = $this->NodalCheck_model->check($result_main['fetch_draft']);
@@ -221,27 +234,76 @@ class MY_Controller extends CI_Controller {
                 $this->node=0;
             }
         }
+        $this->Admin_model->noti_status();
     }
 
-    //notitable
-    public function getfetchnotitable()
-    {
-        $query;
-        $csrf_token=$this->security->get_csrf_hash();
-        $this->load->model('profile_model');
-        $query=$this->profile_model->fetchnotifortable();         
-        $data;
-            $i = 0;
-              foreach($query->result_array() as $r){
-                  $id=$r['audience_id'];
-                  $head=$r['notification_head'];
-                  $textt=$r['notification_text'];
-               $data[$i] = array('ncode'=>$id,'nhead'=>$head,'ntext'=>$textt);
-               $i = $i+1;
-           }
-            $ans = array('status'=>1,'message'=>'data found','data'=>$data,'csrf_token'=>$csrf_token);
-        echo json_encode($ans);
+
+// Commented out on purpose: 2 SMS Sending functions, require Api intervention
+
+
+ /*   public function send($mobile_no = NULL,$message = NULL) {	
+		$mbl_no = $mobile_no;
+		$purpose_code=1;
+		$mob='91'.trim($mbl_no);
+		$tst=$message;
+		$uid="utkarshwb.sms";
+		//$pass="Gs%234Hw2D8";
+		$pass="Uk@Br4$6E";
+		//$pass="Yk!Br4%246p";
+		$send="UTKARS"; // 6 characters long SENDERID
+		$dest=urlencode($mob);
+		$msg=urlencode($tst);
+		$url="https://smsgw.sms.gov.in/failsafe/HttpLink?";
+		$data = "username=$uid&pin=$pass&message=$msg&mnumber=$dest&signature=$send";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_REFERER, base_url());   //base_url eg:"https://www.pbssd.gov.in/index.php"
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_POST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
+		curl_setopt($ch, CURLOPT_CAINFO,'/etc/pki/tls/certs/ca-bundle.crt');
+		$curl_output =curl_exec($ch);
+		if ($err = curl_error($ch)) {
+			return $err;
+        } else {
+			return TRUE;
+		}
+		
+	}
+	
+	
+	public function sendotp($mobile_no = NULL,$message = NULL){
+		$mbl_no = $mobile_no;
+		$purpose_code=1;
+		$mob='91'.trim($mbl_no);
+		$tst=$message;
+		$uid="utkarshwb.otp";
+		$pass="Yk!Br4%246p";
+		$send="UTKARS"; // 6 characters long SENDERID
+		$dest=urlencode($mob);
+		$msg=urlencode($tst);
+		$url="https://smsgw.sms.gov.in/failsafe/HttpLink?";
+		$data = "username=$uid&pin=$pass&message=$msg&mnumber=$dest&signature=$send";
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch,CURLOPT_REFERER, base_url());   //base_url eg:"https://www.pbssd.gov.in/index.php"
+		curl_setopt($ch, CURLOPT_HEADER, 0);
+		curl_setopt($ch, CURLOPT_POST, 2);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER,false);
+		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST,2);
+		curl_setopt($ch, CURLOPT_CAINFO,'/etc/pki/tls/certs/ca-bundle.crt');
+		$curl_output =curl_exec($ch);
+		if ($err = curl_error($ch)) {
+			return $err;
+        } else {
+			return TRUE;
+		}
     }
+    */
 
 }
-    

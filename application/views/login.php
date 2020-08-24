@@ -35,8 +35,10 @@
         <b>MPR</b> LOG IN
       </div>
     <div class="card-body login-card-body">
-
-      <form action="Login/login_MPR" method="POST" id="form">
+    <?php
+          $attributes = array('id' => 'form');
+          echo form_open("Login/login_MPR", $attributes); 
+          ?>
         <div class="input-group mb-3">
           <input id="email" type="email" name="email" class="form-control" placeholder="Email" onkeyup='saveValue(this);'>
           <div class="input-group-append">
@@ -115,28 +117,36 @@
 function captchaChange(){
   $("#div123").load(location.href + " #div123");
 }
+var csrf_token='';
 //login form submit---------------------------------------------------------------------------------
 $("form").on("submit", function (event){
   event.preventDefault();
   hashPassword();
+  if(csrf_token==''){
+    csrf_token='<?php echo $this->security->get_csrf_hash(); ?>';
+  }
   $.ajax({
     url: $('form').attr('action'),
     type: "POST",
-    data: $('form').serialize(),
+    data: $('form').serialize()+"&<?php echo $this->security->get_csrf_token_name(); ?>="+csrf_token,
     //dataType: 'html',
     error: function(){
 			console.log("Form cannot be submitted...");
 		},
     cache: false,
     success: function(result){
-      console.log(result)
-      if(result[1]=='p'){
+      //console.log(result);
+      var k=JSON.parse(result);
+      if (k.csrf_token){
+        csrf_token=k.csrf_token;
+      }
+      if(k.res==0){
         document.getElementById('pass').value = "";
         document.getElementById('captcha').value = "";
         $("#div123").load(location.href + " #div123");
-        $('#errors').html(result);
+        $('#errors').html(k.data);
       }else{
-        window.location.href = result;
+        window.location.href = k.data;
       }
     }
   });
