@@ -89,10 +89,10 @@
 	function toggleClicked(loginId){
 		var button = document.getElementById("switch"+loginId);
 		toggle(button);
-		console.log('clicked');
-		console.log(loginId);
+		// console.log('clicked');
+		// console.log(loginId);
 		var state = button.value;
-		console.log(state);
+		// console.log(state);
 		var s = 1;
 		if(state == "OFF"){
 			s = 0;
@@ -119,20 +119,20 @@
 				id:id,state:state},
 			 dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus, errorThrown);
+				// console.log(textStatus, errorThrown);
 			},
 			cache: false,
 			success:function(result) 
 			{  
-				console.log(result);
+				// console.log(result);
 				if(result.csrf_token){
 					csrf_token = result.csrf_token;
 				}
 				if(result == 'done'){
-					console.log("<?php echo base_url();?>Super_Admin/fetch_login");
+					//console.log("<?php echo base_url();?>Super_Admin/fetch_login");
 					window.location="<?php echo base_url();?>Super_Admin/fetch_login";
 				}else{
-					console.log("<?php echo base_url();?>Super_Admin/fetch_login");
+					//console.log("<?php echo base_url();?>Super_Admin/fetch_login");
 					window.location="<?php echo base_url();?>Super_Admin/fetch_login";
 			
 				}
