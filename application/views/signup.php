@@ -114,13 +114,12 @@
 			$('#field_name').html("");
 			var email = $('#email').val();
 			var district = $('#district').val();
-      //var user_type = $('#desig').val();
       var user_type = $('#desig').val().split('_')[0];
 			var region_code = $('#region_code').val();
 			var dept = $('#dept').val();
 			var office = $('#office').val();
 			var desig_name = $('#desig_name').val();
-			console.log("function called:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+			//console.log("function called:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 			if(email != "" && user_type != "select" && region_code != "select"  && dept != "select"  && office != "select" && desig_name !="select"){
 				signupdo(email,district,user_type,region_code,dept,office,desig_name);
 			}else{
@@ -132,7 +131,7 @@
   });
 
 	function signupdo(email,district,user_type,region_code,dept,office,desig_name){
-		console.log("card data:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
+		// console.log("card data:"+email+","+district+","+user_type+","+region_code+","+dept+","+office+","+desig_name);
 		  if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
@@ -143,7 +142,7 @@
 				email:email,district:district,user_type:user_type,region_code:region_code,dept:dept,office:office,desig_name:desig_name},
       dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus, errorThrown);
+				// console.log(textStatus, errorThrown);
 			},
 			cache: false,
 			success:function(result) {
@@ -159,14 +158,14 @@
 				$('#office').val("");
 		    $('#desig_name').val("");
 				$('#field_name').html(result.message);
-				console.log("result");
+				// console.log("result");
 			}   
 		});
 	}
 	  // function fetchType() {
     $(function () {
     $(document).on('change','#district', function () {
-		 console.log("fetchType");
+		//  console.log("fetchType");
 		$("#desig").empty();
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
@@ -179,10 +178,10 @@
             type: "GET",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				console.log(result);
+				// console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
@@ -205,7 +204,7 @@
   });
 	
     function district() {
-		 console.log("district");
+		//  console.log("district");
 		$("#desig").empty();
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
@@ -216,10 +215,10 @@
             type: "POST",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				 console.log(result);
+				//  console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
@@ -241,7 +240,7 @@
 	  //function office() {
     $(function () {
     $(document).on('change','#region_code', function () {
-		 console.log("office");
+		//  console.log("office");
         $("#office").empty();
 		 
 		   if(csrf_token==""){
@@ -255,10 +254,10 @@
             type: "POST",
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				console.log(result);
+				// console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
                 if(result.csrf_token){
@@ -284,7 +283,7 @@
   $(function () {
   $(document).on('change','#office', function () {
 		 var office = $('#office').val();
-		 console.log("department"+office);
+		//  console.log("department"+office);
         $("#dept").empty();
 		 
 		   if(csrf_token==""){
@@ -296,10 +295,10 @@
 			      data:$('#office').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token ,
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			      },
             success: function (result) {
-				console.log(result);
+				// console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
@@ -328,7 +327,7 @@
   $(function () {
   $(document).on('change','#dept', function () {
 		var dept = $('#dept').val();
-		 console.log("designation"+dept);
+		//  console.log("designation"+dept);
         $("#desig_name").empty();
 		
 		   if(csrf_token==""){
@@ -340,10 +339,10 @@
 		      	data:$('#dept').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token, 
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				console.log(result);
+				// console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
@@ -370,13 +369,13 @@
   $(document).on('change','#desig', function () {
 		var district = $('#district').val();
 		var level = $('#desig').val().split('_')[1];//1_1
-		console.log("locationData: "+level);
+		// console.log("locationData: "+level);
         $("#region_code").empty();
 		 
 		   if(csrf_token==""){
 			   csrf_token = "<?php echo $this->security->get_csrf_hash();?>";
 		   }
-		   console.log("csrf_token: "+csrf_token);
+		  //  console.log("csrf_token: "+csrf_token);
 		
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/location_data",
@@ -384,10 +383,10 @@
 			      data:$('#level').serialize()+$('#district').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token ,
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log("error::" + textStatus, errorThrown);
+                // console.log("error::" + textStatus, errorThrown);
 			},
             success: function (result) {
-				console.log(result);
+				// console.log(result);
                 var type_arr = result.data;
                 var status = result.status;
 				if(result.csrf_token){
