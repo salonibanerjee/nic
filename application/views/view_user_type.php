@@ -83,10 +83,10 @@
 	function toggleClicked(userId){
 		var button = document.getElementById("switch"+userId);
 		toggle(button);
-		console.log('clicked');
-		console.log(userId);
+		// console.log('clicked');
+		// console.log(userId);
 		var state = button.value;
-		console.log(state);
+		// console.log(state);
 		var s = 1;
 		if(state == "OFF"){
 			s = 0;
@@ -115,20 +115,20 @@
 				id:id,state:state},
 			dataType: 'json',
 			error: function(jqXHR, textStatus, errorThrown){
-				console.log(textStatus, errorThrown);
+				// console.log(textStatus, errorThrown);
 			},
 			cache: false,
 			success:function(result) 
 			{  
-				console.log(result);
+				// console.log(result);
 				if(result.csrf_token){
 					csrf_token = result.csrf_token;
 				}
 				if(result == 'done'){
-					console.log("<?php echo base_url();?>Super_Admin/fetch_user_desig_type");
+					// console.log("<?php echo base_url();?>Super_Admin/fetch_user_desig_type");
 					window.location="<?php echo base_url();?>Super_Admin/fetch_user_desig_type";
 				}else{
-					console.log("<?php echo base_url();?>Super_Admin/fetch_user_desig_type");
+					// console.log("<?php echo base_url();?>Super_Admin/fetch_user_desig_type");
 					window.location="<?php echo base_url();?>Super_Admin/fetch_user_desig_type";
 			
 				}
