@@ -472,7 +472,7 @@ class Super_Admin extends MY_Controller {
 						
 			 }
 			else{
-				 $result = array('message'=>"Data is not Added",'csrf_token'=>$csrf_token);
+				 $result = array('message'=>"Invalid Mail",'csrf_token'=>$csrf_token);
 						
 			}
 			$this->db->trans_complete();
