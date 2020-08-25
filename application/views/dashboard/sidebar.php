@@ -145,7 +145,7 @@
   <style>
 .x {
   width:200px;
-  overflow-x:scroll;
+  overflow-x:auto;
 }
 .x::-webkit-scrollbar {
     height: 7px;

@@ -57,6 +57,7 @@ class summary extends MY_Controller {
 		// Dashboard COOKIE Implementation ---------------------------------------------------
 
 		$expiry = time() + 60*60*24*30;
+		$user_id = $this->session->userdata('loginid');
 
 		$container['generate_btn'] = $this->load->view('dashboard/generate_btn',null,TRUE);
 
@@ -70,8 +71,8 @@ class summary extends MY_Controller {
 		
 		//Dashboard Progress View Implementation -------------------------------
 		$loc_schcd = $this->session->userdata('location_code');
-		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("progress") != null)
-			$scheme_name = explode(",", get_cookie("progress"));
+		if(get_cookie("progress_".$user_id) != null)
+			$scheme_name = explode(",", get_cookie("progress_".$user_id));
 		else
 			$scheme_name = $scheme_link;
 
@@ -85,7 +86,7 @@ class summary extends MY_Controller {
 			}
 
 			$temp_cookie = implode(",",$scheme_name);
-			setcookie("progress", $temp_cookie, $expiry);
+			setcookie("progress_".$user_id, $temp_cookie, $expiry);
 		}
 
 		//Rendering progress filter
@@ -175,8 +176,8 @@ class summary extends MY_Controller {
 
 		//Dashboard Pie Chart Implementation --------------------------------------------------------------------
 		
-		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("pie") != null)
-			$scheme_pie = explode(",", get_cookie("pie"));
+		if(get_cookie("pie_".$user_id) != null)
+			$scheme_pie = explode(",", get_cookie("pie_".$user_id));
 		else
 			$scheme_pie = $scheme_link;
 
@@ -189,7 +190,7 @@ class summary extends MY_Controller {
 				}
 			}
 			$temp_cookie = implode(",",$scheme_pie);
-			setcookie("pie", $temp_cookie, $expiry);
+			setcookie("pie_".$user_id, $temp_cookie, $expiry);
 		}
 
 		//Render filter for Pie Chart
@@ -241,8 +242,8 @@ class summary extends MY_Controller {
 
 		//Dashboard Fund Utilised Bar Chart Implementation ---------------------------------------------------------
 		
-		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("bar1") != null)
-			$scheme_bar1 = explode(",", get_cookie("bar1"));
+		if(get_cookie("bar1_".$user_id) != null)
+			$scheme_bar1 = explode(",", get_cookie("bar1_".$user_id));
 		else
 			$scheme_bar1 = $scheme_link;
 
@@ -256,7 +257,8 @@ class summary extends MY_Controller {
 			}
 			
 			$temp_cookie = implode(",",$scheme_bar1);
-			setcookie("bar1", $temp_cookie, $expiry);
+			setcookie("bar1_".$user_id, $temp_cookie, $expiry);
+			setcookie("user", $this->session->userdata('loginid'), $expiry);
 		}
 
 		//Render Fund Utilised Bar Chart filter
@@ -311,8 +313,8 @@ class summary extends MY_Controller {
 
 		//Dashboard Area Wise Physical Progress Bar Chart Implementation ----------------------------------------------
 		$location = array_slice($all_loc,0,5,true);
-		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("bar2") != null)
-			$scheme_pro = explode(",", get_cookie("bar2"));
+		if(get_cookie("bar2_".$user_id) != null)
+			$scheme_pro = explode(",", get_cookie("bar2_".$user_id));
 		else
 			$scheme_pro = array_slice($scheme_link,0,5,true);
 			
@@ -329,7 +331,8 @@ class summary extends MY_Controller {
 			}
 
 			$temp_cookie = implode(",",$scheme_pro);
-			setcookie("bar2", $temp_cookie, $expiry);
+			setcookie("bar2_".$user_id, $temp_cookie, $expiry);
+			setcookie("user", $this->session->userdata('loginid'), $expiry);
 
 			if(!empty($_POST['bar2_right_check_list'])){
 				$location = array();
@@ -432,8 +435,8 @@ class summary extends MY_Controller {
 		$container['alert_table'] = $this->parser->parse('dashboard/alert_table', $table_data, TRUE);
 
 		//Dashboard Scheme Comparison implementation ---------------------------------------------
-		if(get_cookie("user") == $this->session->userdata('loginid') && get_cookie("comp") != null)
-			$comp_array = explode(",", get_cookie("comp"));
+		if(get_cookie("comp_".$user_id) != null)
+			$comp_array = explode(",", get_cookie("comp_".$user_id));
 		else
 			$comp_array = array($scheme_link[0], $scheme_link[1], "NONE", "NONE", 1, 1, 1, 1, "2020","2020","2020","2020");
 
@@ -463,7 +466,8 @@ class summary extends MY_Controller {
 			$comp_array = array_merge($first_scheme_temp, $comp_m_temp, $comp_y_temp);
 
 			$temp_cookie = implode(",", $comp_array);
-			setcookie("comp", $temp_cookie, $expiry);
+			setcookie("comp_".$user_id, $temp_cookie, $expiry);
+			setcookie("user", $this->session->userdata('loginid'), $expiry);
 		}
 
 		$loc_schcdID = $this-> Dashboard_model -> getlocID($loc_schcd);

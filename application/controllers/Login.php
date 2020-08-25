@@ -61,17 +61,9 @@ class Login extends MY_Controller {
                     $this->session->set_userdata('desig',$res->desig_id_fk);
                     $this->Admin_model->store_cache($this->session->userdata('uid'));
                     $this->Admin_model->store_profile($this->session->userdata('uid'));
-                    $this->Admin_model->dashboard_cache();
+                    //$this->Admin_model->dashboard_cache();
                     $this->Admin_model->scheme_hier_cache();
-                    $expire = time()+60*60*24*30;
-                    if(!isset($_COOKIE["User"]) || get_cookie("user") != $res->login_id_pk){
-                        setcookie("user", $res->login_id_pk, $expire, "/");
-                        setcookie("progress", "", $expire, "/");
-                        setcookie("bar1", "", $expire, "/");
-                        setcookie("bar2", "", $expire, "/");
-                        setcookie("pie", "", $expire, "/");
-                        setcookie("comp", "", $expire, "/");
-                    }
+                    
                     //checking whether user type cache present or not
                     $var = $this->cache->get('Active_status'.$this->session->userdata('loginid'))['user_type_id_fk'];
                     if(!$this->cache->get('User_type'.$var)){
