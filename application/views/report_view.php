@@ -6,7 +6,7 @@
 					Generate Report
 				</div>
 				<div class="card-body">
-					<?php echo form_open('Report/past_report','role="form" method="POST" id="form"');?>
+					<?php echo form_open('','role="form" method="POST" id="form"');?>
 					<!-- <form method="post" action="<?php //echo base_url();?>" id="form"> -->
 						<div class="form-group">
 							<div class="row">
@@ -29,7 +29,8 @@
 								</div>
 								<div class="col-md-6">
 									<label class="m-0 ml-1">Enter Year</label>
-									<input class="form-control form-control-sm m-1" type="number" name="year" placeholder="Enter Year">
+									<input class="form-control form-control-sm m-1" type="text" name="year" placeholder="Enter Year" required="" maxlength="4" size="4" minlength="4">
+									<p style="background-color: red "><?php echo form_error('year');?></p>
 								</div>
 							</div>
 							<label class="m-0 ml-1">Select Format</label>

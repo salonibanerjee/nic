@@ -13,7 +13,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 class Report_model extends CI_Model
 {
-	public function get_scheme()
+	public function get_scheme() // fetching the schemes name
 	{
 		$this->db->select('name,short_name,financial_year_id_fk,desig_id_fk');
 		$this->db->from('mpr_master_scheme_table');
@@ -23,31 +23,22 @@ class Report_model extends CI_Model
 		return $da;
 
 	}
-	public function get_desig($n)
+	public function get_desig($n) // Designations of each schemes
 	{
 		$this->db->select('desig_name')->from('mpr_master_designation')->where('desig_id_pk',$n);
 		return $this->db->get()->result_array()[0]['desig_name'];
 	}
-	public function get_meeting_id()
+	public function get_meeting_id() //meeting id of every meeting 
 	{
 		$this->db->select_max('meeting_id_pk')->from('mpr_trans_meeting_schedule');
 		return $this->db->get()->result_array()[0]['meeting_id_pk'];
 	}
-	public function update_report_to_db($meet_id,$str,$type,$mon,$year)
+	public function update_report_to_db($meet_id,$str,$type,$mon,$year) // pushing report as pdf or excel to mpn_trans_reort
 	{
 		$temp=array('meeting_id_fk'=>$meet_id,'report_data'=>$str,'report_generated_month'=>strval($mon),'report_generated_year'=>strval($year),'report_type'=>$type);
 		$this->db->insert('mpr_trans_report',$temp);
 	}
-	public function get_colspan()
-	{
-		$this->db->select('count(scheme_id_fk)');
-		$this->db->from('mpr_master_attri_table');
-		$this->db->where('scheme_id_fk!=',0);
-		$this->db->group_by('scheme_id_fk');
-		$this->db->order_by('scheme_id_fk');
-		return $this->db->get()->result_array();
-	}
-	public function get_loc_detail($loc)
+	public function get_loc_detail($loc) // fetching location details
 	{
 		$this->db->select('location_area,location_code');
 		$this->db->from('mpr_master_location_data');
@@ -55,40 +46,16 @@ class Report_model extends CI_Model
 		$this->db->order_by('location_code');
 		return $this->db->get()->result_array();
 	}
-	public function get_attri()
-	{
-		
-		$this->db->select('attri_name,actual_name');
-		$this->db->from('mpr_master_attri_table');
-		$this->db->where($temp);
-		$this->db->order_by('scheme_id_fk !=',0);
-		$query=$this->db->get()->result_array();
-		$temp['a_n']=array();
-		$temp['n']=array();
-		foreach ($query as $key) 
-		{
-			array_push($temp['a_n'],$key['attri_name']);
-			array_push($temp['n'],$key['actual_name']);
-		}
-		return $temp;
-	}
-	public function get_attri_name($k)
-	{
-		$this->db->select('attri_name')->from('mpr_master_attri_table');
-		$this->db->where('scheme_id_fk',$k);
-		$this->db->order_by('id');
-		return $this->db->get()->result_array();
-	}
-	public function get_attri_actual_name($k)
+	public function get_attri_actual_name($k) // fetching the name of the attributes
 	{
 		$this->db->select('actual_name')->from('mpr_master_attri_table')->where('attri_name',$k);
 		$a= $this->db->get()->result_array();
 		return $a[0]['actual_name'];
 	}
 
-	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type)
+	public function get_data($temp_tab,$attri,$schcd,$ses,$mon,$scheme_type) /// fetching the data
 	{
-		if($temp_tab=="mpr_scheme_awcc")
+		if($temp_tab=="mpr_scheme_awcc") // it is a special case for AWCC table
 		{
 			$array=array('location_code'=>$schcd,'session'=>strval($ses));
 			$this->db->select('no_of_new_icds_building_constructed')->from($temp_tab)->where($array);
@@ -125,7 +92,7 @@ class Report_model extends CI_Model
 			return $arr;
 
 		}
-		if(($scheme_type==1 || $scheme_type==4) && $temp_tab!="mpr_master_awcc")
+		if(($scheme_type==1 || $scheme_type==4) && $temp_tab!="mpr_master_awcc") 
 		{
 			$this->db->select($attri)->from($temp_tab)->where('location_code',$schcd);
 			$this->db->order_by('month','DESC');
@@ -157,7 +124,7 @@ class Report_model extends CI_Model
 		}
 		
 	}
-	public function get_sub_division($loc_area)
+	public function get_sub_division($loc_area) //fetching the sub-division
 	{
 		$this->db->select('subdiv_id_fk')->from('mpr_master_block')->where('block_name',$loc_area);
 		$sub_div_id=$this->db->get()->result_array()[0]['subdiv_id_fk'];
@@ -166,18 +133,18 @@ class Report_model extends CI_Model
 		return $this->db->get()->result_array()[0]['sub_div_name'];
 		
 	}
-	public function generate_table($temp,$ses,$mon,$n=0)
+	public function generate_table($temp,$ses,$mon,$n,$loc) 
 	{
 
 		$template = array('table_open' => '<table border="1" cellpadding="1" cellspacing="1" style="text-align:center">');
 		$this->table->set_template($template);
-		if($n==0)
-			$this->table->set_caption('<br>Financial Years - '.$ses.'/'.($ses-1).'<br>'.'Reporting Month - '.$mon.', '.$ses.'<br>'.'Name of the District:- HOWRAH <br>');
-		else
+		if($n==0) // for pdf file
+			$this->table->set_caption('<br>Financial Years - '.$ses.'/'.($ses-1).'<br>'.'Reporting Month - '.$mon.', '.$ses.'<br>'.'Name of the District:- '.$loc.'<br>');
+		else //for excel file
 		{
 			$this->table->add_row(array('data'=>'Financial Years - '.$ses.'/'.($ses-1),'colspan'=>10));
 			$this->table->add_row(array('data'=>'Reporting Month - '.$mon.', '.$ses,'colspan'=>10));
-			$this->table->add_row(array('data'=>'Name of the District:- HOWRAH' ,'colspan'=>10));
+			$this->table->add_row(array('data'=>'Name of the District:- '.$loc,'colspan'=>10));
 		}
 		$this->table->add_row($temp['header']);
 		$this->table->add_row($temp['desig']);
@@ -190,15 +157,12 @@ class Report_model extends CI_Model
 		$this->table->add_row($temp['total']);
 		return $this->table->generate();
 	}
-	public function get_past_report($mon,$year,$type)
+	public function get_past_report($mon,$year,$type) // fetching the past report
 	{
 		$temp=array('report_type' => $type,'report_generated_month'=>$mon,'report_generated_year'=>$year);
-		//$query = $this->db->get_where('mpr_trans_report',$temp);
-        //$row = $query->row();
         $this->db->select('report_data')->from('mpr_trans_report')->where($temp);
         $this->db->order_by('report_id_pk','DESC');
         return $this->db->get()->row_array()['report_data'];
-        //return $row->report_data;
 	}
 
 	public function generate_pdf($temp,$type,$month,$ses) 
@@ -230,15 +194,15 @@ class Report_model extends CI_Model
 			$pdf->writeHTML($html, true, false, true, false, '');
 			$pdf->lastPage();
 		}
-		$var = $pdf->Output(md5(time()).'pdf','S');
+		$var = $pdf->Output('MPR_Report_'.$month.'_'.$ses.'.pdf','S');
 		header('aplication/pdf');
 		$meet_id=$this->get_meeting_id();
         $this->update_report_to_db($meet_id,base64_encode($var),$type,$month,$ses);
-		$pdf->Output(md5(time()).'.pdf', 'D');
+		$pdf->Output('MPR_Report_'.$month.'_'.$ses.'.pdf','D');
 	}
 
 
-	public function export_csv($temp)
+	public function export_excel($temp,$month,$ses)
 	{ 
 		$temporary_html_file = time() . '.html';
 		file_put_contents($temporary_html_file, $temp);
@@ -249,7 +213,7 @@ class Report_model extends CI_Model
 
 		$writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 
-		$filename = 'Report'. '.xlsx';
+		$filename = 'MPR_Report_'.$month.'_'.$ses. '.xlsx';
 
 		$writer->save($filename);
 		
