@@ -380,7 +380,8 @@
         $.ajax({
             url: "<?php echo base_url();?>Super_Admin/location_data",
             type: "POST",
-			      data:$('#level').serialize()+$('#district').serialize()+"&<?php echo $this->security->get_csrf_token_name();?>="+csrf_token ,
+			      data:{"<?php echo $this->security->get_csrf_token_name();?>": csrf_token ,
+            district:district, level:level },  
             dataType: 'json',
             error: function (jqXHR, textStatus, errorThrown) {
                 // console.log("error::" + textStatus, errorThrown);
