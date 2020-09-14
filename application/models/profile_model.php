@@ -184,23 +184,29 @@ class profile_model extends CI_Model {
 	//custom meeting notification show in bell's dropdown menu-------------------------------------------------------------------------
 	public function meeting_notification(){
 		$last_row=$this->db->select('*')->order_by('meeting_id_pk',"desc")->limit(1)->get_where('mpr_trans_meeting_schedule',array('active_status'=>1))->row();
-		$s_time = strtotime($last_row->start_time);
-		$e_time = strtotime($last_row->end_time);
-		$now = strtotime(mdate('%Y-%m-%d %H:%i', now()));
-		$noti=array();
-		if(($now > $s_time) && ($now < $e_time)){
-			$noti['msg']="Meeting Ongoing";
-			$noti['val']=mdate('%H:%i',$s_time)."-".mdate('%H:%i',$e_time);
+		if($last_row){
+			$s_time = strtotime($last_row->start_time);
+			$e_time = strtotime($last_row->end_time);
+			$now = strtotime(mdate('%Y-%m-%d %H:%i', now()));
+			$noti=array();
+			if(($now > $s_time) && ($now < $e_time)){
+				$noti['msg']="Meeting Ongoing";
+				$noti['val']=mdate('%H:%i',$s_time)."-".mdate('%H:%i',$e_time);
+			}
+			else if($now > $e_time){
+				$noti['msg']="Meeting Expired";
+				$noti['val']=mdate('%M-%d %H:%i',$e_time);
+			}
+			else if($now < $s_time){
+				$noti['msg']="Upcoming Meeting";
+				$noti['val']=mdate('%M-%d %H:%i',$s_time);
+			}
+			return $noti;
+		}else{
+			$noti['msg']="No Previous Meeting";
+			$noti['val']='-';
+			return $noti;
 		}
-		else if($now > $e_time){
-			$noti['msg']="Meeting Expired";
-			$noti['val']=mdate('%M-%d %H:%i',$e_time);
-		}
-		else if($now < $s_time){
-			$noti['msg']="Upcoming Meeting";
-			$noti['val']=mdate('%M-%d %H:%i',$s_time);
-		}
-		return $noti;
 	}
 
 	public function getrelevantloc($ut){		//gets respective location for selected ut from database 			

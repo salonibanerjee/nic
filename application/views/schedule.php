@@ -16,14 +16,75 @@
       </div>
     </div><!-- /.container-fluid -->
   </section>
-<div class="card card-primary card-outline mx-auto" style="max-width: 700px">
+<div class="card card-primary card-outline" style="margin:10px;">
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <div class="container-fluid">
       <?php echo form_open("Super_Admin/schedule",'id="form"');?>
+      <div class='row'>
       
+        <div class='col-md-6'>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-12">
+            <div class="card card-primary ">
+              <div class="card-header">
+                <h1 class="card-title" style="color:white; font-size:30px;"><Strong>Schedule a Meeting</Strong></h1>
+              </div>
+              <div class="card-body">
+                <!-- Date range -->
+                <div class="form-group">
+                  <label>Meeting Date</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="far fa-calendar-alt"></i>
+                      </span>
+                    </div>
+                    <input name='date' id='date' style="cursor:pointer;" type='text' class='form-control'>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <!-- /.form group -->
+                <div class='row'>
+                <div class="form-group col-md-6">
+                  <label>Pick Start Time:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                      </span>
+                    </div>
+                    <input name='stime' id='stime' class='form-control' type='text' >
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Pick End Time:</label>
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <i class="fas fa-clock"></i>
+                      </span>
+                    </div>
+                    <input name='etime' class='form-control' id='etime' type='text'  >
+                  </div>
+                  <!-- /.input group -->
+                </div>
+              </div>
+                
+              </div>
+              <div id="errors" style="color:red; margin:10px;"></div>
+              <div class="card-footer">
+                  <input type="submit" value="Schedule" name="sub" class="btn btn-primary "style="display: block; margin-left: auto;  margin-right: auto; background:#007BFF;"></input>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" id="ref">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
             <div class="info-box bg-black">
               <span class="info-box-icon bg-success"><i class="far fa-calendar-alt"></i></span>
               <div class="info-box-content">
@@ -32,7 +93,7 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-8">
             <div class="info-box bg-black">
               <span class="info-box-icon bg-warning"><i class="far fa-calendar-alt"></i></span>
 
@@ -45,7 +106,7 @@
           </div>
           <div class="row justify-content-center">
             <div class="info-box" style="background: #FFD8D8; cursor:pointer;" onmouseover="this.style.background='#FF8989'"
-              onmouseout="this.style.background='#FFD8D8'" onclick="deletem()">
+              onmouseout="this.style.background='#FFD8D8'" onclick="show()">
                 <span class="info-box-icon bg-danger"><i class="fas fa-trash-alt"></i></span>
 
                   <div class="info-box-content my-auto">
@@ -53,38 +114,20 @@
                   </div>
                 </div>
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <div class="card card-primary ">
-              <div class="card-header">
-                <h1 class="card-title" style="color:white; font-size:30px;"><Strong>Schedule a Meeting</Strong></h1>
-              </div>
-              <div class="card-body">
-                <!-- Date range -->
-                <div class="form-group">
-                  <label>Pick the Start time and end time from the dropdown list:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="far fa-calendar-alt"></i>
-                      </span>
-                    </div>
-                    <input type="text" name="date" class="form-control float-right" id="reservation">
-                  </div>
-                  <!-- /.input group -->
-                </div>
-                <!-- /.form group -->
-                
-              </div>
-              <div class="card-footer">
-                  <input type="submit" value="Schedule" name="sub" class="btn btn-primary "style="display: block; margin-left: auto;  margin-right: auto; background:#007BFF;"></input>
-              </div>
-              <!-- /.card-body -->
+          <div class="row" id='hide' style="display:none;">
+            <h4 class="justify-content-center" style="text-align:center"><b>Are you sure you want to cancel this meeting?<b></h4>
+            <div class="row justify-content-center">
+            <div class='col-md-4'>
+                <input class="btn btn-success" style="cursor:pointer;" value="Yes" onclick="deletem()"></input>
+            </div>
+            <div class='col-md-4'>
+                <input class="btn btn-danger" value="No" style="cursor:pointer;" onclick="hide()"></input>
+            </div>
             </div>
           </div>
         </div>
+</div>
+      
       </div>  
     </div>
   </section>
@@ -93,17 +136,39 @@
 
 <!-- Page script -->
 <script>
-  $(function () {
-    //Date picker
-    $('#reservation').daterangepicker({
-      timePicker: true,
-      startDate: moment().startOf('hour'), 
-      endDate: moment().startOf('hour').add(32, 'hour'),
-      locale: {
-        format: 'YYYY-MM-DD HH:mm'
-      }
-    })
-  })
+$(function() {
+   $('#date').daterangepicker({
+            timePicker : false,
+            singleDatePicker:true,
+            locale:{format: 'DD-MM-YYYY'}
+   });
+})
+  $(function() {
+   $('#stime').daterangepicker({
+            timePicker : true,
+            singleDatePicker:true,
+            timePicker24Hour : true,
+            timePickerIncrement : 1,
+            locale : {
+                format : 'HH:mm'
+            }
+        }).on('show.daterangepicker', function(ev, picker) {
+            picker.container.find(".calendar-table").hide();
+   });
+})
+$(function() {
+   $('#etime').daterangepicker({
+            timePicker : true,
+            singleDatePicker:true,
+            timePicker24Hour : true,
+            timePickerIncrement : 1,
+            locale : {
+                format : 'HH:mm'
+            }
+        }).on('show.daterangepicker', function(ev, picker) {
+            picker.container.find(".calendar-table").hide();
+   });
+})
 </script>
 <script src="<?php echo base_url();?>css/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <script src="<?php echo base_url();?>js/notify.js"></script>
@@ -134,7 +199,8 @@ $("#form").on("submit", function (event) {
         console.log("error");
       }else{ 
         $('#errors').html("");
-        $("#form").load(location.href+" #form>*","");
+        //$("#form").load(location.href+" #form>*","");
+        $("#ref").load(location.href+" #ref>*","");
         //fetchType();
         $("#err").notify("Value accepted",{position:"left", className: 'success'});
         console.log("submit");
@@ -149,8 +215,16 @@ function deletem(){
         success: function(result){
             if(result=="cancelled")
               $("#err").notify("Meeting Cancelled",{position:"left", className: 'success'});
-              $("#form").load(location.href+" #form>*","");
+              $("#ref").load(location.href+" #ref>*","");
           }
       });
+}
+
+function show(){
+  document.getElementById("hide").style.display = "block";
+}
+
+function hide(){
+  document.getElementById("hide").style.display = "none";
 }
 </script>

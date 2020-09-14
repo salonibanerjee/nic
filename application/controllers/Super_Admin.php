@@ -74,11 +74,15 @@ class Super_Admin extends MY_Controller {
 		$this->load->view('dashboard/navbar',$u_type);
 		$this->load->view('dashboard/sidebar',$da);
         $this->load->model('Admin_model');
-        $row = $this->Admin_model->previous_meeting_schedule();
-        $data=array(
+		$row = $this->Admin_model->previous_meeting_schedule();
+		if($row){
+        	$data=array(
                 'start_time'=> mdate('%Y-%M-%d %H:%i',strtotime('+2 hours', strtotime( $row->start_time ))),
                 'end_time'=> mdate('%Y-%M-%d %H:%i',strtotime('-2 hours', strtotime( $row->end_time ))),
 			);
+		}else{
+			$data=array('start_time'=>'No Previous Meeting','end_time'=>'No Previous Meeting');
+		}
 		$this->load->view('schedule',$data);
 		$this->db->trans_off();
 	    $this->db->trans_strict(FALSE);
@@ -97,68 +101,99 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('Crud_model');
 		$this->load->model('Admin_model');
 		$this->load->model('profile_model');
+		$this->form_validation->set_rules('date', 'Meeting Date', 'required');
+		$this->form_validation->set_rules('stime', 'Start Time', 'required');
+		$this->form_validation->set_rules('etime', 'End Time', 'required|callback_time['.$this->input->post('stime').']');
+		
 		$csrf_token=$this->security->get_csrf_hash();
-		//functionality
-			$span = $this->input->post('date');
-			$start_time = substr($span,0,16);
-			$end_time=substr($span,19,35);
-			$noti_head="New Meeting";
-			$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
-			$target_audience="NMEET00";
-				$radiosel=2;//broadcast
-				$audience_ut=$this->session->userdata('user_type');	
-				$audience_loc=$this->session->userdata('location_code');
-				$audience_desig_only=$this->session->userdata('desig');
-            //2hours relaxation on the provided time
-            $start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
-            $end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
-			$data=array(
-				'start_time'=> $start_time,
-				'end_time'=> $end_time,
-				'active_status'=>1
-			);
-			$this->db->trans_off();
-            $this->db->trans_strict(FALSE);
-            $this->db->trans_start();
-			$this->Admin_model->meeting_schedule($data);
-			//$this->load->view('schedule',$data);
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
-			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
-                                            current_url(),
-                                            'Meeting Schedule Updated',
-											$start_time.' - '.$end_time);
-			$this->db->trans_complete();
+		if ($this->form_validation->run() == FALSE)
+        {
+			$ab=array('res'=>0,'errors'=>validation_errors(),'csrf_token'=>$csrf_token);
+            echo json_encode($ab);
+		}
+		else
+		{
+			//functionality
+				$d = $this->input->post('date');
+				$st= $this->input->post('stime');
+				$et=$this->input->post('etime');
+				$res = explode("-", $d);
+				$span= $res[2]."-".$res[1]."-".$res[0]." ".$st." - ".$res[2]."-".$res[1]."-".$res[0]." ".$et;
+				$start_time = substr($span,0,16);
+				$end_time=substr($span,19,35);
+				$noti_head="New Meeting";
+				$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
+				$target_audience="NMEET00";
+					$radiosel=2;//broadcast
+					$audience_ut=$this->session->userdata('user_type');	
+					$audience_loc=$this->session->userdata('location_code');
+					$audience_desig_only=$this->session->userdata('desig');
+				//2hours relaxation on the provided time
+				$start_time= mdate('%Y-%m-%d %H:%i',strtotime('-2 hours', strtotime( $start_time )));
+				$end_time= mdate('%Y-%m-%d %H:%i',strtotime('+2 hours', strtotime( $end_time )));
+				$data=array(
+					'start_time'=> $start_time,
+					'end_time'=> $end_time,
+					'active_status'=>1
+				);
+				$this->db->trans_off();
+				$this->db->trans_strict(FALSE);
+				$this->db->trans_start();
+				$this->Admin_model->meeting_schedule($data);
+				//$this->load->view('schedule',$data);
+				$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+												current_url(),
+												'Meeting Schedule Updated',
+												$start_time.' - '.$end_time);
+				$this->db->trans_complete();
 
-		$ab=array('csrf_token'=>$csrf_token,'res'=>1);
-        echo json_encode($ab);
+			$ab=array('csrf_token'=>$csrf_token,'res'=>1);
+			echo json_encode($ab);
+		}
 	}
+
+	public function time($et,$st)
+    {
+		$e=strtotime($et);
+		$s=strtotime($st);
+        if ($e<=$s){
+            $this->form_validation->set_message('time', 'The end time must be greater than start time.');
+            return FALSE;
+        }else{
+            return TRUE;
+        }
+    }
+
 
 	public function meeting_cancel(){
 		$this->load->model('Crud_model');
 		$this->load->model('Admin_model');
 		$this->load->model('profile_model');
 		$row = $this->Admin_model->previous_meeting_schedule();
-		$this->db->trans_off();
-        $this->db->trans_strict(FALSE);
-        $this->db->trans_start();
-		if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
-			echo "cancelled";
-			$target_audience="NMEET01";
-				$radiosel=2;//broadcast
-				$audience_ut=$this->session->userdata('user_type');	
-				$audience_loc=$this->session->userdata('location_code');
-				$audience_desig_only=$this->session->userdata('desig');
-			$noti_head="Cancelled Meeting";
-			$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-			$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
-			$this->Crud_model->audit_upload($this->session->userdata('loginid'),
-                                            current_url(),
-                                            'Meeting Cancelled',
-											$row->start_time.' - '.$row->end_time);
-		}else{
-			echo "Not cancelled";
+		if($row){
+			$this->db->trans_off();
+			$this->db->trans_strict(FALSE);
+			$this->db->trans_start();
+			if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
+				echo "cancelled";
+				$target_audience="NMEET01";
+					$radiosel=2;//broadcast
+					$audience_ut=$this->session->userdata('user_type');	
+					$audience_loc=$this->session->userdata('location_code');
+					$audience_desig_only=$this->session->userdata('desig');
+				$noti_head="Cancelled Meeting";
+				$noti_text="The meeting on ".$row->start_time." has been cancelled.";
+				$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
+				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+												current_url(),
+												'Meeting Cancelled',
+												$row->start_time.' - '.$row->end_time);
+			}else{
+				echo "Not cancelled";
+			}
+			$this->db->trans_complete();
 		}
-		$this->db->trans_complete();
 	}
 	
 	//loads the set notification page-----------------------------------------------------------------------------------------------------
