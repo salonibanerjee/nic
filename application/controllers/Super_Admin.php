@@ -122,7 +122,9 @@ class Super_Admin extends MY_Controller {
 				$start_time = substr($span,0,16);
 				$end_time=substr($span,19,35);
 				$noti_head="New Meeting";
-				$noti_text="The next meeting has been scheduled on ".$start_time." and it will end at ".$end_time.".";
+				$st=mdate('%Y-%m-%d at %H:%i hrs', strtotime( $start_time ));
+				$et=mdate('%Y-%m-%d at %H:%i hrs', strtotime( $end_time ));
+				$noti_text="The next meeting has been scheduled on ".$st." and it will end on ".$et.".";
 				$target_audience="NMEET00";
 					$radiosel=2;//broadcast
 					$audience_ut=$this->session->userdata('user_type');	
@@ -172,27 +174,32 @@ class Super_Admin extends MY_Controller {
 		$this->load->model('profile_model');
 		$row = $this->Admin_model->previous_meeting_schedule();
 		if($row){
-			$this->db->trans_off();
-			$this->db->trans_strict(FALSE);
-			$this->db->trans_start();
-			if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
-				echo "cancelled";
-				$target_audience="NMEET01";
-					$radiosel=2;//broadcast
-					$audience_ut=$this->session->userdata('user_type');	
-					$audience_loc=$this->session->userdata('location_code');
-					$audience_desig_only=$this->session->userdata('desig');
-				$noti_head="Cancelled Meeting";
-				$noti_text="The meeting on ".$row->start_time." has been cancelled.";
-				$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
-				$this->Crud_model->audit_upload($this->session->userdata('loginid'),
-												current_url(),
-												'Meeting Cancelled',
-												$row->start_time.' - '.$row->end_time);
+			if(strtotime(mdate('%Y-%m-%d %H:%i', now())) >strtotime($row->start_time)){
+				echo "past meeting";
 			}else{
-				echo "Not cancelled";
+				$this->db->trans_off();
+				$this->db->trans_strict(FALSE);
+				$this->db->trans_start();
+				if($this->Admin_model->cancel_meeting($row->meeting_id_pk)){
+					echo "cancelled";
+					$target_audience="NMEET01";
+						$radiosel=2;//broadcast
+						$audience_ut=$this->session->userdata('user_type');	
+						$audience_loc=$this->session->userdata('location_code');
+						$audience_desig_only=$this->session->userdata('desig');
+					$noti_head="Cancelled Meeting";
+					$st= mdate('%Y-%m-%d at %H:%i hrs',strtotime('+2 hours', strtotime( $row->start_time )));
+					$noti_text="The meeting on ".$st." has been cancelled.";
+					$this->profile_model->savenotifs($target_audience,$noti_text,$noti_head,$audience_ut,$audience_loc,$audience_desig_only,$radiosel);
+					$this->Crud_model->audit_upload($this->session->userdata('loginid'),
+													current_url(),
+													'Meeting Cancelled',
+													$row->start_time.' - '.$row->end_time);
+				}else{
+					echo "Not cancelled";
+				}
+				$this->db->trans_complete();
 			}
-			$this->db->trans_complete();
 		}else{
 			echo "no meeting";
 		}

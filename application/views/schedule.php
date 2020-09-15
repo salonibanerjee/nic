@@ -142,6 +142,7 @@ $(function() {
    $('#date').daterangepicker({
             timePicker : false,
             singleDatePicker:true,
+            minDate:moment(),
             locale:{format: 'DD-MM-YYYY'}
    });
 })
@@ -226,6 +227,10 @@ function deletem(){
               //$("#mssg").notify("No scheduled meeting to cancel",{position:"right", className: 'info'});
               toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}
               toastr.info('No scheduled meeting to cancel');
+              $("#ref").load(location.href+" #ref>*","");
+            }else if(result=="past meeting"){
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}
+              toastr.info('This is a past meeting and cannot be cancelled.');
               $("#ref").load(location.href+" #ref>*","");
             }
           }
