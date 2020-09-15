@@ -15,6 +15,8 @@
           <thead>
             <tr>
               <th>Scheme Name</th>
+              <th>Month</th>
+              <th>Year</th>
               <th>Target</th>
               <th>Progress</th>
               <th>Percentage</th>
@@ -24,9 +26,12 @@
           <tbody>
             <?php 
               $i = 0;
+              $month = array('Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec');
               foreach ($name as $row) {
                 echo "<tr>";
                 echo "<td>".$name[$i]."</td>";
+                echo "<td>".$month[$comp_array[$i+4]-1]."</td>";
+                echo "<td>".$comp_array[$i+8]."</td>";
                 if($target[$i] == 'false')
                   echo "<td>NA</td>";
                 else

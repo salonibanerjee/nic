@@ -62,8 +62,8 @@
           <div class="modal-body">
             <div class="row">
               <div class="form-group">
-                <label class='mb-1'>Enter a threshold value </label>
-                <input type="number" class="form-control" name="alert_input" id="alert_input" placeholder="Enter Threshold">
+                <label class='mb-1'>Enter Threshold Value for Fund Utilisation </label>
+                <input type="number" class="form-control" name="alert_input" id="alert_input" placeholder="Enter Threshold %">
               </div>
             </div>
           </div>
