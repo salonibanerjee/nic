@@ -193,6 +193,8 @@ class Super_Admin extends MY_Controller {
 				echo "Not cancelled";
 			}
 			$this->db->trans_complete();
+		}else{
+			echo "no meeting";
 		}
 	}
 	

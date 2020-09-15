@@ -54,7 +54,7 @@
                         <i class="fas fa-clock"></i>
                       </span>
                     </div>
-                    <input name='stime' id='stime' class='form-control' type='text' >
+                    <input name='stime' id='stime' style="cursor:pointer;" class='form-control' type='text' >
                   </div>
                   <!-- /.input group -->
                 </div>
@@ -66,7 +66,7 @@
                         <i class="fas fa-clock"></i>
                       </span>
                     </div>
-                    <input name='etime' class='form-control' id='etime' type='text'  >
+                    <input name='etime' class='form-control' style="cursor:pointer;" id='etime' type='text'  >
                   </div>
                   <!-- /.input group -->
                 </div>
@@ -110,20 +110,22 @@
                 <span class="info-box-icon bg-danger"><i class="fas fa-trash-alt"></i></span>
 
                   <div class="info-box-content my-auto">
-                    <span class="info-box-text"><strong>Cancel Previous Meeting</strong></span>
+                    <span class="info-box-text"><strong>Cancel Scheduled Meeting</strong></span>
                   </div>
                 </div>
           </div>
           <div class="row" id='hide' style="display:none;">
-            <h4 class="justify-content-center" style="text-align:center"><b>Are you sure you want to cancel this meeting?<b></h4>
             <div class="row justify-content-center">
-            <div class='col-md-4'>
-                <input class="btn btn-success" style="cursor:pointer;" value="Yes" onclick="deletem()"></input>
+            <h4 class="justify-content-center" style="text-align:center"><b>Are you sure you want to cancel this meeting?<b></h4>
             </div>
-            <div class='col-md-4'>
-                <input class="btn btn-danger" value="No" style="cursor:pointer;" onclick="hide()"></input>
+            <div class="row">
+            <div class='col-md-6'>
+                <a class="btn btn-block btn-outline-success mx-auto"  style="cursor:pointer;" onclick="deletem()">Yes</a>
             </div>
-            </div>
+            <div class='col-md-6'>
+                <a class="btn btn-block btn-outline-danger mx-auto" class="form-control"  style="cursor:pointer;" onclick="hide()">No</a>
+            </div></div>
+            
           </div>
         </div>
 </div>
@@ -202,7 +204,9 @@ $("#form").on("submit", function (event) {
         //$("#form").load(location.href+" #form>*","");
         $("#ref").load(location.href+" #ref>*","");
         //fetchType();
-        $("#err").notify("Value accepted",{position:"left", className: 'success'});
+        //$("#err").notify("Value accepted",{position:"left", className: 'success'});
+        toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}
+        toastr.success('Meeting Scheduled Successfully');
         console.log("submit");
       }
     }
@@ -213,9 +217,17 @@ function deletem(){
       $.ajax({
         url: "<?php echo base_url();?>Super_Admin/meeting_cancel",
         success: function(result){
-            if(result=="cancelled")
-              $("#err").notify("Meeting Cancelled",{position:"left", className: 'success'});
+            if(result=="cancelled"){
+              //$("#mssg").notify("Meeting Cancelled",{position:"right", className: 'success'});
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}
+              toastr.success('Meeting Cancelled Successfully');
               $("#ref").load(location.href+" #ref>*","");
+            }else if(result=="no meeting"){
+              //$("#mssg").notify("No scheduled meeting to cancel",{position:"right", className: 'info'});
+              toastr.options={"timeOut":"10000","positionClass": "toast-top-center"}
+              toastr.info('No scheduled meeting to cancel');
+              $("#ref").load(location.href+" #ref>*","");
+            }
           }
       });
 }
