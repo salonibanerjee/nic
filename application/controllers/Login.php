@@ -5,7 +5,7 @@
  *
  * @package		CodeIgniter
  * @category	Controller
- * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh
+ * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh,Saloni Banerjee
 */
 //Performs all Login related controller works along with captcha, forget password, 
 //password change, password change for the first time--------------------------------------------------------------------------------

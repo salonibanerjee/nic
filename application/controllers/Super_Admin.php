@@ -5,7 +5,7 @@
  *
  * @package		CodeIgniter
  * @category	Controller
- * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh,Nirvik Ranjan Das,Sachin Kumar Roy,Hriddhi Mondal
+ * @author		Riddhinath Ganguly,Sayak Das,Monilekha Ghosh,Nirvik Ranjan Das,Sachin Kumar Roy,Hriddhi Mondal,Saloni Banerjee
 */
 //The whole Super Admin module runs through this script.It includes New User registration, user on/off, user privilege on/off,
 //user type on/off, pages on/off, dba financial year set, scheme records, audit log view for SYSTEM Administrator-----------------------

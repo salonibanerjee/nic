@@ -5,7 +5,7 @@
  *
  * @package		CodeIgniter
  * @category	Controller
- * @author		Riddhinath Ganguly,Sayak Das,Hriddhi Mondal,Dipak Gupta, Nirvik Ranjan Das
+ * @author		Riddhinath Ganguly,Sayak Das,Hriddhi Mondal,Dipak Gupta, Nirvik Ranjan Das, Saloni Banerjee
 */
 //Mainly deals with the Dashboard, Profile , Edit profile and password change when user is logged in.----------------------------------
 
