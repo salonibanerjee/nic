@@ -1,6 +1,7 @@
-###################
-What is CodeIgniter
-###################
+<h1 align="center">MPR- Project Management System</h1>
+<p align="center"><img src="https://raw.githubusercontent.com/salonibanerjee/salonibanerjee.github.io/master/images/i-mpr.gif"/><br/></p> 
+
+<h2 align="center">What is CodeIgniter</h2>
 
 CodeIgniter is an Application Development Framework - a toolkit - for people
 who build web sites using PHP. Its goal is to enable you to develop projects
