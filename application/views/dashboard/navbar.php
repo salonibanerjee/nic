@@ -135,7 +135,7 @@
           ?>
           </div>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+          <a href="<?php echo base_url();?>Super_Admin/notification" class="dropdown-item dropdown-footer">See All Notifications</a>
         </div>
       </li>
       </div>
